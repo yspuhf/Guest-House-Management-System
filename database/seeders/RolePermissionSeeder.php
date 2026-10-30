@@ -12,13 +12,15 @@ class RolePermissionSeeder extends Seeder
     {
         $roles = [
             ['id' => 1, 'name' => 'system_admin', 'display_name' => 'System Administrator', 'description' => 'Full control over system accounts, security, settings and backups'],
-            ['id' => 2, 'name' => 'guest_house_admin', 'display_name' => 'Guest House Administrator', 'description' => 'Configures properties, rooms, tariffs, guest categories and policies'],
-            ['id' => 3, 'name' => 'guest_house_incharge', 'display_name' => 'Guest House Incharge', 'description' => 'Manages room allocation, check-in, check-out, room condition and daily operations'],
-            ['id' => 4, 'name' => 'verifier', 'display_name' => 'Booking Verifier', 'description' => 'First-level scrutinizer for booking requests and uploaded approval letters'],
-            ['id' => 5, 'name' => 'approver', 'display_name' => 'Approving Authority', 'description' => 'Delegated authority (Dean/Director/Registrar) to approve or reject requests'],
-            ['id' => 6, 'name' => 'employee', 'display_name' => 'Employee / Applicant', 'description' => 'University faculty, staff or scholar submitting and tracking guest bookings'],
-            ['id' => 7, 'name' => 'accounts_finance', 'display_name' => 'Accounts / Finance Officer', 'description' => 'Processes payments, issues official receipts, manages refunds and billing registers'],
-            ['id' => 8, 'name' => 'report_auditor', 'display_name' => 'Report Viewer / Auditor', 'description' => 'View-only access to operational, financial and system audit registers'],
+            ['id' => 2, 'name' => 'estate_office', 'display_name' => 'Estate Office Administrator', 'description' => 'Handles all Estate Office sets except VVIP (View-only for VVIP requests)'],
+            ['id' => 3, 'name' => 'vc_secretariat', 'display_name' => 'Vice-Chancellor Secretariat', 'description' => 'Apex authority handling VVIP Presidential Suite booking requests only'],
+            ['id' => 4, 'name' => 'guest_house_admin', 'display_name' => 'Guest House Administrator', 'description' => 'Configures properties, rooms, tariffs, guest categories and policies'],
+            ['id' => 5, 'name' => 'guest_house_incharge', 'display_name' => 'Guest House Incharge', 'description' => 'Manages room allocation, check-in, check-out, room condition and daily operations'],
+            ['id' => 6, 'name' => 'verifier', 'display_name' => 'Booking Verifier', 'description' => 'First-level scrutinizer for booking requests and uploaded approval letters'],
+            ['id' => 7, 'name' => 'approver', 'display_name' => 'Approving Authority', 'description' => 'Delegated authority (Dean/Director/Registrar) to approve or reject requests'],
+            ['id' => 8, 'name' => 'employee', 'display_name' => 'Employee / Applicant', 'description' => 'University faculty, staff or scholar submitting and tracking guest bookings'],
+            ['id' => 9, 'name' => 'accounts_finance', 'display_name' => 'Accounts / Finance Officer', 'description' => 'Processes payments, issues official receipts, manages refunds and billing registers'],
+            ['id' => 10, 'name' => 'report_auditor', 'display_name' => 'Report Viewer / Auditor', 'description' => 'View-only access to operational, financial and system audit registers'],
         ];
 
         foreach ($roles as $r) {

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -122,28 +122,53 @@
         </div>
 
         <div class="ms-auto d-flex align-items-center gap-2">
-            <!-- Role Switcher Dropdown -->
+            <!-- Dedicated Dual-Account Quick Switcher -->
+            <div class="btn-group btn-group-sm shadow-sm" role="group" aria-label="Primary Institutional Accounts">
+                <button type="button" class="btn btn-warning text-dark fw-bold px-3 active" id="btnSwitchEstate" onclick="setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in')">
+                    <i class="bi bi-building me-1"></i> Estate Office
+                </button>
+                <button type="button" class="btn btn-outline-light text-white fw-bold px-3" id="btnSwitchVC" onclick="setRole('vc_secretariat', 'Vice-Chancellor Secretariat', 'vc.secretariat@yspuniversity.ac.in')">
+                    <i class="bi bi-crown me-1 text-warning"></i> VC Secretariat
+                </button>
+            </div>
+
+            <!-- Extended Role Switcher Dropdown -->
             <div class="dropdown">
                 <button class="btn btn-sm btn-outline-warning dropdown-toggle fw-semibold" type="button" data-bs-toggle="dropdown" id="roleDropdownBtn">
-                    <i class="bi bi-person-badge me-1"></i> Switch Demo Role: <span id="currentRoleLabel" class="badge bg-warning text-dark ms-1">Estate Officer (Admin)</span>
+                    <i class="bi bi-person-badge me-1"></i> <span id="currentRoleLabel" class="badge bg-warning text-dark ms-1">Estate Officer (Admin)</span>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow">
-                    <li><h6 class="dropdown-header">Institutional Personas & Permissions</h6></li>
-                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in')"><i class="bi bi-sliders2 text-warning me-2"></i> <strong>Estate Officer (Tariff & Wing Admin)</strong></a></li>
+                <ul class="dropdown-menu dropdown-menu-end shadow" style="min-width: 330px;">
+                    <li><h6 class="dropdown-header text-uppercase fw-bold text-navy">Primary Institutional Authorities</h6></li>
+                    <li>
+                        <a class="dropdown-item py-2" href="javascript:void(0)" onclick="setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in')">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="fw-bold text-dark"><i class="bi bi-building text-warning me-2"></i>Estate Office</span>
+                                <span class="badge bg-warning text-dark">All Sets except VVIP</span>
+                            </div>
+                            <small class="text-muted d-block ps-4 mt-1">VIP, Ordinary, Dorms, Tariffs (View-only for VVIP)</small>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item py-2" href="javascript:void(0)" onclick="setRole('vc_secretariat', 'Vice-Chancellor Secretariat', 'vc.secretariat@yspuniversity.ac.in')">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="fw-bold text-danger"><i class="bi bi-crown text-danger me-2"></i>VC Secretariat</span>
+                                <span class="badge bg-danger">VVIP Requests Only</span>
+                            </div>
+                            <small class="text-muted d-block ps-4 mt-1">Apex exclusive authority for VVIP Presidential Suites</small>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><h6 class="dropdown-header text-muted">Other Operational Roles</h6></li>
                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('admin', 'System Administrator', 'admin@yspuniversity.ac.in')"><i class="bi bi-shield-lock text-danger me-2"></i> System Administrator</a></li>
-                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('registrar', 'Registrar (Apex Approver)', 'registrar@yspuniversity.ac.in')"><i class="bi bi-award text-primary me-2"></i> Registrar (Apex Approver)</a></li>
                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('dee_incharge', 'DEE Incharge (Kisan Bhawan)', 'dee.kisan@yspuniversity.ac.in')"><i class="bi bi-tree text-success me-2"></i> DEE Incharge (Kisan Bhawan)</a></li>
-                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('dean', 'Dean / Approver', 'dean.forestry@yspuniversity.ac.in')"><i class="bi bi-check-circle text-info me-2"></i> Dean (College Approver)</a></li>
-                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('faculty', 'Faculty / Requisitioner', 'hod.forestry@yspuniversity.ac.in')"><i class="bi bi-person text-secondary me-2"></i> Faculty (Requisitioner)</a></li>
                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('caretaker', 'Care-Taker (Front Desk)', 'caretaker.main@yspuniversity.ac.in')"><i class="bi bi-door-open text-primary me-2"></i> Care-Taker (Front Desk)</a></li>
                     <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('finance', 'Comptroller / Finance', 'finance.officer@yspuniversity.ac.in')"><i class="bi bi-currency-rupee text-success me-2"></i> Comptroller (Finance & GST)</a></li>
-                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('auditor', 'Internal Auditor', 'internal.auditor@yspuniversity.ac.in')"><i class="bi bi-file-earmark-bar-graph text-dark me-2"></i> Internal Auditor (Read-Only)</a></li>
                 </ul>
             </div>
 
             <!-- User Pill -->
-            <div class="d-none d-md-flex align-items-center text-white bg-dark bg-opacity-25 px-3 py-1 rounded border border-light border-opacity-25">
-                <i class="bi bi-person-circle fs-5 text-warning me-2"></i>
+            <div class="d-none d-lg-flex align-items-center text-white bg-dark bg-opacity-25 px-3 py-1 rounded border border-light border-opacity-25">
+                <i class="bi bi-person-circle fs-5 text-warning me-2" id="currentUserIcon"></i>
                 <div class="text-start">
                     <div class="fw-semibold text-white small lh-1" id="currentUserName">Dr. Dev Raj (Estate Officer)</div>
                     <small class="text-white-50" style="font-size: 0.68rem;" id="currentUserEmail">estate.officer@yspuniversity.ac.in</small>
@@ -255,6 +280,15 @@
                         </div>
                     </div>
 
+                    <!-- Account Jurisdiction & Policy Banner -->
+                    <div id="accountJurisdictionBanner" class="alert d-flex align-items-center mb-4 py-2 px-3 shadow-sm border border-warning alert-warning">
+                        <i class="bi bi-building fs-3 text-warning me-3"></i>
+                        <div class="small">
+                            <strong>Estate Office Active Account:</strong> You handle all accommodation sets related to the Estate Office (VIP Suites, Ordinary Double Rooms, Dormitories, Dining Hall, and Notification 1615-40 Tariffs).
+                            <span class="badge bg-dark ms-1"><i class="bi bi-shield-lock me-1"></i>VVIP Policy:</span> You have <strong>full view-only visibility</strong> of VVIP Presidential Suite booking requests for hospitality readiness, while sanction authority is exclusively handled by the <strong>Vice-Chancellor Secretariat</strong>.
+                        </div>
+                    </div>
+
                     <!-- Metric Cards -->
                     <div class="row g-3 mb-4">
                         <div class="col-xl-3 col-sm-6">
@@ -336,86 +370,7 @@
                                         </tr>
                                     </thead>
                                     <tbody id="bookingsTableBody">
-                                        <tr>
-                                            <td class="fw-bold text-primary">GH-2026-10-0001</td>
-                                            <td>
-                                                <div class="fw-semibold">Dr. A. K. Verma</div>
-                                                <small class="text-muted">ICAR National Professor, New Delhi</small>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-primary">Estate Office Wing</span><br>
-                                                <small class="fw-bold text-success">Main GH &bull; VIP Suite #101</small>
-                                            </td>
-                                            <td>
-                                                <div>28 Oct 2026 &rarr; 31 Oct 2026</div>
-                                                <small class="text-muted">3 Nights &bull; 1 Guest</small>
-                                            </td>
-                                            <td><span class="badge bg-info text-dark">1(i) HP/Univ/ICAR Official (&#8377;1,500)</span></td>
-                                            <td><span class="badge bg-success badge-status">CHECKED_IN</span></td>
-                                            <td class="text-end">
-                                                <button class="btn btn-sm btn-outline-secondary" onclick="showReceiptModal()"><i class="bi bi-receipt"></i> Bill</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold text-primary">GH-2026-10-0002</td>
-                                            <td>
-                                                <div class="fw-semibold">Sh. Suresh Kumar, IAS</div>
-                                                <small class="text-muted">Joint Secretary, Agriculture (H.P.)</small>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-primary">Estate Office Wing</span><br>
-                                                <small class="fw-bold text-primary">VIP Suites Annexe #02</small>
-                                            </td>
-                                            <td>
-                                                <div>29 Oct 2026 &rarr; 01 Nov 2026</div>
-                                                <small class="text-muted">3 Nights &bull; 2 Guests</small>
-                                            </td>
-                                            <td><span class="badge bg-primary">1(i) HP Govt/State Official (&#8377;1,500)</span></td>
-                                            <td><span class="badge bg-primary badge-status">APPROVED</span></td>
-                                            <td class="text-end">
-                                                <button class="btn btn-sm btn-outline-success" onclick="quickCheckIn('GH-2026-10-0002')"><i class="bi bi-box-arrow-in-right"></i> Check In</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold text-primary">GH-2026-10-0003</td>
-                                            <td>
-                                                <div class="fw-semibold">Sh. Tenzin Norbu &amp; Delegation</div>
-                                                <small class="text-muted">Agricultural Officer, Thimphu, Bhutan</small>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-primary">Estate Office Wing</span><br>
-                                                <small class="text-muted">Main GH &bull; VVIP Suite #201</small>
-                                            </td>
-                                            <td>
-                                                <div>01 Nov 2026 &rarr; 04 Nov 2026</div>
-                                                <small class="text-muted">3 Nights &bull; 2 Guests</small>
-                                            </td>
-                                            <td><span class="badge bg-warning text-dark">5. Nepal &amp; Bhutan Delegates (&#8377;3,500)</span></td>
-                                            <td><span class="badge bg-warning text-dark badge-status">PENDING_APPROVAL</span></td>
-                                            <td class="text-end">
-                                                <button class="btn btn-sm btn-outline-warning" onclick="showTab('workflow')"><i class="bi bi-shield-check"></i> Review</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold text-primary">GH-2026-10-0004</td>
-                                            <td>
-                                                <div class="fw-semibold">Sh. Ramesh Sharma &amp; 15 Farmers</div>
-                                                <small class="text-muted">Apple Growers Association, Rohru</small>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-success">DEE Wing (Kisan Bhawan)</span><br>
-                                                <small class="text-muted">Farmers Dormitory Hall</small>
-                                            </td>
-                                            <td>
-                                                <div>05 Nov 2026 &rarr; 07 Nov 2026</div>
-                                                <small class="text-muted">2 Nights &bull; 15 Beds</small>
-                                            </td>
-                                            <td><span class="badge bg-success">DEE-1 Farmers Training (&#8377;100)</span></td>
-                                            <td><span class="badge bg-secondary badge-status">SUBMITTED</span></td>
-                                            <td class="text-end">
-                                                <button class="btn btn-sm btn-outline-info" onclick="showTab('workflow')"><i class="bi bi-eye"></i> View</button>
-                                            </td>
-                                        </tr>
+                                        <!-- Rendered dynamically by renderBookingsTable() based on logged in account -->
                                     </tbody>
                                 </table>
                             </div>
@@ -909,69 +864,30 @@
                     <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
                         <div>
                             <h3 class="h4 fw-bold text-navy mb-0">Multi-Tier Institutional Approvals Queue</h3>
-                            <small class="text-muted">Digital routing docket governed by University Guest House Regulations</small>
+                            <small class="text-muted">Digital routing docket governed by University Guest House Regulations &amp; Jurisdiction Rules</small>
                         </div>
                     </div>
 
-                    <div class="card border-0 shadow-sm mb-4">
-                        <div class="card-header bg-white py-3">
-                            <h5 class="fw-bold text-primary mb-0">Requisition Dossier: GH-2026-10-0003</h5>
-                        </div>
-                        <div class="card-body p-4">
-                            <div class="row mb-4">
-                                <div class="col-md-6">
-                                    <h6 class="fw-bold">Guest Particulars</h6>
-                                    <p class="mb-1"><strong>Guest:</strong> Sh. Tenzin Norbu &amp; Delegation</p>
-                                    <p class="mb-1"><strong>Designation:</strong> Agricultural Officer, Thimphu, Bhutan</p>
-                                    <p class="mb-1"><strong>Category:</strong> 5. Educational Tour &amp; Training from Nepal &amp; Bhutan</p>
-                                    <p class="mb-1"><strong>Accommodation Wing:</strong> Estate Office Wing (Main Guest House)</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <h6 class="fw-bold">Stay Schedule & Sponsoring Entity</h6>
-                                    <p class="mb-1"><strong>Dates:</strong> 01 Nov 2026 to 04 Nov 2026 (3 Nights)</p>
-                                    <p class="mb-1"><strong>Requested Room:</strong> VVIP Set (Presidential Suite)</p>
-                                    <p class="mb-1"><strong>Sponsoring HOD:</strong> Prof. S. K. Bhardwaj, Dept of Silviculture</p>
-                                    <p class="mb-1"><strong>Applied Daily Tariff:</strong> &#8377;3,500 / night (Total: &#8377;10,500 + GST)</p>
-                                </div>
-                            </div>
-
-                            <h6 class="fw-bold mb-3">Multi-Tier Endorsement Chain:</h6>
-                            <div class="list-group mb-4">
-                                <div class="list-group-item d-flex justify-content-between align-items-center bg-light">
-                                    <div>
-                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                        <strong>Tier 1: Sponsoring Faculty / Requisitioner</strong> &bull; Prof. S. K. Bhardwaj
-                                        <div class="text-muted small ps-4">Requisition submitted online on 26 Oct 2026, 09:30 AM</div>
-                                    </div>
-                                    <span class="badge bg-success">SUBMITTED</span>
-                                </div>
-                                <div class="list-group-item d-flex justify-content-between align-items-center bg-light">
-                                    <div>
-                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                        <strong>Tier 2: Dean / Controlling Officer</strong> &bull; Dr. H. P. Sankhyan
-                                        <div class="text-muted small ps-4">Recommended for official University academic collaboration</div>
-                                    </div>
-                                    <span class="badge bg-success">RECOMMENDED</span>
-                                </div>
-                                <div class="list-group-item d-flex justify-content-between align-items-center bg-white border-warning">
-                                    <div>
-                                        <i class="bi bi-hourglass-top text-warning me-2"></i>
-                                        <strong>Tier 3: Estate Officer &amp; Registrar (Final Competent Authority)</strong>
-                                        <div class="text-dark small ps-4 fw-semibold">Pending your formal sanction under Notification 1615-40</div>
-                                    </div>
-                                    <span class="badge bg-warning text-dark">ACTION REQUIRED</span>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-outline-danger" onclick="rejectWorkflowModal('GH-2026-10-0003')">
-                                    <i class="bi bi-x-circle me-1"></i> Return with Remarks
+                    <!-- Docket Switcher Strip -->
+                    <div class="card border-0 shadow-sm mb-3 bg-light">
+                        <div class="card-body p-2 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                            <div class="btn-group" role="group" aria-label="Docket Selector">
+                                <button type="button" class="btn btn-outline-danger btn-sm fw-bold active" id="btnDocketVvip" onclick="switchWorkflowDocket('GH-2026-10-0003')">
+                                    <i class="bi bi-crown me-1"></i> Docket 1: VVIP Suite #201 (Bhutan Delegation) <span class="badge bg-danger ms-1">VVIP Set</span>
                                 </button>
-                                <button class="btn btn-success px-4" onclick="approveWorkflowAction('GH-2026-10-0003')">
-                                    <i class="bi bi-check-circle me-1"></i> Grant Sanction &amp; Approve
+                                <button type="button" class="btn btn-outline-primary btn-sm fw-bold" id="btnDocketEstate" onclick="switchWorkflowDocket('GH-2026-10-0005')">
+                                    <i class="bi bi-building me-1"></i> Docket 2: VIP Suite #102 (ICAR ADG) <span class="badge bg-primary ms-1">Estate Office</span>
                                 </button>
                             </div>
+                            <div id="workflowDocketAuthorityBadge">
+                                <span class="badge bg-danger px-3 py-2"><i class="bi bi-crown me-1"></i>Authority: Vice-Chancellor Secretariat Only</span>
+                            </div>
                         </div>
+                    </div>
+
+                    <!-- Workflow Docket Card -->
+                    <div class="card border-0 shadow-sm mb-4" id="workflowDocketContainer">
+                        <!-- Populated dynamically by renderWorkflowDocket() -->
                     </div>
                 </div>
 
@@ -1256,6 +1172,66 @@
         </div>
     </div>
 
+        <!-- VVIP Estate Office Read-Only Dossier Modal -->
+    <div class="modal fade" id="vvipEstateViewModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title font-serif"><i class="bi bi-crown text-warning me-2"></i>VVIP Suite Dossier (Estate Office View-Only Inspection)</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 bg-light">
+                    <div class="alert alert-warning border-warning d-flex align-items-center py-2 px-3 mb-3">
+                        <i class="bi bi-shield-lock-fill text-warning fs-3 me-3"></i>
+                        <div class="small">
+                            <strong>Estate Office Visibility Notice:</strong> Per Dr. YSP UHF Guest House Regulations, Estate Office has <strong>transparent view-only access</strong> for logistical and housekeeping readiness (linen, protocol, VIP catering). Final approval authority is strictly vested in the <strong>Vice-Chancellor Secretariat</strong>.
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm p-3 mb-3 bg-white">
+                        <div class="d-flex justify-content-between align-items-start border-bottom pb-2 mb-2">
+                            <div>
+                                <h5 class="fw-bold text-navy mb-0" id="vvipModalRef">GH-2026-10-0003</h5>
+                                <small class="text-muted">Accommodation Wing: Estate Office Wing &bull; Main Guest House</small>
+                            </div>
+                            <span class="badge bg-danger px-3 py-2"><i class="bi bi-crown me-1"></i>VVIP Presidential Suite #201</span>
+                        </div>
+                        <div class="row g-3 small mt-1">
+                            <div class="col-md-6"><strong>Primary Guest:</strong> <span id="vvipModalGuest">Sh. Tenzin Norbu & Delegation</span></div>
+                            <div class="col-md-6"><strong>Official Designation:</strong> <span id="vvipModalDesig">Agricultural Officer, Thimphu, Bhutan</span></div>
+                            <div class="col-md-6"><strong>Dates & Stay:</strong> <span id="vvipModalDates">01 Nov 2026 to 04 Nov 2026 (3 Nights)</span></div>
+                            <div class="col-md-6"><strong>Notification Category:</strong> <span id="vvipModalCat">5. Educational Tour & Training from Nepal & Bhutan</span></div>
+                            <div class="col-md-6"><strong>Sponsoring Department:</strong> <span>Prof. S. K. Bhardwaj, Dept of Silviculture</span></div>
+                            <div class="col-md-6"><strong>Estimated Tariff:</strong> <span class="fw-bold text-success">&#8377;3,500/night (Total: &#8377;10,500 + GST)</span></div>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm p-3 bg-white">
+                        <h6 class="fw-bold text-navy mb-2"><i class="bi bi-clipboard-check text-primary me-2"></i>Estate Office Logistics Readiness Checklist:</h6>
+                        <ul class="list-group list-group-flush small">
+                            <li class="list-group-item d-flex justify-content-between align-items-center py-2">
+                                <span><i class="bi bi-check2-circle text-success me-2"></i>Presidential Suite Sanitation & Linen Preparation</span>
+                                <span class="badge bg-success-subtle text-success">Prepared</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center py-2">
+                                <span><i class="bi bi-check2-circle text-success me-2"></i>Care-Taker & Cook Notification for Official Catering</span>
+                                <span class="badge bg-success-subtle text-success">Dispatched</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center py-2">
+                                <span><i class="bi bi-clock-history text-warning me-2"></i>Final Administrative Sanction & Key Allocation</span>
+                                <span class="badge bg-warning text-dark">Pending VC Secretariat</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer bg-white">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close View</button>
+                    <button type="button" class="btn btn-danger fw-bold" onclick="switchToVcSecretariatFromModal()"><i class="bi bi-crown me-1"></i> Switch to VC Secretariat to Sanction</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Rejection Remarks Modal -->
     <div class="modal fade" id="rejectionModal" tabindex="-1">
         <div class="modal-dialog">
@@ -1285,6 +1261,90 @@
     <script>
         // State management
         let currentRole = 'estate_admin';
+        let activeWorkflowRef = 'GH-2026-10-0003';
+
+        // Master Live Dossiers with Strict Institutional Jurisdiction
+        let institutionalDossiers = [
+            {
+                ref: 'GH-2026-10-0001',
+                guest: 'Dr. A. K. Verma',
+                designation: 'ICAR National Professor, New Delhi',
+                wing: 'Estate Office Wing',
+                wingType: 'estate',
+                room: 'VIP Suite #101',
+                roomClass: 'vip',
+                isVvip: false,
+                dates: '28 Oct 2026 &rarr; 31 Oct 2026',
+                duration: '3 Nights &bull; 1 Guest',
+                category: '1(i) HP/Univ/ICAR Official (â‚¹1,500)',
+                status: 'CHECKED_IN',
+                handledBy: 'estate'
+            },
+            {
+                ref: 'GH-2026-10-0002',
+                guest: 'Sh. Suresh Kumar, IAS',
+                designation: 'Joint Secretary, Agriculture (H.P.)',
+                wing: 'Estate Office Wing',
+                wingType: 'estate',
+                room: 'VIP Suites Annexe #02',
+                roomClass: 'vip',
+                isVvip: false,
+                dates: '29 Oct 2026 &rarr; 01 Nov 2026',
+                duration: '3 Nights &bull; 2 Guests',
+                category: '1(i) HP Govt/State Official (â‚¹1,500)',
+                status: 'APPROVED',
+                handledBy: 'estate'
+            },
+            {
+                ref: 'GH-2026-10-0003',
+                guest: 'Sh. Tenzin Norbu & Delegation',
+                designation: 'Agricultural Officer, Thimphu, Bhutan',
+                wing: 'Estate Office Wing',
+                wingType: 'estate',
+                room: 'Main GH &bull; VVIP Suite #201 (Presidential)',
+                roomClass: 'vvip',
+                isVvip: true, // EXCLUSIVE TO VC SECRETARIAT
+                dates: '01 Nov 2026 &rarr; 04 Nov 2026',
+                duration: '3 Nights &bull; 2 Guests',
+                category: '5. Nepal & Bhutan Delegates (â‚¹3,500)',
+                status: 'PENDING_VC_APPROVAL',
+                handledBy: 'vc',
+                sponsor: 'Prof. S. K. Bhardwaj, Dept of Silviculture',
+                tariff: 'â‚¹3,500 / night (Total: â‚¹10,500 + GST)'
+            },
+            {
+                ref: 'GH-2026-10-0005',
+                guest: 'Prof. V. K. Rao & ICAR Team',
+                designation: 'Assistant Director General, ICAR New Delhi',
+                wing: 'Estate Office Wing',
+                wingType: 'estate',
+                room: 'Main GH &bull; VIP Suite #102',
+                roomClass: 'vip',
+                isVvip: false, // HANDLED BY ESTATE OFFICE
+                dates: '02 Nov 2026 &rarr; 05 Nov 2026',
+                duration: '3 Nights &bull; 1 Guest',
+                category: '1(i) HP/Univ/ICAR Official (â‚¹1,500)',
+                status: 'PENDING_ESTATE_APPROVAL',
+                handledBy: 'estate',
+                sponsor: 'Dean, College of Horticulture',
+                tariff: 'â‚¹1,500 / night (Total: â‚¹4,500 + GST)'
+            },
+            {
+                ref: 'GH-2026-10-0004',
+                guest: 'Sh. Ramesh Sharma & 15 Farmers',
+                designation: 'Apple Growers Association, Rohru',
+                wing: 'DEE Wing (Kisan Bhawan)',
+                wingType: 'dee',
+                room: 'Farmers Dormitory Hall',
+                roomClass: 'dormitory',
+                isVvip: false,
+                dates: '05 Nov 2026 &rarr; 07 Nov 2026',
+                duration: '2 Nights &bull; 15 Beds',
+                category: 'DEE-1 Farmers Training (â‚¹100)',
+                status: 'SUBMITTED',
+                handledBy: 'dee'
+            }
+        ];
         let pendingDossierRef = '';
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -1304,22 +1364,381 @@
             document.getElementById('currentUserEmail').innerText = email;
 
             let name = 'Dr. Dev Raj (Estate Officer)';
-            if (roleKey === 'admin') name = 'Er. Ramesh Chander (Admin)';
-            if (roleKey === 'registrar') name = 'Sh. Sandeep Negi (Registrar)';
-            if (roleKey === 'estate_admin') name = 'Dr. Dev Raj (Estate Officer)';
-            if (roleKey === 'dee_incharge') name = 'Dr. Inder Sharma (DEE Incharge)';
-            if (roleKey === 'dean') name = 'Dr. H. P. Sankhyan (Dean)';
-            if (roleKey === 'faculty') name = 'Prof. S. K. Bhardwaj (Faculty)';
-            if (roleKey === 'caretaker') name = 'Sh. Mast Ram (Care-Taker)';
-            if (roleKey === 'finance') name = 'Sh. C. M. Sharma (Comptroller)';
-            if (roleKey === 'auditor') name = 'Smt. Anita Sharma (Auditor)';
+            let iconClass = 'bi bi-person-circle fs-5 text-warning me-2';
+
+            if (roleKey === 'estate_admin') {
+                name = 'Dr. Dev Raj (Estate Officer)';
+                iconClass = 'bi bi-building fs-5 text-warning me-2';
+            } else if (roleKey === 'vc_secretariat') {
+                name = 'Secretary to Vice-Chancellor (VC Secretariat)';
+                iconClass = 'bi bi-crown fs-5 text-danger me-2';
+            } else if (roleKey === 'admin') {
+                name = 'Er. Ramesh Chander (Admin)';
+            } else if (roleKey === 'dee_incharge') {
+                name = 'Dr. Inder Sharma (DEE Incharge)';
+            } else if (roleKey === 'caretaker') {
+                name = 'Sh. Mast Ram (Care-Taker)';
+            } else if (roleKey === 'finance') {
+                name = 'Sh. C. M. Sharma (Comptroller)';
+            }
+
             document.getElementById('currentUserName').innerText = name;
+            const iconEl = document.getElementById('currentUserIcon');
+            if (iconEl) iconEl.className = iconClass;
+
             const alertUserEl = document.getElementById('alertUserName');
             if (alertUserEl) alertUserEl.innerText = name;
 
+            // Update Dual Switcher Button Styles
+            const btnEstate = document.getElementById('btnSwitchEstate');
+            const btnVC = document.getElementById('btnSwitchVC');
+            if (btnEstate && btnVC) {
+                if (roleKey === 'estate_admin') {
+                    btnEstate.className = 'btn btn-warning text-dark fw-bold px-3 active';
+                    btnVC.className = 'btn btn-outline-light text-white fw-bold px-3';
+                } else if (roleKey === 'vc_secretariat') {
+                    btnEstate.className = 'btn btn-outline-light text-white fw-bold px-3';
+                    btnVC.className = 'btn btn-danger text-white fw-bold px-3 active';
+                } else {
+                    btnEstate.className = 'btn btn-outline-light text-white fw-bold px-3';
+                    btnVC.className = 'btn btn-outline-light text-white fw-bold px-3';
+                }
+            }
+
+            updateAccountJurisdictionUI();
+            renderBookingsTable();
+            renderWorkflowDocket();
             updateTariffEditorPermissions();
             renderEstateTariffEditor();
-            showToast(`Switched active institutional persona to: ${roleName}`);
+            showToast(`Switched active persona to: ${roleName}`);
+        }
+
+        function updateAccountJurisdictionUI() {
+            const banner = document.getElementById('accountJurisdictionBanner');
+            if (!banner) return;
+
+            if (currentRole === 'estate_admin') {
+                banner.className = 'alert d-flex align-items-center mb-4 py-2 px-3 shadow-sm border border-warning alert-warning';
+                banner.innerHTML = `
+                    <i class="bi bi-building fs-3 text-warning me-3"></i>
+                    <div class="small">
+                        <strong>Estate Office Active Account:</strong> You handle all accommodation sets related to the Estate Office (VIP Suites, Ordinary Double Rooms, Dormitories, Dining Hall, and Notification 1615-40 Tariffs).
+                        <span class="badge bg-dark ms-1"><i class="bi bi-eye me-1"></i>VVIP Policy:</span> You have <strong>transparent view-only visibility</strong> of VVIP Presidential Suite booking requests, while final sanction is exclusively handled by the <strong>Vice-Chancellor Secretariat</strong>.
+                    </div>
+                `;
+            } else if (currentRole === 'vc_secretariat') {
+                banner.className = 'alert d-flex align-items-center mb-4 py-2 px-3 shadow-sm border border-danger alert-danger';
+                banner.innerHTML = `
+                    <i class="bi bi-crown fs-3 text-danger me-3"></i>
+                    <div class="small">
+                        <strong>Vice-Chancellor Secretariat Active Account:</strong> You hold Apex Sanctioning Authority and <strong>handle VVIP booking requests only</strong> (Presidential Suites).
+                        <span class="badge bg-dark ms-1"><i class="bi bi-info-circle me-1"></i>Estate Office Delegation:</span> All routine VIP suites, ordinary double rooms, and dormitories are administered directly by the <strong>Estate Office</strong>.
+                    </div>
+                `;
+            } else {
+                banner.className = 'alert d-flex align-items-center mb-4 py-2 px-3 shadow-sm border border-secondary alert-secondary';
+                banner.innerHTML = `
+                    <i class="bi bi-person-badge fs-3 text-secondary me-3"></i>
+                    <div class="small">
+                        <strong>Operational Role (${document.getElementById('currentRoleLabel').innerText}):</strong> Switched away from Estate Office &amp; VC Secretariat. Use top quick buttons to switch back to primary sanctioning accounts.
+                    </div>
+                `;
+            }
+        }
+
+        // Render Active Dossiers Table dynamically based on Account Jurisdiction
+        function renderBookingsTable() {
+            const tbody = document.getElementById('bookingsTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            institutionalDossiers.forEach(d => {
+                const tr = document.createElement('tr');
+
+                // Wing & Room column
+                let wingBadge = `<span class="badge bg-primary">Estate Office Wing</span><br>`;
+                if (d.wingType === 'dee') wingBadge = `<span class="badge bg-success">DEE Wing (Kisan Bhawan)</span><br>`;
+
+                let roomBadge = `<small class="fw-bold text-dark">${d.room}</small>`;
+                if (d.isVvip) {
+                    roomBadge = `<span class="badge bg-danger-subtle text-danger border border-danger fw-bold"><i class="bi bi-crown me-1"></i>VVIP Set</span><br><small class="fw-bold text-dark">${d.room}</small>`;
+                }
+
+                // Status Column
+                let statusBadge = `<span class="badge bg-secondary badge-status">${d.status}</span>`;
+                if (d.status === 'CHECKED_IN') statusBadge = `<span class="badge bg-success badge-status">CHECKED_IN</span>`;
+                else if (d.status === 'APPROVED') statusBadge = `<span class="badge bg-primary badge-status">APPROVED</span>`;
+                else if (d.status === 'PENDING_VC_APPROVAL') {
+                    if (currentRole === 'vc_secretariat') {
+                        statusBadge = `<span class="badge bg-danger badge-status"><i class="bi bi-crown me-1"></i>ACTION REQ (VC)</span>`;
+                    } else {
+                        statusBadge = `<span class="badge bg-warning text-dark badge-status"><i class="bi bi-clock-history me-1"></i>Awaiting VC Sanction</span>`;
+                    }
+                } else if (d.status === 'PENDING_ESTATE_APPROVAL') {
+                    if (currentRole === 'estate_admin') {
+                        statusBadge = `<span class="badge bg-warning text-dark badge-status"><i class="bi bi-sliders2 me-1"></i>ACTION REQ (Estate)</span>`;
+                    } else {
+                        statusBadge = `<span class="badge bg-info text-dark badge-status">Handled by Estate</span>`;
+                    }
+                }
+
+                // Action Column based on Role and Jurisdiction
+                let actionHtml = '';
+                if (d.status === 'CHECKED_IN') {
+                    actionHtml = `<button class="btn btn-sm btn-outline-secondary" onclick="showReceiptModal()"><i class="bi bi-receipt"></i> Bill</button>`;
+                } else if (d.status === 'APPROVED') {
+                    if (currentRole === 'estate_admin' || currentRole === 'caretaker') {
+                        actionHtml = `<button class="btn btn-sm btn-outline-success" onclick="quickCheckIn('${d.ref}')"><i class="bi bi-box-arrow-in-right"></i> Check In</button>`;
+                    } else {
+                        actionHtml = `<button class="btn btn-sm btn-outline-secondary" onclick="showReceiptModal()"><i class="bi bi-eye"></i> View</button>`;
+                    }
+                } else if (d.isVvip) {
+                    // VVIP REQUEST HANDLING
+                    if (currentRole === 'vc_secretariat') {
+                        // VC Secretariat CAN HANDLE
+                        actionHtml = `<button class="btn btn-sm btn-danger fw-bold shadow-sm" onclick="openWorkflowForDossier('${d.ref}')"><i class="bi bi-crown me-1"></i> Sanction VVIP</button>`;
+                    } else if (currentRole === 'estate_admin') {
+                        // Estate Office CAN SEE, BUT NOT HANDLE
+                        actionHtml = `<button class="btn btn-sm btn-outline-warning text-dark fw-bold" onclick="viewVvipDossierAsEstate('${d.ref}')" title="View details (VC Secretariat Sanction Required)"><i class="bi bi-eye me-1"></i> View (VC Sanction)</button>`;
+                    } else {
+                        actionHtml = `<button class="btn btn-sm btn-outline-secondary" onclick="openWorkflowForDossier('${d.ref}')"><i class="bi bi-eye"></i> View</button>`;
+                    }
+                } else if (d.handledBy === 'estate') {
+                    // NON-VVIP ESTATE SET HANDLING
+                    if (currentRole === 'estate_admin') {
+                        // Estate Office CAN HANDLE
+                        actionHtml = `<button class="btn btn-sm btn-outline-success fw-bold" onclick="openWorkflowForDossier('${d.ref}')"><i class="bi bi-shield-check me-1"></i> Review &amp; Sanction</button>`;
+                    } else if (currentRole === 'vc_secretariat') {
+                        // VC Secretariat DOES NOT HANDLE
+                        actionHtml = `<span class="badge bg-light text-muted border py-1 px-2" title="Routine VIP/Ordinary sets are handled by Estate Office"><i class="bi bi-shield-check text-success me-1"></i>Handled by Estate</span>`;
+                    } else {
+                        actionHtml = `<button class="btn btn-sm btn-outline-info" onclick="openWorkflowForDossier('${d.ref}')"><i class="bi bi-eye"></i> View</button>`;
+                    }
+                } else {
+                    actionHtml = `<button class="btn btn-sm btn-outline-info" onclick="openWorkflowForDossier('${d.ref}')"><i class="bi bi-eye"></i> View</button>`;
+                }
+
+                tr.innerHTML = `
+                    <td class="fw-bold text-primary">${d.ref}</td>
+                    <td>
+                        <div class="fw-semibold">${d.guest}</div>
+                        <small class="text-muted">${d.designation}</small>
+                    </td>
+                    <td>
+                        ${wingBadge}
+                        ${roomBadge}
+                    </td>
+                    <td>
+                        <div>${d.dates}</div>
+                        <small class="text-muted">${d.duration}</small>
+                    </td>
+                    <td><span class="badge bg-light text-dark border">${d.category}</span></td>
+                    <td>${statusBadge}</td>
+                    <td class="text-end">${actionHtml}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Switch between workflow dockets
+        function switchWorkflowDocket(ref) {
+            activeWorkflowRef = ref;
+            const btnVvip = document.getElementById('btnDocketVvip');
+            const btnEstate = document.getElementById('btnDocketEstate');
+            if (btnVvip && btnEstate) {
+                if (ref === 'GH-2026-10-0003') {
+                    btnVvip.className = 'btn btn-outline-danger btn-sm fw-bold active';
+                    btnEstate.className = 'btn btn-outline-primary btn-sm fw-bold';
+                } else {
+                    btnVvip.className = 'btn btn-outline-danger btn-sm fw-bold';
+                    btnEstate.className = 'btn btn-outline-primary btn-sm fw-bold active';
+                }
+            }
+            renderWorkflowDocket();
+        }
+
+        function openWorkflowForDossier(ref) {
+            activeWorkflowRef = ref;
+            showTab('workflow');
+            switchWorkflowDocket(ref);
+        }
+
+        // Render dynamic workflow docket according to jurisdiction
+        function renderWorkflowDocket() {
+            const container = document.getElementById('workflowDocketContainer');
+            const authBadge = document.getElementById('workflowDocketAuthorityBadge');
+            if (!container) return;
+
+            const dossier = institutionalDossiers.find(x => x.ref === activeWorkflowRef) || institutionalDossiers[2];
+            const isVvip = dossier.isVvip;
+
+            if (authBadge) {
+                if (isVvip) {
+                    authBadge.innerHTML = `<span class="badge bg-danger px-3 py-2"><i class="bi bi-crown me-1"></i>Jurisdiction: Vice-Chancellor Secretariat Only</span>`;
+                } else {
+                    authBadge.innerHTML = `<span class="badge bg-primary px-3 py-2"><i class="bi bi-building me-1"></i>Jurisdiction: Estate Office</span>`;
+                }
+            }
+
+            let jurisdictionAlert = '';
+            let actionButtons = '';
+
+            if (isVvip) {
+                // VVIP CASE
+                if (currentRole === 'vc_secretariat') {
+                    jurisdictionAlert = `
+                        <div class="alert alert-danger border-danger d-flex align-items-center py-2 px-3 mb-4">
+                            <i class="bi bi-crown fs-2 text-danger me-3"></i>
+                            <div>
+                                <strong>Vice-Chancellor Secretariat Apex Authority:</strong> This is a <strong>VVIP Presidential Suite</strong> reservation. You hold exclusive competent authority to grant formal sanction.
+                            </div>
+                        </div>
+                    `;
+                    actionButtons = `
+                        <button class="btn btn-outline-danger" onclick="rejectWorkflowModal('${dossier.ref}')">
+                            <i class="bi bi-x-octagon me-1"></i> Return with VC Remarks
+                        </button>
+                        <button class="btn btn-success px-4 fw-bold" onclick="approveWorkflowAction('${dossier.ref}')">
+                            <i class="bi bi-check-circle-fill me-1"></i> Grant VC Sanction &amp; Approve
+                        </button>
+                    `;
+                } else if (currentRole === 'estate_admin') {
+                    jurisdictionAlert = `
+                        <div class="alert alert-warning border-warning d-flex align-items-center py-2 px-3 mb-4">
+                            <i class="bi bi-shield-lock-fill fs-2 text-warning me-3"></i>
+                            <div>
+                                <strong>Estate Office View-Only Notice:</strong> This is a <strong>VVIP Presidential Suite</strong> reservation. Estate Office has full visibility of this dossier for housekeeping and protocol readiness, while <strong>sanction authority is exclusively reserved for the Vice-Chancellor Secretariat</strong>.
+                            </div>
+                        </div>
+                    `;
+                    actionButtons = `
+                        <button class="btn btn-secondary disabled" title="Sanction authority reserved for VC Secretariat"><i class="bi bi-lock-fill me-1"></i> Sanction Reserved for VC Secretariat</button>
+                        <button class="btn btn-outline-danger fw-bold ms-2" onclick="setRole('vc_secretariat', 'Vice-Chancellor Secretariat', 'vc.secretariat@yspuniversity.ac.in')">
+                            <i class="bi bi-crown me-1"></i> Switch to VC Secretariat to Sanction
+                        </button>
+                    `;
+                } else {
+                    actionButtons = `<button class="btn btn-secondary disabled"><i class="bi bi-lock me-1"></i> Sanction Pending (VC Secretariat)</button>`;
+                }
+            } else {
+                // ESTATE OFFICE VIP/ORDINARY CASE
+                if (currentRole === 'estate_admin') {
+                    jurisdictionAlert = `
+                        <div class="alert alert-success border-success d-flex align-items-center py-2 px-3 mb-4">
+                            <i class="bi bi-building-check fs-2 text-success me-3"></i>
+                            <div>
+                                <strong>Estate Office Sanction Authority:</strong> This is an Estate Office VIP Suite reservation. You have full administrative authority to review, approve, and allocate this room.
+                            </div>
+                        </div>
+                    `;
+                    actionButtons = `
+                        <button class="btn btn-outline-danger" onclick="rejectWorkflowModal('${dossier.ref}')">
+                            <i class="bi bi-x-circle me-1"></i> Return with Remarks
+                        </button>
+                        <button class="btn btn-success px-4 fw-bold" onclick="approveWorkflowAction('${dossier.ref}')">
+                            <i class="bi bi-check-circle me-1"></i> Grant Estate Sanction &amp; Approve
+                        </button>
+                    `;
+                } else if (currentRole === 'vc_secretariat') {
+                    jurisdictionAlert = `
+                        <div class="alert alert-info border-info d-flex align-items-center py-2 px-3 mb-4">
+                            <i class="bi bi-info-circle-fill fs-2 text-info me-3"></i>
+                            <div>
+                                <strong>Estate Office Routine Delegation:</strong> This is an Estate Office VIP Suite reservation. Regular VIP and ordinary accommodation requests are handled directly by the <strong>Estate Office</strong>. VC Secretariat jurisdiction applies to VVIP Presidential Suites only.
+                            </div>
+                        </div>
+                    `;
+                    actionButtons = `
+                        <button class="btn btn-outline-secondary disabled"><i class="bi bi-shield-check me-1"></i> Handled by Estate Office</button>
+                        <button class="btn btn-outline-primary fw-bold ms-2" onclick="setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in')">
+                            <i class="bi bi-building me-1"></i> Switch to Estate Office
+                        </button>
+                    `;
+                } else {
+                    actionButtons = `<button class="btn btn-secondary disabled"><i class="bi bi-lock me-1"></i> Sanction Pending (Estate Office)</button>`;
+                }
+            }
+
+            container.innerHTML = `
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold text-navy mb-0">Requisition Dossier: ${dossier.ref}</h5>
+                    <span class="badge ${isVvip ? 'bg-danger' : 'bg-primary'} px-3 py-2">
+                        ${isVvip ? '<i class="bi bi-crown me-1"></i>VVIP Set' : '<i class="bi bi-building me-1"></i>Estate Office Set'}
+                    </span>
+                </div>
+                <div class="card-body p-4">
+                    ${jurisdictionAlert}
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-navy">Guest Particulars &amp; Category</h6>
+                            <p class="mb-1"><strong>Guest:</strong> ${dossier.guest}</p>
+                            <p class="mb-1"><strong>Designation:</strong> ${dossier.designation}</p>
+                            <p class="mb-1"><strong>Category:</strong> ${dossier.category}</p>
+                            <p class="mb-1"><strong>Accommodation Wing:</strong> ${dossier.wing}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-navy">Stay Schedule &amp; Sponsoring Body</h6>
+                            <p class="mb-1"><strong>Dates:</strong> ${dossier.dates} (${dossier.duration})</p>
+                            <p class="mb-1"><strong>Allocated Set:</strong> <span class="fw-bold ${isVvip ? 'text-danger' : 'text-primary'}">${dossier.room}</span></p>
+                            <p class="mb-1"><strong>Sponsoring Authority:</strong> ${dossier.sponsor || 'Dean, College of Horticulture'}</p>
+                            <p class="mb-1"><strong>Estimated Tariff:</strong> ${dossier.tariff || 'â‚¹1,500 / night'}</p>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold text-navy mb-3">Multi-Tier Endorsement Chain:</h6>
+                    <div class="list-group mb-4">
+                        <div class="list-group-item d-flex justify-content-between align-items-center bg-light">
+                            <div>
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                <strong>Tier 1: Sponsoring Faculty / Requisitioner</strong> &bull; Prof. S. K. Bhardwaj
+                                <div class="text-muted small ps-4">Requisition submitted online with official letter</div>
+                            </div>
+                            <span class="badge bg-success">SUBMITTED</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center bg-light">
+                            <div>
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                <strong>Tier 2: Dean / Controlling Officer</strong> &bull; Dr. H. P. Sankhyan
+                                <div class="text-muted small ps-4">Recommended for official University academic collaboration</div>
+                            </div>
+                            <span class="badge bg-success">RECOMMENDED</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center bg-white ${isVvip ? 'border-danger' : 'border-warning'}">
+                            <div>
+                                <i class="bi ${isVvip ? 'bi-crown text-danger' : 'bi-hourglass-top text-warning'} me-2"></i>
+                                <strong>Tier 3: ${isVvip ? 'Hon''ble Vice-Chancellor Secretariat (Apex VVIP Authority)' : 'Estate Officer (Final Competent Authority)'}</strong>
+                                <div class="text-dark small ps-4 fw-semibold">${isVvip ? 'Requires exclusive sanction of Vice-Chancellor Secretariat' : 'Pending formal sanction under Notification 1615-40'}</div>
+                            </div>
+                            <span class="badge ${isVvip ? 'bg-danger' : 'bg-warning text-dark'}">ACTION REQUIRED</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end align-items-center gap-2">
+                        ${actionButtons}
+                    </div>
+                </div>
+            `;
+        }
+
+        // View VVIP Dossier as Estate Office (Read-Only Modal)
+        function viewVvipDossierAsEstate(ref) {
+            const dossier = institutionalDossiers.find(x => x.ref === ref);
+            if (!dossier) return;
+
+            document.getElementById('vvipModalRef').innerText = dossier.ref;
+            document.getElementById('vvipModalGuest').innerText = dossier.guest;
+            document.getElementById('vvipModalDesig').innerText = dossier.designation;
+            document.getElementById('vvipModalDates').innerText = `${dossier.dates} (${dossier.duration})`;
+            document.getElementById('vvipModalCat').innerText = dossier.category;
+
+            const modal = new bootstrap.Modal(document.getElementById('vvipEstateViewModal'));
+            modal.show();
+        }
+
+        function switchToVcSecretariatFromModal() {
+            bootstrap.Modal.getInstance(document.getElementById('vvipEstateViewModal')).hide();
+            setRole('vc_secretariat', 'Vice-Chancellor Secretariat', 'vc.secretariat@yspuniversity.ac.in');
+            openWorkflowForDossier('GH-2026-10-0003');
         }
 
         function showTab(tabId) {
@@ -1962,8 +2381,27 @@
         }
 
         function approveWorkflowAction(ref) {
-            alert(`âœ… Dossier ${ref} approved successfully by ${document.getElementById('currentRoleLabel').innerText}!\n\nStatus updated to APPROVED. Forwarded to Care-Taker desk for room key allocation.`);
+            const dossier = institutionalDossiers.find(x => x.ref === ref);
+            const isVvip = dossier ? dossier.isVvip : (ref === 'GH-2026-10-0003');
+
+            if (isVvip && currentRole !== 'vc_secretariat' && currentRole !== 'admin') {
+                alert(`âš ï¸ JURISDICTION RESTRICTION:\n\nVVIP Presidential Suite bookings can ONLY be sanctioned by the Hon'ble Vice-Chancellor Secretariat.\n\nEstate Office holds read-only visibility for accommodation prep. Please switch to the Vice-Chancellor Secretariat account to grant approval.`);
+                return;
+            }
+
+            if (!isVvip && currentRole === 'vc_secretariat') {
+                alert(`â„¹ï¸ DELEGATION PROTOCOL:\n\nRoutine VIP and ordinary room sets are handled directly by the Estate Office.\n\nVice-Chancellor Secretariat jurisdiction is reserved exclusively for VVIP Presidential Suites.`);
+                return;
+            }
+
+            if (dossier) {
+                dossier.status = 'APPROVED';
+            }
+
+            alert(`âœ… Dossier ${ref} approved successfully by ${document.getElementById('currentRoleLabel').innerText}!\n\nStatus updated to APPROVED. Forwarded to Care-Taker front desk for room key handover.`);
             document.getElementById('workflowBadge').innerText = '1';
+            renderBookingsTable();
+            renderWorkflowDocket();
             showTab('dashboard');
         }
 
