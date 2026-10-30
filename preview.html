@@ -742,118 +742,288 @@
                     </div>
                 </div>
 
-                <!-- 4. ROOM CALENDAR & MATRIX -->
+                <!-- 4. ROOM CALENDAR & MASTER ALLOCATION GRID -->
                 <div id="view-calendar" class="view-panel" style="display:none;">
-                    <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap pb-2 mb-3 border-bottom">
                         <div>
-                            <h3 class="h4 fw-bold text-navy mb-0">Interactive Room Availability & Allocation Grid</h3>
-                            <small class="text-muted">Live room status across Dr. YSP UHF Nauni facilities</small>
+                            <div class="d-flex align-items-center gap-2">
+                                <h3 class="h4 fw-bold text-navy mb-0">University Main Guest House &bull; Room Allocation Grid</h3>
+                                <span class="badge bg-primary">21 Lodging Units &bull; 44 Beds</span>
+                            </div>
+                            <small class="text-muted">Master room rack mapped to official University blueprint (Top Floor, First Floor, Ground Floor)</small>
                         </div>
-                        <div class="d-flex gap-2">
-                            <span class="badge bg-success"><i class="bi bi-circle-fill me-1 small"></i> Available</span>
-                            <span class="badge bg-danger"><i class="bi bi-circle-fill me-1 small"></i> Occupied</span>
-                            <span class="badge bg-warning text-dark"><i class="bi bi-circle-fill me-1 small"></i> Reserved / Approval</span>
-                            <span class="badge bg-secondary"><i class="bi bi-circle-fill me-1 small"></i> Maintenance</span>
+                        <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button type="button" class="btn btn-primary active fw-bold" id="btnViewMatrix" onclick="setGridViewMode('matrix')">
+                                    <i class="bi bi-calendar3 me-1"></i> 7-Day Matrix Grid
+                                </button>
+                                <button type="button" class="btn btn-outline-primary fw-bold" id="btnViewBlueprint" onclick="setGridViewMode('blueprint')">
+                                    <i class="bi bi-diagram-3 me-1"></i> Floor Plan Blueprint
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="card border-0 shadow-sm">
+                    <!-- Inventory Statistics Strip (per Image 1) -->
+                    <div class="row g-2 mb-3">
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card border-0 shadow-sm p-2 bg-white border-start border-danger border-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="text-muted small fw-semibold text-uppercase">1. VVIP Suites</div>
+                                        <h5 class="fw-bold text-danger mb-0">4 Rooms (Double)</h5>
+                                        <small class="text-muted" style="font-size:0.72rem;">VVIP 1, 2, 11, 12 &bull; <strong class="text-danger">VC Sanction</strong></small>
+                                    </div>
+                                    <span class="badge bg-danger bg-opacity-10 text-danger fs-5 p-2 rounded-circle"><i class="bi bi-crown"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card border-0 shadow-sm p-2 bg-white border-start border-warning border-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="text-muted small fw-semibold text-uppercase">2. VIP Rooms (AC)</div>
+                                        <h5 class="fw-bold text-warning text-dark mb-0">4 Rooms (Double)</h5>
+                                        <small class="text-muted" style="font-size:0.72rem;">VIP 13, 14, 15, 16 &bull; <strong class="text-primary">Estate Office</strong></small>
+                                    </div>
+                                    <span class="badge bg-warning bg-opacity-10 text-dark fs-5 p-2 rounded-circle"><i class="bi bi-star-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card border-0 shadow-sm p-2 bg-white border-start border-primary border-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="text-muted small fw-semibold text-uppercase">3. AC Ordinary Rooms</div>
+                                        <h5 class="fw-bold text-primary mb-0">12 Rooms (Double)</h5>
+                                        <small class="text-muted" style="font-size:0.72rem;">Std 3-10 (Top) &amp; 17-20 (1st) &bull; <strong class="text-primary">Estate Office</strong></small>
+                                    </div>
+                                    <span class="badge bg-primary bg-opacity-10 text-primary fs-5 p-2 rounded-circle"><i class="bi bi-door-closed-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card border-0 shadow-sm p-2 bg-white border-start border-success border-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="text-muted small fw-semibold text-uppercase">4. Dormitory &amp; Halls</div>
+                                        <h5 class="fw-bold text-success mb-0">1 Dorm (4-Bed) + Halls</h5>
+                                        <small class="text-muted" style="font-size:0.72rem;">Ground Floor &bull; <strong class="text-primary">Estate Office</strong></small>
+                                    </div>
+                                    <span class="badge bg-success bg-opacity-10 text-success fs-5 p-2 rounded-circle"><i class="bi bi-people-fill"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Role Authority Guidance for Grid -->
+                    <div id="gridJurisdictionAlert" class="alert d-flex align-items-center py-2 px-3 mb-3 border shadow-sm alert-warning border-warning">
+                        <i class="bi bi-building fs-4 text-warning me-3"></i>
+                        <div class="small">
+                            <strong>Estate Office Room Rack Control:</strong> You have direct allocation and key issuance authority for <strong>VIP Rooms (13-16)</strong>, <strong>Ordinary Rooms (3-10, 17-20)</strong>, and <strong>Dormitory 1 (4-Bed)</strong>. 
+                            <span class="badge bg-danger ms-1"><i class="bi bi-crown me-1"></i>VVIP Set Policy:</span> <strong>VVIP Rooms (1, 2, 11, 12)</strong> are visible for logistics/housekeeping preparation, but room allocation is strictly sanctioned by the <strong>Vice-Chancellor Secretariat</strong>.
+                        </div>
+                    </div>
+
+                    <!-- Filter & Legend Bar -->
+                    <div class="card border-0 shadow-sm mb-3">
+                        <div class="card-body p-2 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                            <!-- Floor Filter Buttons -->
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Floor Filter">
+                                <button type="button" class="btn btn-outline-secondary active fw-semibold" id="btnFloorAll" onclick="filterGridFloor('all')">
+                                    All Levels (21 Units)
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorTop" onclick="filterGridFloor('top')">
+                                    Top Floor (VVIP 1-2 &amp; Std 3-10)
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorFirst" onclick="filterGridFloor('first')">
+                                    First Floor (VVIP 11-12, VIP 13-16, Std 17-20)
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorGround" onclick="filterGridFloor('ground')">
+                                    Ground Floor (Dormitory 1 &amp; Halls)
+                                </button>
+                            </div>
+
+                            <!-- Legend Badges -->
+                            <div class="d-flex flex-wrap gap-2 small">
+                                <span class="badge bg-success"><i class="bi bi-circle-fill me-1" style="font-size:0.6rem;"></i> Available</span>
+                                <span class="badge bg-danger"><i class="bi bi-circle-fill me-1" style="font-size:0.6rem;"></i> Occupied / In-House</span>
+                                <span class="badge bg-warning text-dark"><i class="bi bi-circle-fill me-1" style="font-size:0.6rem;"></i> Reserved / Sanction Pending</span>
+                                <span class="badge bg-secondary"><i class="bi bi-circle-fill me-1" style="font-size:0.6rem;"></i> Store / Facility</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VIEW MODE 1: 7-DAY MATRIX TABLE -->
+                    <div id="gridMatrixContainer" class="card border-0 shadow-sm mb-4">
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-bordered mb-0 align-middle">
-                                    <thead class="table-dark text-center">
-                                        <tr>
-                                            <th style="min-width: 170px;" class="text-start ps-3">Guest House / Room</th>
-                                            <th class="cal-day-cell">Wed<br><small>28 Oct</small></th>
-                                            <th class="cal-day-cell">Thu<br><small>29 Oct</small></th>
-                                            <th class="cal-day-cell">Fri<br><small>30 Oct</small></th>
-                                            <th class="cal-day-cell">Sat<br><small>31 Oct</small></th>
-                                            <th class="cal-day-cell">Sun<br><small>01 Nov</small></th>
-                                            <th class="cal-day-cell">Mon<br><small>02 Nov</small></th>
-                                            <th class="cal-day-cell">Tue<br><small>03 Nov</small></th>
-                                        </tr>
+                                <table class="table table-bordered mb-0 align-middle small table-hover" id="calendarMatrixTable">
+                                    <thead class="table-dark text-center" id="calendarMatrixHead">
+                                        <!-- Dynamically generated with rolling dates from current date -->
                                     </thead>
-                                    <tbody>
-                                        <!-- Estate Office Wing -->
-                                        <tr class="table-primary"><td colspan="8" class="fw-bold text-dark ps-3"><i class="bi bi-building me-1"></i> Estate Office Wing &bull; Main Guest House (VIP &amp; Deluxe Suites)</td></tr>
-                                        <tr>
-                                            <td class="fw-bold ps-3">VIP Suite #101</td>
-                                            <td class="cal-cell bg-danger text-white"><small>Dr. Verma (ICAR)</small></td>
-                                            <td class="cal-cell bg-danger text-white"><small>Dr. Verma (ICAR)</small></td>
-                                            <td class="cal-cell bg-danger text-white"><small>Dr. Verma (ICAR)</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-warning text-dark"><small>Reserved</small></td>
-                                            <td class="cal-cell bg-warning text-dark"><small>Reserved</small></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold ps-3">VIP Suite #102</td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-danger text-white"><small>Govt Insp.</small></td>
-                                            <td class="cal-cell bg-danger text-white"><small>Govt Insp.</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold ps-3">Deluxe Room #201</td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-danger text-white"><small>BoM Guest</small></td>
-                                            <td class="cal-cell bg-danger text-white"><small>BoM Guest</small></td>
-                                            <td class="cal-cell bg-danger text-white"><small>BoM Guest</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                        </tr>
-
-                                        <!-- Estate Office Wing: VIP Annexe -->
-                                        <tr class="table-primary"><td colspan="8" class="fw-bold text-dark ps-3"><i class="bi bi-building me-1"></i> Estate Office Wing &bull; VIP Suites Annexe &amp; FRH</td></tr>
-                                        <tr>
-                                            <td class="fw-bold ps-3">VIP Suite #01</td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-secondary text-white"><small>Maint.</small></td>
-                                            <td class="cal-cell bg-secondary text-white"><small>Maint.</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold ps-3">VIP Suite #02</td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-danger text-white"><small>IAS Officer</small></td>
-                                            <td class="cal-cell bg-danger text-white"><small>IAS Officer</small></td>
-                                            <td class="cal-cell bg-danger text-white"><small>IAS Officer</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                        </tr>
-
-                                        <!-- DEE Wing: Kisan Bhawan -->
-                                        <tr class="table-success"><td colspan="8" class="fw-bold text-dark ps-3"><i class="bi bi-tree me-1"></i> Directorate of Extension Education (DEE) &bull; Kisan Bhawan &amp; Farmers Hostel</td></tr>
-                                        <tr>
-                                            <td class="fw-bold ps-3">Farmers Room #201</td>
-                                            <td class="cal-cell bg-danger text-white"><small>KVK Trainee</small></td>
-                                            <td class="cal-cell bg-danger text-white"><small>KVK Trainee</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-warning text-dark"><small>Reserved</small></td>
-                                            <td class="cal-cell bg-warning text-dark"><small>Reserved</small></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold ps-3">Farmers Room #204</td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
-                                            <td class="cal-cell bg-danger text-white"><small>Agr. Visitors</small></td>
-                                            <td class="cal-cell bg-danger text-white"><small>Agr. Visitors</small></td>
-                                        </tr>
+                                    <tbody id="calendarMatrixBody">
+                                        <!-- Dynamically rendered by renderRoomGrid() -->
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VIEW MODE 2: ARCHITECTURAL BLUEPRINT SCHEMATIC (Per Image 2) -->
+                    <div id="gridBlueprintContainer" class="card border-0 shadow-sm mb-4" style="display:none;">
+                        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-2">
+                            <span class="fw-bold font-serif"><i class="bi bi-diagram-3 me-2 text-warning"></i>Architectural Floor Plan Schematic &bull; University Guest House</span>
+                            <small class="text-white-50">Click any room for instant dossier particulars and allocation authority</small>
+                        </div>
+                        <div class="card-body p-4 bg-light">
+                            <!-- TOP FLOOR BLUEPRINT ROW -->
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge bg-dark me-2">TOP FLOOR</span>
+                                    <span class="text-muted small">2 VVIP Rooms &bull; 8 Standard Rooms &bull; Top Floor Store</span>
+                                </div>
+                                <div class="blueprint-corridor-box p-3 bg-white border rounded shadow-sm">
+                                    <div class="row g-2 text-center">
+                                        <div class="col-md-2 col-4">
+                                            <div class="blueprint-room p-2 border border-danger border-2 rounded bg-danger-subtle cursor-pointer" onclick="openRoomActionModal('VVIP 1', 'vvip', 'top')">
+                                                <div class="fw-bold text-danger"><i class="bi bi-crown me-1"></i>VVIP 1</div>
+                                                <small class="d-block text-muted" style="font-size:0.7rem;">Double Bedded</small>
+                                                <span class="badge bg-danger text-white mt-1" style="font-size:0.65rem;">Reserved (Bhutan)</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-4">
+                                            <div class="blueprint-room p-2 border border-danger border-2 rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('VVIP 2', 'vvip', 'top')">
+                                                <div class="fw-bold text-danger"><i class="bi bi-crown me-1"></i>VVIP 2</div>
+                                                <small class="d-block text-muted" style="font-size:0.7rem;">Double Bedded</small>
+                                                <span class="badge bg-success text-white mt-1" style="font-size:0.65rem;">Available</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1 col-4">
+                                            <div class="blueprint-room p-2 border rounded bg-secondary-subtle">
+                                                <div class="fw-bold text-secondary">STORE</div>
+                                                <small class="d-block text-muted" style="font-size:0.7rem;">Linen</small>
+                                                <span class="badge bg-secondary text-white mt-1" style="font-size:0.65rem;">Utility</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 col-12">
+                                            <div class="p-1 bg-light border border-secondary border-dashed rounded text-muted mb-1 small fw-semibold">
+                                                &larr; TOP FLOOR CENTRAL CORRIDOR &rarr;
+                                            </div>
+                                            <div class="row g-1">
+                                                <div class="col"><div class="p-1 border rounded bg-danger-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 10', 'standard', 'top')"><strong style="font-size:0.75rem;">STD 10</strong><br><span class="badge bg-danger" style="font-size:0.6rem;">Occupied</span></div></div>
+                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 9', 'standard', 'top')"><strong style="font-size:0.75rem;">STD 9</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
+                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 8', 'standard', 'top')"><strong style="font-size:0.75rem;">STD 8</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
+                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 7', 'standard', 'top')"><strong style="font-size:0.75rem;">STD 7</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
+                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 6', 'standard', 'top')"><strong style="font-size:0.75rem;">STD 6</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
+                                                <div class="col"><div class="p-1 border rounded bg-danger-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 5', 'standard', 'top')"><strong style="font-size:0.75rem;">STD 5</strong><br><span class="badge bg-danger" style="font-size:0.6rem;">Occupied</span></div></div>
+                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 4', 'standard', 'top')"><strong style="font-size:0.75rem;">STD 4</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
+                                                <div class="col"><div class="p-1 border rounded bg-danger-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 3', 'standard', 'top')"><strong style="font-size:0.75rem;">STD 3</strong><br><span class="badge bg-danger" style="font-size:0.6rem;">Occupied</span></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FIRST FLOOR BLUEPRINT ROW -->
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge bg-dark me-2">FIRST FLOOR</span>
+                                    <span class="text-muted small">2 VVIP Rooms &bull; 4 VIP (AC) Rooms &bull; 4 Standard (AC) Rooms &bull; Club Room</span>
+                                </div>
+                                <div class="blueprint-corridor-box p-3 bg-white border rounded shadow-sm">
+                                    <div class="row g-2 text-center">
+                                        <div class="col-md-2 col-4">
+                                            <div class="blueprint-room p-2 border border-danger border-2 rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('VVIP 12', 'vvip', 'first')">
+                                                <div class="fw-bold text-danger"><i class="bi bi-crown me-1"></i>VVIP 12</div>
+                                                <small class="d-block text-muted" style="font-size:0.7rem;">Double Bedded</small>
+                                                <span class="badge bg-success text-white mt-1" style="font-size:0.65rem;">Available</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-4">
+                                            <div class="blueprint-room p-2 border border-danger border-2 rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('VVIP 11', 'vvip', 'first')">
+                                                <div class="fw-bold text-danger"><i class="bi bi-crown me-1"></i>VVIP 11</div>
+                                                <small class="d-block text-muted" style="font-size:0.7rem;">Double Bedded</small>
+                                                <span class="badge bg-success text-white mt-1" style="font-size:0.65rem;">Available</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1 col-4">
+                                            <div class="blueprint-room p-2 border rounded bg-info-subtle">
+                                                <div class="fw-bold text-info text-dark">CLUB</div>
+                                                <small class="d-block text-muted" style="font-size:0.7rem;">Lounge</small>
+                                                <span class="badge bg-info text-dark mt-1" style="font-size:0.65rem;">Facility</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 col-12">
+                                            <div class="p-1 bg-light border border-secondary border-dashed rounded text-muted mb-1 small fw-semibold">
+                                                &larr; FIRST FLOOR CENTRAL CORRIDOR &rarr;
+                                            </div>
+                                            <div class="row g-1">
+                                                <div class="col"><div class="p-1 border border-warning rounded bg-danger-subtle cursor-pointer" onclick="openRoomActionModal('VIP 13, AC', 'vip', 'first')"><strong style="font-size:0.75rem;">VIP 13 AC</strong><br><span class="badge bg-danger" style="font-size:0.6rem;">Dr. Verma</span></div></div>
+                                                <div class="col"><div class="p-1 border border-warning rounded bg-danger-subtle cursor-pointer" onclick="openRoomActionModal('VIP 14, AC', 'vip', 'first')"><strong style="font-size:0.75rem;">VIP 14 AC</strong><br><span class="badge bg-danger" style="font-size:0.6rem;">IAS Officer</span></div></div>
+                                                <div class="col"><div class="p-1 border border-warning rounded bg-warning-subtle cursor-pointer" onclick="openRoomActionModal('VIP 15, AC', 'vip', 'first')"><strong style="font-size:0.75rem;">VIP 15 AC</strong><br><span class="badge bg-warning text-dark" style="font-size:0.6rem;">Reserved</span></div></div>
+                                                <div class="col"><div class="p-1 border border-warning rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('VIP 16, AC', 'vip', 'first')"><strong style="font-size:0.75rem;">VIP 16 AC</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
+                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 20, AC', 'standard', 'first')"><strong style="font-size:0.75rem;">STD 20 AC</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
+                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 19, AC', 'standard', 'first')"><strong style="font-size:0.75rem;">STD 19 AC</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
+                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 18', 'standard', 'first')"><strong style="font-size:0.75rem;">STD 18</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
+                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 17', 'standard', 'first')"><strong style="font-size:0.75rem;">STD 17</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- GROUND FLOOR BLUEPRINT ROW -->
+                            <div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge bg-dark me-2">GROUND FLOOR</span>
+                                    <span class="text-muted small">Entry Porch &bull; Main Event Hall &bull; Office &bull; Dining & Mess &bull; Dormitory 1 (4-Bed) &bull; Staff</span>
+                                </div>
+                                <div class="blueprint-corridor-box p-3 bg-white border rounded shadow-sm">
+                                    <div class="row g-2 text-center align-items-stretch">
+                                        <div class="col-md-2 col-4">
+                                            <div class="p-2 border rounded bg-secondary-subtle h-100">
+                                                <div class="fw-bold">ENTRY PORCH</div>
+                                                <small class="text-muted" style="font-size:0.7rem;">Main Portico</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-4">
+                                            <div class="p-2 border rounded bg-warning-subtle h-100 cursor-pointer" onclick="openRoomActionModal('MAIN HALL', 'facility', 'ground')">
+                                                <div class="fw-bold text-dark"><i class="bi bi-building me-1"></i>MAIN HALL</div>
+                                                <small class="text-muted" style="font-size:0.7rem;">Conferences/Marriages</small>
+                                                <span class="badge bg-warning text-dark mt-1" style="font-size:0.65rem;">Council Meet</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-4">
+                                            <div class="p-2 border rounded bg-primary-subtle h-100">
+                                                <div class="fw-bold text-primary"><i class="bi bi-briefcase me-1"></i>OFFICE</div>
+                                                <small class="text-muted" style="font-size:0.7rem;">Estate Caretaker</small>
+                                                <span class="badge bg-primary text-white mt-1" style="font-size:0.65rem;">Active Desk</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-6">
+                                            <div class="p-2 border rounded bg-success-subtle h-100 cursor-pointer" onclick="openRoomActionModal('DINING & MESS', 'facility', 'ground')">
+                                                <div class="fw-bold text-success"><i class="bi bi-cup-hot me-1"></i>DINING &amp; MESS</div>
+                                                <small class="text-muted" style="font-size:0.7rem;">Kitchen / 60 Seats</small>
+                                                <span class="badge bg-success text-white mt-1" style="font-size:0.65rem;">Catering On</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-6">
+                                            <div class="p-2 border border-success border-2 rounded bg-danger-subtle h-100 cursor-pointer" onclick="openRoomActionModal('DORMITORY 1', 'dormitory', 'ground')">
+                                                <div class="fw-bold text-success"><i class="bi bi-people me-1"></i>DORMITORY 1</div>
+                                                <small class="text-muted" style="font-size:0.7rem;">4-Bedded Capacity</small>
+                                                <span class="badge bg-danger text-white mt-1" style="font-size:0.65rem;">4 Beds Occupied</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-12">
+                                            <div class="p-2 border rounded bg-secondary-subtle h-100">
+                                                <div class="fw-bold">STAFF &amp; STORES</div>
+                                                <small class="text-muted" style="font-size:0.7rem;">3 Stores &bull; Staff</small>
+                                                <span class="badge bg-secondary text-white mt-1" style="font-size:0.65rem;">Service Area</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1172,7 +1342,25 @@
         </div>
     </div>
 
-        <!-- VVIP Estate Office Read-Only Dossier Modal -->
+            <!-- Interactive Room Action & Quick Allocation Modal -->
+    <div class="modal fade" id="roomActionModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-dark text-white" id="roomActionHeader">
+                    <h5 class="modal-title font-serif" id="roomActionTitle"><i class="bi bi-door-open me-2 text-warning"></i>Room Dossier &amp; Status</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 bg-light" id="roomActionBody">
+                    <!-- Populated dynamically by openRoomActionModal() -->
+                </div>
+                <div class="modal-footer bg-white" id="roomActionFooter">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VVIP Estate Office Read-Only Dossier Modal -->
     <div class="modal fade" id="vvipEstateViewModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content border-0 shadow">
@@ -1264,6 +1452,41 @@
         let activeWorkflowRef = 'GH-2026-10-0003';
 
         // Master Live Dossiers with Strict Institutional Jurisdiction
+                let currentGridFloor = 'all';
+        let currentGridViewMode = 'matrix';
+
+        // Master University Main Guest House Room Rack (Strictly mapped to Images 1 & 2)
+        const guestHouseInventory = [
+            // TOP FLOOR (10 Rooms)
+            { id: 'vvip_1', name: 'VVIP 1', type: 'VVIP Set', floor: 'top', capacity: 'Double Bedded', isVvip: true, status: 'RESERVED', guest: 'Sh. Tenzin Norbu & Delegation (Bhutan)', category: '5. Foreign Delegates', dates: '01 Nov â†’ 04 Nov', handledBy: 'vc' },
+            { id: 'vvip_2', name: 'VVIP 2', type: 'VVIP Set', floor: 'top', capacity: 'Double Bedded', isVvip: true, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'vc' },
+            { id: 'std_3', name: 'STANDARD 3', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Sh. R. K. Thakur, HP Forest Service', category: '1(i) HP Govt Official', dates: '28 Oct â†’ 31 Oct', handledBy: 'estate' },
+            { id: 'std_4', name: 'STANDARD 4', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
+            { id: 'std_5', name: 'STANDARD 5', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Dr. S. K. Awasthi (PAU Ludhiana)', category: '2. Univ Invited Person', dates: '29 Oct â†’ 01 Nov', handledBy: 'estate' },
+            { id: 'std_6', name: 'STANDARD 6', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
+            { id: 'std_7', name: 'STANDARD 7', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
+            { id: 'std_8', name: 'STANDARD 8', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
+            { id: 'std_9', name: 'STANDARD 9', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
+            { id: 'std_10', name: 'STANDARD 10', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'OCCUPIED', guest: 'State Auditor Team (H.P.)', category: '1(i) State Govt Undertaking', dates: '30 Oct â†’ 02 Nov', handledBy: 'estate' },
+
+            // FIRST FLOOR (10 Rooms + Club Room)
+            { id: 'vvip_12', name: 'VVIP 12', type: 'VVIP Set', floor: 'first', capacity: 'Double Bedded', isVvip: true, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'vc' },
+            { id: 'vvip_11', name: 'VVIP 11', type: 'VVIP Set', floor: 'first', capacity: 'Double Bedded', isVvip: true, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'vc' },
+            { id: 'vip_13', name: 'VIP 13, AC', type: 'VIP Rooms', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Dr. A. K. Verma (ICAR National Prof)', category: '1(i) HP/Univ/ICAR Official', dates: '28 Oct â†’ 31 Oct', handledBy: 'estate' },
+            { id: 'vip_14', name: 'VIP 14, AC', type: 'VIP Rooms', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Sh. Suresh Kumar, IAS (Joint Secy)', category: '1(i) HP Govt Official', dates: '29 Oct â†’ 01 Nov', handledBy: 'estate' },
+            { id: 'vip_15', name: 'VIP 15, AC', type: 'VIP Rooms', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'RESERVED', guest: 'Prof. V. K. Rao (ICAR ADG)', category: '1(i) ICAR Official', dates: '02 Nov â†’ 05 Nov', handledBy: 'estate' },
+            { id: 'vip_16', name: 'VIP 16, AC', type: 'VIP Rooms', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
+            { id: 'std_20', name: 'STANDARD 20, AC', type: 'AC - Ordinary ROOM', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
+            { id: 'std_19', name: 'STANDARD 19, AC', type: 'AC - Ordinary ROOM', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
+            { id: 'std_18', name: 'STANDARD 18', type: 'AC - Ordinary ROOM', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
+            { id: 'std_17', name: 'STANDARD 17', type: 'AC - Ordinary ROOM', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
+
+            // GROUND FLOOR (Dormitory & Common Facilities)
+            { id: 'dorm_1', name: 'DORMITORY 1 (4-BED)', type: 'Dormitory - 4 bedded', floor: 'ground', capacity: '4 Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Apple Growers Association (4 Farmers)', category: 'DEE-1 Farmers Training', dates: '28 Oct â†’ 02 Nov', handledBy: 'estate' },
+            { id: 'hall_main', name: 'MAIN CONFERENCE HALL', type: 'Event Facility', floor: 'ground', capacity: '100 Persons', isVvip: false, status: 'RESERVED', guest: 'University Academic Council Meet', category: 'Official University Event', dates: '02 Nov (Full Day)', handledBy: 'estate' },
+            { id: 'dining_mess', name: 'DINING HALL & MESS', type: 'Dining Facility', floor: 'ground', capacity: '60 Seats', isVvip: false, status: 'OCCUPIED', guest: 'Regular Catering / Academic Dinner', category: 'Hostel & Guest Catering', dates: 'Daily Active', handledBy: 'estate' }
+        ];
+
         let institutionalDossiers = [
             {
                 ref: 'GH-2026-10-0001',
@@ -1349,6 +1572,7 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             renderEstateTariffEditor();
+            renderRoomGrid();
             handleAdminBookingWingChange();
 
             // Hash navigation
@@ -1408,8 +1632,10 @@
             updateAccountJurisdictionUI();
             renderBookingsTable();
             renderWorkflowDocket();
+            renderRoomGrid();
             updateTariffEditorPermissions();
             renderEstateTariffEditor();
+            renderRoomGrid();
             showToast(`Switched active persona to: ${roleName}`);
         }
 
@@ -1555,6 +1781,7 @@
                 }
             }
             renderWorkflowDocket();
+            renderRoomGrid();
         }
 
         function openWorkflowForDossier(ref) {
@@ -1741,6 +1968,243 @@
             openWorkflowForDossier('GH-2026-10-0003');
         }
 
+                function setGridViewMode(mode) {
+            currentGridViewMode = mode;
+            const matrixEl = document.getElementById('gridMatrixContainer');
+            const blueprintEl = document.getElementById('gridBlueprintContainer');
+            const btnMatrix = document.getElementById('btnViewMatrix');
+            const btnBlueprint = document.getElementById('btnViewBlueprint');
+
+            if (mode === 'matrix') {
+                if (matrixEl) matrixEl.style.display = 'block';
+                if (blueprintEl) blueprintEl.style.display = 'none';
+                if (btnMatrix) btnMatrix.className = 'btn btn-primary active fw-bold';
+                if (btnBlueprint) btnBlueprint.className = 'btn btn-outline-primary fw-bold';
+            } else {
+                if (matrixEl) matrixEl.style.display = 'none';
+                if (blueprintEl) blueprintEl.style.display = 'block';
+                if (btnMatrix) btnMatrix.className = 'btn btn-outline-primary fw-bold';
+                if (btnBlueprint) btnBlueprint.className = 'btn btn-primary active fw-bold';
+            }
+        }
+
+        function filterGridFloor(floor) {
+            currentGridFloor = floor;
+            ['all', 'top', 'first', 'ground'].forEach(f => {
+                const btn = document.getElementById('btnFloor' + f.charAt(0).toUpperCase() + f.slice(1));
+                if (btn) {
+                    if (f === floor) btn.className = 'btn btn-outline-secondary active fw-bold';
+                    else btn.className = 'btn btn-outline-secondary fw-semibold';
+                }
+            });
+            renderRoomGrid();
+        }
+
+        function renderRoomGrid() {
+            const thead = document.getElementById('calendarMatrixHead');
+            const tbody = document.getElementById('calendarMatrixBody');
+            if (!thead || !tbody) return;
+
+            // Generate 7-day rolling headers from today
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const today = new Date();
+
+            let headHtml = '<tr><th style="min-width: 220px;" class="text-start ps-3">Floor &bull; Room Name / Number</th>';
+            const dateList = [];
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(today.getTime() + (i * 24 * 60 * 60 * 1000));
+                const dayName = dayNames[d.getDay()];
+                const dateNum = d.getDate();
+                const mon = monthNames[d.getMonth()];
+                dateList.push({ dayName, dateNum, mon, isToday: i === 0 });
+                headHtml += `<th class="cal-day-cell text-center ${i === 0 ? 'bg-primary text-white' : ''}">${dayName}<br><small>${dateNum} ${mon}${i === 0 ? ' (Today)' : ''}</small></th>`;
+            }
+            headHtml += '</tr>';
+            thead.innerHTML = headHtml;
+
+            // Filter rooms by floor
+            let filtered = guestHouseInventory;
+            if (currentGridFloor !== 'all') {
+                filtered = guestHouseInventory.filter(r => r.floor === currentGridFloor);
+            }
+
+            tbody.innerHTML = '';
+            let lastFloor = '';
+
+            filtered.forEach(room => {
+                if (room.floor !== lastFloor) {
+                    lastFloor = room.floor;
+                    let floorTitle = 'TOP FLOOR (2 VVIP Suites &bull; 8 Ordinary Double Rooms)';
+                    let floorBadgeClass = 'table-secondary';
+                    if (room.floor === 'first') {
+                        floorTitle = 'FIRST FLOOR (2 VVIP Suites &bull; 4 VIP AC Rooms &bull; 4 Ordinary AC Rooms &bull; Club Lounge)';
+                    } else if (room.floor === 'ground') {
+                        floorTitle = 'GROUND FLOOR (Dormitory 1 [4-Bed] &bull; Main Event Hall &bull; Dining & Mess)';
+                    }
+                    const sectionTr = document.createElement('tr');
+                    sectionTr.className = floorBadgeClass;
+                    sectionTr.innerHTML = `<td colspan="8" class="fw-bold text-dark ps-3 py-1"><i class="bi bi-layers me-1"></i> ${floorTitle}</td>`;
+                    tbody.appendChild(sectionTr);
+                }
+
+                const tr = document.createElement('tr');
+
+                // Room identity cell
+                let authBadge = `<span class="badge bg-primary-subtle text-primary border border-primary ms-1" style="font-size:0.65rem;">Estate Office</span>`;
+                if (room.isVvip) {
+                    authBadge = `<span class="badge bg-danger-subtle text-danger border border-danger ms-1" style="font-size:0.65rem;"><i class="bi bi-crown me-1"></i>VC Sanction Only</span>`;
+                }
+
+                let capacityPill = `<span class="badge bg-light text-muted border ms-1" style="font-size:0.62rem;">${room.capacity}</span>`;
+
+                let roomCellHtml = `
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="fw-bold text-dark">${room.name}</span>
+                            ${authBadge}
+                            <div class="text-muted small" style="font-size:0.7rem;">${room.type} ${capacityPill}</div>
+                        </div>
+                        <button class="btn btn-sm btn-link p-0 text-secondary" onclick="openRoomActionModal('${room.name}', '${room.isVvip ? 'vvip' : 'room'}', '${room.floor}')" title="Inspect dossier"><i class="bi bi-info-circle"></i></button>
+                    </div>
+                `;
+
+                let rowHtml = `<td class="ps-3 bg-white">${roomCellHtml}</td>`;
+
+                // 7 Days Simulation cells
+                for (let d = 0; d < 7; d++) {
+                    let cellStatusClass = 'bg-success text-white';
+                    let cellLabel = 'Available';
+
+                    if (room.status === 'OCCUPIED') {
+                        if (d <= 3) {
+                            cellStatusClass = 'bg-danger text-white';
+                            cellLabel = room.guest ? room.guest.split(' ')[0] : 'Occupied';
+                        } else {
+                            cellStatusClass = 'bg-success text-white';
+                            cellLabel = 'Available';
+                        }
+                    } else if (room.status === 'RESERVED') {
+                        if (d >= 2 && d <= 5) {
+                            cellStatusClass = 'bg-warning text-dark';
+                            cellLabel = room.isVvip ? 'VC Sanction' : 'Reserved';
+                        } else {
+                            cellStatusClass = 'bg-success text-white';
+                            cellLabel = 'Available';
+                        }
+                    }
+
+                    rowHtml += `
+                        <td class="cal-cell ${cellStatusClass} cursor-pointer" onclick="handleGridCellClick('${room.name}', ${d}, '${cellLabel}')" title="Click for details / allocation">
+                            <small class="fw-semibold d-block text-truncate" style="max-width: 85px;">${cellLabel}</small>
+                        </td>
+                    `;
+                }
+
+                tr.innerHTML = rowHtml;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function handleGridCellClick(roomName, dayOffset, statusLabel) {
+            const room = guestHouseInventory.find(r => r.name === roomName);
+            if (!room) return;
+
+            if (room.isVvip) {
+                if (currentRole === 'vc_secretariat') {
+                    openRoomActionModal(roomName, 'vvip', room.floor);
+                } else {
+                    // Estate Office View-Only for VVIP
+                    viewVvipDossierAsEstate('GH-2026-10-0003');
+                }
+            } else {
+                openRoomActionModal(roomName, 'room', room.floor);
+            }
+        }
+
+        function openRoomActionModal(roomName, type, floor) {
+            const room = guestHouseInventory.find(r => r.name === roomName) || {
+                name: roomName,
+                type: 'Guest Room',
+                floor: floor,
+                capacity: 'Double Bedded',
+                isVvip: (type === 'vvip'),
+                status: 'AVAILABLE',
+                guest: null
+            };
+
+            const modalTitle = document.getElementById('roomActionTitle');
+            const modalBody = document.getElementById('roomActionBody');
+            const modalFooter = document.getElementById('roomActionFooter');
+            const modalHeader = document.getElementById('roomActionHeader');
+
+            const isVvip = room.isVvip;
+            modalHeader.className = isVvip ? 'modal-header bg-dark text-white' : 'modal-header bg-primary text-white';
+            modalTitle.innerHTML = `<i class="bi ${isVvip ? 'bi-crown text-warning' : 'bi-door-open'} me-2"></i> ${room.name} &bull; Room Dossier`;
+
+            let jurisdictionCard = '';
+            if (isVvip) {
+                jurisdictionCard = `
+                    <div class="alert alert-danger border-danger py-2 px-3 mb-3 small">
+                        <strong><i class="bi bi-crown me-1"></i>Vice-Chancellor Secretariat Apex Authority:</strong> VVIP Presidential Suite bookings are sanctioned exclusively by the Vice-Chancellor Secretariat. Estate Office maintains view-only access for linen &amp; protocol hospitality.
+                    </div>
+                `;
+            } else {
+                jurisdictionCard = `
+                    <div class="alert alert-success border-success py-2 px-3 mb-3 small">
+                        <strong><i class="bi bi-building me-1"></i>Estate Office Administrative Authority:</strong> This room set is under direct administrative management of the Estate Office. You can allocate, check in guests, or block for university delegates.
+                    </div>
+                `;
+            }
+
+            modalBody.innerHTML = `
+                ${jurisdictionCard}
+                <div class="card border-0 shadow-sm p-3 mb-3 bg-white">
+                    <div class="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2">
+                        <div>
+                            <h5 class="fw-bold mb-0 text-navy">${room.name}</h5>
+                            <small class="text-muted">Level: ${room.floor.toUpperCase()} FLOOR &bull; University Main Guest House</small>
+                        </div>
+                        <span class="badge ${isVvip ? 'bg-danger' : 'bg-primary'} px-3 py-2">${room.type}</span>
+                    </div>
+                    <div class="row g-2 small mt-1">
+                        <div class="col-6"><strong>Bed Capacity:</strong> ${room.capacity}</div>
+                        <div class="col-6"><strong>Current Status:</strong> <span class="badge ${room.status === 'AVAILABLE' ? 'bg-success' : 'bg-warning text-dark'}">${room.status}</span></div>
+                        <div class="col-12 mt-2"><strong>Occupant / Dossier:</strong> ${room.guest || 'None (Room currently vacant & ready for allocation)'}</div>
+                        <div class="col-12"><strong>Sanction Body:</strong> ${isVvip ? 'Vice-Chancellor Secretariat' : 'Estate Officer (Dr. Dev Raj)'}</div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm p-3 bg-white">
+                    <h6 class="fw-bold small text-navy mb-2"><i class="bi bi-tools text-primary me-2"></i>Housekeeping &amp; Operational Checklist:</h6>
+                    <ul class="list-group list-group-flush small">
+                        <li class="list-group-item d-flex justify-content-between py-1"><span>Linen &amp; Fresh Towels</span><span class="badge bg-success-subtle text-success">Verified</span></li>
+                        <li class="list-group-item d-flex justify-content-between py-1"><span>Air Conditioning &amp; Heating</span><span class="badge bg-success-subtle text-success">Tested</span></li>
+                        <li class="list-group-item d-flex justify-content-between py-1"><span>Geyser &amp; Water Supply</span><span class="badge bg-success-subtle text-success">Ready</span></li>
+                    </ul>
+                </div>
+            `;
+
+            let actionButtons = '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>';
+
+            if (isVvip) {
+                if (currentRole === 'vc_secretariat') {
+                    actionButtons += `<button type="button" class="btn btn-danger fw-bold ms-2" onclick="bootstrap.Modal.getInstance(document.getElementById('roomActionModal')).hide(); openWorkflowForDossier('GH-2026-10-0003');"><i class="bi bi-crown me-1"></i> Sanction VVIP Request</button>`;
+                } else {
+                    actionButtons += `<button type="button" class="btn btn-outline-danger fw-bold ms-2" onclick="bootstrap.Modal.getInstance(document.getElementById('roomActionModal')).hide(); setRole('vc_secretariat', 'Vice-Chancellor Secretariat', 'vc.secretariat@yspuniversity.ac.in');"><i class="bi bi-crown me-1"></i> Switch to VC Secretariat to Sanction</button>`;
+                }
+            } else {
+                if (currentRole === 'estate_admin') {
+                    actionButtons += `<button type="button" class="btn btn-success fw-bold ms-2" onclick="bootstrap.Modal.getInstance(document.getElementById('roomActionModal')).hide(); showTab('booking');"><i class="bi bi-plus-circle me-1"></i> Book / Allocate Room</button>`;
+                }
+            }
+
+            modalFooter.innerHTML = actionButtons;
+
+            const modal = new bootstrap.Modal(document.getElementById('roomActionModal'));
+            modal.show();
+        }
+
         function showTab(tabId) {
             document.querySelectorAll('.view-panel').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.sidebar .nav-link').forEach(el => el.classList.remove('active'));
@@ -1751,8 +2215,10 @@
             const activeNav = document.getElementById('nav-' + tabId);
             if (activeNav) activeNav.classList.add('active');
 
+            if (tabId === 'calendar') { renderRoomGrid(); }
             if (tabId === 'tariffs') {
                 renderEstateTariffEditor();
+            renderRoomGrid();
             }
         }
 
@@ -1926,14 +2392,16 @@
             // Re-populate booking select
             handleAdminBookingWingChange();
 
-            alert('âœ… Success! All Estate Officer tariffs, guest categories, and dining hall charges have been saved and published.\n\nChanges are actively persisted in localStorage and synchronized with the public booking portal.');
+            alert('Success! All Estate Officer tariffs, guest categories, and dining hall charges have been saved and published.\n\nChanges are actively persisted in localStorage and synchronized with the public booking portal.');
             renderEstateTariffEditor();
+            renderRoomGrid();
         }
 
         function resetEstateTariffsToSignedDefaults() {
             if (confirm('Are you sure you want to reset all categories and rates to the original signed Notification No. UHF/EO-55/2025/- 1615-40 defaults?')) {
                 EstateTariffManager.resetToDefaults();
                 renderEstateTariffEditor();
+            renderRoomGrid();
                 handleAdminBookingWingChange();
                 alert('Tariffs restored to original signed university notification defaults.');
             }
@@ -1971,6 +2439,7 @@
             bootstrap.Modal.getInstance(document.getElementById('addCategoryModal')).hide();
             document.getElementById('addCategoryForm').reset();
             renderEstateTariffEditor();
+            renderRoomGrid();
             handleAdminBookingWingChange();
             alert(`Category ${srNo} added successfully!`);
         }
@@ -1981,6 +2450,7 @@
                 categories = categories.filter(c => c.id !== id);
                 EstateTariffManager.saveEstateCategories(categories);
                 renderEstateTariffEditor();
+            renderRoomGrid();
                 handleAdminBookingWingChange();
             }
         }
@@ -2402,6 +2872,7 @@
             document.getElementById('workflowBadge').innerText = '1';
             renderBookingsTable();
             renderWorkflowDocket();
+            renderRoomGrid();
             showTab('dashboard');
         }
 
