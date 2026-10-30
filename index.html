@@ -395,7 +395,7 @@
                             <i class="bi bi-calendar-event me-1 text-success"></i> Check-In Date *
                         </label>
                         <div class="input-group">
-                            <input type="date" id="searchCheckIn" class="form-control form-control-lg fs-6" value="2026-11-02" required onchange="onSearchCheckInChange()" oninput="updateEstimatedSearchPrice()" onclick="try{this.showPicker()}catch(e){}">
+                            <input type="date" id="searchCheckIn" class="form-control form-control-lg fs-6" required onchange="onSearchCheckInChange()" oninput="updateEstimatedSearchPrice()" onclick="try{this.showPicker()}catch(e){}">
                             <button class="btn btn-outline-secondary" type="button" onclick="openDatePicker('searchCheckIn')" title="Open Calendar"><i class="bi bi-calendar-event text-success"></i></button>
                         </div>
                     </div>
@@ -412,7 +412,7 @@
                             </select>
                             <button class="btn btn-outline-danger" type="button" onclick="openDatePicker('searchCheckOutCustom')" title="Pick Custom Date from Calendar"><i class="bi bi-calendar3"></i></button>
                         </div>
-                        <input type="hidden" id="searchCheckOut" value="2026-11-05">
+                        <input type="hidden" id="searchCheckOut">
                         <input type="date" id="searchCheckOutCustom" class="form-control form-control-sm mt-1" style="display:none;" onchange="onCustomDatePicked('search', this.value)">
                     </div>
                 </div>
@@ -845,7 +845,7 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold small">Check-In Date *</label>
                                 <div class="input-group">
-                                    <input type="date" id="modalCheckIn" class="form-control" value="2026-11-02" required onchange="onModalCheckInChange()" oninput="calcModalTariff()" onclick="try{this.showPicker()}catch(e){}">
+                                    <input type="date" id="modalCheckIn" class="form-control" required onchange="onModalCheckInChange()" oninput="calcModalTariff()" onclick="try{this.showPicker()}catch(e){}">
                                     <button class="btn btn-outline-secondary" type="button" onclick="openDatePicker('modalCheckIn')" title="Open Calendar"><i class="bi bi-calendar-event text-success"></i></button>
                                 </div>
                             </div>
@@ -861,7 +861,7 @@
                                     </select>
                                     <button class="btn btn-outline-primary" type="button" onclick="openDatePicker('modalCheckOutCustom')" title="Pick from Calendar"><i class="bi bi-calendar3"></i></button>
                                 </div>
-                                <input type="hidden" id="modalCheckOut" value="2026-11-05">
+                                <input type="hidden" id="modalCheckOut">
                                 <input type="date" id="modalCheckOutCustom" class="form-control form-control-sm mt-1" style="display:none;" onchange="onCustomDatePicked('modal', this.value)">
                             </div>
 
@@ -1045,21 +1045,129 @@
             document.getElementById('searchCalculatedTotal').innerText = `₹${total.toFixed(2)}`;
         }
 
-                function openDatePicker(inputId) { const el = document.getElementById(inputId); if (!el) return; if (el.showPicker) { try { el.showPicker(); } catch (e) { el.focus(); } } else { el.focus(); } }
+                        // Date helpers in local client time (Prevents back-dated bookings)
+        function formatLocalDate(d) {
+            if (!d || isNaN(d.getTime())) d = new Date();
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
 
-        // Populate Check-Out Dropdown dynamically from Check-In date
-        function populateCheckOutDropdown(scope, checkInDateStr, selectedCheckOutStr) {
-            let selectId = 'searchCheckOutSelect';
-            if (scope === 'modal') selectId = 'modalCheckOutSelect';
+        function parseLocalDate(dateStr) {
+            if (!dateStr || typeof dateStr !== 'string') return new Date();
+            const parts = dateStr.split('-');
+            if (parts.length === 3) {
+                return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+            }
+            return new Date(dateStr);
+        }
 
-            const selectEl = document.getElementById(selectId);
-            if (!selectEl) return;
+        function getTodayString() {
+            return formatLocalDate(new Date());
+        }
 
-            let inDate = new Date(checkInDateStr);
-            if (isNaN(inDate.getTime())) {
-                inDate = new Date('2026-11-02');
+        function getDateAfterDays(baseDateStr, days) {
+            const base = parseLocalDate(baseDateStr);
+            const result = new Date(base.getTime() + (days * 24 * 60 * 60 * 1000));
+            return formatLocalDate(result);
+        }
+
+        function initializeBookingDates() {
+            const today = getTodayString();
+            const defaultCheckOut = getDateAfterDays(today, 3);
+            const minCheckOut = getDateAfterDays(today, 1);
+
+            // 1. Search Bar (Floating)
+            const searchIn = document.getElementById('searchCheckIn');
+            const searchOutHidden = document.getElementById('searchCheckOut');
+            const searchOutCustom = document.getElementById('searchCheckOutCustom');
+            if (searchIn) {
+                searchIn.min = today;
+                if (!searchIn.value || searchIn.value < today) {
+                    searchIn.value = today;
+                }
+            }
+            if (searchOutHidden) {
+                if (!searchOutHidden.value || searchOutHidden.value <= today) {
+                    searchOutHidden.value = defaultCheckOut;
+                }
+            }
+            if (searchOutCustom) {
+                searchOutCustom.min = minCheckOut;
+                searchOutCustom.value = searchOutHidden ? searchOutHidden.value : defaultCheckOut;
+            }
+            if (searchIn && searchOutHidden) {
+                populateCheckOutDropdown('search', searchIn.value, searchOutHidden.value);
             }
 
+            // 2. Modal
+            const modalIn = document.getElementById('modalCheckIn');
+            const modalOutHidden = document.getElementById('modalCheckOut');
+            const modalOutCustom = document.getElementById('modalCheckOutCustom');
+            if (modalIn) {
+                modalIn.min = today;
+                if (!modalIn.value || modalIn.value < today) {
+                    modalIn.value = today;
+                }
+            }
+            if (modalOutHidden) {
+                if (!modalOutHidden.value || modalOutHidden.value <= today) {
+                    modalOutHidden.value = defaultCheckOut;
+                }
+            }
+            if (modalOutCustom) {
+                modalOutCustom.min = minCheckOut;
+                modalOutCustom.value = modalOutHidden ? modalOutHidden.value : defaultCheckOut;
+            }
+            if (modalIn && modalOutHidden) {
+                populateCheckOutDropdown('modal', modalIn.value, modalOutHidden.value);
+            }
+        }
+
+        function openDatePicker(inputId) {
+            const el = document.getElementById(inputId);
+            if (!el) return;
+            if (el.showPicker) {
+                try { el.showPicker(); } catch (e) { el.focus(); }
+            } else {
+                el.focus();
+            }
+        }
+
+        // Populate Check-Out Dropdown dynamically from Check-In date (Only future dates permitted)
+        function populateCheckOutDropdown(scope, checkInDateStr, selectedCheckOutStr) {
+            const today = getTodayString();
+            let inDate = parseLocalDate(checkInDateStr);
+            let inDateStr = formatLocalDate(inDate);
+
+            // Strict clamp: Check-In cannot be in the past
+            if (inDateStr < today) {
+                inDateStr = today;
+                inDate = parseLocalDate(today);
+            }
+
+            const minOutDateStr = getDateAfterDays(inDateStr, 1);
+
+            let selectId = 'searchCheckOutSelect';
+            let hiddenId = 'searchCheckOut';
+            let customId = 'searchCheckOutCustom';
+
+            if (scope === 'modal') {
+                selectId = 'modalCheckOutSelect';
+                hiddenId = 'modalCheckOut';
+                customId = 'modalCheckOutCustom';
+            }
+
+            const selectEl = document.getElementById(selectId);
+            const hiddenEl = document.getElementById(hiddenId);
+            const customEl = document.getElementById(customId);
+
+            if (customEl) {
+                customEl.min = minOutDateStr;
+            }
+
+            if (!selectEl) return;
             selectEl.innerHTML = '';
 
             const durations = [
@@ -1081,18 +1189,15 @@
 
             let found = false;
             durations.forEach(d => {
-                const outDate = new Date(inDate.getTime() + (d.nights * 24 * 60 * 60 * 1000));
-                const yyyy = outDate.getFullYear();
-                const mm = String(outDate.getMonth() + 1).padStart(2, '0');
-                const dd = String(outDate.getDate()).padStart(2, '0');
-                const isoVal = `${yyyy}-${mm}-${dd}`;
-                const displayDate = `${dd}/${mm}/${yyyy}`;
+                const outDateStr = getDateAfterDays(inDateStr, d.nights);
+                const parts = outDateStr.split('-');
+                const displayDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
 
                 const opt = document.createElement('option');
-                opt.value = isoVal;
+                opt.value = outDateStr;
                 opt.innerText = `${displayDate} (${d.label})`;
 
-                if (selectedCheckOutStr && isoVal === selectedCheckOutStr) {
+                if (selectedCheckOutStr && outDateStr === selectedCheckOutStr) {
                     opt.selected = true;
                     found = true;
                 } else if (!selectedCheckOutStr && d.nights === 3) {
@@ -1104,17 +1209,16 @@
 
             const customOpt = document.createElement('option');
             customOpt.value = 'custom';
-            customOpt.innerText = 'ðŸ“… Pick Custom Calendar Date...';
-            if (!found && selectedCheckOutStr) {
+            customOpt.innerText = '\u{1F4C5} Pick Custom Future Date...';
+            if (!found && selectedCheckOutStr && selectedCheckOutStr >= minOutDateStr) {
                 customOpt.selected = true;
+                found = true;
             }
             selectEl.appendChild(customOpt);
 
-            // Sync hidden input
-            if (scope === 'search') {
-                document.getElementById('searchCheckOut').value = selectEl.value === 'custom' ? (selectedCheckOutStr || '2026-11-05') : selectEl.value;
-            } else if (scope === 'modal') {
-                document.getElementById('modalCheckOut').value = selectEl.value === 'custom' ? (selectedCheckOutStr || '2026-11-05') : selectEl.value;
+            const effectiveVal = (selectEl.value === 'custom' || !found) ? (selectedCheckOutStr && selectedCheckOutStr >= minOutDateStr ? selectedCheckOutStr : getDateAfterDays(inDateStr, 3)) : selectEl.value;
+            if (hiddenEl) {
+                hiddenEl.value = effectiveVal;
             }
         }
 
@@ -1146,27 +1250,36 @@
 
         function onCustomDatePicked(scope, val) {
             if (!val) return;
+            const today = getTodayString();
+            let inDateStr = today;
+            if (scope === 'search') inDateStr = document.getElementById('searchCheckIn').value;
+            else if (scope === 'modal') inDateStr = document.getElementById('modalCheckIn').value;
+
+            const minOut = getDateAfterDays(inDateStr, 1);
+            if (val < minOut) {
+                alert(`Invalid Date: Check-Out date cannot be in the past or on/before Check-In date. Minimum check-out date is ${minOut}.`);
+                val = minOut;
+            }
+
             if (scope === 'search') {
                 document.getElementById('searchCheckOut').value = val;
-                const inVal = document.getElementById('searchCheckIn').value;
-                populateCheckOutDropdown('search', inVal, val);
+                populateCheckOutDropdown('search', inDateStr, val);
                 updateEstimatedSearchPrice();
             } else if (scope === 'modal') {
                 document.getElementById('modalCheckOut').value = val;
-                const inVal = document.getElementById('modalCheckIn').value;
-                populateCheckOutDropdown('modal', inVal, val);
+                populateCheckOutDropdown('modal', inDateStr, val);
                 calcModalTariff();
-            } else if (scope === 'admin') {
-                document.getElementById('checkOutDate').value = val;
-                const inVal = document.getElementById('checkInDate').value;
-                populateCheckOutDropdown('admin', inVal, val);
-                calculateTariffEstimate();
             }
         }
 
         function onSearchCheckInChange() {
             const inEl = document.getElementById('searchCheckIn');
             if (!inEl) return;
+            const today = getTodayString();
+            if (inEl.value < today) {
+                alert(`Invalid Date: Booking for past/back dates is not permitted.\n\nCheck-In has been adjusted to today (${today}).`);
+                inEl.value = today;
+            }
             const currentOut = document.getElementById('searchCheckOut') ? document.getElementById('searchCheckOut').value : null;
             populateCheckOutDropdown('search', inEl.value, currentOut);
             updateEstimatedSearchPrice();
@@ -1175,6 +1288,11 @@
         function onModalCheckInChange() {
             const inEl = document.getElementById('modalCheckIn');
             if (!inEl) return;
+            const today = getTodayString();
+            if (inEl.value < today) {
+                alert(`Invalid Date: Booking for past/back dates is not permitted.\n\nCheck-In has been adjusted to today (${today}).`);
+                inEl.value = today;
+            }
             const currentOut = document.getElementById('modalCheckOut') ? document.getElementById('modalCheckOut').value : null;
             populateCheckOutDropdown('modal', inEl.value, currentOut);
             calcModalTariff();
@@ -1182,30 +1300,23 @@
 
         function setStayDays(scope, days) {
             let inId = 'searchCheckIn';
-            let outSelectId = 'searchCheckOutSelect';
             let callback = updateEstimatedSearchPrice;
 
             if (scope === 'modal') {
                 inId = 'modalCheckIn';
-                outSelectId = 'modalCheckOutSelect';
                 callback = calcModalTariff;
             }
 
             const inEl = document.getElementById(inId);
             if (!inEl) return;
 
-            let inDate = new Date(inEl.value);
-            if (isNaN(inDate.getTime())) {
-                inDate = new Date('2026-11-02');
+            const today = getTodayString();
+            if (!inEl.value || inEl.value < today) {
+                inEl.value = today;
             }
 
-            const outDate = new Date(inDate.getTime() + (days * 24 * 60 * 60 * 1000));
-            const yyyy = outDate.getFullYear();
-            const mm = String(outDate.getMonth() + 1).padStart(2, '0');
-            const dd = String(outDate.getDate()).padStart(2, '0');
-            const isoVal = `${yyyy}-${mm}-${dd}`;
-
-            populateCheckOutDropdown(scope, inEl.value, isoVal);
+            const outDateStr = getDateAfterDays(inEl.value, days);
+            populateCheckOutDropdown(scope, inEl.value, outDateStr);
             if (callback) callback();
         }
 
@@ -1319,10 +1430,21 @@
         }
 
         function handleModalSubmit(e) {
+            const today = getTodayString();
+            const checkInVal = document.getElementById('modalCheckIn').value;
+            const checkOutVal = document.getElementById('modalCheckOut').value;
+            if (checkInVal < today) {
+                alert(`Booking Error: Check-in date (${checkInVal}) cannot be in the past. Please select today (${today}) or later.`);
+                return;
+            }
+            if (checkOutVal <= checkInVal) {
+                alert("Booking Error: Check-out date must be at least one day after check-in date.");
+                return;
+            }
             e.preventDefault();
             const wingName = document.getElementById('modalWing').value === 'estate' ? 'Estate Office Wing' : 'Directorate of Extension Education';
             const guest = document.getElementById('modalGuestName').value;
-            const ref = 'GH-2026-11-00' + Math.floor(10 + Math.random() * 89);
+            const ref = 'GH-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
             alert(`✅ Application Submitted Under Notification 1615-40!\n\nReference: ${ref}\nGuest: ${guest}\nWing: ${wingName}\nStatus: PENDING_SANCTION\n\nYour requisition has been dispatched to the Estate Officer.`);
             bootstrap.Modal.getInstance(document.getElementById('bookingModal')).hide();
         }
