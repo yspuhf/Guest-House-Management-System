@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -123,14 +123,19 @@
 
         <div class="ms-auto d-flex align-items-center gap-2">
             <!-- Dedicated Dual-Account Quick Switcher -->
-            <div class="btn-group btn-group-sm shadow-sm" role="group" aria-label="Primary Institutional Accounts">
-                <button type="button" class="btn btn-warning text-dark fw-bold px-3 active" id="btnSwitchEstate" onclick="setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in')">
+            <div class="btn-group btn-group-sm shadow-sm me-1" role="group" aria-label="Primary Institutional Accounts">
+                <button type="button" class="btn btn-warning text-dark fw-bold px-3 active" id="btnSwitchEstate" onclick="performAccountLogin('estate_admin')">
                     <i class="bi bi-building me-1"></i> Estate Office
                 </button>
-                <button type="button" class="btn btn-outline-light text-white fw-bold px-3" id="btnSwitchVC" onclick="setRole('vc_secretariat', 'Vice-Chancellor Secretariat', 'vc.secretariat@yspuniversity.ac.in')">
+                <button type="button" class="btn btn-outline-light text-white fw-bold px-3" id="btnSwitchVC" onclick="performAccountLogin('vc_secretariat')">
                     <i class="bi bi-crown me-1 text-warning"></i> VC Secretariat
                 </button>
             </div>
+
+            <!-- Account Access Login Modal Trigger -->
+            <button type="button" class="btn btn-sm btn-outline-warning text-white fw-semibold px-2" onclick="openLoginModal()" title="Open Institutional Account Sign-in Portal">
+                <i class="bi bi-key-fill text-warning me-1"></i> Account Login
+            </button>
 
             <!-- Extended Role Switcher Dropdown -->
             <div class="dropdown">
@@ -1342,7 +1347,106 @@
         </div>
     </div>
 
-            <!-- Interactive Room Action & Quick Allocation Modal -->
+                <!-- Institutional Account Access & Login Modal -->
+    <div class="modal fade" id="accountLoginModal" tabindex="-1" aria-labelledby="accountLoginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 580px;">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white p-3">
+                    <div class="d-flex align-items-center">
+                        <img src="university_logo.jpg" alt="University Logo" class="rounded-circle bg-white p-1 me-2" style="width: 36px; height: 36px; object-fit: contain;">
+                        <div>
+                            <h6 class="modal-title font-serif fw-bold mb-0 text-white" id="accountLoginModalLabel">Institutional Account Access Portal</h6>
+                            <small class="text-warning" style="font-size: 0.72rem;">Dr. Y.S. Parmar UHF Nauni &bull; Central Guest House System</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 bg-light">
+                    <p class="text-muted small text-center mb-3">
+                        Please select your authorized administrative persona to access university guest house dossiers, room rack, and approval queues:
+                    </p>
+
+                    <!-- Two Primary Account Selection Cards -->
+                    <div class="row g-3 mb-3">
+                        <!-- Account 1: Estate Office -->
+                        <div class="col-12">
+                            <div class="card border border-warning shadow-sm p-3 bg-white cursor-pointer" onclick="performAccountLogin('estate_admin')" style="transition: all 0.2s ease;">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-warning bg-opacity-25 text-dark p-2 rounded-circle me-3 fs-4">
+                                            <i class="bi bi-building"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold text-dark mb-0">Estate Office (Administrative Control)</h6>
+                                            <div class="small text-muted"><strong>Officer:</strong> Dr. Dev Raj &bull; <span class="text-primary">estate.officer@yspuniversity.ac.in</span></div>
+                                            <span class="badge bg-warning text-dark mt-1">Handles All Sets except VVIP</span>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-warning text-dark fw-bold px-3">Sign In &rarr;</button>
+                                </div>
+                                <small class="text-muted d-block mt-2 ps-1" style="font-size: 0.75rem;">
+                                    &bull; Direct management of VIP Suites, Ordinary rooms, Dormitories, Dining Hall, and Notification 1615-40 Tariffs. View-only visibility for VVIP Suites.
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Account 2: Vice-Chancellor Secretariat -->
+                        <div class="col-12">
+                            <div class="card border border-danger shadow-sm p-3 bg-white cursor-pointer" onclick="performAccountLogin('vc_secretariat')" style="transition: all 0.2s ease;">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-danger bg-opacity-25 text-danger p-2 rounded-circle me-3 fs-4">
+                                            <i class="bi bi-crown"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold text-danger mb-0">Vice-Chancellor Secretariat</h6>
+                                            <div class="small text-muted"><strong>Officer:</strong> Special Secretary to VC &bull; <span class="text-danger">vc.secretariat@yspuniversity.ac.in</span></div>
+                                            <span class="badge bg-danger mt-1">VVIP Requests Only</span>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-danger fw-bold text-white px-3">Sign In &rarr;</button>
+                                </div>
+                                <small class="text-muted d-block mt-2 ps-1" style="font-size: 0.75rem;">
+                                    &bull; Apex sanctioning authority with exclusive jurisdiction to review, approve, and allocate VVIP Presidential Suites. Routine sets are delegated to Estate Office.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Direct Credential Sign-In -->
+                    <div class="border-top pt-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <small class="fw-bold text-muted text-uppercase">Or Direct Credential Sign-In:</small>
+                            <small class="text-muted">Single Sign-On (SSO)</small>
+                        </div>
+                        <form onsubmit="handleManualLoginSubmit(event)">
+                            <div class="mb-2">
+                                <input type="email" class="form-control form-control-sm" id="manualLoginEmail" placeholder="Institutional Email (@yspuniversity.ac.in)" value="estate.officer@yspuniversity.ac.in">
+                            </div>
+                            <div class="mb-2">
+                                <input type="password" class="form-control form-control-sm" id="manualLoginPass" value="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" placeholder="Password">
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe" checked>
+                                    <label class="form-check-label small text-muted" for="rememberMe">Remember active session</label>
+                                </div>
+                                <button type="submit" class="btn btn-sm btn-primary fw-bold px-3">
+                                    <i class="bi bi-box-arrow-in-right me-1"></i> Log In to Portal
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer p-2 bg-white d-flex justify-content-between">
+                    <small class="text-muted" style="font-size: 0.7rem;"><i class="bi bi-shield-lock me-1"></i> Dr. YSP UHF Nauni Security Gateway</small>
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Room Action & Quick Allocation Modal -->
     <div class="modal fade" id="roomActionModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
@@ -1458,23 +1562,23 @@
         // Master University Main Guest House Room Rack (Strictly mapped to Images 1 & 2)
         const guestHouseInventory = [
             // TOP FLOOR (10 Rooms)
-            { id: 'vvip_1', name: 'VVIP 1', type: 'VVIP Set', floor: 'top', capacity: 'Double Bedded', isVvip: true, status: 'RESERVED', guest: 'Sh. Tenzin Norbu & Delegation (Bhutan)', category: '5. Foreign Delegates', dates: '01 Nov â†’ 04 Nov', handledBy: 'vc' },
+            { id: 'vvip_1', name: 'VVIP 1', type: 'VVIP Set', floor: 'top', capacity: 'Double Bedded', isVvip: true, status: 'RESERVED', guest: 'Sh. Tenzin Norbu & Delegation (Bhutan)', category: '5. Foreign Delegates', dates: '01 Nov to 04 Nov', handledBy: 'vc' },
             { id: 'vvip_2', name: 'VVIP 2', type: 'VVIP Set', floor: 'top', capacity: 'Double Bedded', isVvip: true, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'vc' },
-            { id: 'std_3', name: 'STANDARD 3', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Sh. R. K. Thakur, HP Forest Service', category: '1(i) HP Govt Official', dates: '28 Oct â†’ 31 Oct', handledBy: 'estate' },
+            { id: 'std_3', name: 'STANDARD 3', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Sh. R. K. Thakur, HP Forest Service', category: '1(i) HP Govt Official', dates: '28 Oct to 31 Oct', handledBy: 'estate' },
             { id: 'std_4', name: 'STANDARD 4', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
-            { id: 'std_5', name: 'STANDARD 5', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Dr. S. K. Awasthi (PAU Ludhiana)', category: '2. Univ Invited Person', dates: '29 Oct â†’ 01 Nov', handledBy: 'estate' },
+            { id: 'std_5', name: 'STANDARD 5', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Dr. S. K. Awasthi (PAU Ludhiana)', category: '2. Univ Invited Person', dates: '29 Oct to 01 Nov', handledBy: 'estate' },
             { id: 'std_6', name: 'STANDARD 6', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
             { id: 'std_7', name: 'STANDARD 7', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
             { id: 'std_8', name: 'STANDARD 8', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
             { id: 'std_9', name: 'STANDARD 9', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
-            { id: 'std_10', name: 'STANDARD 10', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'OCCUPIED', guest: 'State Auditor Team (H.P.)', category: '1(i) State Govt Undertaking', dates: '30 Oct â†’ 02 Nov', handledBy: 'estate' },
+            { id: 'std_10', name: 'STANDARD 10', type: 'AC - Ordinary ROOM', floor: 'top', capacity: 'Double Bedded', isVvip: false, status: 'OCCUPIED', guest: 'State Auditor Team (H.P.)', category: '1(i) State Govt Undertaking', dates: '30 Oct to 02 Nov', handledBy: 'estate' },
 
             // FIRST FLOOR (10 Rooms + Club Room)
             { id: 'vvip_12', name: 'VVIP 12', type: 'VVIP Set', floor: 'first', capacity: 'Double Bedded', isVvip: true, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'vc' },
             { id: 'vvip_11', name: 'VVIP 11', type: 'VVIP Set', floor: 'first', capacity: 'Double Bedded', isVvip: true, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'vc' },
-            { id: 'vip_13', name: 'VIP 13, AC', type: 'VIP Rooms', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Dr. A. K. Verma (ICAR National Prof)', category: '1(i) HP/Univ/ICAR Official', dates: '28 Oct â†’ 31 Oct', handledBy: 'estate' },
-            { id: 'vip_14', name: 'VIP 14, AC', type: 'VIP Rooms', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Sh. Suresh Kumar, IAS (Joint Secy)', category: '1(i) HP Govt Official', dates: '29 Oct â†’ 01 Nov', handledBy: 'estate' },
-            { id: 'vip_15', name: 'VIP 15, AC', type: 'VIP Rooms', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'RESERVED', guest: 'Prof. V. K. Rao (ICAR ADG)', category: '1(i) ICAR Official', dates: '02 Nov â†’ 05 Nov', handledBy: 'estate' },
+            { id: 'vip_13', name: 'VIP 13, AC', type: 'VIP Rooms', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Dr. A. K. Verma (ICAR National Prof)', category: '1(i) HP/Univ/ICAR Official', dates: '28 Oct to 31 Oct', handledBy: 'estate' },
+            { id: 'vip_14', name: 'VIP 14, AC', type: 'VIP Rooms', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Sh. Suresh Kumar, IAS (Joint Secy)', category: '1(i) HP Govt Official', dates: '29 Oct to 01 Nov', handledBy: 'estate' },
+            { id: 'vip_15', name: 'VIP 15, AC', type: 'VIP Rooms', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'RESERVED', guest: 'Prof. V. K. Rao (ICAR ADG)', category: '1(i) ICAR Official', dates: '02 Nov to 05 Nov', handledBy: 'estate' },
             { id: 'vip_16', name: 'VIP 16, AC', type: 'VIP Rooms', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
             { id: 'std_20', name: 'STANDARD 20, AC', type: 'AC - Ordinary ROOM', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
             { id: 'std_19', name: 'STANDARD 19, AC', type: 'AC - Ordinary ROOM', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
@@ -1482,7 +1586,7 @@
             { id: 'std_17', name: 'STANDARD 17', type: 'AC - Ordinary ROOM', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
 
             // GROUND FLOOR (Dormitory & Common Facilities)
-            { id: 'dorm_1', name: 'DORMITORY 1 (4-BED)', type: 'Dormitory - 4 bedded', floor: 'ground', capacity: '4 Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Apple Growers Association (4 Farmers)', category: 'DEE-1 Farmers Training', dates: '28 Oct â†’ 02 Nov', handledBy: 'estate' },
+            { id: 'dorm_1', name: 'DORMITORY 1 (4-BED)', type: 'Dormitory - 4 bedded', floor: 'ground', capacity: '4 Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Apple Growers Association (4 Farmers)', category: 'DEE-1 Farmers Training', dates: '28 Oct to 02 Nov', handledBy: 'estate' },
             { id: 'hall_main', name: 'MAIN CONFERENCE HALL', type: 'Event Facility', floor: 'ground', capacity: '100 Persons', isVvip: false, status: 'RESERVED', guest: 'University Academic Council Meet', category: 'Official University Event', dates: '02 Nov (Full Day)', handledBy: 'estate' },
             { id: 'dining_mess', name: 'DINING HALL & MESS', type: 'Dining Facility', floor: 'ground', capacity: '60 Seats', isVvip: false, status: 'OCCUPIED', guest: 'Regular Catering / Academic Dinner', category: 'Hostel & Guest Catering', dates: 'Daily Active', handledBy: 'estate' }
         ];
@@ -1572,6 +1676,23 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             renderEstateTariffEditor();
+            renderBookingsTable();
+            renderWorkflowDocket();
+            renderRoomGrid();
+            handleAdminBookingWingChange();
+
+            // Restore active account session from localStorage
+            let savedAccount = 'estate_admin';
+            try {
+                savedAccount = localStorage.getItem('uhf_active_account') || 'estate_admin';
+            } catch (e) {}
+
+            if (savedAccount === 'vc_secretariat') {
+                performAccountLogin('vc_secretariat');
+            } else {
+                setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in');
+            }
+            renderEstateTariffEditor();
             renderRoomGrid();
             handleAdminBookingWingChange();
 
@@ -1581,6 +1702,72 @@
                 showTab(tab);
             }
         });
+
+                function openLoginModal() {
+            const modal = new bootstrap.Modal(document.getElementById('accountLoginModal'));
+            modal.show();
+        }
+
+        function performAccountLogin(roleKey) {
+            let roleName = 'Estate Officer (Admin)';
+            let email = 'estate.officer@yspuniversity.ac.in';
+
+            if (roleKey === 'vc_secretariat') {
+                roleName = 'Vice-Chancellor Secretariat';
+                email = 'vc.secretariat@yspuniversity.ac.in';
+            }
+
+            try {
+                localStorage.setItem('uhf_active_account', roleKey);
+            } catch (e) {}
+
+            setRole(roleKey, roleName, email);
+
+            const modalEl = document.getElementById('accountLoginModal');
+            if (modalEl) {
+                const instance = bootstrap.Modal.getInstance(modalEl);
+                if (instance) instance.hide();
+            }
+
+            showLoginAlertBanner(roleKey, roleName);
+        }
+
+        function handleManualLoginSubmit(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('manualLoginEmail');
+            const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+            if (email.includes('vc') || email.includes('vice')) {
+                performAccountLogin('vc_secretariat');
+            } else {
+                performAccountLogin('estate_admin');
+            }
+        }
+
+        function showLoginAlertBanner(roleKey, roleName) {
+            const isVc = (roleKey === 'vc_secretariat');
+            const existingAlert = document.getElementById('sessionLoginToast');
+            if (existingAlert) existingAlert.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'sessionLoginToast';
+            toast.className = `alert ${isVc ? 'alert-danger border-danger' : 'alert-warning border-warning'} alert-dismissible fade show shadow position-fixed top-0 start-50 translate-middle-x mt-3`;
+            toast.style.zIndex = '9999';
+            toast.style.minWidth = '420px';
+            toast.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="bi ${isVc ? 'bi-crown fs-3 text-danger' : 'bi-building fs-3 text-warning'} me-3"></i>
+                    <div>
+                        <div class="fw-bold fs-6">Authenticated: ${roleName}</div>
+                        <div class="small text-muted">${isVc ? 'Apex authority active for VVIP Presidential Suites only.' : 'Administrative control active for all Estate Office sets.'}</div>
+                    </div>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                try { toast.remove(); } catch (e) {}
+            }, 3500);
+        }
 
         function setRole(roleKey, roleName, email) {
             currentRole = roleKey;
@@ -1933,7 +2120,7 @@
                         <div class="list-group-item d-flex justify-content-between align-items-center bg-white ${isVvip ? 'border-danger' : 'border-warning'}">
                             <div>
                                 <i class="bi ${isVvip ? 'bi-crown text-danger' : 'bi-hourglass-top text-warning'} me-2"></i>
-                                <strong>Tier 3: ${isVvip ? 'Hon''ble Vice-Chancellor Secretariat (Apex VVIP Authority)' : 'Estate Officer (Final Competent Authority)'}</strong>
+                                <strong>Tier 3: ${isVvip ? "Hon'ble Vice-Chancellor Secretariat (Apex VVIP Authority)" : 'Estate Officer (Final Competent Authority)'}</strong>
                                 <div class="text-dark small ps-4 fw-semibold">${isVvip ? 'Requires exclusive sanction of Vice-Chancellor Secretariat' : 'Pending formal sanction under Notification 1615-40'}</div>
                             </div>
                             <span class="badge ${isVvip ? 'bg-danger' : 'bg-warning text-dark'}">ACTION REQUIRED</span>
