@@ -13,3 +13,4 @@ DirectoryIndex index.html index.php index.htm
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
 </IfModule>
+

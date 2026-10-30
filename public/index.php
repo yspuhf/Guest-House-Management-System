@@ -2,9 +2,9 @@
 
 define('LARAVEL_START', microtime(true));
 
-// If Composer dependencies (vendor/autoload.php) are not yet installed on Hostinger,
-// safely serve the interactive portal instead of crashing with a 500 Server Error.
-if (!file_exists(__DIR__.'/../vendor/autoload.php')) {
+// If Laravel framework is not installed in vendor/, safely serve the interactive portal
+// to prevent any 500 Server Error on shared hosting.
+if (!file_exists(__DIR__.'/../vendor/laravel/framework')) {
     if (file_exists(__DIR__.'/index.html')) {
         include __DIR__.'/index.html';
         exit;

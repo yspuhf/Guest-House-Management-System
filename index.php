@@ -1,11 +1,11 @@
 <?php
 /**
  * Dr. Y.S. Parmar UHF Nauni - Central Guest House Portal
- * Production Fallback Router for Hostinger Web Hosting
+ * Production Router & Fallback Handler for Hostinger
  */
 
-// If vendor/autoload exists and Laravel is configured, route through public/index.php
-if (file_exists(__DIR__.'/vendor/autoload.php') && file_exists(__DIR__.'/public/index.php')) {
+// If Laravel framework is installed and configured, route through public/index.php
+if (file_exists(__DIR__.'/vendor/laravel/framework') && file_exists(__DIR__.'/public/index.php')) {
     require_once __DIR__.'/public/index.php';
     exit;
 }
