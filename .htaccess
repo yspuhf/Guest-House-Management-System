@@ -1,0 +1,15 @@
+DirectoryIndex index.html index.php index.htm
+
+<IfModule mod_rewrite.c>
+    Options -Indexes
+    RewriteEngine On
+
+    # Protect environment credentials and private storage logs
+    RewriteRule ^\.env - [F,L,NC]
+    RewriteRule ^storage/logs/ - [F,L,NC]
+
+    # Allow direct access to existing files (index.html, preview.html, estate_tariffs.js, images)
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+</IfModule>
