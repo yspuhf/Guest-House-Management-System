@@ -1,0 +1,1916 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Guest House Management System | Live Interactive Preview</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-navy: #0d2b45;
+            --accent-gold: #d4af37;
+            --sidebar-bg: #1a252f;
+            --sidebar-hover: #2c3e50;
+            --border-color: #e2e8f0;
+            --body-bg: #f8fafc;
+            --forest-green: #1b4332;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--body-bg);
+            color: #334155;
+            min-height: 100vh;
+        }
+        .navbar-university {
+            background: linear-gradient(135deg, #0d2b45 0%, #163e63 100%);
+            border-bottom: 3px solid var(--accent-gold);
+        }
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            min-height: calc(100vh - 66px);
+            box-shadow: 2px 0 6px rgba(0,0,0,0.05);
+        }
+        .sidebar .nav-header {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #94a3b8;
+            padding: 1rem 1rem 0.35rem;
+            font-weight: 700;
+        }
+        .sidebar .nav-link {
+            color: #cbd5e1;
+            padding: 0.55rem 1rem;
+            font-size: 0.88rem;
+            border-radius: 6px;
+            margin: 2px 8px;
+            transition: all 0.15s ease-in-out;
+            cursor: pointer;
+        }
+        .sidebar .nav-link:hover {
+            color: #fff;
+            background-color: var(--sidebar-hover);
+        }
+        .sidebar .nav-link.active {
+            color: #fff;
+            background-color: #2563eb;
+            font-weight: 600;
+        }
+        .card-stat {
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card-stat:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .cal-cell {
+            min-width: 65px;
+            height: 48px;
+            padding: 2px;
+            vertical-align: middle;
+            text-align: center;
+            font-size: 0.75rem;
+        }
+        .cal-day-cell {
+            width: 13.5%;
+            text-align: center;
+            font-weight: 600;
+            background-color: #f1f5f9;
+        }
+        .status-badge {
+            font-size: 0.72rem;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .badge-status {
+            font-size: 0.72rem;
+            letter-spacing: 0.03em;
+        }
+        .table-responsive {
+            border-radius: 8px;
+        }
+        .stamp-box {
+            border: 2px dashed #dc3545;
+            color: #dc3545;
+            padding: 6px 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            display: inline-block;
+            transform: rotate(-5deg);
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top University Banner Header -->
+    <header class="navbar navbar-expand-lg navbar-dark navbar-university sticky-top px-3 py-2">
+        <div class="d-flex align-items-center text-white">
+            <img src="university_logo.jpg" alt="University Emblem" class="me-3 rounded-circle bg-white p-1" style="height: 48px; width: 48px; object-fit: contain;">
+            <div>
+                <h5 class="mb-0 fw-bold tracking-tight text-white font-serif">Dr. Yashwant Singh Parmar University of Horticulture & Forestry</h5>
+                <small class="text-warning fw-semibold" style="font-size: 0.8rem;">
+                    Nauni, Solan (H.P.) &bull; Central Guest House Management Portal
+                </small>
+            </div>
+        </div>
+
+        <div class="ms-auto d-flex align-items-center gap-2">
+            <!-- Role Switcher Dropdown -->
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-warning dropdown-toggle fw-semibold" type="button" data-bs-toggle="dropdown" id="roleDropdownBtn">
+                    <i class="bi bi-person-badge me-1"></i> Switch Demo Role: <span id="currentRoleLabel" class="badge bg-warning text-dark ms-1">Estate Officer (Admin)</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow">
+                    <li><h6 class="dropdown-header">Institutional Personas & Permissions</h6></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in')"><i class="bi bi-sliders2 text-warning me-2"></i> <strong>Estate Officer (Tariff & Wing Admin)</strong></a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('admin', 'System Administrator', 'admin@yspuniversity.ac.in')"><i class="bi bi-shield-lock text-danger me-2"></i> System Administrator</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('registrar', 'Registrar (Apex Approver)', 'registrar@yspuniversity.ac.in')"><i class="bi bi-award text-primary me-2"></i> Registrar (Apex Approver)</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('dee_incharge', 'DEE Incharge (Kisan Bhawan)', 'dee.kisan@yspuniversity.ac.in')"><i class="bi bi-tree text-success me-2"></i> DEE Incharge (Kisan Bhawan)</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('dean', 'Dean / Approver', 'dean.forestry@yspuniversity.ac.in')"><i class="bi bi-check-circle text-info me-2"></i> Dean (College Approver)</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('faculty', 'Faculty / Requisitioner', 'hod.forestry@yspuniversity.ac.in')"><i class="bi bi-person text-secondary me-2"></i> Faculty (Requisitioner)</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('caretaker', 'Care-Taker (Front Desk)', 'caretaker.main@yspuniversity.ac.in')"><i class="bi bi-door-open text-primary me-2"></i> Care-Taker (Front Desk)</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('finance', 'Comptroller / Finance', 'finance.officer@yspuniversity.ac.in')"><i class="bi bi-currency-rupee text-success me-2"></i> Comptroller (Finance & GST)</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('auditor', 'Internal Auditor', 'internal.auditor@yspuniversity.ac.in')"><i class="bi bi-file-earmark-bar-graph text-dark me-2"></i> Internal Auditor (Read-Only)</a></li>
+                </ul>
+            </div>
+
+            <!-- User Pill -->
+            <div class="d-none d-md-flex align-items-center text-white bg-dark bg-opacity-25 px-3 py-1 rounded border border-light border-opacity-25">
+                <i class="bi bi-person-circle fs-5 text-warning me-2"></i>
+                <div class="text-start">
+                    <div class="fw-semibold text-white small lh-1" id="currentUserName">Dr. Dev Raj (Estate Officer)</div>
+                    <small class="text-white-50" style="font-size: 0.68rem;" id="currentUserEmail">estate.officer@yspuniversity.ac.in</small>
+                </div>
+            </div>
+
+            <!-- Public Portal Link -->
+            <a href="/" target="_blank" class="btn btn-sm btn-success fw-bold">
+                <i class="bi bi-globe me-1"></i> Public Website
+            </a>
+        </div>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar py-3 px-2">
+                <div class="position-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="nav-dashboard" onclick="showTab('dashboard')">
+                                <i class="bi bi-speedometer2 me-2 text-warning"></i> Dashboard
+                            </a>
+                        </li>
+
+                        <div class="nav-header">Estate Administration</div>
+                        <li class="nav-item">
+                            <a class="nav-link" id="nav-tariffs" onclick="showTab('tariffs')">
+                                <i class="bi bi-sliders2 me-2 text-warning"></i> Estate Tariff Console
+                                <span class="badge bg-warning text-dark ms-1">Estate Admin</span>
+                            </a>
+                        </li>
+
+                        <div class="nav-header">Guest House Bookings</div>
+                        <li class="nav-item">
+                            <a class="nav-link" id="nav-booking" onclick="showTab('booking')">
+                                <i class="bi bi-calendar-plus me-2 text-success"></i> New Reservation
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="nav-register" onclick="showTab('register')">
+                                <i class="bi bi-journal-text me-2 text-info"></i> Booking Register
+                            </a>
+                        </li>
+
+                        <div class="nav-header" id="header-workflow">Institutional Workflow</div>
+                        <li class="nav-item" id="nav-item-workflow">
+                            <a class="nav-link" id="nav-workflow" onclick="showTab('workflow')">
+                                <i class="bi bi-hourglass-split me-2 text-warning"></i> Approvals Queue
+                                <span class="badge bg-danger rounded-pill float-end" id="workflowBadge">2</span>
+                            </a>
+                        </li>
+
+                        <div class="nav-header" id="header-ops">Front Desk & Allocation</div>
+                        <li class="nav-item" id="nav-item-calendar">
+                            <a class="nav-link" id="nav-calendar" onclick="showTab('calendar')">
+                                <i class="bi bi-calendar3 me-2 text-primary"></i> Room Calendar Grid
+                            </a>
+                        </li>
+                        <li class="nav-item" id="nav-item-checkin">
+                            <a class="nav-link" id="nav-checkin" onclick="showTab('checkin')">
+                                <i class="bi bi-box-arrow-in-right me-2 text-success"></i> Check-in / Out Desk
+                            </a>
+                        </li>
+
+                        <div class="nav-header" id="header-finance">Accounts & Oversight</div>
+                        <li class="nav-item" id="nav-item-billing">
+                            <a class="nav-link" id="nav-billing" onclick="showTab('billing')">
+                                <i class="bi bi-receipt me-2 text-success"></i> Invoicing & Cashier
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="nav-tracker" onclick="showTab('tracker')">
+                                <i class="bi bi-search me-2 text-warning"></i> Public Status Tracker
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="mt-4 p-2 bg-dark bg-opacity-50 rounded text-center border border-secondary border-opacity-25">
+                        <small class="text-white-50 d-block mb-1">Authoritative Notice:</small>
+                        <span class="badge bg-primary text-wrap text-start d-block" style="font-size: 0.65rem;">
+                            UHF/EO-55/2025/- 1615-40<br>Dated: 25/7/2026
+                        </span>
+                        <div class="text-muted mt-2" style="font-size: 0.68rem;">Dr. YSP UHF Nauni v2.0</div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content Area -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-3">
+
+                <!-- 1. DASHBOARD VIEW -->
+                <div id="view-dashboard" class="view-panel">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                        <div>
+                            <h3 class="h4 fw-bold text-navy mb-0">Central Guest House Operations Dashboard</h3>
+                            <small class="text-muted">Accommodation management center &bull; Dr. YSP UHF Nauni (Solan)</small>
+                        </div>
+                        <div class="btn-toolbar mb-2 mb-md-0 gap-2">
+                            <button class="btn btn-sm btn-outline-warning text-dark fw-bold" onclick="showTab('tariffs')">
+                                <i class="bi bi-sliders2 me-1"></i> Estate Tariff Console
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary" onclick="showTab('calendar')">
+                                <i class="bi bi-calendar-event me-1"></i> View Live Calendar
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="showTab('booking')">
+                                <i class="bi bi-plus-circle me-1"></i> New Reservation
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Metric Cards -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-xl-3 col-sm-6">
+                            <div class="card card-stat p-3 bg-white border-start border-primary border-4">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <small class="text-muted text-uppercase fw-semibold">Active Bookings</small>
+                                        <h3 class="fw-bold text-primary mb-0 mt-1">18</h3>
+                                        <small class="text-success"><i class="bi bi-arrow-up"></i> 4 new today</small>
+                                    </div>
+                                    <div class="bg-primary bg-opacity-10 p-3 rounded-circle text-primary fs-3">
+                                        <i class="bi bi-journal-bookmark-fill"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6">
+                            <div class="card card-stat p-3 bg-white border-start border-warning border-4">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <small class="text-muted text-uppercase fw-semibold">Pending Approval</small>
+                                        <h3 class="fw-bold text-warning mb-0 mt-1" id="dashPendingCount">2</h3>
+                                        <small class="text-muted">Requires Estate / Registrar</small>
+                                    </div>
+                                    <div class="bg-warning bg-opacity-10 p-3 rounded-circle text-warning fs-3">
+                                        <i class="bi bi-clock-history"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6">
+                            <div class="card card-stat p-3 bg-white border-start border-success border-4">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <small class="text-muted text-uppercase fw-semibold">Checked-In Guests</small>
+                                        <h3 class="fw-bold text-success mb-0 mt-1">7</h3>
+                                        <small class="text-muted">12 rooms currently free</small>
+                                    </div>
+                                    <div class="bg-success bg-opacity-10 p-3 rounded-circle text-success fs-3">
+                                        <i class="bi bi-people-fill"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6">
+                            <div class="card card-stat p-3 bg-white border-start border-info border-4">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <small class="text-muted text-uppercase fw-semibold">Revenue (MTD)</small>
+                                        <h3 class="fw-bold text-info mb-0 mt-1">&#8377;1,42,500</h3>
+                                        <small class="text-success"><i class="bi bi-check-all"></i> 100% reconciled</small>
+                                    </div>
+                                    <div class="bg-info bg-opacity-10 p-3 rounded-circle text-info fs-3">
+                                        <i class="bi bi-currency-rupee"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Reservations Table -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                            <h5 class="card-title fw-bold mb-0"><i class="bi bi-list-task me-2 text-primary"></i>Active Booking Dossiers</h5>
+                            <span class="badge bg-primary">Live Database Records</span>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Ref Number</th>
+                                            <th>Guest Name & Designation</th>
+                                            <th>Accommodation Wing & Room</th>
+                                            <th>Dates (Stay Duration)</th>
+                                            <th>Category</th>
+                                            <th>Status</th>
+                                            <th class="text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bookingsTableBody">
+                                        <tr>
+                                            <td class="fw-bold text-primary">GH-2026-10-0001</td>
+                                            <td>
+                                                <div class="fw-semibold">Dr. A. K. Verma</div>
+                                                <small class="text-muted">ICAR National Professor, New Delhi</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-primary">Estate Office Wing</span><br>
+                                                <small class="fw-bold text-success">Main GH &bull; VIP Suite #101</small>
+                                            </td>
+                                            <td>
+                                                <div>28 Oct 2026 &rarr; 31 Oct 2026</div>
+                                                <small class="text-muted">3 Nights &bull; 1 Guest</small>
+                                            </td>
+                                            <td><span class="badge bg-info text-dark">1(i) HP/Univ/ICAR Official (&#8377;1,500)</span></td>
+                                            <td><span class="badge bg-success badge-status">CHECKED_IN</span></td>
+                                            <td class="text-end">
+                                                <button class="btn btn-sm btn-outline-secondary" onclick="showReceiptModal()"><i class="bi bi-receipt"></i> Bill</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold text-primary">GH-2026-10-0002</td>
+                                            <td>
+                                                <div class="fw-semibold">Sh. Suresh Kumar, IAS</div>
+                                                <small class="text-muted">Joint Secretary, Agriculture (H.P.)</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-primary">Estate Office Wing</span><br>
+                                                <small class="fw-bold text-primary">VIP Suites Annexe #02</small>
+                                            </td>
+                                            <td>
+                                                <div>29 Oct 2026 &rarr; 01 Nov 2026</div>
+                                                <small class="text-muted">3 Nights &bull; 2 Guests</small>
+                                            </td>
+                                            <td><span class="badge bg-primary">1(i) HP Govt/State Official (&#8377;1,500)</span></td>
+                                            <td><span class="badge bg-primary badge-status">APPROVED</span></td>
+                                            <td class="text-end">
+                                                <button class="btn btn-sm btn-outline-success" onclick="quickCheckIn('GH-2026-10-0002')"><i class="bi bi-box-arrow-in-right"></i> Check In</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold text-primary">GH-2026-10-0003</td>
+                                            <td>
+                                                <div class="fw-semibold">Sh. Tenzin Norbu &amp; Delegation</div>
+                                                <small class="text-muted">Agricultural Officer, Thimphu, Bhutan</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-primary">Estate Office Wing</span><br>
+                                                <small class="text-muted">Main GH &bull; VVIP Suite #201</small>
+                                            </td>
+                                            <td>
+                                                <div>01 Nov 2026 &rarr; 04 Nov 2026</div>
+                                                <small class="text-muted">3 Nights &bull; 2 Guests</small>
+                                            </td>
+                                            <td><span class="badge bg-warning text-dark">5. Nepal &amp; Bhutan Delegates (&#8377;3,500)</span></td>
+                                            <td><span class="badge bg-warning text-dark badge-status">PENDING_APPROVAL</span></td>
+                                            <td class="text-end">
+                                                <button class="btn btn-sm btn-outline-warning" onclick="showTab('workflow')"><i class="bi bi-shield-check"></i> Review</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold text-primary">GH-2026-10-0004</td>
+                                            <td>
+                                                <div class="fw-semibold">Sh. Ramesh Sharma &amp; 15 Farmers</div>
+                                                <small class="text-muted">Apple Growers Association, Rohru</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-success">DEE Wing (Kisan Bhawan)</span><br>
+                                                <small class="text-muted">Farmers Dormitory Hall</small>
+                                            </td>
+                                            <td>
+                                                <div>05 Nov 2026 &rarr; 07 Nov 2026</div>
+                                                <small class="text-muted">2 Nights &bull; 15 Beds</small>
+                                            </td>
+                                            <td><span class="badge bg-success">DEE-1 Farmers Training (&#8377;100)</span></td>
+                                            <td><span class="badge bg-secondary badge-status">SUBMITTED</span></td>
+                                            <td class="text-end">
+                                                <button class="btn btn-sm btn-outline-info" onclick="showTab('workflow')"><i class="bi bi-eye"></i> View</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. ESTATE OFFICER TARIFF & CATEGORY CONFIGURATION CONSOLE -->
+                <div id="view-tariffs" class="view-panel" style="display:none;">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                        <div>
+                            <div class="d-flex align-items-center gap-2">
+                                <h3 class="h4 fw-bold text-navy mb-0">Estate Officer Tariff & Category Configuration Console</h3>
+                                <span class="badge bg-success" id="estateConsolePermBadge">Admin Write Access</span>
+                            </div>
+                            <small class="text-muted">
+                                Authoritative master under Notification No. <strong id="consoleDocNum">UHF/EO-55/2025/- 1615-40</strong> &bull; Dated: <strong id="consoleDocDate">25/7/2026</strong>
+                            </small>
+                        </div>
+                        <div class="btn-toolbar mb-2 mb-md-0 gap-2">
+                            <button class="btn btn-sm btn-outline-danger" onclick="resetEstateTariffsToSignedDefaults()" id="btnResetTariffs">
+                                <i class="bi bi-arrow-counterclockwise me-1"></i> Reset to Signed Defaults
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary" onclick="openAddCategoryModal()" id="btnAddCategory">
+                                <i class="bi bi-plus-circle me-1"></i> Add Custom Category
+                            </button>
+                            <button class="btn btn-sm btn-success fw-bold px-3" onclick="saveEstateTariffsFromForm()" id="btnSaveTariffs">
+                                <i class="bi bi-cloud-arrow-up-fill me-1"></i> Save & Publish All Changes
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Role Authorization Alert -->
+                    <div id="tariffAccessAlert" class="alert alert-success d-flex align-items-center py-2 px-3 mb-4">
+                        <i class="bi bi-shield-check fs-4 me-3 text-success"></i>
+                        <div>
+                            <strong>Estate Admin Authorized:</strong> Logged in as <strong id="alertUserName">Dr. Dev Raj (Estate Officer)</strong>. You have full administrative authorization to edit guest categories, VVIP/VIP/Ordinary stay rates, dining hall charges, and notification metadata. All modifications will immediately reflect in the reservation calculator and the public portal.
+                        </div>
+                    </div>
+
+                    <!-- Console Navigation Tabs -->
+                    <ul class="nav nav-tabs mb-3" id="tariffConsoleTabs" role="tablist">
+                        <li class="nav-item">
+                            <button class="nav-link active fw-semibold" id="tab-stay-rates" data-bs-toggle="tab" data-bs-target="#panel-stay-rates" type="button">
+                                <i class="bi bi-building me-1 text-primary"></i> 1. Stay Charges Matrix (Categories 1 &ndash; 11)
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link fw-semibold" id="tab-dining-rates" data-bs-toggle="tab" data-bs-target="#panel-dining-rates" type="button">
+                                <i class="bi bi-cup-hot me-1 text-success"></i> 2. Dining Hall &amp; Lounge Charges (Page 2)
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link fw-semibold" id="tab-meta-rates" data-bs-toggle="tab" data-bs-target="#panel-meta-rates" type="button">
+                                <i class="bi bi-file-earmark-text me-1 text-warning"></i> 3. Notification Particulars
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link fw-semibold" id="tab-sandbox-rates" data-bs-toggle="tab" data-bs-target="#panel-sandbox-rates" type="button">
+                                <i class="bi bi-calculator me-1 text-info"></i> 4. Live Tariff Calculation Sandbox
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="tariffConsoleContent">
+                        <!-- TAB 1: Stay Rates Matrix -->
+                        <div class="tab-pane fade show active" id="panel-stay-rates">
+                            <div class="card border-0 shadow-sm mb-4">
+                                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                                    <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-table me-2 text-primary"></i>Estate Office Stay Charges (Notification 1615-40 Categories)</h6>
+                                    <span class="badge bg-light text-dark border">Rates in INR (&#8377;) per set per day</span>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-bordered align-middle mb-0" id="estateTariffsEditableTable">
+                                            <thead class="table-light text-center">
+                                                <tr>
+                                                    <th style="width: 75px;">Sr. No.</th>
+                                                    <th style="min-width: 280px;" class="text-start">Category &amp; Dignitary Scope (Full Text)</th>
+                                                    <th style="width: 170px;">Short Label</th>
+                                                    <th style="width: 125px;">VVIP Set (&#8377;)</th>
+                                                    <th style="width: 125px;">VIP Set (&#8377;)</th>
+                                                    <th style="width: 125px;">Ordinary (&#8377;)</th>
+                                                    <th style="width: 80px;">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="estateTariffEditorBody">
+                                                <!-- Dynamically rendered via estate_tariffs.js -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-light py-2 text-muted small d-flex justify-content-between align-items-center">
+                                    <span>All edits are auto-validated and persisted to browser storage and shared data master.</span>
+                                    <button class="btn btn-sm btn-success fw-bold" onclick="saveEstateTariffsFromForm()">
+                                        <i class="bi bi-save me-1"></i> Save Changes Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB 2: Dining Hall Charges -->
+                        <div class="tab-pane fade" id="panel-dining-rates">
+                            <div class="card border-0 shadow-sm mb-4">
+                                <div class="card-header bg-white py-3">
+                                    <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-cup-straw me-2 text-success"></i>Use of Lounge and Dining Hall of Guest House (Page 2 of Official Notification)</h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered align-middle mb-0">
+                                            <thead class="table-light text-center">
+                                                <tr>
+                                                    <th style="width: 80px;">Sr. No.</th>
+                                                    <th class="text-start">Description &amp; Purpose</th>
+                                                    <th style="width: 180px;">Rate (INR &#8377;)</th>
+                                                    <th style="width: 140px;">Unit</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="diningTariffEditorBody">
+                                                <!-- Dynamically rendered dining rows -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB 3: Notification Particulars -->
+                        <div class="tab-pane fade" id="panel-meta-rates">
+                            <div class="card border-0 shadow-sm mb-4">
+                                <div class="card-body p-4">
+                                    <h6 class="fw-bold text-primary mb-3"><i class="bi bi-pencil-square me-2"></i>Official University Notification Particulars</h6>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold">Endorsement / Notification Number</label>
+                                            <input type="text" class="form-control" id="metaDocNumber" value="UHF/EO-55/2025/- 1615-40">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold">Date of Issuance</label>
+                                            <input type="text" class="form-control" id="metaDocDate" value="25/7/2026">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold">Approving Authority</label>
+                                            <input type="text" class="form-control" id="metaAuthority" value="Hon'ble Vice Chancellor, Dr. Yashwant Singh Parmar UHF Nauni (Solan)">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold">Issuing Officer / Organization</label>
+                                            <input type="text" class="form-control" id="metaIssuer" value="Estate Officer, Estate Organization, Dr. YSP UHF Nauni">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB 4: Sandbox Test Calculator -->
+                        <div class="tab-pane fade" id="panel-sandbox-rates">
+                            <div class="card border-0 shadow-sm mb-4">
+                                <div class="card-body p-4">
+                                    <h6 class="fw-bold text-info mb-3"><i class="bi bi-cpu me-2"></i>Live Tariff Calculation Simulator (Verify Real-Time Calculation)</h6>
+                                    <div class="row g-3 align-items-end mb-4">
+                                        <div class="col-md-3">
+                                            <label class="form-label fw-semibold">Select Accommodation Wing</label>
+                                            <select class="form-select border-primary" id="sbWing" onchange="updateSandboxControls()">
+                                                <option value="estate" selected>Estate Office Wing</option>
+                                                <option value="dee">Directorate of Extension Education (DEE)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label fw-semibold">Room / Set Type</label>
+                                            <select class="form-select" id="sbSet" onchange="runSandboxCalculation()">
+                                                <!-- dynamic -->
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label fw-semibold">Guest Category</label>
+                                            <select class="form-select" id="sbCategory" onchange="runSandboxCalculation()">
+                                                <!-- dynamic -->
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="form-label fw-semibold">Nights</label>
+                                            <input type="number" class="form-control" id="sbNights" value="3" min="1" max="30" onchange="runSandboxCalculation()">
+                                        </div>
+                                    </div>
+
+                                    <div class="p-3 bg-light rounded border border-primary border-opacity-25 d-flex justify-content-between align-items-center flex-wrap">
+                                        <div>
+                                            <span class="text-muted d-block small">Applied Rate per Night:</span>
+                                            <strong class="fs-4 text-dark" id="sbDisplayRate">&#8377;1,500 / night</strong>
+                                        </div>
+                                        <div>
+                                            <span class="text-muted d-block small">Subtotal Room Charge:</span>
+                                            <strong class="fs-4 text-primary" id="sbDisplaySubtotal">&#8377;4,500.00</strong>
+                                        </div>
+                                        <div>
+                                            <span class="text-muted d-block small">GST (12% if &ge; &#8377;1,000):</span>
+                                            <strong class="fs-4 text-warning text-dark" id="sbDisplayGst">&#8377;540.00</strong>
+                                        </div>
+                                        <div>
+                                            <span class="text-muted d-block small">Total Bill:</span>
+                                            <strong class="fs-3 text-success" id="sbDisplayTotal">&#8377;5,040.00</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. NEW RESERVATION FORM -->
+                <div id="view-booking" class="view-panel" style="display:none;">
+                    <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
+                        <div>
+                            <h3 class="h4 fw-bold text-navy mb-0">Submit Guest House Requisition</h3>
+                            <small class="text-muted">Standard institutional booking form governed by University Guest House Rules &amp; Notification 1615-40</small>
+                        </div>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="showTab('dashboard')">&larr; Back to Dashboard</button>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="card shadow-sm border-0 mb-4">
+                                <div class="card-body p-4">
+                                    <form id="reservationForm" onsubmit="handleReservationSubmit(event)">
+                                        <h5 class="fw-bold text-primary mb-3"><i class="bi bi-building-gear me-2"></i>1. Accommodation Wing & Category (User Choice)</h5>
+                                        <div class="row g-3 mb-4">
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-semibold text-primary"><i class="bi bi-building me-1"></i>Accommodation Wing <span class="badge bg-primary-subtle text-primary ms-1">User Selected</span> <span class="text-danger">*</span></label>
+                                                <select class="form-select border-primary fw-bold" id="bookingWing" required onchange="handleAdminBookingWingChange()">
+                                                    <option value="estate" selected>Estate Office Wing (Main GH, VIP Suites, FRH)</option>
+                                                    <option value="dee">Directorate of Extension Education (DEE - Kisan Bhawan)</option>
+                                                </select>
+                                                <small class="text-muted" id="adminBookingWingHint">Governed by: Estate Officer &amp; Registrar (Notification 1615-40)</small>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-semibold">Tariff Category <span class="text-danger">*</span></label>
+                                                <select class="form-select" id="bookingCategory" required onchange="calculateTariffEstimate()">
+                                                    <!-- Populated dynamically via estate_tariffs.js -->
+                                                </select>
+                                                <small class="text-muted" id="bookingCategoryHint">Official category mapping from Notification UHF/EO-55/2025/- 1615-40</small>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-semibold">Room / Set Type <span class="text-danger">*</span></label>
+                                                <select class="form-select" id="bookingSetType" required onchange="calculateTariffEstimate()">
+                                                    <!-- Populated dynamically via handleAdminBookingWingChange -->
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-semibold">Preferred Guest House / Facility</label>
+                                                <select class="form-select" id="bookingGuestHouse" required>
+                                                    <!-- Populated dynamically via handleAdminBookingWingChange -->
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <h5 class="fw-bold text-primary mb-3"><i class="bi bi-calendar-range me-2"></i>2. Stay Schedule</h5>
+                                        <div class="row g-3 mb-4">
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-semibold">Check-in Date &amp; Time <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <input type="date" class="form-control" id="checkInDate" value="2026-11-02" required onchange="onAdminCheckInChange()" oninput="calculateTariffEstimate()" onclick="try{this.showPicker()}catch(e){}">
+                                                    <button class="btn btn-outline-secondary" type="button" onclick="openDatePicker('checkInDate')" title="Open Calendar"><i class="bi bi-calendar-event text-success"></i></button>
+                                                </div>
+                                                <small class="text-muted">Standard Check-in: 12:00 PM</small>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-semibold d-flex justify-content-between align-items-center">
+                                                    <span>Check-out Date &amp; Duration <span class="text-danger">*</span></span>
+                                                    <span class="badge bg-primary text-white py-0 px-1" style="font-size: 0.65rem;">Select Dropdown</span>
+                                                </label>
+                                                <div class="input-group">
+                                                    <select id="checkOutDateSelect" class="form-select fw-bold border-primary text-primary" onchange="onAdminCheckOutSelectChange(this.value)">
+                                                        <!-- Dynamically populated based on Check-In Date -->
+                                                    </select>
+                                                    <button class="btn btn-outline-primary" type="button" onclick="openDatePicker('checkOutDateCustom')" title="Pick from Calendar"><i class="bi bi-calendar3"></i></button>
+                                                </div>
+                                                <input type="hidden" id="checkOutDate" value="2026-11-05">
+                                                <input type="date" id="checkOutDateCustom" class="form-control form-control-sm mt-1" style="display:none;" onchange="onCustomDatePicked('admin', this.value)">
+                                                <div class="d-flex justify-content-between align-items-center mt-1">
+                                                    <small class="text-muted">Standard Check-out: 11:00 AM</small>
+                                                    <div class="btn-group btn-group-sm" role="group">
+                                                        <button type="button" class="btn btn-outline-primary py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('admin', 1)">1N</button>
+                                                        <button type="button" class="btn btn-outline-primary py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('admin', 2)">2N</button>
+                                                        <button type="button" class="btn btn-outline-primary py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('admin', 3)">3N</button>
+                                                        <button type="button" class="btn btn-outline-primary py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('admin', 5)">5N</button>
+                                                        <button type="button" class="btn btn-outline-primary py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('admin', 7)">7N</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label fw-semibold">Sponsoring Department / Requisitioner</label>
+                                                <input type="text" class="form-control" value="Department of Tree Improvement & Genetic Resources" required>
+                                            </div>
+                                        </div>
+
+                                        <h5 class="fw-bold text-primary mb-3"><i class="bi bi-person-badge me-2"></i>3. Primary Guest Particulars</h5>
+                                        <div class="row g-3 mb-4">
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="guestName" placeholder="e.g. Dr. Ramesh Gupta" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-semibold">Designation / Affiliation <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" placeholder="e.g. Principal Scientist, ICAR" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-semibold">Mobile Number <span class="text-danger">*</span></label>
+                                                <input type="tel" class="form-control" placeholder="10-digit mobile number" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-semibold">Official Email</label>
+                                                <input type="email" class="form-control" placeholder="guest@organization.gov.in">
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label fw-semibold">Purpose of Visit</label>
+                                                <textarea class="form-control" rows="2" placeholder="Academic conference / External viva examination / Official university inspection..."></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-end gap-2">
+                                            <button type="reset" class="btn btn-outline-secondary">Clear Form</button>
+                                            <button type="submit" class="btn btn-primary px-4 fw-semibold">
+                                                <i class="bi bi-send-check me-1"></i> Submit Reservation Request
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Estimate Sidebar Card -->
+                        <div class="col-lg-4">
+                            <div class="card border-0 shadow-sm bg-light">
+                                <div class="card-body p-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="fw-bold text-dark mb-0"><i class="bi bi-calculator me-2 text-primary"></i>Tariff Estimation</h5>
+                                        <button class="btn btn-sm btn-outline-warning text-dark" onclick="showTab('tariffs')"><i class="bi bi-sliders"></i> Edit Tariffs</button>
+                                    </div>
+                                    <ul class="list-group list-group-flush rounded mb-3">
+                                        <li class="list-group-item d-flex justify-content-between bg-white">
+                                            <span>Duration of Stay:</span>
+                                            <strong id="estNights">3 Nights</strong>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between bg-white">
+                                            <span>Applicable Tariff:</span>
+                                            <strong id="estRate">&#8377;1,500 / night</strong>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between bg-white">
+                                            <span>Subtotal Room Charge:</span>
+                                            <strong id="estSubtotal">&#8377;4,500.00</strong>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between bg-white">
+                                            <span>GST (12% if &ge; &#8377;1,000):</span>
+                                            <strong class="text-success" id="estGst">&#8377;540.00</strong>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between bg-white fs-5 fw-bold text-primary">
+                                            <span>Estimated Total:</span>
+                                            <span id="estTotal">&#8377;5,040.00</span>
+                                        </li>
+                                    </ul>
+
+                                    <div class="alert alert-info py-2 px-3 small mb-0">
+                                        <i class="bi bi-info-circle-fill me-1"></i>
+                                        <strong>Rules Note:</strong> Rate calculated dynamically from active Estate Officer master tariffs. Check-out day is non-billable.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. ROOM CALENDAR & MATRIX -->
+                <div id="view-calendar" class="view-panel" style="display:none;">
+                    <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
+                        <div>
+                            <h3 class="h4 fw-bold text-navy mb-0">Interactive Room Availability & Allocation Grid</h3>
+                            <small class="text-muted">Live room status across Dr. YSP UHF Nauni facilities</small>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <span class="badge bg-success"><i class="bi bi-circle-fill me-1 small"></i> Available</span>
+                            <span class="badge bg-danger"><i class="bi bi-circle-fill me-1 small"></i> Occupied</span>
+                            <span class="badge bg-warning text-dark"><i class="bi bi-circle-fill me-1 small"></i> Reserved / Approval</span>
+                            <span class="badge bg-secondary"><i class="bi bi-circle-fill me-1 small"></i> Maintenance</span>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-bordered mb-0 align-middle">
+                                    <thead class="table-dark text-center">
+                                        <tr>
+                                            <th style="min-width: 170px;" class="text-start ps-3">Guest House / Room</th>
+                                            <th class="cal-day-cell">Wed<br><small>28 Oct</small></th>
+                                            <th class="cal-day-cell">Thu<br><small>29 Oct</small></th>
+                                            <th class="cal-day-cell">Fri<br><small>30 Oct</small></th>
+                                            <th class="cal-day-cell">Sat<br><small>31 Oct</small></th>
+                                            <th class="cal-day-cell">Sun<br><small>01 Nov</small></th>
+                                            <th class="cal-day-cell">Mon<br><small>02 Nov</small></th>
+                                            <th class="cal-day-cell">Tue<br><small>03 Nov</small></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Estate Office Wing -->
+                                        <tr class="table-primary"><td colspan="8" class="fw-bold text-dark ps-3"><i class="bi bi-building me-1"></i> Estate Office Wing &bull; Main Guest House (VIP &amp; Deluxe Suites)</td></tr>
+                                        <tr>
+                                            <td class="fw-bold ps-3">VIP Suite #101</td>
+                                            <td class="cal-cell bg-danger text-white"><small>Dr. Verma (ICAR)</small></td>
+                                            <td class="cal-cell bg-danger text-white"><small>Dr. Verma (ICAR)</small></td>
+                                            <td class="cal-cell bg-danger text-white"><small>Dr. Verma (ICAR)</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-warning text-dark"><small>Reserved</small></td>
+                                            <td class="cal-cell bg-warning text-dark"><small>Reserved</small></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold ps-3">VIP Suite #102</td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-danger text-white"><small>Govt Insp.</small></td>
+                                            <td class="cal-cell bg-danger text-white"><small>Govt Insp.</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold ps-3">Deluxe Room #201</td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-danger text-white"><small>BoM Guest</small></td>
+                                            <td class="cal-cell bg-danger text-white"><small>BoM Guest</small></td>
+                                            <td class="cal-cell bg-danger text-white"><small>BoM Guest</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                        </tr>
+
+                                        <!-- Estate Office Wing: VIP Annexe -->
+                                        <tr class="table-primary"><td colspan="8" class="fw-bold text-dark ps-3"><i class="bi bi-building me-1"></i> Estate Office Wing &bull; VIP Suites Annexe &amp; FRH</td></tr>
+                                        <tr>
+                                            <td class="fw-bold ps-3">VIP Suite #01</td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-secondary text-white"><small>Maint.</small></td>
+                                            <td class="cal-cell bg-secondary text-white"><small>Maint.</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold ps-3">VIP Suite #02</td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-danger text-white"><small>IAS Officer</small></td>
+                                            <td class="cal-cell bg-danger text-white"><small>IAS Officer</small></td>
+                                            <td class="cal-cell bg-danger text-white"><small>IAS Officer</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                        </tr>
+
+                                        <!-- DEE Wing: Kisan Bhawan -->
+                                        <tr class="table-success"><td colspan="8" class="fw-bold text-dark ps-3"><i class="bi bi-tree me-1"></i> Directorate of Extension Education (DEE) &bull; Kisan Bhawan &amp; Farmers Hostel</td></tr>
+                                        <tr>
+                                            <td class="fw-bold ps-3">Farmers Room #201</td>
+                                            <td class="cal-cell bg-danger text-white"><small>KVK Trainee</small></td>
+                                            <td class="cal-cell bg-danger text-white"><small>KVK Trainee</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-warning text-dark"><small>Reserved</small></td>
+                                            <td class="cal-cell bg-warning text-dark"><small>Reserved</small></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold ps-3">Farmers Room #204</td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-success text-white"><small>Available</small></td>
+                                            <td class="cal-cell bg-danger text-white"><small>Agr. Visitors</small></td>
+                                            <td class="cal-cell bg-danger text-white"><small>Agr. Visitors</small></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. WORKFLOW APPROVALS QUEUE -->
+                <div id="view-workflow" class="view-panel" style="display:none;">
+                    <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
+                        <div>
+                            <h3 class="h4 fw-bold text-navy mb-0">Multi-Tier Institutional Approvals Queue</h3>
+                            <small class="text-muted">Digital routing docket governed by University Guest House Regulations</small>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white py-3">
+                            <h5 class="fw-bold text-primary mb-0">Requisition Dossier: GH-2026-10-0003</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <h6 class="fw-bold">Guest Particulars</h6>
+                                    <p class="mb-1"><strong>Guest:</strong> Sh. Tenzin Norbu &amp; Delegation</p>
+                                    <p class="mb-1"><strong>Designation:</strong> Agricultural Officer, Thimphu, Bhutan</p>
+                                    <p class="mb-1"><strong>Category:</strong> 5. Educational Tour &amp; Training from Nepal &amp; Bhutan</p>
+                                    <p class="mb-1"><strong>Accommodation Wing:</strong> Estate Office Wing (Main Guest House)</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="fw-bold">Stay Schedule & Sponsoring Entity</h6>
+                                    <p class="mb-1"><strong>Dates:</strong> 01 Nov 2026 to 04 Nov 2026 (3 Nights)</p>
+                                    <p class="mb-1"><strong>Requested Room:</strong> VVIP Set (Presidential Suite)</p>
+                                    <p class="mb-1"><strong>Sponsoring HOD:</strong> Prof. S. K. Bhardwaj, Dept of Silviculture</p>
+                                    <p class="mb-1"><strong>Applied Daily Tariff:</strong> &#8377;3,500 / night (Total: &#8377;10,500 + GST)</p>
+                                </div>
+                            </div>
+
+                            <h6 class="fw-bold mb-3">Multi-Tier Endorsement Chain:</h6>
+                            <div class="list-group mb-4">
+                                <div class="list-group-item d-flex justify-content-between align-items-center bg-light">
+                                    <div>
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        <strong>Tier 1: Sponsoring Faculty / Requisitioner</strong> &bull; Prof. S. K. Bhardwaj
+                                        <div class="text-muted small ps-4">Requisition submitted online on 26 Oct 2026, 09:30 AM</div>
+                                    </div>
+                                    <span class="badge bg-success">SUBMITTED</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center bg-light">
+                                    <div>
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        <strong>Tier 2: Dean / Controlling Officer</strong> &bull; Dr. H. P. Sankhyan
+                                        <div class="text-muted small ps-4">Recommended for official University academic collaboration</div>
+                                    </div>
+                                    <span class="badge bg-success">RECOMMENDED</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center bg-white border-warning">
+                                    <div>
+                                        <i class="bi bi-hourglass-top text-warning me-2"></i>
+                                        <strong>Tier 3: Estate Officer &amp; Registrar (Final Competent Authority)</strong>
+                                        <div class="text-dark small ps-4 fw-semibold">Pending your formal sanction under Notification 1615-40</div>
+                                    </div>
+                                    <span class="badge bg-warning text-dark">ACTION REQUIRED</span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-danger" onclick="rejectWorkflowModal('GH-2026-10-0003')">
+                                    <i class="bi bi-x-circle me-1"></i> Return with Remarks
+                                </button>
+                                <button class="btn btn-success px-4" onclick="approveWorkflowAction('GH-2026-10-0003')">
+                                    <i class="bi bi-check-circle me-1"></i> Grant Sanction &amp; Approve
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. FRONT DESK CHECK-IN -->
+                <div id="view-checkin" class="view-panel" style="display:none;">
+                    <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
+                        <div>
+                            <h3 class="h4 fw-bold text-navy mb-0">Care-Taker Front Desk & Key Issuance</h3>
+                            <small class="text-muted">Guest arrival verification, government ID capture, and physical key handover</small>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-3"><i class="bi bi-qr-code-scan me-2 text-primary"></i>Rapid Arrival Processing</h5>
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-5">
+                                    <label class="form-label fw-semibold">Scan QR or Enter Booking Reference</label>
+                                    <input type="text" class="form-control form-control-lg" placeholder="GH-2026-10-0002" value="GH-2026-10-0002">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Verify Government Photo ID</label>
+                                    <select class="form-select form-select-lg">
+                                        <option selected>Aadhaar Card (Verified)</option>
+                                        <option>Official Govt ID Card</option>
+                                        <option>Passport / Visa (Intl)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-primary btn-lg w-100 fw-semibold" onclick="quickCheckIn('GH-2026-10-0002')">
+                                        <i class="bi bi-key-fill me-1"></i> Check In Guest
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. INVOICING & CASHIER -->
+                <div id="view-billing" class="view-panel" style="display:none;">
+                    <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
+                        <div>
+                            <h3 class="h4 fw-bold text-navy mb-0">Finance, Invoicing & GST Settlement</h3>
+                            <small class="text-muted">Comptroller division accounting ledger and cashier receipt generation</small>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary" onclick="showReceiptModal()">
+                            <i class="bi bi-printer me-1"></i> View Sample Official Receipt
+                        </button>
+                    </div>
+
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Invoice #</th>
+                                            <th>Booking Ref</th>
+                                            <th>Guest Name</th>
+                                            <th>Tariff Class</th>
+                                            <th>Room Bill</th>
+                                            <th>GST (12%)</th>
+                                            <th>Total Paid</th>
+                                            <th>Mode</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold">INV-2026-0001</td>
+                                            <td>GH-2026-10-0001</td>
+                                            <td>Dr. A. K. Verma</td>
+                                            <td><span class="badge bg-info text-dark">1(i) Official (VIP Set)</span></td>
+                                            <td>&#8377;4,500.00</td>
+                                            <td>&#8377;540.00</td>
+                                            <td class="fw-bold text-success">&#8377;5,040.00</td>
+                                            <td><span class="badge bg-light text-dark border">POS Card</span></td>
+                                            <td><button class="btn btn-sm btn-outline-secondary" onclick="showReceiptModal()"><i class="bi bi-printer"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">INV-2026-0002</td>
+                                            <td>GH-2026-09-0118</td>
+                                            <td>Dr. P. C. Sharma</td>
+                                            <td><span class="badge bg-warning text-dark">9. Private Person (VVIP Set)</span></td>
+                                            <td>&#8377;9,000.00</td>
+                                            <td>&#8377;1,080.00</td>
+                                            <td class="fw-bold text-success">&#8377;10,080.00</td>
+                                            <td><span class="badge bg-light text-dark border">UPI / QR</span></td>
+                                            <td><button class="btn btn-sm btn-outline-secondary" onclick="showReceiptModal()"><i class="bi bi-printer"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. PUBLIC TRACKER -->
+                <div id="view-tracker" class="view-panel" style="display:none;">
+                    <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
+                        <div>
+                            <h3 class="h4 fw-bold text-navy mb-0">Public Guest House Request Tracker</h3>
+                            <small class="text-muted">Track application status in real-time without institutional sign-in</small>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="card shadow-sm border-0 mb-4">
+                                <div class="card-body p-4 text-center">
+                                    <i class="bi bi-geo-alt-fill text-warning fs-1"></i>
+                                    <h4 class="fw-bold mt-2">Track Your Reservation Status</h4>
+                                    <p class="text-muted small">Enter your 14-character Booking Reference or Registered 10-digit Mobile Number</p>
+
+                                    <div class="input-group input-group-lg my-4">
+                                        <input type="text" id="trackInput" class="form-control" placeholder="e.g. GH-2026-10-0001 or 9816012345" value="GH-2026-10-0001">
+                                        <button class="btn btn-primary px-4" onclick="performTracking()">
+                                            <i class="bi bi-search me-1"></i> Track Now
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tracking Result Card -->
+                            <div class="card border-0 shadow-sm" id="trackingResult">
+                                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                                    <h5 class="fw-bold mb-0">Dossier: <span class="text-primary">GH-2026-10-0001</span></h5>
+                                    <span class="badge bg-success px-3 py-2">CHECKED IN (ROOM #101)</span>
+                                </div>
+                                <div class="card-body p-4">
+                                    <div class="row mb-3">
+                                        <div class="col-sm-6 mb-2"><strong>Guest:</strong> Dr. A. K. Verma</div>
+                                        <div class="col-sm-6 mb-2"><strong>Facility:</strong> Estate Office Wing &bull; Main Guest House</div>
+                                        <div class="col-sm-6 mb-2"><strong>Check-In:</strong> 28 Oct 2026, 12:00 PM</div>
+                                        <div class="col-sm-6 mb-2"><strong>Check-Out:</strong> 31 Oct 2026, 11:00 AM</div>
+                                    </div>
+
+                                    <h6 class="fw-bold mt-4 mb-3">Lifecycle Progress Trail:</h6>
+                                    <ul class="list-group list-group-flush border-top border-bottom">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div><i class="bi bi-check-circle-fill text-success me-2"></i> Requisition Submitted online by Faculty</div>
+                                            <small class="text-muted">26 Oct 2026, 09:30 AM</small>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div><i class="bi bi-check-circle-fill text-success me-2"></i> Endorsed by Dean, College of Forestry</div>
+                                            <small class="text-muted">26 Oct 2026, 11:15 AM</small>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div><i class="bi bi-check-circle-fill text-success me-2"></i> Approved by Estate Officer &amp; Registrar</div>
+                                            <small class="text-muted">26 Oct 2026, 02:40 PM</small>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div><i class="bi bi-check-circle-fill text-success me-2"></i> Room Allocated: VIP Suite #101</div>
+                                            <small class="text-muted">27 Oct 2026, 10:00 AM</small>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div><i class="bi bi-check-circle-fill text-success me-2"></i> Front Desk Check-in & Key Handover Completed</div>
+                                            <small class="text-muted">28 Oct 2026, 12:05 PM</small>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 9. REGISTER VIEW -->
+                <div id="view-register" class="view-panel" style="display:none;">
+                    <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
+                        <div>
+                            <h3 class="h4 fw-bold text-navy mb-0">Master Institutional Booking Register</h3>
+                            <small class="text-muted">Complete historical archive of all university guest house stays</small>
+                        </div>
+                    </div>
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4 text-center text-muted">
+                            <i class="bi bi-archive fs-1 text-secondary mb-2"></i>
+                            <h5>Searchable Archive (2026 - Present)</h5>
+                            <p class="small">Use the dashboard and public tracker to query live individual records, or export full audit registers.</p>
+                            <button class="btn btn-outline-primary" onclick="showTab('dashboard')">Return to Active Dashboard</button>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Official Printable Receipt Modal -->
+    <div class="modal fade" id="receiptModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title font-serif"><i class="bi bi-receipt me-2"></i>Official Cashier Bill & Receipt</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 bg-white" id="printableReceipt">
+                    <div class="text-center mb-3">
+                        <h6 class="fw-bold mb-0 text-navy font-serif">DR. Y.S. PARMAR UNIVERSITY OF HORTICULTURE & FORESTRY</h6>
+                        <small class="text-muted">Estate Organization &bull; University Guest House, Nauni, Solan (H.P.)</small>
+                        <div class="text-danger fw-bold small mt-1">Ref: Notification No. UHF/EO-55/2025/- 1615-40</div>
+                    </div>
+                    <hr>
+                    <div class="row small mb-3">
+                        <div class="col-6"><strong>Receipt #:</strong> REC-2026-1042</div>
+                        <div class="col-6 text-end"><strong>Date:</strong> 28 Oct 2026</div>
+                        <div class="col-6"><strong>Guest:</strong> Dr. A. K. Verma</div>
+                        <div class="col-6 text-end"><strong>Room:</strong> VIP Suite #101</div>
+                        <div class="col-12 mt-1"><strong>Tariff Category:</strong> 1(i) HP/Univ/ICAR Official Visit</div>
+                    </div>
+
+                    <table class="table table-sm table-bordered small">
+                        <thead class="table-light">
+                            <tr><th>Description</th><th class="text-end">Nights</th><th class="text-end">Amount (INR)</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>VIP Set Stay Charges (&#8377;1,500/night)</td><td class="text-end">3</td><td class="text-end">&#8377;4,500.00</td></tr>
+                            <tr><td>GST @ 12% (CGST 6% + SGST 6%)</td><td class="text-end">&mdash;</td><td class="text-end">&#8377;540.00</td></tr>
+                            <tr class="table-light fw-bold"><td>Total Reconciled</td><td class="text-end">3</td><td class="text-end">&#8377;5,040.00</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-between align-items-end mt-4">
+                        <div class="stamp-box">PAID IN FULL</div>
+                        <div class="text-center small">
+                            <div class="fw-bold">Care-Taker / Cashier</div>
+                            <div class="text-muted" style="font-size: 0.7rem;">University Guest House</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="window.print()"><i class="bi bi-printer me-1"></i> Print Receipt</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Custom Category Modal -->
+    <div class="modal fade" id="addCategoryModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><i class="bi bi-plus-circle me-2"></i>Add Custom Guest Category</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCategoryForm" onsubmit="handleAddCategorySubmit(event)">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Serial Number</label>
+                            <input type="text" class="form-control" id="newCatSrNo" placeholder="e.g. 12 or 4(iii)" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Category Title &amp; Eligibility Scope</label>
+                            <textarea class="form-control" id="newCatTitle" rows="3" placeholder="Full legal text defining this class of dignitaries / visitors" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Short Label (for Dropdowns)</label>
+                            <input type="text" class="form-control" id="newCatShort" placeholder="e.g. State Corporation Executives" required>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-4">
+                                <label class="form-label fw-semibold">VVIP Set (&#8377;)</label>
+                                <input type="number" class="form-control" id="newCatVvip" value="3000" required>
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label fw-semibold">VIP Set (&#8377;)</label>
+                                <input type="number" class="form-control" id="newCatVip" value="2000" required>
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label fw-semibold">Ordinary (&#8377;)</label>
+                                <input type="number" class="form-control" id="newCatOrd" value="1500" required>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success fw-bold"><i class="bi bi-check2 me-1"></i> Add Category</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rejection Remarks Modal -->
+    <div class="modal fade" id="rejectionModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2"></i>Return Requisition Dossier</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="small text-muted">Please specify official administrative reason for returning or declining this requisition:</p>
+                    <textarea class="form-control" id="rejectionReason" rows="3" placeholder="e.g. VIP Suite reserved for Hon'ble Chancellor visit / Incomplete guest particulars..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmRejection()"><i class="bi bi-x-octagon me-1"></i> Confirm Rejection</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Authoritative Estate Tariff Master JS -->
+    <script src="estate_tariffs.js"></script>
+
+    <script>
+        // State management
+        let currentRole = 'estate_admin';
+        let pendingDossierRef = '';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderEstateTariffEditor();
+            handleAdminBookingWingChange();
+
+            // Hash navigation
+            if (window.location.hash) {
+                const tab = window.location.hash.replace('#', '');
+                showTab(tab);
+            }
+        });
+
+        function setRole(roleKey, roleName, email) {
+            currentRole = roleKey;
+            document.getElementById('currentRoleLabel').innerText = roleName;
+            document.getElementById('currentUserEmail').innerText = email;
+
+            let name = 'Dr. Dev Raj (Estate Officer)';
+            if (roleKey === 'admin') name = 'Er. Ramesh Chander (Admin)';
+            if (roleKey === 'registrar') name = 'Sh. Sandeep Negi (Registrar)';
+            if (roleKey === 'estate_admin') name = 'Dr. Dev Raj (Estate Officer)';
+            if (roleKey === 'dee_incharge') name = 'Dr. Inder Sharma (DEE Incharge)';
+            if (roleKey === 'dean') name = 'Dr. H. P. Sankhyan (Dean)';
+            if (roleKey === 'faculty') name = 'Prof. S. K. Bhardwaj (Faculty)';
+            if (roleKey === 'caretaker') name = 'Sh. Mast Ram (Care-Taker)';
+            if (roleKey === 'finance') name = 'Sh. C. M. Sharma (Comptroller)';
+            if (roleKey === 'auditor') name = 'Smt. Anita Sharma (Auditor)';
+            document.getElementById('currentUserName').innerText = name;
+            const alertUserEl = document.getElementById('alertUserName');
+            if (alertUserEl) alertUserEl.innerText = name;
+
+            updateTariffEditorPermissions();
+            renderEstateTariffEditor();
+            showToast(`Switched active institutional persona to: ${roleName}`);
+        }
+
+        function showTab(tabId) {
+            document.querySelectorAll('.view-panel').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.sidebar .nav-link').forEach(el => el.classList.remove('active'));
+
+            const targetView = document.getElementById('view-' + tabId);
+            if (targetView) targetView.style.display = 'block';
+
+            const activeNav = document.getElementById('nav-' + tabId);
+            if (activeNav) activeNav.classList.add('active');
+
+            if (tabId === 'tariffs') {
+                renderEstateTariffEditor();
+            }
+        }
+
+        // Render the Estate Tariff & Category Configuration Console
+        function renderEstateTariffEditor() {
+            const categories = EstateTariffManager.getEstateCategories();
+            const tbody = document.getElementById('estateTariffEditorBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const isAdmin = (currentRole === 'estate_admin' || currentRole === 'admin');
+            const disabledAttr = isAdmin ? '' : 'disabled';
+
+            categories.forEach((cat) => {
+                const tr = document.createElement('tr');
+                tr.id = `row-${cat.id}`;
+                
+                let vvipCell = `<input type="number" class="form-control form-control-sm text-center fw-bold" id="vvip-${cat.id}" value="${cat.vvip || 0}" ${disabledAttr}>`;
+                let vipCell = `<input type="number" class="form-control form-control-sm text-center fw-bold" id="vip-${cat.id}" value="${cat.vip || 0}" ${disabledAttr}>`;
+                let ordCell = `<input type="number" class="form-control form-control-sm text-center fw-bold" id="ord-${cat.id}" value="${cat.ordinary || 0}" ${disabledAttr}>`;
+
+                if (cat.id.startsWith('cat_10_dorm')) {
+                    vvipCell = `<span class="text-muted">&mdash;</span><input type="hidden" id="vvip-${cat.id}" value="0">`;
+                    vipCell = `<span class="text-muted">&mdash;</span><input type="hidden" id="vip-${cat.id}" value="0">`;
+                    ordCell = `<div class="input-group input-group-sm"><input type="number" class="form-control text-center fw-bold text-primary" id="ord-${cat.id}" value="${cat.ordinary}" ${disabledAttr}><span class="input-group-text">/bed</span></div>`;
+                } else if (cat.isPercentage) {
+                    vvipCell = `<small class="text-muted">50% VVIP</small><input type="hidden" id="vvip-${cat.id}" value="${cat.vvip}">`;
+                    vipCell = `<small class="text-muted">50% VIP</small><input type="hidden" id="vip-${cat.id}" value="${cat.vip}">`;
+                    ordCell = `<small class="text-muted">50% Ord</small><input type="hidden" id="ord-${cat.id}" value="${cat.ordinary}">`;
+                }
+
+                tr.innerHTML = `
+                    <td class="text-center">
+                        <input type="text" class="form-control form-control-sm text-center fw-bold" id="sr-${cat.id}" value="${cat.srNo}" style="width: 65px;" ${disabledAttr}>
+                    </td>
+                    <td>
+                        <textarea class="form-control form-control-sm" id="title-${cat.id}" rows="2" ${disabledAttr}>${cat.title}</textarea>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control form-control-sm" id="short-${cat.id}" value="${cat.shortName}" ${disabledAttr}>
+                    </td>
+                    <td class="text-center">${vvipCell}</td>
+                    <td class="text-center">${vipCell}</td>
+                    <td class="text-center">${ordCell}</td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteEstateCategory('${cat.id}')" ${disabledAttr} title="Delete Category">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Render Dining Hall
+            const diningRates = EstateTariffManager.getDiningHallRates();
+            const dtbody = document.getElementById('diningTariffEditorBody');
+            if (dtbody) {
+                dtbody.innerHTML = '';
+                diningRates.forEach(dr => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="text-center fw-bold">${dr.srNo}</td>
+                        <td>
+                            <textarea class="form-control form-control-sm" id="dining-desc-${dr.id}" rows="2" ${disabledAttr}>${dr.description}</textarea>
+                        </td>
+                        <td>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">&#8377;</span>
+                                <input type="number" class="form-control fw-bold text-success" id="dining-rate-${dr.id}" value="${dr.rate}" ${disabledAttr}>
+                            </div>
+                        </td>
+                        <td class="text-center text-muted">${dr.unit}</td>
+                    `;
+                    dtbody.appendChild(tr);
+                });
+            }
+
+            // Render Metadata
+            const meta = EstateTariffManager.getNotificationMeta();
+            if (document.getElementById('metaDocNumber')) {
+                document.getElementById('metaDocNumber').value = meta.docNumber;
+                document.getElementById('metaDocDate').value = meta.docDate;
+                document.getElementById('metaAuthority').value = meta.authority;
+                document.getElementById('metaIssuer').value = meta.issuer;
+                document.getElementById('consoleDocNum').innerText = meta.docNumber;
+                document.getElementById('consoleDocDate').innerText = meta.docDate;
+            }
+
+            updateTariffEditorPermissions();
+            updateSandboxControls();
+        }
+
+        function updateTariffEditorPermissions() {
+            const isAdmin = (currentRole === 'estate_admin' || currentRole === 'admin');
+            const badge = document.getElementById('estateConsolePermBadge');
+            const alertBox = document.getElementById('tariffAccessAlert');
+            const btnSave = document.getElementById('btnSaveTariffs');
+            const btnReset = document.getElementById('btnResetTariffs');
+            const btnAdd = document.getElementById('btnAddCategory');
+
+            if (isAdmin) {
+                if (badge) { badge.className = 'badge bg-success'; badge.innerText = 'Admin Write Access'; }
+                if (alertBox) {
+                    alertBox.className = 'alert alert-success d-flex align-items-center py-2 px-3 mb-4';
+                    alertBox.innerHTML = `
+                        <i class="bi bi-shield-check fs-4 me-3 text-success"></i>
+                        <div>
+                            <strong>Estate Admin Authorized:</strong> Logged in as <strong>${document.getElementById('currentUserName').innerText}</strong>. Full editing privileges granted for Notification 1615-40 stay charges, dining hall fees, and categories.
+                        </div>
+                    `;
+                }
+                if (btnSave) btnSave.disabled = false;
+                if (btnReset) btnReset.disabled = false;
+                if (btnAdd) btnAdd.disabled = false;
+            } else {
+                if (badge) { badge.className = 'badge bg-secondary'; badge.innerText = 'Read-Only Mode'; }
+                if (alertBox) {
+                    alertBox.className = 'alert alert-warning d-flex align-items-center py-2 px-3 mb-4';
+                    alertBox.innerHTML = `
+                        <i class="bi bi-shield-lock fs-4 me-3 text-warning"></i>
+                        <div>
+                            <strong>Read-Only Mode:</strong> Only the <strong>Estate Officer</strong> or <strong>System Administrator</strong> can edit official university tariffs under Notification 1615-40. Switch demo role above to make changes.
+                        </div>
+                    `;
+                }
+                if (btnSave) btnSave.disabled = true;
+                if (btnReset) btnReset.disabled = true;
+                if (btnAdd) btnAdd.disabled = true;
+            }
+        }
+
+        function saveEstateTariffsFromForm() {
+            const categories = EstateTariffManager.getEstateCategories();
+            categories.forEach(cat => {
+                const srEl = document.getElementById(`sr-${cat.id}`);
+                const titleEl = document.getElementById(`title-${cat.id}`);
+                const shortEl = document.getElementById(`short-${cat.id}`);
+                const vvipEl = document.getElementById(`vvip-${cat.id}`);
+                const vipEl = document.getElementById(`vip-${cat.id}`);
+                const ordEl = document.getElementById(`ord-${cat.id}`);
+
+                if (srEl) cat.srNo = srEl.value;
+                if (titleEl) cat.title = titleEl.value;
+                if (shortEl) cat.shortName = shortEl.value;
+                if (vvipEl) cat.vvip = parseInt(vvipEl.value) || 0;
+                if (vipEl) cat.vip = parseInt(vipEl.value) || 0;
+                if (ordEl) cat.ordinary = parseInt(ordEl.value) || 0;
+            });
+
+            EstateTariffManager.saveEstateCategories(categories);
+
+            // Save Dining
+            const diningRates = EstateTariffManager.getDiningHallRates();
+            diningRates.forEach(dr => {
+                const descEl = document.getElementById(`dining-desc-${dr.id}`);
+                const rateEl = document.getElementById(`dining-rate-${dr.id}`);
+                if (descEl) dr.description = descEl.value;
+                if (rateEl) dr.rate = parseInt(rateEl.value) || 0;
+            });
+            EstateTariffManager.saveDiningHallRates(diningRates);
+
+            // Save Meta
+            const meta = {
+                docNumber: document.getElementById('metaDocNumber').value,
+                docDate: document.getElementById('metaDocDate').value,
+                authority: document.getElementById('metaAuthority').value,
+                issuer: document.getElementById('metaIssuer').value
+            };
+            EstateTariffManager.saveNotificationMeta(meta);
+
+            // Re-populate booking select
+            handleAdminBookingWingChange();
+
+            alert('âœ… Success! All Estate Officer tariffs, guest categories, and dining hall charges have been saved and published.\n\nChanges are actively persisted in localStorage and synchronized with the public booking portal.');
+            renderEstateTariffEditor();
+        }
+
+        function resetEstateTariffsToSignedDefaults() {
+            if (confirm('Are you sure you want to reset all categories and rates to the original signed Notification No. UHF/EO-55/2025/- 1615-40 defaults?')) {
+                EstateTariffManager.resetToDefaults();
+                renderEstateTariffEditor();
+                handleAdminBookingWingChange();
+                alert('Tariffs restored to original signed university notification defaults.');
+            }
+        }
+
+        function openAddCategoryModal() {
+            const modal = new bootstrap.Modal(document.getElementById('addCategoryModal'));
+            modal.show();
+        }
+
+        function handleAddCategorySubmit(e) {
+            e.preventDefault();
+            const srNo = document.getElementById('newCatSrNo').value;
+            const title = document.getElementById('newCatTitle').value;
+            const shortName = document.getElementById('newCatShort').value;
+            const vvip = parseInt(document.getElementById('newCatVvip').value) || 0;
+            const vip = parseInt(document.getElementById('newCatVip').value) || 0;
+            const ordinary = parseInt(document.getElementById('newCatOrd').value) || 0;
+
+            const categories = EstateTariffManager.getEstateCategories();
+            const newId = 'cat_custom_' + Date.now();
+            categories.push({
+                id: newId,
+                srNo: srNo,
+                title: title,
+                description: title,
+                shortName: shortName,
+                vvip: vvip,
+                vip: vip,
+                ordinary: ordinary,
+                type: 'custom'
+            });
+
+            EstateTariffManager.saveEstateCategories(categories);
+            bootstrap.Modal.getInstance(document.getElementById('addCategoryModal')).hide();
+            document.getElementById('addCategoryForm').reset();
+            renderEstateTariffEditor();
+            handleAdminBookingWingChange();
+            alert(`Category ${srNo} added successfully!`);
+        }
+
+        function deleteEstateCategory(id) {
+            if (confirm('Delete this category from the active tariff master?')) {
+                let categories = EstateTariffManager.getEstateCategories();
+                categories = categories.filter(c => c.id !== id);
+                EstateTariffManager.saveEstateCategories(categories);
+                renderEstateTariffEditor();
+                handleAdminBookingWingChange();
+            }
+        }
+
+        function handleAdminBookingWingChange() {
+            const wing = document.getElementById('bookingWing').value;
+            const ghSelect = document.getElementById('bookingGuestHouse');
+            const setSelect = document.getElementById('bookingSetType');
+            const catSelect = document.getElementById('bookingCategory');
+            const hint = document.getElementById('adminBookingWingHint');
+
+            ghSelect.innerHTML = '';
+            setSelect.innerHTML = '';
+            catSelect.innerHTML = '';
+
+            if (wing === 'estate') {
+                hint.innerHTML = 'Governed by: <strong>Estate Officer &amp; Registrar</strong> (Notification No. UHF/EO-55/2025/- 1615-40)';
+                ghSelect.innerHTML = `
+                    <option value="1">Main Guest House (VIP & Deluxe)</option>
+                    <option value="2">VIP Suites Annexe</option>
+                    <option value="4">Forest Rest House (FRH)</option>
+                `;
+                setSelect.innerHTML = `
+                    <option value="vip" selected>VIP Set (Annexe / Main GH)</option>
+                    <option value="vvip">VVIP Set (Presidential Suite)</option>
+                    <option value="ordinary">Ordinary Set (Double Room)</option>
+                    <option value="dormitory">Dormitory Bed</option>
+                    <option value="wash_change">Wash/Change (50% Rent - Short Stay)</option>
+                `;
+
+                const estateCats = EstateTariffManager.getEstateCategories();
+                estateCats.forEach(cat => {
+                    const opt = document.createElement('option');
+                    opt.value = cat.id;
+                    opt.innerText = `${cat.srNo}. ${cat.shortName}`;
+                    catSelect.appendChild(opt);
+                });
+            } else {
+                hint.innerHTML = 'Governed by: <strong>Directorate of Extension Education (DEE)</strong> &bull; Kisan Bhawan Incharge';
+                ghSelect.innerHTML = `
+                    <option value="3">Farmers Hostel (Kisan Bhawan)</option>
+                    <option value="5">Extension Trainees Wing</option>
+                `;
+                setSelect.innerHTML = `
+                    <option value="double" selected>Double Room (Farmers & Trainees)</option>
+                    <option value="dormitory">Trainees Dormitory Hall</option>
+                `;
+
+                const deeCats = EstateTariffManager.getDeeCategories();
+                deeCats.forEach(cat => {
+                    const opt = document.createElement('option');
+                    opt.value = cat.id;
+                    opt.innerText = `${cat.srNo}. ${cat.shortName}`;
+                    catSelect.appendChild(opt);
+                });
+            }
+
+            calculateTariffEstimate();
+        }
+
+                function openDatePicker(inputId) { const el = document.getElementById(inputId); if (!el) return; if (el.showPicker) { try { el.showPicker(); } catch (e) { el.focus(); } } else { el.focus(); } }
+
+        function populateCheckOutDropdown(scope, checkInDateStr, selectedCheckOutStr) {
+            let selectId = 'checkOutDateSelect';
+            const selectEl = document.getElementById(selectId);
+            if (!selectEl) return;
+
+            let inDate = new Date(checkInDateStr);
+            if (isNaN(inDate.getTime())) {
+                inDate = new Date('2026-11-02');
+            }
+
+            selectEl.innerHTML = '';
+
+            const durations = [
+                { nights: 1, label: '1 Night' },
+                { nights: 2, label: '2 Nights' },
+                { nights: 3, label: '3 Nights' },
+                { nights: 4, label: '4 Nights' },
+                { nights: 5, label: '5 Nights' },
+                { nights: 6, label: '6 Nights' },
+                { nights: 7, label: '7 Nights (1 Week)' },
+                { nights: 8, label: '8 Nights' },
+                { nights: 9, label: '9 Nights' },
+                { nights: 10, label: '10 Nights' },
+                { nights: 12, label: '12 Nights' },
+                { nights: 14, label: '14 Nights (2 Weeks)' },
+                { nights: 21, label: '21 Nights (3 Weeks)' },
+                { nights: 30, label: '30 Nights (1 Month)' }
+            ];
+
+            let found = false;
+            durations.forEach(d => {
+                const outDate = new Date(inDate.getTime() + (d.nights * 24 * 60 * 60 * 1000));
+                const yyyy = outDate.getFullYear();
+                const mm = String(outDate.getMonth() + 1).padStart(2, '0');
+                const dd = String(outDate.getDate()).padStart(2, '0');
+                const isoVal = `${yyyy}-${mm}-${dd}`;
+                const displayDate = `${dd}/${mm}/${yyyy}`;
+
+                const opt = document.createElement('option');
+                opt.value = isoVal;
+                opt.innerText = `${displayDate} (${d.label})`;
+
+                if (selectedCheckOutStr && isoVal === selectedCheckOutStr) {
+                    opt.selected = true;
+                    found = true;
+                } else if (!selectedCheckOutStr && d.nights === 3) {
+                    opt.selected = true;
+                    found = true;
+                }
+                selectEl.appendChild(opt);
+            });
+
+            const customOpt = document.createElement('option');
+            customOpt.value = 'custom';
+            customOpt.innerText = 'ðŸ“… Pick Custom Calendar Date...';
+            if (!found && selectedCheckOutStr) {
+                customOpt.selected = true;
+            }
+            selectEl.appendChild(customOpt);
+
+            document.getElementById('checkOutDate').value = selectEl.value === 'custom' ? (selectedCheckOutStr || '2026-11-05') : selectEl.value;
+        }
+
+        function onAdminCheckOutSelectChange(val) {
+            if (val === 'custom') {
+                const customEl = document.getElementById('checkOutDateCustom');
+                customEl.style.display = 'block';
+                openDatePicker('checkOutDateCustom');
+            } else {
+                document.getElementById('checkOutDate').value = val;
+                const customEl = document.getElementById('checkOutDateCustom');
+                if (customEl) customEl.style.display = 'none';
+                calculateTariffEstimate();
+            }
+        }
+
+        function onAdminCheckInChange() {
+            const inEl = document.getElementById('checkInDate');
+            if (!inEl) return;
+            const currentOut = document.getElementById('checkOutDate') ? document.getElementById('checkOutDate').value : null;
+            populateCheckOutDropdown('admin', inEl.value, currentOut);
+            calculateTariffEstimate();
+        }
+
+        function onCustomDatePicked(scope, val) {
+            if (!val) return;
+            document.getElementById('checkOutDate').value = val;
+            const inVal = document.getElementById('checkInDate').value;
+            populateCheckOutDropdown('admin', inVal, val);
+            calculateTariffEstimate();
+        }
+
+        function setStayDays(scope, days) {
+            const inEl = document.getElementById('checkInDate');
+            if (!inEl) return;
+
+            let inDate = new Date(inEl.value);
+            if (isNaN(inDate.getTime())) {
+                inDate = new Date('2026-11-02');
+            }
+
+            const outDate = new Date(inDate.getTime() + (days * 24 * 60 * 60 * 1000));
+            const yyyy = outDate.getFullYear();
+            const mm = String(outDate.getMonth() + 1).padStart(2, '0');
+            const dd = String(outDate.getDate()).padStart(2, '0');
+            const isoVal = `${yyyy}-${mm}-${dd}`;
+
+            populateCheckOutDropdown('admin', inEl.value, isoVal);
+            calculateTariffEstimate();
+        }
+
+        function calculateTariffEstimate() {
+            const wing = document.getElementById('bookingWing').value;
+            const catId = document.getElementById('bookingCategory').value;
+            const setType = document.getElementById('bookingSetType').value;
+            
+            const checkInVal = document.getElementById('checkInDate').value;
+            const checkOutVal = document.getElementById('checkOutDate').value;
+            const checkIn = new Date(checkInVal);
+            const checkOut = new Date(checkOutVal);
+
+            let diffTime = checkOut - checkIn;
+            let nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            if (isNaN(nights) || nights < 1) nights = 1;
+
+            const rate = EstateTariffManager.calculateStayRate(wing, catId, setType);
+            const subtotal = rate * nights;
+            let gst = 0;
+            if (rate >= 1000) {
+                gst = subtotal * 0.12;
+            }
+            const total = subtotal + gst;
+
+            document.getElementById('estNights').innerText = `${nights} Night${nights > 1 ? 's' : ''}`;
+            document.getElementById('estRate').innerText = `â‚¹${rate.toLocaleString('en-IN')} / night`;
+            document.getElementById('estSubtotal').innerText = `â‚¹${subtotal.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('estGst').innerText = gst > 0 ? `â‚¹${gst.toLocaleString('en-IN', {minimumFractionDigits: 2})}` : `â‚¹0.00 (Exempt < â‚¹1,000)`;
+            document.getElementById('estTotal').innerText = `â‚¹${total.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+        }
+
+        function updateSandboxControls() {
+            const wing = document.getElementById('sbWing').value;
+            const setSelect = document.getElementById('sbSet');
+            const catSelect = document.getElementById('sbCategory');
+            if (!setSelect || !catSelect) return;
+
+            setSelect.innerHTML = '';
+            catSelect.innerHTML = '';
+
+            if (wing === 'estate') {
+                setSelect.innerHTML = `
+                    <option value="vip" selected>VIP Set</option>
+                    <option value="vvip">VVIP Set</option>
+                    <option value="ordinary">Ordinary Set</option>
+                    <option value="dormitory">Dormitory Bed</option>
+                    <option value="wash_change">Wash/Change (50%)</option>
+                `;
+                const estateCats = EstateTariffManager.getEstateCategories();
+                estateCats.forEach(cat => {
+                    const opt = document.createElement('option');
+                    opt.value = cat.id;
+                    opt.innerText = `${cat.srNo}. ${cat.shortName}`;
+                    catSelect.appendChild(opt);
+                });
+            } else {
+                setSelect.innerHTML = `
+                    <option value="double" selected>Double Room</option>
+                    <option value="dormitory">Dormitory Bed</option>
+                `;
+                const deeCats = EstateTariffManager.getDeeCategories();
+                deeCats.forEach(cat => {
+                    const opt = document.createElement('option');
+                    opt.value = cat.id;
+                    opt.innerText = `${cat.srNo}. ${cat.shortName}`;
+                    catSelect.appendChild(opt);
+                });
+            }
+            runSandboxCalculation();
+        }
+
+        function runSandboxCalculation() {
+            const wing = document.getElementById('sbWing').value;
+            const catId = document.getElementById('sbCategory').value;
+            const setType = document.getElementById('sbSet').value;
+            const nights = parseInt(document.getElementById('sbNights').value) || 1;
+
+            const rate = EstateTariffManager.calculateStayRate(wing, catId, setType);
+            const subtotal = rate * nights;
+            let gst = 0;
+            if (rate >= 1000) {
+                gst = subtotal * 0.12;
+            }
+            const total = subtotal + gst;
+
+            document.getElementById('sbDisplayRate').innerText = `â‚¹${rate.toLocaleString('en-IN')} / night`;
+            document.getElementById('sbDisplaySubtotal').innerText = `â‚¹${subtotal.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('sbDisplayGst').innerText = gst > 0 ? `â‚¹${gst.toLocaleString('en-IN', {minimumFractionDigits: 2})}` : `â‚¹0.00 (Exempt)`;
+            document.getElementById('sbDisplayTotal').innerText = `â‚¹${total.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+        }
+
+        function handleReservationSubmit(e) {
+            e.preventDefault();
+            const guestName = document.getElementById('guestName').value;
+            const refNum = 'GH-2026-11-00' + Math.floor(10 + Math.random() * 90);
+            const wing = document.getElementById('bookingWing').value;
+            const wingLabel = wing === 'estate' ? 'Estate Office Wing' : 'DEE (Kisan Bhawan)';
+
+            // Append to dashboard table
+            const tbody = document.getElementById('bookingsTableBody');
+            const newRow = `
+                <tr class="table-warning">
+                    <td class="fw-bold text-primary">${refNum}</td>
+                    <td>
+                        <div class="fw-semibold">${guestName}</div>
+                        <small class="text-muted">New Requisition</small>
+                    </td>
+                    <td>
+                        <span class="badge ${wing === 'estate' ? 'bg-primary' : 'bg-success'}">${wingLabel}</span><br>
+                        <small class="text-warning text-dark fw-bold">Pending Allocation</small>
+                    </td>
+                    <td>
+                        <div>02 Nov 2026 &rarr; 05 Nov 2026</div>
+                        <small class="text-muted">3 Nights &bull; 1 Guest</small>
+                    </td>
+                    <td><span class="badge bg-info text-dark">Notification 1615-40</span></td>
+                    <td><span class="badge bg-warning text-dark badge-status">PENDING_APPROVAL</span></td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-outline-warning" onclick="showTab('workflow')"><i class="bi bi-shield-check"></i> Review</button>
+                    </td>
+                </tr>
+            `;
+            tbody.insertAdjacentHTML('afterbegin', newRow);
+
+            const counter = document.getElementById('dashPendingCount');
+            counter.innerText = parseInt(counter.innerText) + 1;
+
+            alert(`âœ… Booking request successfully submitted!\n\nReference Number: ${refNum}\nGuest: ${guestName}\nWing: ${wingLabel}\nStatus: PENDING_APPROVAL\n\nA confirmation alert has been dispatched to applicant and Estate Office.`);
+            showTab('dashboard');
+        }
+
+        function approveWorkflowAction(ref) {
+            alert(`âœ… Dossier ${ref} approved successfully by ${document.getElementById('currentRoleLabel').innerText}!\n\nStatus updated to APPROVED. Forwarded to Care-Taker desk for room key allocation.`);
+            document.getElementById('workflowBadge').innerText = '1';
+            showTab('dashboard');
+        }
+
+        function rejectWorkflowModal(ref) {
+            pendingDossierRef = ref;
+            const modal = new bootstrap.Modal(document.getElementById('rejectionModal'));
+            modal.show();
+        }
+
+        function confirmRejection() {
+            const reason = document.getElementById('rejectionReason').value;
+            if(!reason.trim()) {
+                alert('Please enter formal rejection remarks.');
+                return;
+            }
+            bootstrap.Modal.getInstance(document.getElementById('rejectionModal')).hide();
+            alert(`Dossier ${pendingDossierRef} returned with remarks:\n"${reason}"\n\nNotification sent to applicant.`);
+            document.getElementById('workflowBadge').innerText = '1';
+            showTab('dashboard');
+        }
+
+        function quickCheckIn(ref) {
+            alert(`Guest for ${ref} verified with Photo ID and checked in!\nRoom Key issued by Care-Taker.\nStatus updated to: CHECKED_IN`);
+            showTab('dashboard');
+        }
+
+        function showReceiptModal() {
+            const modal = new bootstrap.Modal(document.getElementById('receiptModal'));
+            modal.show();
+        }
+
+        function performTracking() {
+            const val = document.getElementById('trackInput').value.trim();
+            if(!val) {
+                alert('Please enter a booking reference or mobile number.');
+                return;
+            }
+            document.getElementById('trackingResult').style.display = 'block';
+            showToast(`Tracking status retrieved for: ${val}`);
+        }
+
+        function showToast(msg) {
+            console.log(msg);
+        }
+    </script>
+</body>
+</html>

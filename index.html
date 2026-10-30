@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Guest House & Suites | Dr. Y.S. Parmar UHF Nauni</title>
+    <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --forest-dark: #123321;
+            --forest-green: #1d4d31;
+            --forest-emerald: #2a6944;
+            --earth-sand: #f5f2eb;
+            --earth-cream: #faf8f5;
+            --warm-gold: #c59b27;
+            --warm-gold-hover: #b0871d;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--earth-cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+
+        /* Top Government / Institutional Bar */
+        .top-inst-bar {
+            background-color: #0c2015;
+            color: #d1fae5;
+            font-size: 0.76rem;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        /* Navigation Bar */
+        .navbar-lodge {
+            background-color: #ffffff;
+            box-shadow: 0 4px 20px rgba(18, 51, 33, 0.08);
+            padding: 12px 0;
+            transition: all 0.3s ease;
+        }
+        .nav-link-lodge {
+            color: var(--forest-dark);
+            font-weight: 500;
+            font-size: 0.92rem;
+            padding: 8px 14px !important;
+            transition: color 0.2s;
+        }
+        .nav-link-lodge:hover {
+            color: var(--warm-gold);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            min-height: 85vh;
+            background: linear-gradient(180deg, rgba(14, 38, 25, 0.65) 0%, rgba(14, 38, 25, 0.82) 100%),
+                        url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            color: #ffffff;
+            padding: 80px 0 140px;
+        }
+        .hero-badge {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #fef08a;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+
+        /* Floating Booking Box */
+        .booking-floating-card {
+            margin-top: -95px;
+            position: relative;
+            z-index: 20;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 45px rgba(18, 51, 33, 0.14);
+            padding: 26px 30px;
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+
+        /* Buttons */
+        .btn-gold {
+            background-color: var(--warm-gold);
+            color: #ffffff;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 10px 24px;
+            transition: all 0.2s ease;
+            border: none;
+        }
+        .btn-gold:hover {
+            background-color: var(--warm-gold-hover);
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(197, 155, 39, 0.3);
+        }
+        .btn-forest {
+            background-color: var(--forest-green);
+            color: #ffffff;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 10px 24px;
+            transition: all 0.2s ease;
+            border: none;
+        }
+        .btn-forest:hover {
+            background-color: var(--forest-dark);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        /* Room Cards */
+        .room-card {
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.07);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .room-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 32px rgba(18, 51, 33, 0.1);
+        }
+        .room-img-wrapper {
+            position: relative;
+            height: 240px;
+            overflow: hidden;
+        }
+        .room-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .room-card:hover .room-img {
+            transform: scale(1.06);
+        }
+        .room-badge-category {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: rgba(18, 51, 33, 0.88);
+            backdrop-filter: blur(6px);
+            color: #ffffff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .room-badge-price {
+            position: absolute;
+            bottom: 14px;
+            right: 14px;
+            background: #ffffff;
+            color: var(--forest-dark);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        /* Wing Badge Indicator */
+        .wing-indicator-estate {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .wing-indicator-dee {
+            background-color: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* Facility Feature Pill */
+        .amenity-pill {
+            background-color: var(--earth-sand);
+            color: var(--forest-dark);
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin: 2px 4px 2px 0;
+            font-weight: 500;
+        }
+
+        /* Tracker Section */
+        .tracker-banner {
+            background: linear-gradient(135deg, var(--forest-dark) 0%, #174229 100%);
+            border-radius: 20px;
+            color: #ffffff;
+            padding: 50px 30px;
+        }
+
+        /* Footer */
+        .footer-lodge {
+            background-color: #0b1a11;
+            color: #94a3b8;
+            padding: 70px 0 25px;
+            font-size: 0.88rem;
+        }
+        .footer-link {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-link:hover {
+            color: var(--warm-gold);
+        }
+
+        /* University Logo */
+        .university-logo-header {
+            width: 58px;
+            height: 58px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: #ffffff;
+            padding: 2px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .notification-card {
+            background: #ffffff;
+            border: 2px solid #0f766e;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Government / Institutional Top Strip -->
+    <div class="top-inst-bar">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div>
+                <i class="bi bi-geo-alt-fill text-warning me-1"></i> Nauni, Solan, Himachal Pradesh 173230 &bull; 
+                <span class="d-none d-md-inline">Dr. Yashwant Singh Parmar University of Horticulture & Forestry</span>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <a href="/preview.html#tariffs" target="_blank" class="text-light text-decoration-none"><i class="bi bi-file-text me-1"></i> Notification No. 1615-40</a>
+                <a href="#track" class="text-light text-decoration-none"><i class="bi bi-search me-1"></i> Track Booking</a>
+                <a href="/preview.html#tariffs" class="badge bg-warning text-dark text-decoration-none px-2 py-1"><i class="bi bi-sliders me-1"></i> Estate Admin Tariff Console</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Main Navigation Header -->
+    <nav class="navbar navbar-expand-lg navbar-lodge sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-3" href="#">
+                <img src="university_logo.jpg" alt="Dr. YSP UHF Nauni Logo" class="university-logo-header">
+                <div>
+                    <span class="font-serif fw-bold fs-5 text-dark lh-1 d-block">Dr. Y.S. Parmar UHF Nauni</span>
+                    <small class="text-success fw-semibold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.5px;">Central Guest House Management Portal</small>
+                </div>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navLodgeContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navLodgeContent">
+                <ul class="navbar-nav ms-auto align-items-center gap-1">
+                    <li class="nav-item"><a class="nav-link nav-link-lodge" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-lodge" href="#accommodations">Accommodations</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-lodge" href="#amenities">Dining & Hall</a></li>
+                    
+                    <li class="nav-item"><a class="nav-link nav-link-lodge" href="#track">Track Status</a></li>
+                    <li class="nav-item ms-lg-2">
+                        <button class="btn btn-gold text-white" onclick="openBookingModal('estate')">
+                            <i class="bi bi-calendar2-check me-1"></i> Book Stay
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 3. Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container text-center text-md-start">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="hero-badge mb-3">
+                        <i class="bi bi-tree-fill me-1"></i> Himalayan Pine Retreat &bull; UHF Nauni Campus
+                    </div>
+                    <h1 class="font-serif display-4 fw-bold mb-3 text-white">
+                        Official Academic & VIP Hospitality in Solan Hills
+                    </h1>
+                    <p class="lead text-light text-opacity-90 mb-4" style="max-width: 650px;">
+                        Operated in accordance with <strong>Estate Organization Notification No. UHF/EO-55/2025/- 1615-40</strong>, providing accommodation across the <strong>Estate Office</strong> and <strong>Directorate of Extension Education (DEE)</strong> wings.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <button class="btn btn-gold btn-lg px-4" onclick="openBookingModal('estate')">
+                            <i class="bi bi-pencil-square me-2"></i> Book Accommodation
+                        </button>
+                        <a href="#accommodations" class="btn btn-outline-light btn-lg px-4">
+                            Explore Accommodations
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 d-none d-lg-block text-end">
+                    <div class="bg-white bg-opacity-10 backdrop-blur p-4 rounded-4 border border-light border-opacity-25 text-start">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <img src="university_logo.jpg" alt="Logo" style="width: 50px; height: 50px; object-fit: contain; border-radius: 50%; background: #fff; padding: 2px;">
+                            <div>
+                                <h6 class="text-warning mb-0 fw-bold">Dr. Y.S. Parmar UHF</h6>
+                                <small class="text-white-50">Established 1985 &bull; Solan (H.P.)</small>
+                            </div>
+                        </div>
+                        <p class="small text-light mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i> <strong>Estate Office:</strong> VVIP, VIP &amp; Ordinary Sets</p>
+                        <p class="small text-light mb-0"><i class="bi bi-check-circle-fill text-warning me-2"></i> <strong>DEE Wing:</strong> Kisan Bhawan &amp; Trainees Wing</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Dynamic Floating Booking Bar (Categorized according to Notification & Wing) -->
+    <div class="container">
+        <div class="booking-floating-card">
+            <form onsubmit="handleQuickSearch(event)">
+                <div class="row g-3 align-items-end">
+                    <!-- 1. Wing Selector (User Decides) -->
+                    <div class="col-xl-3 col-md-6">
+                        <label class="form-label fw-semibold small text-muted">
+                            <i class="bi bi-building-gear me-1 text-success"></i> 1. Accommodation Wing *
+                        </label>
+                        <select id="searchWing" class="form-select form-select-lg fs-6 fw-bold border-success text-success" onchange="onWingSelectionChange(this.value)">
+                            <option value="estate" selected>Estate Office (Main GH, VIP Suites, FRH)</option>
+                            <option value="dee">Directorate of Extension Education (DEE)</option>
+                        </select>
+                    </div>
+
+                    <!-- 2. Room Set / Class (VVIP, VIP, Ordinary for Estate) -->
+                    <div class="col-xl-2 col-md-6">
+                        <label class="form-label fw-semibold small text-muted" id="searchSetLabel">
+                            <i class="bi bi-door-closed me-1 text-primary"></i> 2. Room Set / Class *
+                        </label>
+                        <select id="searchSetType" class="form-select form-select-lg fs-6 fw-semibold" onchange="updateEstimatedSearchPrice()">
+                            <!-- Populated dynamically via JS -->
+                        </select>
+                    </div>
+
+                    <!-- 3. Dynamic Category (From Notification Image) -->
+                    <div class="col-xl-3 col-md-12">
+                        <label class="form-label fw-semibold small text-muted">
+                            <i class="bi bi-person-badge me-1 text-primary"></i> 3. Category (Notification 1615-40) *
+                        </label>
+                        <select id="searchCategory" class="form-select form-select-lg fs-6" onchange="updateEstimatedSearchPrice()">
+                            <!-- Populated dynamically via JS -->
+                        </select>
+                    </div>
+
+                    <!-- 4. Check-In -->
+                    <div class="col-xl-2 col-md-6">
+                        <label class="form-label fw-semibold small text-muted">
+                            <i class="bi bi-calendar-event me-1 text-success"></i> Check-In Date *
+                        </label>
+                        <div class="input-group">
+                            <input type="date" id="searchCheckIn" class="form-control form-control-lg fs-6" value="2026-11-02" required onchange="onSearchCheckInChange()" oninput="updateEstimatedSearchPrice()" onclick="try{this.showPicker()}catch(e){}">
+                            <button class="btn btn-outline-secondary" type="button" onclick="openDatePicker('searchCheckIn')" title="Open Calendar"><i class="bi bi-calendar-event text-success"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- 5. Check-Out Date (True HTML Select Dropdown) -->
+                    <div class="col-xl-2 col-md-6">
+                        <label class="form-label fw-semibold small text-muted d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-calendar-check me-1 text-danger"></i> Check-Out Date *</span>
+                            <span class="badge bg-danger text-white py-0 px-1" style="font-size: 0.65rem;">Select</span>
+                        </label>
+                        <div class="input-group">
+                            <select id="searchCheckOutSelect" class="form-select form-select-lg fs-6 fw-bold border-danger text-danger" onchange="onSearchCheckOutSelectChange(this.value)">
+                                <!-- Dynamically populated based on Check-In Date -->
+                            </select>
+                            <button class="btn btn-outline-danger" type="button" onclick="openDatePicker('searchCheckOutCustom')" title="Pick Custom Date from Calendar"><i class="bi bi-calendar3"></i></button>
+                        </div>
+                        <input type="hidden" id="searchCheckOut" value="2026-11-05">
+                        <input type="date" id="searchCheckOutCustom" class="form-control form-control-sm mt-1" style="display:none;" onchange="onCustomDatePicked('search', this.value)">
+                    </div>
+                </div>
+
+                <!-- Rate Estimation Strip -->
+                <div class="mt-3 pt-3 border-top d-flex flex-wrap justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="badge bg-success-subtle text-success border border-success px-2 py-1" id="rateBadgeNotice">
+                            Notification No. 1615-40 Applied
+                        </span>
+                        <div class="small text-muted">
+                            Applicable Nightly Rate: <strong class="text-dark fs-6" id="searchCalculatedRate">₹1,500.00 / night</strong> &bull; 
+                            Est. Total (3 Nights): <strong class="text-success fs-6" id="searchCalculatedTotal">₹4,500.00</strong>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 mt-2 mt-md-0 flex-wrap">
+                        <div class="d-flex align-items-center gap-1 me-2">
+                            <span class="small text-muted" style="font-size: 0.75rem;">Quick Nights:</span>
+                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('search', 1)">1N</button>
+                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('search', 2)">2N</button>
+                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('search', 3)">3N</button>
+                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('search', 5)">5N</button>
+                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('search', 7)">1W</button>
+                        </div>
+                        <button type="submit" class="btn btn-forest px-4 py-2 fw-semibold">
+                            <i class="bi bi-calendar2-plus me-1"></i> Reserve with This Category
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 5. Accommodations Section with Wing Filters -->
+    <section id="accommodations" class="py-5 my-4">
+        <div class="container">
+            <div class="text-center mb-4">
+                <span class="text-success fw-bold text-uppercase small" style="letter-spacing: 1px;">Campus Accommodation Wings</span>
+                <h2 class="font-serif display-5 fw-bold text-dark mt-1">Our Guest Houses & Room Sets</h2>
+                <p class="text-muted mx-auto" style="max-width: 650px;">
+                    Stay charges as notified by the Estate Organization: VVIP Sets, VIP Sets, Ordinary Rooms, and DEE Trainees Lodging.
+                </p>
+            </div>
+
+            <!-- Wing Filter Buttons -->
+            <div class="d-flex justify-content-center mb-5 gap-2 flex-wrap" id="wingFilterButtons">
+                <button type="button" class="btn btn-outline-success px-3 py-2 fw-semibold rounded-pill" onclick="filterRoomsByWing('all', this)">
+                    <i class="bi bi-grid-fill me-1"></i> All Wings & Facilities
+                </button>
+                <button type="button" class="btn btn-success active text-white px-3 py-2 fw-semibold rounded-pill" onclick="filterRoomsByWing('estate', this)">
+                    <i class="bi bi-building me-1"></i> Estate Office Wing (Main GH, VIP & FRH)
+                </button>
+                <button type="button" class="btn btn-outline-success px-3 py-2 fw-semibold rounded-pill" onclick="filterRoomsByWing('dee', this)">
+                    <i class="bi bi-flower1 me-1"></i> Directorate of Extension Education (Kisan Bhawan)
+                </button>
+            </div>
+
+            <div class="row g-4" id="roomsContainer">
+                <!-- Room 1: VVIP Executive Suite (Estate Office) -->
+                <div class="col-lg-4 col-md-6 room-card-col" data-wing="estate">
+                    <div class="room-card">
+                        <div class="room-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80" alt="VVIP Suite" class="room-img">
+                            <span class="room-badge-category">Main Guest House</span>
+                            <span class="room-badge-price">VVIP: From ₹2,500 <small class="text-muted">/ day</small></span>
+                        </div>
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <div class="mb-2">
+                                <span class="wing-indicator-estate"><i class="bi bi-building me-1"></i> Estate Office Wing</span>
+                                <span class="badge bg-warning text-dark ms-1">VVIP Set</span>
+                            </div>
+                            <h4 class="font-serif fw-bold mb-2">VVIP Presidential Suite</h4>
+                            <p class="text-muted small mb-3">
+                                Grand master bedroom with executive salon, private conference seating, kitchen pantry, and scenic Giri valley view.
+                            </p>
+                            <div class="mb-3">
+                                <span class="amenity-pill"><i class="bi bi-snow"></i> AC & Heat</span>
+                                <span class="amenity-pill"><i class="bi bi-wifi"></i> 1 Gbps WiFi</span>
+                                <span class="amenity-pill"><i class="bi bi-tv"></i> Smart TV</span>
+                                <span class="amenity-pill"><i class="bi bi-water"></i> Geyser</span>
+                            </div>
+                            <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                <small class="text-success fw-semibold"><i class="bi bi-shield-check"></i> Registrar / Estate Quota</small>
+                                <button class="btn btn-sm btn-forest" onclick="openBookingModal('estate', 'vvip', 'cat_1_official')">Reserve Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Room 2: VIP Executive Set (Estate Office) -->
+                <div class="col-lg-4 col-md-6 room-card-col" data-wing="estate">
+                    <div class="room-card">
+                        <div class="room-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80" alt="VIP Set" class="room-img">
+                            <span class="room-badge-category">VIP Suites Annexe</span>
+                            <span class="room-badge-price">VIP: From ₹1,500 <small class="text-muted">/ day</small></span>
+                        </div>
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <div class="mb-2">
+                                <span class="wing-indicator-estate"><i class="bi bi-building me-1"></i> Estate Office Wing</span>
+                                <span class="badge bg-primary text-white ms-1">VIP Set</span>
+                            </div>
+                            <h4 class="font-serif fw-bold mb-2">VIP Executive Suite</h4>
+                            <p class="text-muted small mb-3">
+                                Well-appointed suite featuring king bed, dedicated workspace, sofa seating, modern washroom, and tea/coffee amenities.
+                            </p>
+                            <div class="mb-3">
+                                <span class="amenity-pill"><i class="bi bi-snow"></i> AC</span>
+                                <span class="amenity-pill"><i class="bi bi-wifi"></i> NKN WiFi</span>
+                                <span class="amenity-pill"><i class="bi bi-cup-hot"></i> Coffee Kit</span>
+                                <span class="amenity-pill"><i class="bi bi-sun"></i> Balcony</span>
+                            </div>
+                            <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                <small class="text-primary fw-semibold"><i class="bi bi-check2-circle"></i> Estate Officer Incharge</small>
+                                <button class="btn btn-sm btn-forest" onclick="openBookingModal('estate', 'vip', 'cat_1_official')">Reserve Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Room 3: Ordinary Set (Estate Office) -->
+                <div class="col-lg-4 col-md-6 room-card-col" data-wing="estate">
+                    <div class="room-card">
+                        <div class="room-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80" alt="Ordinary Set" class="room-img">
+                            <span class="room-badge-category">Main Guest House</span>
+                            <span class="room-badge-price">Ordinary: From ₹1,000 <small class="text-muted">/ day</small></span>
+                        </div>
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <div class="mb-2">
+                                <span class="wing-indicator-estate"><i class="bi bi-building me-1"></i> Estate Office Wing</span>
+                                <span class="badge bg-secondary text-white ms-1">Ordinary Set</span>
+                            </div>
+                            <h4 class="font-serif fw-bold mb-2">Ordinary Double Room</h4>
+                            <p class="text-muted small mb-3">
+                                Comfortable double occupancy room with attached bath, study desk, solar hot water, and campus greenery view.
+                            </p>
+                            <div class="mb-3">
+                                <span class="amenity-pill"><i class="bi bi-people"></i> Twin/Double</span>
+                                <span class="amenity-pill"><i class="bi bi-wifi"></i> WiFi</span>
+                                <span class="amenity-pill"><i class="bi bi-water"></i> Geyser</span>
+                                <span class="amenity-pill"><i class="bi bi-table"></i> Desk</span>
+                            </div>
+                            <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                <small class="text-secondary fw-semibold">Standard Booking</small>
+                                <button class="btn btn-sm btn-forest" onclick="openBookingModal('estate', 'ordinary', 'cat_1_official')">Reserve Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Room 4: Forest Rest House (Estate Office) -->
+                <div class="col-lg-4 col-md-6 room-card-col" data-wing="estate">
+                    <div class="room-card">
+                        <div class="room-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=800&q=80" alt="Forest Rest House" class="room-img">
+                            <span class="room-badge-category">Forest Rest House</span>
+                            <span class="room-badge-price">From ₹1,000 <small class="text-muted">/ day</small></span>
+                        </div>
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <div class="mb-2">
+                                <span class="wing-indicator-estate"><i class="bi bi-building me-1"></i> Estate Office Wing</span>
+                                <span class="badge bg-success-subtle text-success border border-success ms-1">FRH Arboretum</span>
+                            </div>
+                            <h4 class="font-serif fw-bold mb-2">Heritage Woodland Suite</h4>
+                            <p class="text-muted small mb-3">
+                                Colonial architecture stone-and-timber cottage situated inside the university forestry plantation, offering serene quietude.
+                            </p>
+                            <div class="mb-3">
+                                <span class="amenity-pill"><i class="bi bi-tree"></i> Woodland Lawn</span>
+                                <span class="amenity-pill"><i class="bi bi-wifi"></i> WiFi</span>
+                                <span class="amenity-pill"><i class="bi bi-fire"></i> Fireplace</span>
+                                <span class="amenity-pill"><i class="bi bi-p-circle"></i> Parking</span>
+                            </div>
+                            <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                <small class="text-success fw-semibold"><i class="bi bi-shield-check"></i> Estate Office</small>
+                                <button class="btn btn-sm btn-forest" onclick="openBookingModal('estate', 'vip', 'cat_1_official')">Reserve Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Room 5: Kisan Bhawan - Farmers Hostel (DEE) -->
+                <div class="col-lg-4 col-md-6 room-card-col" data-wing="dee">
+                    <div class="room-card border-warning border-opacity-50">
+                        <div class="room-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=80" alt="Farmers Hostel" class="room-img">
+                            <span class="room-badge-category bg-warning text-dark">Kisan Bhawan</span>
+                            <span class="room-badge-price">From ₹100 <small class="text-muted">/ day</small></span>
+                        </div>
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <div class="mb-2">
+                                <span class="wing-indicator-dee"><i class="bi bi-flower1 me-1"></i> Directorate of Extension Education</span>
+                            </div>
+                            <h4 class="font-serif fw-bold mb-2">Farmers Hostel Double Room</h4>
+                            <p class="text-muted small mb-3">
+                                Subsidized lodging designed for farmers, orchardists, KVK trainees, and agricultural extension delegates visiting UHF Nauni.
+                            </p>
+                            <div class="mb-3">
+                                <span class="amenity-pill"><i class="bi bi-people"></i> Twin Beds</span>
+                                <span class="amenity-pill"><i class="bi bi-water"></i> Solar Water</span>
+                                <span class="amenity-pill"><i class="bi bi-cup-straw"></i> Canteen Dining</span>
+                                <span class="amenity-pill"><i class="bi bi-bus-front"></i> Bus Parking</span>
+                            </div>
+                            <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                <small class="text-warning-emphasis fw-bold"><i class="bi bi-check-circle"></i> DEE Sanction</small>
+                                <button class="btn btn-sm btn-forest" onclick="openBookingModal('dee', 'double', 'dee_farmers_training')">Reserve Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Facilities & Dining Hall Notice -->
+    <section id="amenities" class="py-5 bg-white border-top border-bottom">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <span class="text-success fw-bold text-uppercase small">Estate Organization Facilities</span>
+                    <h2 class="font-serif display-6 fw-bold text-dark mt-1 mb-4">Lounge & Dining Hall Reservations</h2>
+                    
+                    <div class="p-3 bg-light rounded-3 border mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="fw-bold mb-1">Campus Residents / Employees (Functions)</h6>
+                                <p class="text-muted small mb-0">Use of Dining Hall for birthdays &amp; family celebrations</p>
+                            </div>
+                            <span class="badge bg-success fs-6">₹1,000 / day</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-light rounded-3 border mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="fw-bold mb-1">Campus Residents / Employees (Marriages)</h6>
+                                <p class="text-muted small mb-0">Wedding banquets and community feasts on campus</p>
+                            </div>
+                            <span class="badge bg-primary fs-6">₹4,000 / day</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-light rounded-3 border">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="fw-bold mb-1">Outside Agencies (Marriages / Events)</h6>
+                                <p class="text-muted small mb-0">Commercial usage by external parties subject to Estate sanction</p>
+                            </div>
+                            <span class="badge bg-dark fs-6">₹10,000 / day</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="position-relative">
+                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="Dining Hall" class="img-fluid rounded-4 shadow">
+                        <div class="position-absolute bottom-0 end-0 bg-white p-3 rounded-3 shadow m-4 border">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-file-earmark-pdf-fill fs-3 text-danger"></i>
+                                <div>
+                                    <div class="fw-bold small">Notification UHF/EO-55/2025/- 1615-40</div>
+                                    <small class="text-muted">Approved by Hon'ble Vice Chancellor</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Public Status Tracker Widget -->
+    <section id="track" class="py-5">
+        <div class="container">
+            <div class="tracker-banner">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <span class="badge bg-warning text-dark mb-2 fw-semibold px-3 py-1">Online Request Tracker</span>
+                        <h2 class="font-serif display-6 fw-bold mb-2">Track Your Reservation Status</h2>
+                        <p class="text-light text-opacity-80 small mb-0">
+                            Check the endorsement and approval status of your application across the Estate Office or DEE wing in real-time.
+                        </p>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="bg-white p-4 rounded-3 text-dark">
+                            <label class="form-label fw-bold small text-muted">Enter Booking Reference or Mobile Number:</label>
+                            <div class="input-group">
+                                <input type="text" id="trackInputCode" class="form-control" placeholder="e.g. GH-2026-10-0001" value="GH-2026-10-0001">
+                                <button class="btn btn-gold" onclick="executeTracking()">
+                                    <i class="bi bi-search me-1"></i> Search
+                                </button>
+                            </div>
+                            <small class="text-muted mt-2 d-block">Sample Demo Dossiers: <code>GH-2026-10-0001</code> (Estate Office), <code>GH-2026-10-0004</code> (DEE Kisan Bhawan)</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Result Container -->
+                <div id="trackingOutput" class="mt-4 p-4 bg-white text-dark rounded-3" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                        <div>
+                            <span class="badge bg-success" id="trackBadge">CHECKED_IN</span>
+                            <h5 class="fw-bold mt-1 mb-0" id="trackTitle">Booking #GH-2026-10-0001</h5>
+                        </div>
+                        <div class="text-end">
+                            <small class="text-muted d-block">Managing Wing &amp; Set</small>
+                            <strong class="text-success" id="trackRoom">Estate Office &bull; VVIP Presidential Suite #101</strong>
+                        </div>
+                    </div>
+                    <div class="row g-2 small mb-3">
+                        <div class="col-md-4"><strong>Primary Guest:</strong> <span id="trackGuest">Dr. A. K. Verma (ICAR Professor)</span></div>
+                        <div class="col-md-4"><strong>Category:</strong> 1(i) Central Govt / ICAR Official</div>
+                        <div class="col-md-4"><strong>Tariff:</strong> ₹2,500 / night (Notification 1615-40)</div>
+                    </div>
+                    <div class="p-3 bg-light rounded border small">
+                        <strong>Lifecycle Progress:</strong>
+                        <div class="d-flex align-items-center justify-content-between mt-2 flex-wrap gap-2">
+                            <span class="text-success"><i class="bi bi-check-circle-fill"></i> 1. Submitted</span>
+                            <span class="text-success"><i class="bi bi-check-circle-fill"></i> 2. HOD Endorsed</span>
+                            <span class="text-success"><i class="bi bi-check-circle-fill"></i> 3. Estate Officer Sanctioned</span>
+                            <span class="text-success"><i class="bi bi-check-circle-fill"></i> 4. Key Issued</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. Footer -->
+    <footer class="footer-lodge">
+        <div class="container">
+            <div class="row g-4 pb-5 border-bottom border-secondary border-opacity-25">
+                <div class="col-lg-4">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <img src="university_logo.jpg" alt="Logo" class="university-logo-header">
+                        <div>
+                            <h5 class="text-white font-serif fw-bold mb-0">Dr. Y.S. Parmar UHF</h5>
+                            <small class="text-success fw-semibold">Estate Organization &bull; Guest House Portal</small>
+                        </div>
+                    </div>
+                    <p class="text-muted small">
+                        Serving the academic, research, state, and farming communities in Himachal Pradesh with premier accommodations under Notification No. UHF/EO-55/2025/- 1615-40.
+                    </p>
+                </div>
+
+                <div class="col-lg-2 col-md-4">
+                    <h6 class="text-white fw-bold mb-3">Quick Navigation</h6>
+                    <ul class="list-unstyled small space-y-2">
+                        <li class="mb-2"><a href="#home" class="footer-link">Home</a></li>
+                        <li class="mb-2"><a href="#accommodations" class="footer-link">Room Sets</a></li>
+                        <li class="mb-2"><a href="/preview.html#tariffs" class="footer-link text-warning fw-semibold">Official Notification (Tariffs)</a></li>
+                        <li class="mb-2"><a href="#track" class="footer-link">Track Application</a></li>
+                        <li class="mb-2"><a href="/preview.html#tariffs" class="footer-link text-warning fw-semibold">Estate Admin Console</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="text-white fw-bold mb-3">Campus Accommodation Wings</h6>
+                    <ul class="list-unstyled small space-y-2">
+                        <li class="mb-2 text-white"><strong>Estate Office Wing:</strong></li>
+                        <li class="mb-1 text-muted ps-2">&bull; Main Guest House (VVIP &amp; Ordinary)</li>
+                        <li class="mb-1 text-muted ps-2">&bull; VIP Suites Annexe</li>
+                        <li class="mb-2 text-muted ps-2">&bull; Forest Rest House (FRH)</li>
+                        <li class="mb-2 text-white"><strong>Directorate of Extension Education:</strong></li>
+                        <li class="mb-1 text-muted ps-2">&bull; Kisan Bhawan (Farmers Hostel)</li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="text-white fw-bold mb-3">Contact Desks</h6>
+                    <p class="small text-muted mb-1"><i class="bi bi-building me-2"></i> Estate Office: +91 1792-252244</p>
+                    <p class="small text-muted mb-1"><i class="bi bi-flower1 me-2"></i> DEE Kisan Bhawan: +91 1792-252310</p>
+                    <p class="small text-muted mb-1"><i class="bi bi-envelope me-2"></i> guesthouse@yspuniversity.ac.in</p>
+                    <p class="small text-muted mb-0"><i class="bi bi-geo-alt me-2"></i> Nauni, Solan (H.P.) 173230</p>
+                </div>
+            </div>
+
+            <div class="pt-4 d-flex flex-wrap justify-content-between align-items-center small text-muted">
+                <div>
+                    &copy; 2026 Dr. Y.S. Parmar University of Horticulture and Forestry. All rights reserved.
+                </div>
+                <div class="d-flex gap-3 mt-2 mt-md-0">
+                    <span class="text-success"><i class="bi bi-check2-circle me-1"></i> Public Domain &amp; Institutional Assets</span>
+                    <a href="/preview.html" class="text-warning text-decoration-none fw-semibold">Switch Demo Personas &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Requisition Modal (Decided by User & Categorized by Notification) -->
+    <div class="modal fade" id="bookingModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title font-serif"><i class="bi bi-building me-2"></i>Reserve Guest House Accommodation</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="modalRequisitionForm" onsubmit="handleModalSubmit(event)">
+                        <div class="row g-3">
+                            <!-- Wing Selector: User Decides -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small text-success">
+                                    <i class="bi bi-building-gear me-1"></i> Accommodation Wing (User Decides) *
+                                </label>
+                                <select class="form-select border-success fw-bold text-success" id="modalWing" required onchange="handleModalWingChange()">
+                                    <option value="estate" selected>Estate Office Wing (Main GH, VIP, FRH)</option>
+                                    <option value="dee">Directorate of Extension Education (DEE - Kisan Bhawan)</option>
+                                </select>
+                                <small class="text-muted" id="modalWingHint">Sanction: Estate Officer &amp; Registrar</small>
+                            </div>
+
+                            <!-- Room Set Selector -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small">Room Set / Category *</label>
+                                <select class="form-select fw-bold" id="modalSetType" required onchange="calcModalTariff()">
+                                    <!-- Populated dynamically via JS -->
+                                </select>
+                            </div>
+
+                            <!-- Detailed Notification Category -->
+                            <div class="col-12">
+                                <label class="form-label fw-semibold small">Entitled Visitor Category (Notification 1615-40) *</label>
+                                <select class="form-select" id="modalCategory" required onchange="calcModalTariff()">
+                                    <!-- Populated dynamically via JS -->
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small">Check-In Date *</label>
+                                <div class="input-group">
+                                    <input type="date" id="modalCheckIn" class="form-control" value="2026-11-02" required onchange="onModalCheckInChange()" oninput="calcModalTariff()" onclick="try{this.showPicker()}catch(e){}">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="openDatePicker('modalCheckIn')" title="Open Calendar"><i class="bi bi-calendar-event text-success"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small d-flex justify-content-between align-items-center">
+                                    <span>Check-Out Date *</span>
+                                    <span class="badge bg-primary text-white py-0 px-1" style="font-size: 0.65rem;">Select</span>
+                                </label>
+                                <div class="input-group">
+                                    <select id="modalCheckOutSelect" class="form-select fw-bold border-primary text-primary" onchange="onModalCheckOutSelectChange(this.value)">
+                                        <!-- Dynamically populated -->
+                                    </select>
+                                    <button class="btn btn-outline-primary" type="button" onclick="openDatePicker('modalCheckOutCustom')" title="Pick from Calendar"><i class="bi bi-calendar3"></i></button>
+                                </div>
+                                <input type="hidden" id="modalCheckOut" value="2026-11-05">
+                                <input type="date" id="modalCheckOutCustom" class="form-control form-control-sm mt-1" style="display:none;" onchange="onCustomDatePicked('modal', this.value)">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small">Primary Guest Name *</label>
+                                <input type="text" id="modalGuestName" class="form-control" placeholder="e.g. Dr. A. K. Verma" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small">Contact Mobile *</label>
+                                <input type="tel" class="form-control" placeholder="10-digit mobile" required>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold small">Sponsoring Department / Institutional Affiliation</label>
+                                <input type="text" class="form-control" value="Department of Tree Improvement &amp; Genetic Resources">
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold small">Purpose of Visit</label>
+                                <textarea class="form-control" rows="2" placeholder="Official academic viva / External expert for Board of Studies / Farmers field workshop"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Estimate Box -->
+                        <div class="p-3 bg-light rounded-3 border mt-3 d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-muted d-block">Estimated Total (Nights: <span id="modalNights">3</span> &bull; Rate: <span id="modalRateUnit">₹1,500/day</span>)</small>
+                                <h4 class="fw-bold text-success mb-0" id="modalTotal">₹4,500.00</h4>
+                            </div>
+                            <button type="submit" class="btn btn-gold btn-lg px-4">
+                                <i class="bi bi-send-check me-1"></i> Submit Application
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Authoritative Estate Tariff Master JS -->
+    <script src="estate_tariffs.js"></script>
+
+    <script>
+        // Initialize dynamic categories and tables
+        document.addEventListener('DOMContentLoaded', function() {
+            renderNotificationTable();
+            onWingSelectionChange('estate');
+        });
+
+        // Live cross-tab sync when Estate Admin saves changes in the Console
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'uhf_estate_categories' || e.key === 'uhf_dining_hall_rates' || e.key === 'uhf_estate_meta') {
+                renderNotificationTable();
+                const wing = document.getElementById('searchWing') ? document.getElementById('searchWing').value : 'estate';
+                onWingSelectionChange(wing);
+            }
+        });
+
+        function renderNotificationTable() {
+            const tbody = document.getElementById('notificationTableBody');
+            if (!tbody) return;
+            const categories = EstateTariffManager.getEstateCategories();
+            tbody.innerHTML = '';
+
+            categories.forEach(cat => {
+                const tr = document.createElement('tr');
+                if (cat.id.startsWith('cat_10_dorm')) {
+                    tr.innerHTML = `
+                        <td class="text-center fw-bold">${cat.srNo}</td>
+                        <td>
+                            <div class="fw-bold text-dark">${cat.title}</div>
+                            <small class="text-muted">${cat.description}</small>
+                        </td>
+                        <td class="text-center text-muted">&mdash;</td>
+                        <td class="text-center text-muted">&mdash;</td>
+                        <td class="text-center fw-bold text-primary">₹${cat.ordinary} <small>/ bed</small></td>
+                    `;
+                } else if (cat.isPercentage) {
+                    tr.innerHTML = `
+                        <td class="text-center fw-bold">${cat.srNo}</td>
+                        <td>
+                            <div class="fw-bold text-dark">${cat.title}</div>
+                            <small class="text-muted">${cat.description}</small>
+                        </td>
+                        <td class="text-center fw-bold">50% of VVIP (₹1,250)</td>
+                        <td class="text-center fw-bold">50% of VIP (₹750)</td>
+                        <td class="text-center fw-bold">50% of Ord (₹500)</td>
+                    `;
+                } else {
+                    tr.innerHTML = `
+                        <td class="text-center fw-bold">${cat.srNo}</td>
+                        <td>
+                            <div class="fw-bold text-dark">${cat.title}</div>
+                            <small class="text-muted">${cat.description}</small>
+                        </td>
+                        <td class="text-center fw-bold text-dark">₹${cat.vvip}</td>
+                        <td class="text-center fw-bold text-dark">₹${cat.vip}</td>
+                        <td class="text-center fw-bold text-dark">₹${cat.ordinary}</td>
+                    `;
+                }
+                tbody.appendChild(tr);
+            });
+
+            // Dining Hall
+            const diningRates = EstateTariffManager.getDiningHallRates();
+            const dtbody = document.getElementById('diningNotificationTableBody');
+            dtbody.innerHTML = '';
+            diningRates.forEach(dr => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="text-center fw-bold">${dr.srNo}</td>
+                    <td>${dr.description}</td>
+                    <td class="text-center fw-bold text-success">₹${dr.rate}/- ${dr.unit}</td>
+                `;
+                dtbody.appendChild(tr);
+            });
+        }
+
+        // When user changes Wing in floating search bar
+        function onWingSelectionChange(wing) {
+            const setSelect = document.getElementById('searchSetType');
+            const catSelect = document.getElementById('searchCategory');
+            setSelect.innerHTML = '';
+            catSelect.innerHTML = '';
+
+            if (wing === 'estate') {
+                document.getElementById('searchSetLabel').innerHTML = '<i class="bi bi-door-closed me-1 text-primary"></i> 2. Room Set *';
+                setSelect.innerHTML = `
+                    <option value="vip" selected>VIP Set (Annexe/Main)</option>
+                    <option value="vvip">VVIP Set (Pres. Suite)</option>
+                    <option value="ordinary">Ordinary Set (Double)</option>
+                    <option value="dormitory">Dormitory Bed</option>
+                    <option value="wash_change">Wash/Change (Short Stay)</option>
+                `;
+
+                const estateCats = EstateTariffManager.getEstateCategories();
+                estateCats.forEach(cat => {
+                    const opt = document.createElement('option');
+                    opt.value = cat.id;
+                    opt.innerText = `${cat.srNo}. ${cat.shortName}`;
+                    catSelect.appendChild(opt);
+                });
+            } else {
+                document.getElementById('searchSetLabel').innerHTML = '<i class="bi bi-door-closed me-1 text-warning"></i> 2. Facility Type *';
+                setSelect.innerHTML = `
+                    <option value="double" selected>Double Room (Kisan Bhawan)</option>
+                    <option value="dormitory">Farmers Dormitory Hall</option>
+                `;
+
+                const deeCats = EstateTariffManager.getDeeCategories();
+                deeCats.forEach(cat => {
+                    const opt = document.createElement('option');
+                    opt.value = cat.id;
+                    opt.innerText = `${cat.srNo}: ${cat.shortName}`;
+                    catSelect.appendChild(opt);
+                });
+            }
+
+            filterRoomsByWing(wing);
+            updateEstimatedSearchPrice();
+        }
+
+        function updateEstimatedSearchPrice() {
+            const wing = document.getElementById('searchWing').value;
+            const setType = document.getElementById('searchSetType').value;
+            const catId = document.getElementById('searchCategory').value;
+
+            const checkIn = new Date(document.getElementById('searchCheckIn').value);
+            const checkOut = new Date(document.getElementById('searchCheckOut').value);
+            let diff = checkOut - checkIn;
+            let nights = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            if (isNaN(nights) || nights < 1) nights = 1;
+
+            const rate = EstateTariffManager.calculateStayRate(wing, catId, setType);
+            const total = rate * nights;
+
+            document.getElementById('searchCalculatedRate').innerText = `₹${rate.toFixed(2)} / day`;
+            document.getElementById('searchCalculatedTotal').innerText = `₹${total.toFixed(2)}`;
+        }
+
+                function openDatePicker(inputId) { const el = document.getElementById(inputId); if (!el) return; if (el.showPicker) { try { el.showPicker(); } catch (e) { el.focus(); } } else { el.focus(); } }
+
+        // Populate Check-Out Dropdown dynamically from Check-In date
+        function populateCheckOutDropdown(scope, checkInDateStr, selectedCheckOutStr) {
+            let selectId = 'searchCheckOutSelect';
+            if (scope === 'modal') selectId = 'modalCheckOutSelect';
+
+            const selectEl = document.getElementById(selectId);
+            if (!selectEl) return;
+
+            let inDate = new Date(checkInDateStr);
+            if (isNaN(inDate.getTime())) {
+                inDate = new Date('2026-11-02');
+            }
+
+            selectEl.innerHTML = '';
+
+            const durations = [
+                { nights: 1, label: '1 Night' },
+                { nights: 2, label: '2 Nights' },
+                { nights: 3, label: '3 Nights' },
+                { nights: 4, label: '4 Nights' },
+                { nights: 5, label: '5 Nights' },
+                { nights: 6, label: '6 Nights' },
+                { nights: 7, label: '7 Nights (1 Week)' },
+                { nights: 8, label: '8 Nights' },
+                { nights: 9, label: '9 Nights' },
+                { nights: 10, label: '10 Nights' },
+                { nights: 12, label: '12 Nights' },
+                { nights: 14, label: '14 Nights (2 Weeks)' },
+                { nights: 21, label: '21 Nights (3 Weeks)' },
+                { nights: 30, label: '30 Nights (1 Month)' }
+            ];
+
+            let found = false;
+            durations.forEach(d => {
+                const outDate = new Date(inDate.getTime() + (d.nights * 24 * 60 * 60 * 1000));
+                const yyyy = outDate.getFullYear();
+                const mm = String(outDate.getMonth() + 1).padStart(2, '0');
+                const dd = String(outDate.getDate()).padStart(2, '0');
+                const isoVal = `${yyyy}-${mm}-${dd}`;
+                const displayDate = `${dd}/${mm}/${yyyy}`;
+
+                const opt = document.createElement('option');
+                opt.value = isoVal;
+                opt.innerText = `${displayDate} (${d.label})`;
+
+                if (selectedCheckOutStr && isoVal === selectedCheckOutStr) {
+                    opt.selected = true;
+                    found = true;
+                } else if (!selectedCheckOutStr && d.nights === 3) {
+                    opt.selected = true;
+                    found = true;
+                }
+                selectEl.appendChild(opt);
+            });
+
+            const customOpt = document.createElement('option');
+            customOpt.value = 'custom';
+            customOpt.innerText = 'ðŸ“… Pick Custom Calendar Date...';
+            if (!found && selectedCheckOutStr) {
+                customOpt.selected = true;
+            }
+            selectEl.appendChild(customOpt);
+
+            // Sync hidden input
+            if (scope === 'search') {
+                document.getElementById('searchCheckOut').value = selectEl.value === 'custom' ? (selectedCheckOutStr || '2026-11-05') : selectEl.value;
+            } else if (scope === 'modal') {
+                document.getElementById('modalCheckOut').value = selectEl.value === 'custom' ? (selectedCheckOutStr || '2026-11-05') : selectEl.value;
+            }
+        }
+
+        function onSearchCheckOutSelectChange(val) {
+            if (val === 'custom') {
+                const customEl = document.getElementById('searchCheckOutCustom');
+                customEl.style.display = 'block';
+                openDatePicker('searchCheckOutCustom');
+            } else {
+                document.getElementById('searchCheckOut').value = val;
+                const customEl = document.getElementById('searchCheckOutCustom');
+                if (customEl) customEl.style.display = 'none';
+                updateEstimatedSearchPrice();
+            }
+        }
+
+        function onModalCheckOutSelectChange(val) {
+            if (val === 'custom') {
+                const customEl = document.getElementById('modalCheckOutCustom');
+                customEl.style.display = 'block';
+                openDatePicker('modalCheckOutCustom');
+            } else {
+                document.getElementById('modalCheckOut').value = val;
+                const customEl = document.getElementById('modalCheckOutCustom');
+                if (customEl) customEl.style.display = 'none';
+                calcModalTariff();
+            }
+        }
+
+        function onCustomDatePicked(scope, val) {
+            if (!val) return;
+            if (scope === 'search') {
+                document.getElementById('searchCheckOut').value = val;
+                const inVal = document.getElementById('searchCheckIn').value;
+                populateCheckOutDropdown('search', inVal, val);
+                updateEstimatedSearchPrice();
+            } else if (scope === 'modal') {
+                document.getElementById('modalCheckOut').value = val;
+                const inVal = document.getElementById('modalCheckIn').value;
+                populateCheckOutDropdown('modal', inVal, val);
+                calcModalTariff();
+            } else if (scope === 'admin') {
+                document.getElementById('checkOutDate').value = val;
+                const inVal = document.getElementById('checkInDate').value;
+                populateCheckOutDropdown('admin', inVal, val);
+                calculateTariffEstimate();
+            }
+        }
+
+        function onSearchCheckInChange() {
+            const inEl = document.getElementById('searchCheckIn');
+            if (!inEl) return;
+            const currentOut = document.getElementById('searchCheckOut') ? document.getElementById('searchCheckOut').value : null;
+            populateCheckOutDropdown('search', inEl.value, currentOut);
+            updateEstimatedSearchPrice();
+        }
+
+        function onModalCheckInChange() {
+            const inEl = document.getElementById('modalCheckIn');
+            if (!inEl) return;
+            const currentOut = document.getElementById('modalCheckOut') ? document.getElementById('modalCheckOut').value : null;
+            populateCheckOutDropdown('modal', inEl.value, currentOut);
+            calcModalTariff();
+        }
+
+        function setStayDays(scope, days) {
+            let inId = 'searchCheckIn';
+            let outSelectId = 'searchCheckOutSelect';
+            let callback = updateEstimatedSearchPrice;
+
+            if (scope === 'modal') {
+                inId = 'modalCheckIn';
+                outSelectId = 'modalCheckOutSelect';
+                callback = calcModalTariff;
+            }
+
+            const inEl = document.getElementById(inId);
+            if (!inEl) return;
+
+            let inDate = new Date(inEl.value);
+            if (isNaN(inDate.getTime())) {
+                inDate = new Date('2026-11-02');
+            }
+
+            const outDate = new Date(inDate.getTime() + (days * 24 * 60 * 60 * 1000));
+            const yyyy = outDate.getFullYear();
+            const mm = String(outDate.getMonth() + 1).padStart(2, '0');
+            const dd = String(outDate.getDate()).padStart(2, '0');
+            const isoVal = `${yyyy}-${mm}-${dd}`;
+
+            populateCheckOutDropdown(scope, inEl.value, isoVal);
+            if (callback) callback();
+        }
+
+        function openBookingModal(wing, setType, catId) {
+            if (wing) document.getElementById('modalWing').value = wing;
+            handleModalWingChange();
+            if (setType) document.getElementById('modalSetType').value = setType;
+            if (catId) document.getElementById('modalCategory').value = catId;
+
+            // Sync dates from search bar to modal
+            const searchIn = document.getElementById('searchCheckIn');
+            const searchOut = document.getElementById('searchCheckOut');
+            if (searchIn && searchIn.value) {
+                document.getElementById('modalCheckIn').value = searchIn.value;
+            }
+            if (searchOut && searchOut.value) {
+                document.getElementById('modalCheckOut').value = searchOut.value;
+            }
+
+            calcModalTariff();
+            const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
+            modal.show();
+        }
+
+        function handleModalWingChange() {
+            const wing = document.getElementById('modalWing').value;
+            const setSelect = document.getElementById('modalSetType');
+            const catSelect = document.getElementById('modalCategory');
+            const hint = document.getElementById('modalWingHint');
+
+            setSelect.innerHTML = '';
+            catSelect.innerHTML = '';
+
+            if (wing === 'estate') {
+                hint.innerText = 'Sanctioning Authority: Estate Officer & Registrar (Central Estate)';
+                setSelect.innerHTML = `
+                    <option value="vip" selected>VIP Set (Annexe / Main GH)</option>
+                    <option value="vvip">VVIP Set (Presidential Suite)</option>
+                    <option value="ordinary">Ordinary Set (Double AC Room)</option>
+                    <option value="dormitory">Dormitory Bed</option>
+                    <option value="wash_change">Wash/Change (50% Rent)</option>
+                `;
+
+                const estateCats = EstateTariffManager.getEstateCategories();
+                estateCats.forEach(cat => {
+                    const opt = document.createElement('option');
+                    opt.value = cat.id;
+                    opt.innerText = `${cat.srNo}. ${cat.title}`;
+                    catSelect.appendChild(opt);
+                });
+            } else {
+                hint.innerText = 'Sanctioning Authority: Directorate of Extension Education (DEE)';
+                setSelect.innerHTML = `
+                    <option value="double" selected>Double Room (Kisan Bhawan)</option>
+                    <option value="dormitory">Farmers Dormitory Bed</option>
+                `;
+
+                const deeCats = EstateTariffManager.getDeeCategories();
+                deeCats.forEach(cat => {
+                    const opt = document.createElement('option');
+                    opt.value = cat.id;
+                    opt.innerText = `${cat.srNo}. ${cat.title}`;
+                    catSelect.appendChild(opt);
+                });
+            }
+            calcModalTariff();
+        }
+
+        function calcModalTariff() {
+            const wing = document.getElementById('modalWing').value;
+            const setType = document.getElementById('modalSetType').value;
+            const catId = document.getElementById('modalCategory').value;
+
+            const d1 = new Date(document.getElementById('modalCheckIn').value);
+            const d2 = new Date(document.getElementById('modalCheckOut').value);
+            let diff = d2 - d1;
+            let nights = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            if (isNaN(nights) || nights < 1) nights = 1;
+
+            const rate = EstateTariffManager.calculateStayRate(wing, catId, setType);
+            const total = rate * nights;
+
+            document.getElementById('modalNights').innerText = nights;
+            document.getElementById('modalRateUnit').innerText = `₹${rate}/day`;
+            document.getElementById('modalTotal').innerText = `₹${total.toFixed(2)}`;
+        }
+
+        function filterRoomsByWing(wing, btn) {
+            if (btn) {
+                document.querySelectorAll('#wingFilterButtons button').forEach(b => {
+                    b.classList.remove('btn-success', 'active', 'text-white');
+                    b.classList.add('btn-outline-success');
+                });
+                btn.classList.remove('btn-outline-success');
+                btn.classList.add('btn-success', 'active', 'text-white');
+            }
+
+            const select = document.getElementById('searchWing');
+            if (select && select.value !== wing && wing !== 'all') {
+                select.value = wing;
+            }
+
+            document.querySelectorAll('.room-card-col').forEach(card => {
+                const cardWing = card.getAttribute('data-wing');
+                if (wing === 'all' || cardWing === wing) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function handleModalSubmit(e) {
+            e.preventDefault();
+            const wingName = document.getElementById('modalWing').value === 'estate' ? 'Estate Office Wing' : 'Directorate of Extension Education';
+            const guest = document.getElementById('modalGuestName').value;
+            const ref = 'GH-2026-11-00' + Math.floor(10 + Math.random() * 89);
+            alert(`✅ Application Submitted Under Notification 1615-40!\n\nReference: ${ref}\nGuest: ${guest}\nWing: ${wingName}\nStatus: PENDING_SANCTION\n\nYour requisition has been dispatched to the Estate Officer.`);
+            bootstrap.Modal.getInstance(document.getElementById('bookingModal')).hide();
+        }
+
+        function handleQuickSearch(e) {
+            e.preventDefault();
+            const wing = document.getElementById('searchWing').value;
+            const setType = document.getElementById('searchSetType').value;
+            const catId = document.getElementById('searchCategory').value;
+            openBookingModal(wing, setType, catId);
+        }
+
+        function executeTracking() {
+            const code = document.getElementById('trackInputCode').value.trim();
+            if(!code) return;
+            document.getElementById('trackingOutput').style.display = 'block';
+            document.getElementById('trackTitle').innerText = 'Booking #' + code;
+        }
+    </script>
+</body>
+</html>
