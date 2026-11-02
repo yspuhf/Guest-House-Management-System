@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Flatpickr Datepicker CSS (Strict DD/MM/YYYY) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         :root {
             --primary-navy: #0d2b45;
@@ -634,20 +636,20 @@
                                         <h5 class="fw-bold text-primary mb-3"><i class="bi bi-calendar-range me-2"></i>2. Stay Schedule</h5>
                                         <div class="row g-3 mb-4">
                                             <div class="col-md-6">
-                                                <label class="form-label fw-semibold">Check-in Date &amp; Time <span class="text-danger">*</span></label>
+                                                <label class="form-label fw-semibold">Check-in Date <span class="text-danger">*</span> <small class="text-muted">(DD/MM/YYYY)</small></label>
                                                 <div class="input-group">
-                                                    <input type="date" class="form-control" id="checkInDate" required onchange="onAdminCheckInChange()" oninput="calculateTariffEstimate()" onclick="try{this.showPicker()}catch(e){}">
+                                                    <input type="text" class="form-control fw-bold" id="checkInDate" placeholder="DD/MM/YYYY" maxlength="10" required onchange="onAdminCheckInChange()" oninput="maskDateInput(event); calculateTariffEstimate()" onclick="openDatePicker('checkInDate')">
                                                     <button class="btn btn-outline-secondary" type="button" onclick="openDatePicker('checkInDate')" title="Open Calendar"><i class="bi bi-calendar-event text-success"></i></button>
                                                 </div>
                                                 <small class="text-muted">Standard Check-in: 12:00 PM</small>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label fw-semibold d-flex justify-content-between align-items-center">
-                                                    <span>Check-out Date &amp; Duration <span class="text-danger">*</span></span>
+                                                    <span>Check-out Date &amp; Duration <span class="text-danger">*</span> <small class="text-muted">(DD/MM/YYYY)</small></span>
                                                     <span class="badge bg-primary text-white py-0 px-1" id="adminDurationBadge" style="font-size: 0.65rem;">3 Nights</span>
                                                 </label>
                                                 <div class="input-group">
-                                                    <input type="date" id="checkOutDate" class="form-control fw-bold border-primary text-primary" required onchange="onAdminCheckOutChange()" oninput="calculateTariffEstimate()" onclick="try{this.showPicker()}catch(e){}">
+                                                    <input type="text" id="checkOutDate" class="form-control fw-bold border-primary text-primary" placeholder="DD/MM/YYYY" maxlength="10" required onchange="onAdminCheckOutChange()" oninput="maskDateInput(event); calculateTariffEstimate()" onclick="openDatePicker('checkOutDate')">
                                                     <button class="btn btn-outline-primary" type="button" onclick="openDatePicker('checkOutDate')" title="Open Calendar"><i class="bi bi-calendar-check"></i></button>
                                                 </div>
                                                 <div class="d-flex justify-content-between align-items-center mt-1">
@@ -1192,31 +1194,31 @@
                                     <div class="row mb-3">
                                         <div class="col-sm-6 mb-2"><strong>Guest:</strong> Dr. A. K. Verma</div>
                                         <div class="col-sm-6 mb-2"><strong>Facility:</strong> Estate Office Wing &bull; Main Guest House</div>
-                                        <div class="col-sm-6 mb-2"><strong>Check-In:</strong> 28 Oct 2026, 12:00 PM</div>
-                                        <div class="col-sm-6 mb-2"><strong>Check-Out:</strong> 31 Oct 2026, 11:00 AM</div>
+                                        <div class="col-sm-6 mb-2"><strong>Check-In:</strong> 28/10/2026, 12:00 PM</div>
+                                        <div class="col-sm-6 mb-2"><strong>Check-Out:</strong> 31/10/2026, 11:00 AM</div>
                                     </div>
 
                                     <h6 class="fw-bold mt-4 mb-3">Lifecycle Progress Trail:</h6>
                                     <ul class="list-group list-group-flush border-top border-bottom">
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <div><i class="bi bi-check-circle-fill text-success me-2"></i> Requisition Submitted online by Faculty</div>
-                                            <small class="text-muted">26 Oct 2026, 09:30 AM</small>
+                                            <small class="text-muted">26/10/2026, 09:30 AM</small>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <div><i class="bi bi-check-circle-fill text-success me-2"></i> Endorsed by Dean, College of Forestry</div>
-                                            <small class="text-muted">26 Oct 2026, 11:15 AM</small>
+                                            <small class="text-muted">26/10/2026, 11:15 AM</small>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <div><i class="bi bi-check-circle-fill text-success me-2"></i> Approved by Estate Officer &amp; Registrar</div>
-                                            <small class="text-muted">26 Oct 2026, 02:40 PM</small>
+                                            <small class="text-muted">26/10/2026, 02:40 PM</small>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <div><i class="bi bi-check-circle-fill text-success me-2"></i> Room Allocated: VIP Suite #101</div>
-                                            <small class="text-muted">27 Oct 2026, 10:00 AM</small>
+                                            <small class="text-muted">27/10/2026, 10:00 AM</small>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <div><i class="bi bi-check-circle-fill text-success me-2"></i> Front Desk Check-in & Key Handover Completed</div>
-                                            <small class="text-muted">28 Oct 2026, 12:05 PM</small>
+                                            <small class="text-muted">28/10/2026, 12:05 PM</small>
                                         </li>
                                     </ul>
                                 </div>
@@ -1264,7 +1266,7 @@
                     <hr>
                     <div class="row small mb-3">
                         <div class="col-6"><strong>Receipt #:</strong> REC-2026-1042</div>
-                        <div class="col-6 text-end"><strong>Date:</strong> 28 Oct 2026</div>
+                        <div class="col-6 text-end"><strong>Date:</strong> 28/10/2026</div>
                         <div class="col-6"><strong>Guest:</strong> Dr. A. K. Verma</div>
                         <div class="col-6 text-end"><strong>Room:</strong> VIP Suite #101</div>
                         <div class="col-12 mt-1"><strong>Tariff Category:</strong> 1(i) HP/Univ/ICAR Official Visit</div>
@@ -1487,7 +1489,7 @@
                         <div class="row g-3 small mt-1">
                             <div class="col-md-6"><strong>Primary Guest:</strong> <span id="vvipModalGuest">Sh. Tenzin Norbu & Delegation</span></div>
                             <div class="col-md-6"><strong>Official Designation:</strong> <span id="vvipModalDesig">Agricultural Officer, Thimphu, Bhutan</span></div>
-                            <div class="col-md-6"><strong>Dates & Stay:</strong> <span id="vvipModalDates">01 Nov 2026 to 04 Nov 2026 (3 Nights)</span></div>
+                            <div class="col-md-6"><strong>Dates & Stay:</strong> <span id="vvipModalDates">01/11/2026 to 04/11/2026 (3 Nights)</span></div>
                             <div class="col-md-6"><strong>Notification Category:</strong> <span id="vvipModalCat">5. Educational Tour & Training from Nepal & Bhutan</span></div>
                             <div class="col-md-6"><strong>Sponsoring Department:</strong> <span>Prof. S. K. Bhardwaj, Dept of Silviculture</span></div>
                             <div class="col-md-6"><strong>Estimated Tariff:</strong> <span class="fw-bold text-success">&#8377;3,500/night (Total: &#8377;10,500 + GST)</span></div>
@@ -1542,6 +1544,8 @@
 
     <!-- Bootstrap 5 Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Flatpickr Datepicker JS (Strict DD/MM/YYYY) -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <!-- Authoritative Estate Tariff Master JS -->
     <script src="estate_tariffs.js"></script>
@@ -1597,7 +1601,7 @@
                 room: 'VIP Suite #101',
                 roomClass: 'vip',
                 isVvip: false,
-                dates: '28 Oct 2026 &rarr; 31 Oct 2026',
+                dates: '28/10/2026 &rarr; 31/10/2026',
                 duration: '3 Nights &bull; 1 Guest',
                 category: '1(i) HP/Univ/ICAR Official (\u20B91,500)',
                 status: 'CHECKED_IN',
@@ -1612,7 +1616,7 @@
                 room: 'VIP Suites Annexe #02',
                 roomClass: 'vip',
                 isVvip: false,
-                dates: '29 Oct 2026 &rarr; 01 Nov 2026',
+                dates: '29/10/2026 &rarr; 01/11/2026',
                 duration: '3 Nights &bull; 2 Guests',
                 category: '1(i) HP Govt/State Official (\u20B91,500)',
                 status: 'APPROVED',
@@ -1627,7 +1631,7 @@
                 room: 'Main GH &bull; VVIP Suite #201 (Presidential)',
                 roomClass: 'vvip',
                 isVvip: true, // EXCLUSIVE TO VC SECRETARIAT
-                dates: '01 Nov 2026 &rarr; 04 Nov 2026',
+                dates: '01/11/2026 &rarr; 04/11/2026',
                 duration: '3 Nights &bull; 2 Guests',
                 category: '5. Nepal & Bhutan Delegates (\u20B93,500)',
                 status: 'PENDING_VC_APPROVAL',
@@ -1644,7 +1648,7 @@
                 room: 'Main GH &bull; VIP Suite #102',
                 roomClass: 'vip',
                 isVvip: false, // HANDLED BY ESTATE OFFICE
-                dates: '02 Nov 2026 &rarr; 05 Nov 2026',
+                dates: '02/11/2026 &rarr; 05/11/2026',
                 duration: '3 Nights &bull; 1 Guest',
                 category: '1(i) HP/Univ/ICAR Official (\u20B91,500)',
                 status: 'PENDING_ESTATE_APPROVAL',
@@ -1661,7 +1665,7 @@
                 room: 'Farmers Dormitory Hall',
                 roomClass: 'dormitory',
                 isVvip: false,
-                dates: '05 Nov 2026 &rarr; 07 Nov 2026',
+                dates: '05/11/2026 &rarr; 07/11/2026',
                 duration: '2 Nights &bull; 15 Beds',
                 category: 'DEE-1 Farmers Training (\u20B9100)',
                 status: 'SUBMITTED',
@@ -2200,8 +2204,12 @@
                 const dayName = dayNames[d.getDay()];
                 const dateNum = d.getDate();
                 const mon = monthNames[d.getMonth()];
-                dateList.push({ dayName, dateNum, mon, isToday: i === 0 });
-                headHtml += `<th class="cal-day-cell text-center ${i === 0 ? 'bg-primary text-white' : ''}">${dayName}<br><small>${dateNum} ${mon}${i === 0 ? ' (Today)' : ''}</small></th>`;
+                const ddStr = String(d.getDate()).padStart(2, '0');
+                const mmStr = String(d.getMonth() + 1).padStart(2, '0');
+                const yyyyStr = d.getFullYear();
+                const dmy = `${ddStr}/${mmStr}/${yyyyStr}`;
+                dateList.push({ dayName, dateNum, mon, dmy, isToday: i === 0 });
+                headHtml += `<th class="cal-day-cell text-center ${i === 0 ? 'bg-primary text-white' : ''}">${dayName}<br><small>${dmy}${i === 0 ? ' (Today)' : ''}</small></th>`;
             }
             headHtml += '</tr>';
             thead.innerHTML = headHtml;
@@ -2694,55 +2702,100 @@
             calculateTariffEstimate();
         }
 
-                        // Date helpers in local client time (Prevents back-dated bookings)
-        function formatLocalDate(d) {
-            if (!d || isNaN(d.getTime())) d = new Date();
-            const yyyy = d.getFullYear();
-            const mm = String(d.getMonth() + 1).padStart(2, '0');
-            const dd = String(d.getDate()).padStart(2, '0');
-            return `${yyyy}-${mm}-${dd}`;
+        let adminInPicker, adminOutPicker;
+
+        function maskDateInput(e) {
+            let v = e.target.value.replace(/[^\d\/]/g, '');
+            if (v.length === 2 && !v.includes('/')) v = v + '/';
+            else if (v.length === 5 && v.split('/').length === 2) v = v + '/';
+            e.target.value = v.slice(0, 10);
         }
 
-        function parseLocalDate(dateStr) {
-            if (!dateStr || typeof dateStr !== 'string') return new Date();
-            const parts = dateStr.split('-');
-            if (parts.length === 3) {
-                return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        // Parse date string in DD/MM/YYYY or YYYY-MM-DD format into Date object
+        function parseDateDMY(str) {
+            if (!str) return new Date();
+            if (str instanceof Date) return str;
+            str = String(str).trim();
+            if (str.includes('/')) {
+                const parts = str.split('/');
+                if (parts.length === 3) {
+                    const d = parseInt(parts[0], 10);
+                    const m = parseInt(parts[1], 10) - 1;
+                    const y = parseInt(parts[2], 10);
+                    const dt = new Date(y, m, d);
+                    dt.setHours(0,0,0,0);
+                    return dt;
+                }
+            } else if (str.includes('-')) {
+                const parts = str.split('-');
+                if (parts.length === 3) {
+                    if (parts[0].length === 4) {
+                        const dt = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+                        dt.setHours(0,0,0,0);
+                        return dt;
+                    } else {
+                        const dt = new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
+                        dt.setHours(0,0,0,0);
+                        return dt;
+                    }
+                }
             }
-            return new Date(dateStr);
+            const dt = new Date(str);
+            dt.setHours(0,0,0,0);
+            return isNaN(dt.getTime()) ? new Date() : dt;
+        }
+
+        // Format Date object into strict DD/MM/YYYY string
+        function formatDMY(d) {
+            if (!d || isNaN(d.getTime())) d = new Date();
+            const dd = String(d.getDate()).padStart(2, '0');
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const yyyy = d.getFullYear();
+            return `${dd}/${mm}/${yyyy}`;
         }
 
         function getTodayString() {
-            return formatLocalDate(new Date());
+            return formatDMY(new Date());
         }
 
         function getDateAfterDays(baseDateStr, days) {
-            const base = parseLocalDate(baseDateStr);
+            const base = parseDateDMY(baseDateStr);
             const result = new Date(base.getTime() + (days * 24 * 60 * 60 * 1000));
-            return formatLocalDate(result);
+            return formatDMY(result);
         }
 
         function initializeAdminBookingDates() {
-            const today = getTodayString();
-            const defaultCheckOut = getDateAfterDays(today, 3);
-            const minCheckOut = getDateAfterDays(today, 1);
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const todayStr = formatDMY(today);
+            const defaultOut = new Date(today.getTime() + (3 * 86400000));
+            const defaultOutStr = formatDMY(defaultOut);
+            const minOut = new Date(today.getTime() + 86400000);
 
             const adminIn = document.getElementById('checkInDate');
             const adminOut = document.getElementById('checkOutDate');
 
-            if (adminIn) {
-                adminIn.min = today;
-                if (!adminIn.value || adminIn.value < today) {
-                    adminIn.value = today;
-                }
+            if (adminIn) adminIn.value = todayStr;
+            if (adminOut) adminOut.value = defaultOutStr;
+
+            if (typeof flatpickr !== 'undefined') {
+                adminInPicker = flatpickr("#checkInDate", {
+                    dateFormat: "d/m/Y",
+                    minDate: "today",
+                    defaultDate: today,
+                    allowInput: true,
+                    onChange: function() { onAdminCheckInChange(); }
+                });
+
+                adminOutPicker = flatpickr("#checkOutDate", {
+                    dateFormat: "d/m/Y",
+                    minDate: minOut,
+                    defaultDate: defaultOut,
+                    allowInput: true,
+                    onChange: function() { onAdminCheckOutChange(); }
+                });
             }
-            if (adminOut) {
-                const minOut = adminIn && adminIn.value ? getDateAfterDays(adminIn.value, 1) : minCheckOut;
-                adminOut.min = minOut;
-                if (!adminOut.value || adminOut.value <= today || adminOut.value < minOut) {
-                    adminOut.value = defaultCheckOut;
-                }
-            }
+
             updateDurationBadge('admin');
             calculateTariffEstimate();
         }
@@ -2750,7 +2803,9 @@
         function openDatePicker(inputId) {
             const el = document.getElementById(inputId);
             if (!el) return;
-            if (el.showPicker) {
+            if (el._flatpickr) {
+                el._flatpickr.open();
+            } else if (el.showPicker) {
                 try { el.showPicker(); } catch (e) { el.focus(); }
             } else {
                 el.focus();
@@ -2769,8 +2824,8 @@
                 return;
             }
 
-            const d1 = new Date(inEl.value);
-            const d2 = new Date(outEl.value);
+            const d1 = parseDateDMY(inEl.value);
+            const d2 = parseDateDMY(outEl.value);
             let diff = d2 - d1;
             let nights = Math.ceil(diff / (1000 * 60 * 60 * 24));
             if (isNaN(nights) || nights < 1) nights = 1;
@@ -2781,15 +2836,26 @@
             const inEl = document.getElementById('checkInDate');
             const outEl = document.getElementById('checkOutDate');
             if (!inEl || !outEl) return;
-            const today = getTodayString();
-            if (inEl.value < today) {
-                alert(`Invalid Date: Booking for past/back dates is not permitted.\n\nCheck-In has been adjusted to today (${today}).`);
-                inEl.value = today;
+
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            let inDate = parseDateDMY(inEl.value);
+
+            if (inDate < today) {
+                alert(`Invalid Date: Booking for past/back dates is not permitted.\n\nCheck-In has been adjusted to today (${formatDMY(today)}).`);
+                inDate = today;
+                if (adminInPicker) adminInPicker.setDate(today);
+                else inEl.value = formatDMY(today);
             }
-            const minOut = getDateAfterDays(inEl.value, 1);
-            outEl.min = minOut;
-            if (outEl.value < minOut) {
-                outEl.value = minOut;
+
+            const minOutDate = new Date(inDate.getTime() + 86400000);
+            if (adminOutPicker) {
+                adminOutPicker.set('minDate', minOutDate);
+            }
+            const currentOutDate = parseDateDMY(outEl.value);
+            if (currentOutDate < minOutDate) {
+                if (adminOutPicker) adminOutPicker.setDate(minOutDate);
+                else outEl.value = formatDMY(minOutDate);
             }
             updateDurationBadge('admin');
             calculateTariffEstimate();
@@ -2799,10 +2865,15 @@
             const inEl = document.getElementById('checkInDate');
             const outEl = document.getElementById('checkOutDate');
             if (!inEl || !outEl) return;
-            const minOut = getDateAfterDays(inEl.value, 1);
-            if (outEl.value < minOut) {
-                alert(`Invalid Date: Check-Out date cannot be on or before Check-In date (${inEl.value}).\n\nResetting to minimum valid date: ${minOut}.`);
-                outEl.value = minOut;
+
+            const inDate = parseDateDMY(inEl.value);
+            const minOutDate = new Date(inDate.getTime() + 86400000);
+            const outDate = parseDateDMY(outEl.value);
+
+            if (outDate < minOutDate) {
+                alert(`Invalid Date: Check-Out date cannot be on or before Check-In date (${formatDMY(inDate)}).\n\nResetting to minimum valid date: ${formatDMY(minOutDate)}.`);
+                if (adminOutPicker) adminOutPicker.setDate(minOutDate);
+                else outEl.value = formatDMY(minOutDate);
             }
             updateDurationBadge('admin');
             calculateTariffEstimate();
@@ -2813,12 +2884,16 @@
             const outEl = document.getElementById('checkOutDate');
             if (!inEl || !outEl) return;
 
-            const today = getTodayString();
-            if (!inEl.value || inEl.value < today) {
-                inEl.value = today;
+            const inDate = parseDateDMY(inEl.value);
+            const newOutDate = new Date(inDate.getTime() + (days * 86400000));
+            const newOutStr = formatDMY(newOutDate);
+
+            if (adminOutPicker) {
+                adminOutPicker.setDate(newOutDate);
+            } else {
+                outEl.value = newOutStr;
             }
 
-            outEl.value = getDateAfterDays(inEl.value, days);
             updateDurationBadge('admin');
             calculateTariffEstimate();
         }
@@ -2835,8 +2910,8 @@
             
             const checkInVal = document.getElementById('checkInDate').value;
             const checkOutVal = document.getElementById('checkOutDate').value;
-            const checkIn = new Date(checkInVal);
-            const checkOut = new Date(checkOutVal);
+            const checkIn = parseDateDMY(checkInVal);
+            const checkOut = parseDateDMY(checkOutVal);
 
             let diffTime = checkOut - checkIn;
             let nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -2918,14 +2993,18 @@
         }
 
         function handleReservationSubmit(e) {
-            const today = getTodayString();
+            const today = new Date();
+            today.setHours(0,0,0,0);
             const checkInVal = document.getElementById('checkInDate').value;
             const checkOutVal = document.getElementById('checkOutDate').value;
-            if (checkInVal < today) {
-                alert(`Booking Error: Check-in date (${checkInVal}) cannot be in the past. Please choose today (${today}) or later.`);
+            const inDate = parseDateDMY(checkInVal);
+            const outDate = parseDateDMY(checkOutVal);
+
+            if (inDate < today) {
+                alert(`Booking Error: Check-in date (${checkInVal}) cannot be in the past. Please choose today (${formatDMY(today)}) or later.`);
                 return;
             }
-            if (checkOutVal <= checkInVal) {
+            if (outDate <= inDate) {
                 alert("Booking Error: Check-out date must be at least one day after check-in date.");
                 return;
             }
@@ -2934,6 +3013,8 @@
             const refNum = 'GH-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
             const wing = document.getElementById('bookingWing').value;
             const wingLabel = wing === 'estate' ? 'Estate Office Wing' : 'DEE (Kisan Bhawan)';
+            let diffDays = Math.ceil((outDate - inDate) / (1000 * 60 * 60 * 24));
+            if (isNaN(diffDays) || diffDays < 1) diffDays = 1;
 
             // Append to dashboard table
             const tbody = document.getElementById('bookingsTableBody');
@@ -2949,8 +3030,8 @@
                         <small class="text-warning text-dark fw-bold">Pending Allocation</small>
                     </td>
                     <td>
-                        <div>02 Nov 2026 &rarr; 05 Nov 2026</div>
-                        <small class="text-muted">3 Nights &bull; 1 Guest</small>
+                        <div>${formatDMY(inDate)} &rarr; ${formatDMY(outDate)}</div>
+                        <small class="text-muted">${diffDays} Night${diffDays > 1 ? 's' : ''} &bull; 1 Guest</small>
                     </td>
                     <td><span class="badge bg-info text-dark">Notification 1615-40</span></td>
                     <td><span class="badge bg-warning text-dark badge-status">PENDING_APPROVAL</span></td>

@@ -12,6 +12,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Flatpickr Datepicker CSS (Strict DD/MM/YYYY) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     
     <style>
         :root {
@@ -368,10 +370,10 @@
                     <!-- 4. Check-In -->
                     <div class="col-xl-2 col-md-6">
                         <label class="form-label fw-semibold small text-muted">
-                            <i class="bi bi-calendar-event me-1 text-success"></i> Check-In Date *
+                            <i class="bi bi-calendar-event me-1 text-success"></i> Check-In Date * <small class="text-secondary">(DD/MM/YYYY)</small>
                         </label>
                         <div class="input-group">
-                            <input type="date" id="searchCheckIn" class="form-control form-control-lg fs-6" required onchange="onSearchCheckInChange()" oninput="updateEstimatedSearchPrice()" onclick="try{this.showPicker()}catch(e){}">
+                            <input type="text" id="searchCheckIn" class="form-control form-control-lg fs-6 fw-bold" placeholder="DD/MM/YYYY" maxlength="10" required onchange="onSearchCheckInChange()" oninput="maskDateInput(event); updateEstimatedSearchPrice()" onclick="openDatePicker('searchCheckIn')">
                             <button class="btn btn-outline-secondary" type="button" onclick="openDatePicker('searchCheckIn')" title="Open Calendar"><i class="bi bi-calendar-event text-success"></i></button>
                         </div>
                     </div>
@@ -379,11 +381,11 @@
                     <!-- 5. Check-Out Date -->
                     <div class="col-xl-2 col-md-6">
                         <label class="form-label fw-semibold small text-muted d-flex justify-content-between align-items-center">
-                            <span><i class="bi bi-calendar-check me-1 text-danger"></i> Check-Out Date *</span>
+                            <span><i class="bi bi-calendar-check me-1 text-danger"></i> Check-Out Date * <small class="text-secondary">(DD/MM/YYYY)</small></span>
                             <span class="badge bg-danger text-white py-0 px-1" id="searchDurationBadge" style="font-size: 0.65rem;">3 Nights</span>
                         </label>
                         <div class="input-group">
-                            <input type="date" id="searchCheckOut" class="form-control form-control-lg fs-6 fw-bold border-danger text-danger" required onchange="onSearchCheckOutChange()" oninput="updateEstimatedSearchPrice()" onclick="try{this.showPicker()}catch(e){}">
+                            <input type="text" id="searchCheckOut" class="form-control form-control-lg fs-6 fw-bold border-danger text-danger" placeholder="DD/MM/YYYY" maxlength="10" required onchange="onSearchCheckOutChange()" oninput="maskDateInput(event); updateEstimatedSearchPrice()" onclick="openDatePicker('searchCheckOut')">
                             <button class="btn btn-outline-danger" type="button" onclick="openDatePicker('searchCheckOut')" title="Open Calendar"><i class="bi bi-calendar-check"></i></button>
                         </div>
                     </div>
@@ -804,20 +806,20 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold small">Check-In Date *</label>
+                                <label class="form-label fw-semibold small">Check-In Date * <small class="text-muted">(DD/MM/YYYY)</small></label>
                                 <div class="input-group">
-                                    <input type="date" id="modalCheckIn" class="form-control" required onchange="onModalCheckInChange()" oninput="calcModalTariff()" onclick="try{this.showPicker()}catch(e){}">
+                                    <input type="text" id="modalCheckIn" class="form-control fw-bold" placeholder="DD/MM/YYYY" maxlength="10" required onchange="onModalCheckInChange()" oninput="maskDateInput(event); calcModalTariff()" onclick="openDatePicker('modalCheckIn')">
                                     <button class="btn btn-outline-secondary" type="button" onclick="openDatePicker('modalCheckIn')" title="Open Calendar"><i class="bi bi-calendar-event text-success"></i></button>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold small d-flex justify-content-between align-items-center">
-                                    <span>Check-Out Date *</span>
+                                    <span>Check-Out Date * <small class="text-muted">(DD/MM/YYYY)</small></span>
                                     <span class="badge bg-primary text-white py-0 px-1" id="modalDurationBadge" style="font-size: 0.65rem;">3 Nights</span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="date" id="modalCheckOut" class="form-control fw-bold border-primary text-primary" required onchange="onModalCheckOutChange()" oninput="calcModalTariff()" onclick="try{this.showPicker()}catch(e){}">
+                                    <input type="text" id="modalCheckOut" class="form-control fw-bold border-primary text-primary" placeholder="DD/MM/YYYY" maxlength="10" required onchange="onModalCheckOutChange()" oninput="maskDateInput(event); calcModalTariff()" onclick="openDatePicker('modalCheckOut')">
                                     <button class="btn btn-outline-primary" type="button" onclick="openDatePicker('modalCheckOut')" title="Open Calendar"><i class="bi bi-calendar-check"></i></button>
                                 </div>
                             </div>
@@ -861,6 +863,8 @@
 
     <!-- Bootstrap 5 Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Flatpickr Datepicker JS (Strict DD/MM/YYYY) -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <!-- Authoritative Estate Tariff Master JS -->
     <script src="estate_tariffs.js"></script>
 
@@ -989,8 +993,8 @@
             const setType = document.getElementById('searchSetType').value;
             const catId = document.getElementById('searchCategory').value;
 
-            const checkIn = new Date(document.getElementById('searchCheckIn').value);
-            const checkOut = new Date(document.getElementById('searchCheckOut').value);
+            const checkIn = parseDateDMY(document.getElementById('searchCheckIn').value);
+            const checkOut = parseDateDMY(document.getElementById('searchCheckOut').value);
             let diff = checkOut - checkIn;
             let nights = Math.ceil(diff / (1000 * 60 * 60 * 24));
             if (isNaN(nights) || nights < 1) nights = 1;
@@ -1003,80 +1007,134 @@
         }
 
                         // Date helpers in local client time (Prevents back-dated bookings)
-        function formatLocalDate(d) {
-            if (!d || isNaN(d.getTime())) d = new Date();
-            const yyyy = d.getFullYear();
-            const mm = String(d.getMonth() + 1).padStart(2, '0');
-            const dd = String(d.getDate()).padStart(2, '0');
-            return `${yyyy}-${mm}-${dd}`;
+        let searchInPicker, searchOutPicker, modalInPicker, modalOutPicker;
+
+        function maskDateInput(e) {
+            let v = e.target.value.replace(/[^\d\/]/g, '');
+            if (v.length === 2 && !v.includes('/')) v = v + '/';
+            else if (v.length === 5 && v.split('/').length === 2) v = v + '/';
+            e.target.value = v.slice(0, 10);
         }
 
-        function parseLocalDate(dateStr) {
-            if (!dateStr || typeof dateStr !== 'string') return new Date();
-            const parts = dateStr.split('-');
-            if (parts.length === 3) {
-                return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        // Parse date string in DD/MM/YYYY or YYYY-MM-DD format into Date object
+        function parseDateDMY(str) {
+            if (!str) return new Date();
+            if (str instanceof Date) return str;
+            str = String(str).trim();
+            if (str.includes('/')) {
+                const parts = str.split('/');
+                if (parts.length === 3) {
+                    const d = parseInt(parts[0], 10);
+                    const m = parseInt(parts[1], 10) - 1;
+                    const y = parseInt(parts[2], 10);
+                    const dt = new Date(y, m, d);
+                    dt.setHours(0,0,0,0);
+                    return dt;
+                }
+            } else if (str.includes('-')) {
+                const parts = str.split('-');
+                if (parts.length === 3) {
+                    if (parts[0].length === 4) {
+                        const dt = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+                        dt.setHours(0,0,0,0);
+                        return dt;
+                    } else {
+                        const dt = new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
+                        dt.setHours(0,0,0,0);
+                        return dt;
+                    }
+                }
             }
-            return new Date(dateStr);
+            const dt = new Date(str);
+            dt.setHours(0,0,0,0);
+            return isNaN(dt.getTime()) ? new Date() : dt;
+        }
+
+        // Format Date object into strict DD/MM/YYYY string
+        function formatDMY(d) {
+            if (!d || isNaN(d.getTime())) d = new Date();
+            const dd = String(d.getDate()).padStart(2, '0');
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const yyyy = d.getFullYear();
+            return `${dd}/${mm}/${yyyy}`;
         }
 
         function getTodayString() {
-            return formatLocalDate(new Date());
+            return formatDMY(new Date());
         }
 
         function getDateAfterDays(baseDateStr, days) {
-            const base = parseLocalDate(baseDateStr);
+            const base = parseDateDMY(baseDateStr);
             const result = new Date(base.getTime() + (days * 24 * 60 * 60 * 1000));
-            return formatLocalDate(result);
+            return formatDMY(result);
         }
 
         function initializeBookingDates() {
-            const today = getTodayString();
-            const defaultCheckOut = getDateAfterDays(today, 3);
-            const minCheckOut = getDateAfterDays(today, 1);
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const todayStr = formatDMY(today);
+            const defaultOut = new Date(today.getTime() + (3 * 86400000));
+            const defaultOutStr = formatDMY(defaultOut);
+            const minOut = new Date(today.getTime() + 86400000);
 
             // 1. Search Bar
             const searchIn = document.getElementById('searchCheckIn');
             const searchOut = document.getElementById('searchCheckOut');
-            if (searchIn) {
-                searchIn.min = today;
-                if (!searchIn.value || searchIn.value < today) {
-                    searchIn.value = today;
-                }
-            }
-            if (searchOut) {
-                const minOut = searchIn && searchIn.value ? getDateAfterDays(searchIn.value, 1) : minCheckOut;
-                searchOut.min = minOut;
-                if (!searchOut.value || searchOut.value <= today || searchOut.value < minOut) {
-                    searchOut.value = defaultCheckOut;
-                }
-            }
-            updateDurationBadge('search');
-            updateEstimatedSearchPrice();
+            if (searchIn) searchIn.value = todayStr;
+            if (searchOut) searchOut.value = defaultOutStr;
 
             // 2. Modal
             const modalIn = document.getElementById('modalCheckIn');
             const modalOut = document.getElementById('modalCheckOut');
-            if (modalIn) {
-                modalIn.min = today;
-                if (!modalIn.value || modalIn.value < today) {
-                    modalIn.value = today;
-                }
+            if (modalIn) modalIn.value = todayStr;
+            if (modalOut) modalOut.value = defaultOutStr;
+
+            // Initialize Flatpickr if library available
+            if (typeof flatpickr !== 'undefined') {
+                searchInPicker = flatpickr("#searchCheckIn", {
+                    dateFormat: "d/m/Y",
+                    minDate: "today",
+                    defaultDate: today,
+                    allowInput: true,
+                    onChange: function() { onSearchCheckInChange(); }
+                });
+
+                searchOutPicker = flatpickr("#searchCheckOut", {
+                    dateFormat: "d/m/Y",
+                    minDate: minOut,
+                    defaultDate: defaultOut,
+                    allowInput: true,
+                    onChange: function() { onSearchCheckOutChange(); }
+                });
+
+                modalInPicker = flatpickr("#modalCheckIn", {
+                    dateFormat: "d/m/Y",
+                    minDate: "today",
+                    defaultDate: today,
+                    allowInput: true,
+                    onChange: function() { onModalCheckInChange(); }
+                });
+
+                modalOutPicker = flatpickr("#modalCheckOut", {
+                    dateFormat: "d/m/Y",
+                    minDate: minOut,
+                    defaultDate: defaultOut,
+                    allowInput: true,
+                    onChange: function() { onModalCheckOutChange(); }
+                });
             }
-            if (modalOut) {
-                const minOut = modalIn && modalIn.value ? getDateAfterDays(modalIn.value, 1) : minCheckOut;
-                modalOut.min = minOut;
-                if (!modalOut.value || modalOut.value <= today || modalOut.value < minOut) {
-                    modalOut.value = defaultCheckOut;
-                }
-            }
+
+            updateDurationBadge('search');
+            updateEstimatedSearchPrice();
             updateDurationBadge('modal');
         }
 
         function openDatePicker(inputId) {
             const el = document.getElementById(inputId);
             if (!el) return;
-            if (el.showPicker) {
+            if (el._flatpickr) {
+                el._flatpickr.open();
+            } else if (el.showPicker) {
                 try { el.showPicker(); } catch (e) { el.focus(); }
             } else {
                 el.focus();
@@ -1098,8 +1156,8 @@
                 return;
             }
 
-            const d1 = new Date(inEl.value);
-            const d2 = new Date(outEl.value);
+            const d1 = parseDateDMY(inEl.value);
+            const d2 = parseDateDMY(outEl.value);
             let diff = d2 - d1;
             let nights = Math.ceil(diff / (1000 * 60 * 60 * 24));
             if (isNaN(nights) || nights < 1) nights = 1;
@@ -1110,15 +1168,26 @@
             const inEl = document.getElementById('searchCheckIn');
             const outEl = document.getElementById('searchCheckOut');
             if (!inEl || !outEl) return;
-            const today = getTodayString();
-            if (inEl.value < today) {
-                alert(`Invalid Date: Booking for past/back dates is not permitted.\n\nCheck-In has been adjusted to today (${today}).`);
-                inEl.value = today;
+
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            let inDate = parseDateDMY(inEl.value);
+
+            if (inDate < today) {
+                alert(`Invalid Date: Booking for past/back dates is not permitted.\n\nCheck-In has been adjusted to today (${formatDMY(today)}).`);
+                inDate = today;
+                if (searchInPicker) searchInPicker.setDate(today);
+                else inEl.value = formatDMY(today);
             }
-            const minOut = getDateAfterDays(inEl.value, 1);
-            outEl.min = minOut;
-            if (outEl.value < minOut) {
-                outEl.value = minOut;
+
+            const minOutDate = new Date(inDate.getTime() + 86400000);
+            if (searchOutPicker) {
+                searchOutPicker.set('minDate', minOutDate);
+            }
+            const currentOutDate = parseDateDMY(outEl.value);
+            if (currentOutDate < minOutDate) {
+                if (searchOutPicker) searchOutPicker.setDate(minOutDate);
+                else outEl.value = formatDMY(minOutDate);
             }
             updateDurationBadge('search');
             updateEstimatedSearchPrice();
@@ -1128,10 +1197,15 @@
             const inEl = document.getElementById('searchCheckIn');
             const outEl = document.getElementById('searchCheckOut');
             if (!inEl || !outEl) return;
-            const minOut = getDateAfterDays(inEl.value, 1);
-            if (outEl.value < minOut) {
-                alert(`Invalid Date: Check-Out date cannot be in the past or on/before Check-In date (${inEl.value}).\n\nResetting to minimum valid date: ${minOut}.`);
-                outEl.value = minOut;
+
+            const inDate = parseDateDMY(inEl.value);
+            const minOutDate = new Date(inDate.getTime() + 86400000);
+            const outDate = parseDateDMY(outEl.value);
+
+            if (outDate < minOutDate) {
+                alert(`Invalid Date: Check-Out date cannot be on or before Check-In date (${formatDMY(inDate)}).\n\nResetting to minimum valid date: ${formatDMY(minOutDate)}.`);
+                if (searchOutPicker) searchOutPicker.setDate(minOutDate);
+                else outEl.value = formatDMY(minOutDate);
             }
             updateDurationBadge('search');
             updateEstimatedSearchPrice();
@@ -1141,15 +1215,26 @@
             const inEl = document.getElementById('modalCheckIn');
             const outEl = document.getElementById('modalCheckOut');
             if (!inEl || !outEl) return;
-            const today = getTodayString();
-            if (inEl.value < today) {
-                alert(`Invalid Date: Booking for past/back dates is not permitted.\n\nCheck-In has been adjusted to today (${today}).`);
-                inEl.value = today;
+
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            let inDate = parseDateDMY(inEl.value);
+
+            if (inDate < today) {
+                alert(`Invalid Date: Booking for past/back dates is not permitted.\n\nCheck-In has been adjusted to today (${formatDMY(today)}).`);
+                inDate = today;
+                if (modalInPicker) modalInPicker.setDate(today);
+                else inEl.value = formatDMY(today);
             }
-            const minOut = getDateAfterDays(inEl.value, 1);
-            outEl.min = minOut;
-            if (outEl.value < minOut) {
-                outEl.value = minOut;
+
+            const minOutDate = new Date(inDate.getTime() + 86400000);
+            if (modalOutPicker) {
+                modalOutPicker.set('minDate', minOutDate);
+            }
+            const currentOutDate = parseDateDMY(outEl.value);
+            if (currentOutDate < minOutDate) {
+                if (modalOutPicker) modalOutPicker.setDate(minOutDate);
+                else outEl.value = formatDMY(minOutDate);
             }
             updateDurationBadge('modal');
             calcModalTariff();
@@ -1159,31 +1244,40 @@
             const inEl = document.getElementById('modalCheckIn');
             const outEl = document.getElementById('modalCheckOut');
             if (!inEl || !outEl) return;
-            const minOut = getDateAfterDays(inEl.value, 1);
-            if (outEl.value < minOut) {
-                alert(`Invalid Date: Check-Out date cannot be in the past or on/before Check-In date (${inEl.value}).\n\nResetting to minimum valid date: ${minOut}.`);
-                outEl.value = minOut;
+
+            const inDate = parseDateDMY(inEl.value);
+            const minOutDate = new Date(inDate.getTime() + 86400000);
+            const outDate = parseDateDMY(outEl.value);
+
+            if (outDate < minOutDate) {
+                alert(`Invalid Date: Check-Out date cannot be on or before Check-In date (${formatDMY(inDate)}).\n\nResetting to minimum valid date: ${formatDMY(minOutDate)}.`);
+                if (modalOutPicker) modalOutPicker.setDate(minOutDate);
+                else outEl.value = formatDMY(minOutDate);
             }
             updateDurationBadge('modal');
             calcModalTariff();
         }
 
         function setStayDays(scope, days) {
-            let inId = 'searchCheckIn', outId = 'searchCheckOut', callback = updateEstimatedSearchPrice;
+            let inId = 'searchCheckIn', outId = 'searchCheckOut', picker = searchOutPicker, callback = updateEstimatedSearchPrice;
             if (scope === 'modal') {
-                inId = 'modalCheckIn'; outId = 'modalCheckOut'; callback = calcModalTariff;
+                inId = 'modalCheckIn'; outId = 'modalCheckOut'; picker = modalOutPicker; callback = calcModalTariff;
             }
 
             const inEl = document.getElementById(inId);
             const outEl = document.getElementById(outId);
             if (!inEl || !outEl) return;
 
-            const today = getTodayString();
-            if (!inEl.value || inEl.value < today) {
-                inEl.value = today;
+            const inDate = parseDateDMY(inEl.value);
+            const newOutDate = new Date(inDate.getTime() + (days * 86400000));
+            const newOutStr = formatDMY(newOutDate);
+
+            if (picker) {
+                picker.setDate(newOutDate);
+            } else {
+                outEl.value = newOutStr;
             }
 
-            outEl.value = getDateAfterDays(inEl.value, days);
             updateDurationBadge(scope);
             if (callback) callback();
         }
@@ -1207,10 +1301,12 @@
             const searchIn = document.getElementById('searchCheckIn');
             const searchOut = document.getElementById('searchCheckOut');
             if (searchIn && searchIn.value) {
-                document.getElementById('modalCheckIn').value = searchIn.value;
+                if (modalInPicker) modalInPicker.setDate(parseDateDMY(searchIn.value));
+                else document.getElementById('modalCheckIn').value = searchIn.value;
             }
             if (searchOut && searchOut.value) {
-                document.getElementById('modalCheckOut').value = searchOut.value;
+                if (modalOutPicker) modalOutPicker.setDate(parseDateDMY(searchOut.value));
+                else document.getElementById('modalCheckOut').value = searchOut.value;
             }
 
             calcModalTariff();
@@ -1267,8 +1363,8 @@
             const setType = document.getElementById('modalSetType').value;
             const catId = document.getElementById('modalCategory').value;
 
-            const d1 = new Date(document.getElementById('modalCheckIn').value);
-            const d2 = new Date(document.getElementById('modalCheckOut').value);
+            const d1 = parseDateDMY(document.getElementById('modalCheckIn').value);
+            const d2 = parseDateDMY(document.getElementById('modalCheckOut').value);
             let diff = d2 - d1;
             let nights = Math.ceil(diff / (1000 * 60 * 60 * 24));
             if (isNaN(nights) || nights < 1) nights = 1;
@@ -1307,14 +1403,18 @@
         }
 
         function handleModalSubmit(e) {
-            const today = getTodayString();
+            const today = new Date();
+            today.setHours(0,0,0,0);
             const checkInVal = document.getElementById('modalCheckIn').value;
             const checkOutVal = document.getElementById('modalCheckOut').value;
-            if (checkInVal < today) {
-                alert(`Booking Error: Check-in date (${checkInVal}) cannot be in the past. Please select today (${today}) or later.`);
+            const inDate = parseDateDMY(checkInVal);
+            const outDate = parseDateDMY(checkOutVal);
+
+            if (inDate < today) {
+                alert(`Booking Error: Check-in date (${checkInVal}) cannot be in the past. Please select today (${formatDMY(today)}) or later.`);
                 return;
             }
-            if (checkOutVal <= checkInVal) {
+            if (outDate <= inDate) {
                 alert("Booking Error: Check-out date must be at least one day after check-in date.");
                 return;
             }
