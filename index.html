@@ -959,17 +959,17 @@
 
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold small">Contact Mobile *</label>
-                                <input type="tel" class="form-control" placeholder="10-digit mobile" required>
+                                <input type="tel" id="modalMobile" class="form-control" placeholder="10-digit mobile" required>
                             </div>
 
                             <div class="col-12">
                                 <label class="form-label fw-semibold small">Sponsoring Department / Institutional Affiliation <small class="text-muted fw-normal">(Optional)</small></label>
-                                <input type="text" class="form-control" placeholder="e.g. Department of Tree Improvement &amp; Genetic Resources (Optional)">
+                                <input type="text" id="modalSponsoringDept" class="form-control" placeholder="e.g. Department of Tree Improvement &amp; Genetic Resources (Optional)">
                             </div>
 
                             <div class="col-12">
                                 <label class="form-label fw-semibold small">Purpose of Visit</label>
-                                <textarea class="form-control" rows="2"
+                                <textarea class="form-control" id="modalPurpose" rows="2"
                                     placeholder="Official academic viva / External expert for Board of Studies / Farmers field workshop"></textarea>
                             </div>
                         </div>
@@ -1534,7 +1534,113 @@
             });
         }
 
+        const defaultInitialDossiers = [
+            {
+                ref: 'GH-2026-10-0001',
+                guest: 'Dr. A. K. Verma',
+                designation: 'ICAR National Professor, New Delhi',
+                wing: 'Estate Office Wing',
+                wingType: 'estate',
+                room: 'VIP Suite #101',
+                roomClass: 'vip',
+                isVvip: false,
+                dates: '28/10/2026 &rarr; 31/10/2026',
+                duration: '3 Nights &bull; 1 Guest',
+                category: '1(i) HP/Univ/ICAR Official (\u20B91,500)',
+                status: 'CHECKED_IN',
+                handledBy: 'estate'
+            },
+            {
+                ref: 'GH-2026-10-0002',
+                guest: 'Sh. Suresh Kumar, IAS',
+                designation: 'Joint Secretary, Agriculture (H.P.)',
+                wing: 'Estate Office Wing',
+                wingType: 'estate',
+                room: 'VIP Suites Annexe #02',
+                roomClass: 'vip',
+                isVvip: false,
+                dates: '29/10/2026 &rarr; 01/11/2026',
+                duration: '3 Nights &bull; 2 Guests',
+                category: '1(i) HP Govt/State Official (\u20B91,500)',
+                status: 'APPROVED',
+                handledBy: 'estate'
+            },
+            {
+                ref: 'GH-2026-10-0003',
+                guest: 'Sh. Tenzin Norbu & Delegation',
+                designation: 'Agricultural Officer, Thimphu, Bhutan',
+                wing: 'Estate Office Wing',
+                wingType: 'estate',
+                room: 'Main GH &bull; VVIP Suite #201 (Presidential)',
+                roomClass: 'vvip',
+                isVvip: true,
+                dates: '01/11/2026 &rarr; 04/11/2026',
+                duration: '3 Nights &bull; 2 Guests',
+                category: '5. Nepal & Bhutan Delegates (\u20B93,500)',
+                status: 'PENDING_VC_APPROVAL',
+                handledBy: 'vc',
+                sponsor: 'Prof. S. K. Bhardwaj, Dept of Silviculture',
+                tariff: '\u20B93,500 / night (Total: \u20B910,500 + GST)'
+            },
+            {
+                ref: 'GH-2026-10-0005',
+                guest: 'Prof. V. K. Rao & ICAR Team',
+                designation: 'Assistant Director General, ICAR New Delhi',
+                wing: 'Estate Office Wing',
+                wingType: 'estate',
+                room: 'Main GH &bull; VIP Suite #102',
+                roomClass: 'vip',
+                isVvip: false,
+                dates: '02/11/2026 &rarr; 05/11/2026',
+                duration: '3 Nights &bull; 1 Guest',
+                category: '1(i) HP/Univ/ICAR Official (\u20B91,500)',
+                status: 'PENDING_ESTATE_APPROVAL',
+                handledBy: 'estate',
+                sponsor: 'Dean, College of Horticulture',
+                tariff: '\u20B91,500 / night (Total: \u20B94,500 + GST)'
+            },
+            {
+                ref: 'GH-2026-10-0004',
+                guest: 'Sh. Ramesh Sharma & 15 Farmers',
+                designation: 'Apple Growers Association, Rohru',
+                wing: 'DEE Wing (Kisan Bhawan)',
+                wingType: 'dee',
+                room: 'Farmers Dormitory Hall',
+                roomClass: 'dormitory',
+                isVvip: false,
+                dates: '05/11/2026 &rarr; 07/11/2026',
+                duration: '2 Nights &bull; 15 Beds',
+                category: 'DEE-1 Farmers Training (\u20B9100)',
+                status: 'SUBMITTED',
+                handledBy: 'dee'
+            }
+        ];
+
+        function getInstitutionalDossiers() {
+            try {
+                const stored = localStorage.getItem('uhf_institutional_dossiers');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        return parsed;
+                    }
+                }
+            } catch (e) {
+                console.error("Error reading uhf_institutional_dossiers", e);
+            }
+            return [...defaultInitialDossiers];
+        }
+
+        function saveInstitutionalDossiers(dossiers) {
+            try {
+                localStorage.setItem('uhf_institutional_dossiers', JSON.stringify(dossiers));
+            } catch (e) {
+                console.error("Error saving uhf_institutional_dossiers", e);
+            }
+        }
+
         function handleModalSubmit(e) {
+            e.preventDefault();
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             const checkInVal = document.getElementById('modalCheckIn').value;
@@ -1550,12 +1656,79 @@
                 alert("Booking Error: Check-out date must be at least one day after check-in date.");
                 return;
             }
-            e.preventDefault();
-            const wingName = document.getElementById('modalWing').value === 'estate' ? 'Estate Office Wing' : 'Directorate of Extension Education';
-            const guest = document.getElementById('modalGuestName').value;
+
+            const wing = document.getElementById('modalWing').value;
+            const wingName = wing === 'estate' ? 'Estate Office Wing' : 'DEE Wing (Kisan Bhawan)';
+            const guest = document.getElementById('modalGuestName').value.trim();
+            const mobile = document.getElementById('modalMobile') ? document.getElementById('modalMobile').value.trim() : '';
+            const sponsoringDept = document.getElementById('modalSponsoringDept') ? document.getElementById('modalSponsoringDept').value.trim() : '';
+            const purpose = document.getElementById('modalPurpose') ? document.getElementById('modalPurpose').value.trim() : '';
+            
+            const setTypeSelect = document.getElementById('modalSetType');
+            const setType = setTypeSelect ? setTypeSelect.value : 'vip';
+            const setTypeLabel = setTypeSelect && setTypeSelect.selectedOptions[0] ? setTypeSelect.selectedOptions[0].text : setType;
+            
+            const catSelect = document.getElementById('modalCategory');
+            const catLabel = catSelect && catSelect.selectedOptions[0] ? catSelect.selectedOptions[0].text : 'Official Delegate';
+            const totalEst = document.getElementById('modalTotal') ? document.getElementById('modalTotal').innerText : '₹1,500.00';
+
+            const isVvip = setType.toLowerCase().includes('vvip') || setTypeLabel.toLowerCase().includes('vvip');
             const ref = 'GH-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
-            alert(`✅ Application Submitted Under Notification 1615-40!\n\nReference: ${ref}\nGuest: ${guest}\nWing: ${wingName}\nStatus: PENDING_SANCTION\n\nYour requisition has been dispatched to the Estate Officer.`);
+            let diffDays = Math.ceil((outDate - inDate) / (1000 * 60 * 60 * 24));
+            if (isNaN(diffDays) || diffDays < 1) diffDays = 1;
+
+            let roomDisplay = '';
+            let roomClass = 'ordinary';
+            if (isVvip) {
+                roomDisplay = 'Main GH • VVIP Suite #202 (Presidential)';
+                roomClass = 'vvip';
+            } else if (setType.toLowerCase().includes('vip')) {
+                roomDisplay = 'Main GH • VIP Suite #103';
+                roomClass = 'vip';
+            } else if (setType.toLowerCase().includes('dorm') || wing === 'dee') {
+                roomDisplay = 'Kisan Bhawan • Farmers Dormitory';
+                roomClass = 'dormitory';
+            } else {
+                roomDisplay = 'Main GH • Standard AC Room #104';
+                roomClass = 'ordinary';
+            }
+
+            const newDossier = {
+                ref: ref,
+                guest: guest,
+                designation: sponsoringDept ? `${sponsoringDept}` : 'Visiting Guest / Official Delegate',
+                mobile: mobile,
+                wing: wingName,
+                wingType: wing,
+                room: roomDisplay,
+                roomClass: roomClass,
+                isVvip: isVvip,
+                dates: `${formatDMY(inDate)} &rarr; ${formatDMY(outDate)}`,
+                duration: `${diffDays} Night${diffDays > 1 ? 's' : ''} &bull; 1 Guest`,
+                category: catLabel,
+                status: isVvip ? 'PENDING_VC_APPROVAL' : 'PENDING_ESTATE_APPROVAL',
+                handledBy: isVvip ? 'vc' : (wing === 'dee' ? 'dee' : 'estate'),
+                sponsor: sponsoringDept || 'Self / Institutional Booking',
+                tariff: totalEst,
+                purpose: purpose,
+                createdAt: new Date().toISOString()
+            };
+
+            // Save to shared localStorage key 'uhf_institutional_dossiers'
+            const dossiers = getInstitutionalDossiers();
+            dossiers.unshift(newDossier);
+            saveInstitutionalDossiers(dossiers);
+
+            alert(`✅ Application Submitted Under Notification 1615-40!\n\nReference: ${ref}\nGuest: ${guest}\nWing: ${wingName}\nRoom: ${roomDisplay}\nStatus: ${isVvip ? 'PENDING_VC_APPROVAL (Vice-Chancellor Apex Sanction Required)' : 'PENDING_ESTATE_APPROVAL'}\n\nYour requisition has been dispatched to the ${isVvip ? 'Vice-Chancellor Secretariat' : 'Estate Officer'} and is now reflecting in real-time across the management portal.`);
+            
             bootstrap.Modal.getInstance(document.getElementById('bookingModal')).hide();
+
+            // Auto-populate tracking code on page & display result
+            const trackInput = document.getElementById('trackInputCode');
+            if (trackInput) {
+                trackInput.value = ref;
+                executeTracking();
+            }
         }
 
         function handleQuickSearch(e) {
@@ -1567,10 +1740,49 @@
         }
 
         function executeTracking() {
-            const code = document.getElementById('trackInputCode').value.trim();
-            if (!code) return;
-            document.getElementById('trackingOutput').style.display = 'block';
-            document.getElementById('trackTitle').innerText = 'Booking #' + code;
+            const codeInput = document.getElementById('trackInputCode');
+            const code = codeInput ? codeInput.value.trim().toUpperCase() : '';
+            if (!code) {
+                alert("Please enter a valid Booking Reference (e.g. GH-2026-10-0001) or Mobile Number.");
+                return;
+            }
+
+            const dossiers = getInstitutionalDossiers();
+            const found = dossiers.find(d => 
+                (d.ref && d.ref.toUpperCase().includes(code)) || 
+                (d.mobile && d.mobile.includes(code)) ||
+                (d.guest && d.guest.toUpperCase().includes(code))
+            );
+
+            const output = document.getElementById('trackingOutput');
+            if (found && output) {
+                output.style.display = 'block';
+                document.getElementById('trackTitle').innerText = 'Booking #' + found.ref;
+                document.getElementById('trackRoom').innerHTML = `${found.wing} &bull; ${found.room}`;
+                document.getElementById('trackGuest').innerText = `${found.guest} (${found.designation || 'Guest'})`;
+
+                const badge = document.getElementById('trackBadge');
+                if (badge) {
+                    badge.innerText = found.status;
+                    if (found.status === 'CHECKED_IN') badge.className = 'badge bg-success';
+                    else if (found.status === 'APPROVED') badge.className = 'badge bg-primary';
+                    else if (found.status.includes('VC')) badge.className = 'badge bg-danger';
+                    else badge.className = 'badge bg-warning text-dark';
+                }
+
+                // Update timeline status
+                const timeline = output.querySelector('.d-flex.align-items-center.justify-content-between');
+                if (timeline) {
+                    let s1 = '<span class="text-success"><i class="bi bi-check-circle-fill"></i> 1. Submitted</span>';
+                    let s2 = found.status !== 'SUBMITTED' ? '<span class="text-success"><i class="bi bi-check-circle-fill"></i> 2. Endorsed</span>' : '<span class="text-muted"><i class="bi bi-circle"></i> 2. Endorsement Pending</span>';
+                    let s3 = (found.status === 'APPROVED' || found.status === 'CHECKED_IN') ? '<span class="text-success"><i class="bi bi-check-circle-fill"></i> 3. Sanctioned</span>' : '<span class="text-warning fw-bold"><i class="bi bi-hourglass-split"></i> 3. Awaiting Sanction</span>';
+                    let s4 = found.status === 'CHECKED_IN' ? '<span class="text-success"><i class="bi bi-check-circle-fill"></i> 4. Key Issued</span>' : '<span class="text-muted"><i class="bi bi-circle"></i> 4. Key Issuance</span>';
+                    timeline.innerHTML = `${s1}${s2}${s3}${s4}`;
+                }
+                output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                alert(`No active booking record found matching "${code}". Please check the reference number.`);
+            }
         }
     </script>
 </body>

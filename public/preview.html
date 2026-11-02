@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -849,7 +849,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <label class="form-label fw-semibold">Sponsoring Department / Institutional Affiliation <small class="text-muted fw-normal">(Optional)</small></label>
-                                                <input type="text" class="form-control" placeholder="e.g. Department of Tree Improvement & Genetic Resources (Optional)">
+                                                <input type="text" class="form-control" id="guestAffiliation" placeholder="e.g. Department of Tree Improvement & Genetic Resources (Optional)">
                                             </div>
                                         </div>
 
@@ -865,23 +865,23 @@
                                             <div class="col-md-6">
                                                 <label class="form-label fw-semibold">Designation / Affiliation <span
                                                         class="text-danger">*</span></label>
-                                                <input type="text" class="form-control"
+                                                <input type="text" class="form-control" id="guestDesignation"
                                                     placeholder="e.g. Principal Scientist, ICAR" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label fw-semibold">Mobile Number <span
                                                         class="text-danger">*</span></label>
-                                                <input type="tel" class="form-control"
+                                                <input type="tel" class="form-control" id="guestMobile"
                                                     placeholder="10-digit mobile number" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label fw-semibold">Official Email</label>
-                                                <input type="email" class="form-control"
+                                                <input type="email" class="form-control" id="guestEmail"
                                                     placeholder="guest@organization.gov.in">
                                             </div>
                                             <div class="col-12">
                                                 <label class="form-label fw-semibold">Purpose of Visit</label>
-                                                <textarea class="form-control" rows="2"
+                                                <textarea class="form-control" rows="2" id="guestPurpose"
                                                     placeholder="Academic conference / External viva examination / Official university inspection..."></textarea>
                                             </div>
                                         </div>
@@ -1414,17 +1414,8 @@
                     <!-- Docket Switcher Strip -->
                     <div class="card border-0 shadow-sm mb-3 bg-light">
                         <div class="card-body p-2 d-flex flex-wrap justify-content-between align-items-center gap-2">
-                            <div class="btn-group" role="group" aria-label="Docket Selector">
-                                <button type="button" class="btn btn-outline-danger btn-sm fw-bold active"
-                                    id="btnDocketVvip" onclick="switchWorkflowDocket('GH-2026-10-0003')">
-                                    <i class="bi bi-crown me-1"></i> Docket 1: VVIP Suite #201 (Bhutan Delegation) <span
-                                        class="badge bg-danger ms-1">VVIP Set</span>
-                                </button>
-                                <button type="button" class="btn btn-outline-primary btn-sm fw-bold"
-                                    id="btnDocketEstate" onclick="switchWorkflowDocket('GH-2026-10-0005')">
-                                    <i class="bi bi-building me-1"></i> Docket 2: VIP Suite #102 (ICAR ADG) <span
-                                        class="badge bg-primary ms-1">Estate Office</span>
-                                </button>
+                            <div class="d-flex flex-wrap gap-1" role="group" aria-label="Docket Selector" id="docketSelectorGroup">
+                                <!-- Rendered dynamically by renderWorkflowDocket() -->
                             </div>
                             <div id="workflowDocketAuthorityBadge">
                                 <span class="badge bg-danger px-3 py-2"><i class="bi bi-crown me-1"></i>Authority:
@@ -1944,7 +1935,7 @@
             { id: 'dining_mess', name: 'DINING HALL & MESS', type: 'Dining Facility', floor: 'ground', capacity: '60 Seats', isVvip: false, status: 'OCCUPIED', guest: 'Regular Catering / Academic Dinner', category: 'Hostel & Guest Catering', dates: 'Daily Active', handledBy: 'estate' }
         ];
 
-        let institutionalDossiers = [
+        const defaultInitialDossiers = [
             {
                 ref: 'GH-2026-10-0001',
                 guest: 'Dr. A. K. Verma',
@@ -2025,7 +2016,59 @@
                 handledBy: 'dee'
             }
         ];
+
+        function getInstitutionalDossiers() {
+            try {
+                const stored = localStorage.getItem('uhf_institutional_dossiers');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        return parsed;
+                    }
+                }
+            } catch (e) {
+                console.error("Error reading uhf_institutional_dossiers", e);
+            }
+            return [...defaultInitialDossiers];
+        }
+
+        function saveInstitutionalDossiers(dossiers) {
+            try {
+                localStorage.setItem('uhf_institutional_dossiers', JSON.stringify(dossiers));
+            } catch (e) {
+                console.error("Error saving uhf_institutional_dossiers", e);
+            }
+        }
+
+        let institutionalDossiers = getInstitutionalDossiers();
         let pendingDossierRef = '';
+        let activeWorkflowRef = 'GH-2026-10-0003';
+
+        function updateDashboardCounters() {
+            const pending = institutionalDossiers.filter(d => 
+                d.status === 'PENDING_VC_APPROVAL' || 
+                d.status === 'PENDING_ESTATE_APPROVAL' || 
+                d.status === 'PENDING_APPROVAL' ||
+                d.status === 'SUBMITTED'
+            ).length;
+
+            const dashPending = document.getElementById('dashPendingCount');
+            if (dashPending) dashPending.innerText = pending;
+
+            const wfBadge = document.getElementById('workflowBadge');
+            if (wfBadge) wfBadge.innerText = pending;
+        }
+
+        // Real-time synchronization when bookings are submitted in public portal or another tab
+        window.addEventListener('storage', function (e) {
+            if (e.key === 'uhf_institutional_dossiers') {
+                institutionalDossiers = getInstitutionalDossiers();
+                renderBookingsTable();
+                renderWorkflowDocket();
+                updateDashboardCounters();
+                renderRoomGrid();
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', function () {
             // Check active session from localStorage
@@ -2055,6 +2098,7 @@
             renderEstateTariffEditor();
             renderBookingsTable();
             renderWorkflowDocket();
+            updateDashboardCounters();
             renderRoomGrid();
             handleAdminBookingWingChange();
 
@@ -2183,6 +2227,7 @@
             updateAccountJurisdictionUI();
             renderBookingsTable();
             renderWorkflowDocket();
+            updateDashboardCounters();
             renderRoomGrid();
             updateTariffEditorPermissions();
             renderEstateTariffEditor();
@@ -2319,17 +2364,6 @@
         // Switch between workflow dockets
         function switchWorkflowDocket(ref) {
             activeWorkflowRef = ref;
-            const btnVvip = document.getElementById('btnDocketVvip');
-            const btnEstate = document.getElementById('btnDocketEstate');
-            if (btnVvip && btnEstate) {
-                if (ref === 'GH-2026-10-0003') {
-                    btnVvip.className = 'btn btn-outline-danger btn-sm fw-bold active';
-                    btnEstate.className = 'btn btn-outline-primary btn-sm fw-bold';
-                } else {
-                    btnVvip.className = 'btn btn-outline-danger btn-sm fw-bold';
-                    btnEstate.className = 'btn btn-outline-primary btn-sm fw-bold active';
-                }
-            }
             renderWorkflowDocket();
             renderRoomGrid();
         }
@@ -2337,16 +2371,39 @@
         function openWorkflowForDossier(ref) {
             activeWorkflowRef = ref;
             showTab('workflow');
-            switchWorkflowDocket(ref);
+            renderWorkflowDocket();
         }
 
         // Render dynamic workflow docket according to jurisdiction
         function renderWorkflowDocket() {
             const container = document.getElementById('workflowDocketContainer');
             const authBadge = document.getElementById('workflowDocketAuthorityBadge');
+            const docketGroup = document.getElementById('docketSelectorGroup');
+
+            // Render dynamic Docket Selector Buttons from actual live dossiers
+            if (docketGroup) {
+                let btnsHtml = '';
+                institutionalDossiers.forEach((d) => {
+                    const isActive = (d.ref === activeWorkflowRef);
+                    const btnClass = d.isVvip 
+                        ? (isActive ? 'btn btn-danger btn-sm fw-bold active' : 'btn btn-outline-danger btn-sm fw-bold')
+                        : (isActive ? 'btn btn-primary btn-sm fw-bold active' : 'btn btn-outline-primary btn-sm fw-bold');
+                    const icon = d.isVvip ? 'bi bi-crown' : 'bi bi-building';
+                    const badge = d.isVvip ? '<span class="badge bg-danger ms-1">VVIP</span>' : '<span class="badge bg-primary ms-1">Estate</span>';
+                    const guestShort = d.guest && d.guest.length > 20 ? d.guest.substring(0, 18) + '...' : (d.guest || 'Guest');
+                    btnsHtml += `
+                        <button type="button" class="${btnClass}" onclick="switchWorkflowDocket('${d.ref}')">
+                            <i class="${icon} me-1"></i> ${d.ref}: ${guestShort} ${badge}
+                        </button>
+                    `;
+                });
+                docketGroup.innerHTML = btnsHtml;
+            }
+
             if (!container) return;
 
-            const dossier = institutionalDossiers.find(x => x.ref === activeWorkflowRef) || institutionalDossiers[2];
+            const dossier = institutionalDossiers.find(x => x.ref === activeWorkflowRef) || institutionalDossiers[0];
+            if (!dossier) return;
             const isVvip = dossier.isVvip;
 
             if (authBadge) {
@@ -3346,6 +3403,7 @@
         }
 
         function handleReservationSubmit(e) {
+            e.preventDefault();
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             const checkInVal = document.getElementById('checkInDate').value;
@@ -3361,44 +3419,67 @@
                 alert("Booking Error: Check-out date must be at least one day after check-in date.");
                 return;
             }
-            e.preventDefault();
-            const guestName = document.getElementById('guestName').value;
-            const refNum = 'GH-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
+
+            const guestName = document.getElementById('guestName').value.trim();
+            const guestDesig = document.getElementById('guestDesignation') ? document.getElementById('guestDesignation').value.trim() : 'Visiting University Delegate';
+            const guestMobile = document.getElementById('guestMobile') ? document.getElementById('guestMobile').value.trim() : '';
+            const guestEmail = document.getElementById('guestEmail') ? document.getElementById('guestEmail').value.trim() : '';
+            const affiliation = document.getElementById('guestAffiliation') ? document.getElementById('guestAffiliation').value.trim() : '';
+            const purpose = document.getElementById('guestPurpose') ? document.getElementById('guestPurpose').value.trim() : '';
+            
             const wing = document.getElementById('bookingWing').value;
-            const wingLabel = wing === 'estate' ? 'Estate Office Wing' : 'DEE (Kisan Bhawan)';
+            const wingLabel = wing === 'estate' ? 'Estate Office Wing' : 'DEE Wing (Kisan Bhawan)';
+            
+            const setTypeSelect = document.getElementById('bookingSetType');
+            const setType = setTypeSelect ? setTypeSelect.value : 'vip';
+            const setTypeLabel = setTypeSelect && setTypeSelect.selectedOptions[0] ? setTypeSelect.selectedOptions[0].text : setType;
+            
+            const catSelect = document.getElementById('bookingCategory');
+            const catLabel = catSelect && catSelect.selectedOptions[0] ? catSelect.selectedOptions[0].text : 'Official Delegate';
+            
+            const ghSelect = document.getElementById('bookingGuestHouse');
+            const ghLabel = ghSelect && ghSelect.selectedOptions[0] ? ghSelect.selectedOptions[0].text : 'University Main Guest House';
+            
+            const estTotal = document.getElementById('estTotal') ? document.getElementById('estTotal').innerText : '₹1,500.00';
+
+            const isVvip = setType.toLowerCase().includes('vvip') || setTypeLabel.toLowerCase().includes('vvip');
+            const refNum = 'GH-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
             let diffDays = Math.ceil((outDate - inDate) / (1000 * 60 * 60 * 24));
             if (isNaN(diffDays) || diffDays < 1) diffDays = 1;
 
-            // Append to dashboard table
-            const tbody = document.getElementById('bookingsTableBody');
-            const newRow = `
-                <tr class="table-warning">
-                    <td class="fw-bold text-primary">${refNum}</td>
-                    <td>
-                        <div class="fw-semibold">${guestName}</div>
-                        <small class="text-muted">New Requisition</small>
-                    </td>
-                    <td>
-                        <span class="badge ${wing === 'estate' ? 'bg-primary' : 'bg-success'}">${wingLabel}</span><br>
-                        <small class="text-warning text-dark fw-bold">Pending Allocation</small>
-                    </td>
-                    <td>
-                        <div>${formatDMY(inDate)} &rarr; ${formatDMY(outDate)}</div>
-                        <small class="text-muted">${diffDays} Night${diffDays > 1 ? 's' : ''} &bull; 1 Guest</small>
-                    </td>
-                    <td><span class="badge bg-info text-dark">Notification 1615-40</span></td>
-                    <td><span class="badge bg-warning text-dark badge-status">PENDING_APPROVAL</span></td>
-                    <td class="text-end">
-                        <button class="btn btn-sm btn-outline-warning" onclick="showTab('workflow')"><i class="bi bi-shield-check"></i> Review</button>
-                    </td>
-                </tr>
-            `;
-            tbody.insertAdjacentHTML('afterbegin', newRow);
+            const newDossier = {
+                ref: refNum,
+                guest: guestName,
+                designation: affiliation ? `${guestDesig} (${affiliation})` : guestDesig,
+                mobile: guestMobile,
+                email: guestEmail,
+                wing: wingLabel,
+                wingType: wing,
+                room: `${ghLabel} &bull; ${setTypeLabel}`,
+                roomClass: isVvip ? 'vvip' : (setType || 'ordinary'),
+                isVvip: isVvip,
+                dates: `${formatDMY(inDate)} &rarr; ${formatDMY(outDate)}`,
+                duration: `${diffDays} Night${diffDays > 1 ? 's' : ''} &bull; 1 Guest`,
+                category: catLabel,
+                status: isVvip ? 'PENDING_VC_APPROVAL' : 'PENDING_ESTATE_APPROVAL',
+                handledBy: isVvip ? 'vc' : (wing === 'dee' ? 'dee' : 'estate'),
+                sponsor: affiliation || 'Estate Office Booking',
+                tariff: estTotal,
+                createdAt: new Date().toISOString()
+            };
 
-            const counter = document.getElementById('dashPendingCount');
-            counter.innerText = parseInt(counter.innerText) + 1;
+            // Add to institutionalDossiers and persist
+            institutionalDossiers.unshift(newDossier);
+            saveInstitutionalDossiers(institutionalDossiers);
+            activeWorkflowRef = refNum;
 
-            alert(`âœ… Booking request successfully submitted!\n\nReference Number: ${refNum}\nGuest: ${guestName}\nWing: ${wingLabel}\nStatus: PENDING_APPROVAL\n\nA confirmation alert has been dispatched to applicant and Estate Office.`);
+            // Re-render UI
+            renderBookingsTable();
+            renderWorkflowDocket();
+            updateDashboardCounters();
+            renderRoomGrid();
+
+            alert(`✅ Booking request successfully submitted and registered!\n\nReference Number: ${refNum}\nGuest: ${guestName}\nRoom Set: ${ghLabel} - ${setTypeLabel}\nStatus: ${isVvip ? 'PENDING_VC_APPROVAL (VC Secretariat Apex Sanction Required)' : 'PENDING_ESTATE_APPROVAL'}\n\nThis dossier is now actively reflecting in the Institutional Queue and Dashboard Table.`);
             showTab('dashboard');
         }
 
@@ -3407,23 +3488,24 @@
             const isVvip = dossier ? dossier.isVvip : (ref === 'GH-2026-10-0003');
 
             if (isVvip && currentRole !== 'vc_secretariat' && currentRole !== 'admin') {
-                alert(`âš ï¸ JURISDICTION RESTRICTION:\n\nVVIP Presidential Suite bookings can ONLY be sanctioned by the Hon'ble Vice-Chancellor Secretariat.\n\nEstate Office holds read-only visibility for accommodation prep. Please switch to the Vice-Chancellor Secretariat account to grant approval.`);
+                alert("JURISDICTION RESTRICTION:\n\nVVIP Presidential Suite bookings can ONLY be sanctioned by the Hon'ble Vice-Chancellor Secretariat.\n\nEstate Office holds read-only visibility for accommodation prep. Please sign in as the Vice-Chancellor Secretariat account to grant approval.");
                 return;
             }
 
             if (!isVvip && currentRole === 'vc_secretariat') {
-                alert(`â„¹ï¸ DELEGATION PROTOCOL:\n\nRoutine VIP and ordinary room sets are handled directly by the Estate Office.\n\nVice-Chancellor Secretariat jurisdiction is reserved exclusively for VVIP Presidential Suites.`);
+                alert("DELEGATION PROTOCOL:\n\nRoutine VIP and ordinary room sets are handled directly by the Estate Office.\n\nVice-Chancellor Secretariat jurisdiction is reserved exclusively for VVIP Presidential Suites.");
                 return;
             }
 
             if (dossier) {
                 dossier.status = 'APPROVED';
+                saveInstitutionalDossiers(institutionalDossiers);
             }
 
-            alert(`âœ… Dossier ${ref} approved successfully by ${document.getElementById('currentRoleLabel').innerText}!\n\nStatus updated to APPROVED. Forwarded to Care-Taker front desk for room key handover.`);
-            document.getElementById('workflowBadge').innerText = '1';
+            alert("Dossier " + ref + " approved successfully by " + (currentRole === 'vc_secretariat' ? "Hon'ble VC Secretariat" : "Estate Officer") + "!\n\nStatus updated to APPROVED. Forwarded to Care-Taker front desk for room key handover.");
             renderBookingsTable();
             renderWorkflowDocket();
+            updateDashboardCounters();
             renderRoomGrid();
             showTab('dashboard');
         }
@@ -3440,14 +3522,32 @@
                 alert('Please enter formal rejection remarks.');
                 return;
             }
+            const dossier = institutionalDossiers.find(x => x.ref === pendingDossierRef);
+            if (dossier) {
+                dossier.status = 'REJECTED';
+                dossier.rejectionReason = reason;
+                saveInstitutionalDossiers(institutionalDossiers);
+            }
             bootstrap.Modal.getInstance(document.getElementById('rejectionModal')).hide();
-            alert(`Dossier ${pendingDossierRef} returned with remarks:\n"${reason}"\n\nNotification sent to applicant.`);
-            document.getElementById('workflowBadge').innerText = '1';
+            alert("Dossier " + pendingDossierRef + " returned with remarks:\n\"" + reason + "\"\n\nNotification sent to applicant.");
+            renderBookingsTable();
+            renderWorkflowDocket();
+            updateDashboardCounters();
+            renderRoomGrid();
             showTab('dashboard');
         }
 
         function quickCheckIn(ref) {
-            alert(`Guest for ${ref} verified with Photo ID and checked in!\nRoom Key issued by Care-Taker.\nStatus updated to: CHECKED_IN`);
+            const dossier = institutionalDossiers.find(x => x.ref === ref);
+            if (dossier) {
+                dossier.status = 'CHECKED_IN';
+                saveInstitutionalDossiers(institutionalDossiers);
+            }
+            alert("Guest for " + ref + " verified with Photo ID and checked in!\nRoom Key issued by Care-Taker.\nStatus updated to: CHECKED_IN");
+            renderBookingsTable();
+            renderWorkflowDocket();
+            updateDashboardCounters();
+            renderRoomGrid();
             showTab('dashboard');
         }
 
@@ -3457,13 +3557,40 @@
         }
 
         function performTracking() {
-            const val = document.getElementById('trackInput').value.trim();
+            const val = document.getElementById('trackInput').value.trim().toUpperCase();
             if (!val) {
                 alert('Please enter a booking reference or mobile number.');
                 return;
             }
-            document.getElementById('trackingResult').style.display = 'block';
-            showToast(`Tracking status retrieved for: ${val}`);
+            const found = institutionalDossiers.find(d => 
+                (d.ref && d.ref.toUpperCase().includes(val)) || 
+                (d.mobile && d.mobile.includes(val)) ||
+                (d.guest && d.guest.toUpperCase().includes(val))
+            );
+            const resEl = document.getElementById('trackingResult');
+            if (resEl) {
+                resEl.style.display = 'block';
+                if (found) {
+                    resEl.innerHTML = `
+                        <div class="card border border-success p-3 shadow-sm bg-white">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="fw-bold mb-0 text-navy">${found.ref} &bull; ${found.guest}</h6>
+                                <span class="badge ${found.status === 'CHECKED_IN' ? 'bg-success' : (found.status === 'APPROVED' ? 'bg-primary' : 'bg-warning text-dark')}">${found.status}</span>
+                            </div>
+                            <div class="small text-muted mb-1"><strong>Room Set:</strong> ${found.room} (${found.wing})</div>
+                            <div class="small text-muted mb-1"><strong>Dates:</strong> ${found.dates} (${found.duration})</div>
+                            <div class="small text-muted"><strong>Category:</strong> ${found.category}</div>
+                        </div>
+                    `;
+                } else {
+                    resEl.innerHTML = `
+                        <div class="alert alert-warning mb-0">
+                            No active dossier found for "${val}". Please verify the booking reference code.
+                        </div>
+                    `;
+                }
+            }
+            showToast("Tracking status retrieved for: " + val);
         }
 
         function showToast(msg) {
