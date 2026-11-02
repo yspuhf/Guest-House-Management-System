@@ -289,6 +289,12 @@
                                 <span class="badge bg-warning text-dark ms-1">Estate Admin</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="nav-notifications" onclick="showTab('notifications')">
+                                <i class="bi bi-file-earmark-text me-2 text-info"></i> Statutory Notifications
+                                <span class="badge bg-primary text-white rounded-pill float-end" id="notifBadge">3</span>
+                            </a>
+                        </li>
 
                         <div class="nav-header">Guest House Bookings</div>
                         <li class="nav-item">
@@ -359,6 +365,10 @@
                                 (Solan)</small>
                         </div>
                         <div class="btn-toolbar mb-2 mb-md-0 gap-2">
+                            <button class="btn btn-sm btn-outline-info text-dark fw-bold"
+                                onclick="showTab('notifications')">
+                                <i class="bi bi-file-earmark-text me-1"></i> Notifications
+                            </button>
                             <button class="btn btn-sm btn-outline-warning text-dark fw-bold"
                                 onclick="showTab('tariffs')">
                                 <i class="bi bi-sliders2 me-1"></i> Estate Tariff Console
@@ -718,6 +728,98 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2B. STATUTORY NOTIFICATIONS & ORDERS MANAGEMENT CONSOLE -->
+                <div id="view-notifications" class="view-panel" style="display:none;">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                        <div>
+                            <div class="d-flex align-items-center gap-2">
+                                <h3 class="h4 fw-bold text-navy mb-0">Official Statutory Notifications &amp; Office Orders</h3>
+                                <span class="badge bg-primary" id="notifConsolePermBadge">Official Registry</span>
+                            </div>
+                            <small class="text-muted">
+                                Master institutional orders, tariff notifications, and executive directives governing University Guest Houses &bull; Dr. YSP UHF Nauni
+                            </small>
+                        </div>
+                        <div class="btn-toolbar mb-2 mb-md-0 gap-2">
+                            <button class="btn btn-sm btn-outline-secondary" onclick="renderNotificationsTable()">
+                                <i class="bi bi-arrow-clockwise me-1"></i> Refresh Registry
+                            </button>
+                            <button class="btn btn-sm btn-success fw-bold px-3 shadow-sm" onclick="openCreateNotificationModal()" id="btnUploadNotif">
+                                <i class="bi bi-cloud-arrow-up-fill me-1"></i> Upload / Issue Notification
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Role Notification Authority Banner -->
+                    <div id="notifJurisdictionAlert" class="alert d-flex align-items-center py-2 px-3 mb-4 shadow-sm border">
+                        <!-- Populated dynamically by updateNotificationJurisdictionUI() -->
+                    </div>
+
+                    <!-- Search & Filter Controls -->
+                    <div class="card border-0 shadow-sm mb-4 bg-light">
+                        <div class="card-body p-3">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-md-5">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+                                        <input type="text" id="notifSearchInput" class="form-control" placeholder="Search by Order No., Title, or Subject..." oninput="filterNotifications()">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-select" id="notifFilterAuthority" onchange="filterNotifications()">
+                                        <option value="all" selected>All Issuing Authorities</option>
+                                        <option value="estate">Estate Office (General Tariffs &amp; Operations)</option>
+                                        <option value="vc">VC Secretariat (Presidential &amp; Apex Directives)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-select" id="notifFilterCategory" onchange="filterNotifications()">
+                                        <option value="all" selected>All Categories</option>
+                                        <option value="Tariffs &amp; Stay Charges">Tariffs &amp; Charges</option>
+                                        <option value="Presidential VVIP Directives">VVIP Directives</option>
+                                        <option value="Operational Guidelines">Operational Guidelines</option>
+                                        <option value="Catering &amp; Dining">Catering &amp; Dining</option>
+                                        <option value="General Administration">General Admin</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <span class="badge bg-secondary p-2 d-block text-center" id="notifRegistryCount">3 Notifications</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Registry Table -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                            <h5 class="card-title fw-bold mb-0 text-navy">
+                                <i class="bi bi-file-earmark-medical me-2 text-primary"></i>Gazetted &amp; Published Institutional Orders
+                            </h5>
+                            <span class="badge bg-success-subtle text-success border border-success fw-bold">Live Institutional Ledger</span>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Order / Dispatch No.</th>
+                                            <th>Subject &amp; Directives</th>
+                                            <th>Issuing Authority</th>
+                                            <th>Dates (Issued / Enforced)</th>
+                                            <th>Attachment / File</th>
+                                            <th>Status</th>
+                                            <th class="text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="notificationsTableBody">
+                                        <!-- Rendered dynamically by renderNotificationsTable() -->
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -1884,6 +1986,143 @@
             </div>
         </div>
     </div>
+
+    <!-- Upload / Edit Statutory Notification Modal -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white p-3" id="notifModalHeader">
+                    <div class="d-flex align-items-center">
+                        <img src="university_logo.jpg" alt="University Logo" class="rounded-circle bg-white p-1 me-2" style="width: 38px; height: 38px; object-fit: contain;">
+                        <div>
+                            <h5 class="modal-title font-serif fw-bold mb-0 text-white" id="notificationModalTitle">Issue Statutory Notification / Order</h5>
+                            <small class="text-warning" id="notifModalSubtitle" style="font-size: 0.75rem;">Dr. YSP UHF Nauni &bull; Official Institutional Directives</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="notificationForm" onsubmit="handleNotificationFormSubmit(event)">
+                    <div class="modal-body p-4 bg-light">
+                        <input type="hidden" id="notifFormId" value="">
+                        
+                        <!-- Issuing Authority & Dispatch Number -->
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small text-navy"><i class="bi bi-shield-check me-1"></i>Issuing Authority <span class="text-danger">*</span></label>
+                                <select class="form-select fw-bold" id="notifFormAuthority" required onchange="onNotifAuthorityChange()">
+                                    <option value="estate">Estate Office (Dr. Dev Raj, Estate Officer)</option>
+                                    <option value="vc">Hon'ble Vice-Chancellor Secretariat (Apex Authority)</option>
+                                </select>
+                                <small class="text-muted" id="notifAuthorityHint">Enforced under competent institutional jurisdiction.</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small text-navy"><i class="bi bi-hash me-1"></i>Dispatch / Notification No. <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control fw-bold font-monospace" id="notifFormOrderNum" placeholder="e.g. UHF/EO-55/2026/215" required>
+                                <small class="text-muted">Official dispatch or gazette reference.</small>
+                            </div>
+                        </div>
+
+                        <!-- Title & Category -->
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-8">
+                                <label class="form-label fw-bold small text-navy">Notification Title / Subject <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control fw-bold" id="notifFormTitle" placeholder="e.g. Revised Linen &amp; Tariff Schedule for VIP Suites 2026" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold small text-navy">Category / Scope <span class="text-danger">*</span></label>
+                                <select class="form-select" id="notifFormCategory" required>
+                                    <option value="Tariffs &amp; Stay Charges" selected>Tariffs &amp; Stay Charges</option>
+                                    <option value="Presidential VVIP Directives">Presidential VVIP Directives</option>
+                                    <option value="Operational Guidelines">Operational Guidelines</option>
+                                    <option value="Catering &amp; Dining">Catering &amp; Dining</option>
+                                    <option value="Maintenance &amp; Protocol">Maintenance &amp; Protocol</option>
+                                    <option value="General Administration">General Administration</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Dates & Signatory -->
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold small text-navy">Date of Issue <span class="text-danger">*</span> <small class="text-muted">(DD/MM/YYYY)</small></label>
+                                <input type="text" class="form-control" id="notifFormIssueDate" placeholder="DD/MM/YYYY" maxlength="10" required oninput="maskDateInput(event)">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold small text-navy">Effective Date <span class="text-danger">*</span> <small class="text-muted">(DD/MM/YYYY)</small></label>
+                                <input type="text" class="form-control" id="notifFormEffectiveDate" placeholder="DD/MM/YYYY" maxlength="10" required oninput="maskDateInput(event)">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold small text-navy">Signatory Official <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="notifFormSignatory" placeholder="e.g. Dr. Dev Raj (Estate Officer)" required>
+                            </div>
+                        </div>
+
+                        <!-- Full Content / Directives -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small text-navy">Notification Directives &amp; Executive Terms <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="notifFormSummary" rows="4" placeholder="Enter complete executive orders, clauses, conditions, or regulatory terms enacted by the competent authority..." required></textarea>
+                        </div>
+
+                        <!-- Document Upload / Attachment -->
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-8">
+                                <label class="form-label fw-bold small text-navy"><i class="bi bi-paperclip me-1"></i>Signed Document / PDF Attachment</label>
+                                <input type="file" class="form-control" id="notifFormFileInput" accept=".pdf,.doc,.docx" onchange="handleNotifFileUpload(event)">
+                                <small class="text-muted d-block mt-1" id="notifFileCurrentBadge">Current File: None</small>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold small text-navy">Enactment Status</label>
+                                <select class="form-select fw-semibold" id="notifFormStatus">
+                                    <option value="ACTIVE" selected>ACTIVE / IN-FORCE</option>
+                                    <option value="DRAFT">DRAFT / UNDER REVIEW</option>
+                                    <option value="SUPERSEDED">SUPERSEDED</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-check form-switch mt-2">
+                            <input class="form-check-input" type="checkbox" id="notifFormPublic" checked>
+                            <label class="form-check-label small fw-semibold" for="notifFormPublic">
+                                <i class="bi bi-globe me-1 text-success"></i> Publish immediately to Public Guest House Website
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-white d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success fw-bold px-4 shadow-sm" id="btnSubmitNotifForm">
+                            <i class="bi bi-cloud-arrow-up-fill me-1"></i> Save &amp; Publish Notification
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Official University Notification Letterhead Viewer Modal -->
+    <div class="modal fade" id="viewNotificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white p-3">
+                    <h5 class="modal-title font-serif fw-bold mb-0 text-white"><i class="bi bi-file-earmark-text me-2 text-warning"></i>Official Letterhead Gazette</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 bg-white" id="letterheadContent">
+                    <!-- Populated dynamically via openViewNotificationModal(id) -->
+                </div>
+                <div class="modal-footer bg-light d-flex justify-content-between">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-primary" id="btnDownloadLetterhead" onclick="downloadLetterheadDocument()">
+                            <i class="bi bi-download me-1"></i> Download Official Document (.html/.pdf)
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="printLetterhead()">
+                            <i class="bi bi-printer me-1"></i> Print Order
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- /#appContainer -->
 
     <!-- Bootstrap 5 Bundle JS -->
@@ -2059,7 +2298,7 @@
             if (wfBadge) wfBadge.innerText = pending;
         }
 
-        // Real-time synchronization when bookings are submitted in public portal or another tab
+        // Real-time synchronization when bookings or notifications are submitted in public portal or another tab
         window.addEventListener('storage', function (e) {
             if (e.key === 'uhf_institutional_dossiers') {
                 institutionalDossiers = getInstitutionalDossiers();
@@ -2067,6 +2306,10 @@
                 renderWorkflowDocket();
                 updateDashboardCounters();
                 renderRoomGrid();
+            }
+            if (e.key === 'uhf_official_notifications') {
+                renderNotificationsTable();
+                updateNotificationBadge();
             }
         });
 
@@ -2101,6 +2344,8 @@
             updateDashboardCounters();
             renderRoomGrid();
             handleAdminBookingWingChange();
+            renderNotificationsTable();
+            updateNotificationBadge();
 
             // Hash navigation
             if (window.location.hash) {
@@ -2232,6 +2477,8 @@
             updateTariffEditorPermissions();
             renderEstateTariffEditor();
             renderRoomGrid();
+            updateNotificationJurisdictionUI();
+            renderNotificationsTable();
         }
 
         function updateAccountJurisdictionUI() {
@@ -2820,6 +3067,10 @@
             if (tabId === 'tariffs') {
                 renderEstateTariffEditor();
                 renderRoomGrid();
+            }
+            if (tabId === 'notifications') {
+                renderNotificationsTable();
+                updateNotificationJurisdictionUI();
             }
         }
 
@@ -3595,6 +3846,591 @@
 
         function showToast(msg) {
             console.log(msg);
+        }
+
+        // ==========================================
+        // STATUTORY NOTIFICATIONS & ORDERS MANAGEMENT (CRUD)
+        // ==========================================
+        const defaultOfficialNotifications = [
+            {
+                id: "notif_1615_40",
+                orderNumber: "UHF/EO-55/2025/- 1615-40",
+                title: "Master Tariff Revision & Visitor Categorization for University Guest Houses",
+                category: "Tariffs & Stay Charges",
+                authority: "estate",
+                authorityLabel: "Estate Office",
+                signatory: "Dr. Dev Raj, Estate Officer",
+                issueDate: "25/07/2026",
+                effectiveDate: "01/08/2026",
+                fileName: "Notification_1615-40_Signed.pdf",
+                fileSize: "1.4 MB",
+                summary: "Statutory revision of stay tariffs, dormitory allocations, and dining hall charges across 11 visitor categories under Estate Organization.",
+                fullContent: "In supersession of all previous orders and pursuant to the sanction of the Competent University Authority, revised stay charges, dormitory rates, and dining facilities for the University Main Guest House, VIP Suites Annexe, and Forest Rest House are hereby promulgated with immediate effect. All requisitions shall be routed and categorized strictly under Categories 1 to 11. Room sets 1 & 2 (Presidential Suites) remain reserved under the exclusive sanction jurisdiction of the Vice-Chancellor Secretariat.",
+                status: "ACTIVE",
+                isPublic: true,
+                createdAt: "2026-07-25T10:00:00.000Z"
+            },
+            {
+                id: "notif_vc_dir_08",
+                orderNumber: "UHF/VCS/GH-DIR/2026/08",
+                title: "Apex Protocol Directive: Vice-Chancellor VIP Suites & Presidential Wing Sanction Protocol",
+                category: "Presidential VVIP Directives",
+                authority: "vc",
+                authorityLabel: "Vice-Chancellor Secretariat",
+                signatory: "Secretary to Vice-Chancellor",
+                issueDate: "15/08/2026",
+                effectiveDate: "15/08/2026",
+                fileName: "VC_Apex_Directive_Suites_1-2.pdf",
+                fileSize: "840 KB",
+                summary: "Mandatory protocol directive reserving Suites 1 & 2 exclusively for Constitutional dignitaries, State Guests, Chancellor, and Vice-Chancellor official guests with single-point sanction from VC Secretariat.",
+                fullContent: "By order of the Hon'ble Vice-Chancellor, accommodation in VVIP Presidential Suites (Suites 1 & 2, Top Floor) shall be accorded exclusively to Constitutional dignitaries, statutory university guests, State Guests, and apex institutional delegations. No local booking, offline allotment, or verbal reservation by any other administrative wing shall be entertained. The Estate Office shall maintain real-time transparent visibility of requisitions while formal confirmation resides exclusively with the VC Secretariat.",
+                status: "ACTIVE",
+                isPublic: true,
+                createdAt: "2026-08-15T11:30:00.000Z"
+            },
+            {
+                id: "notif_eo_sop_194",
+                orderNumber: "UHF/EO-GH/2026/194",
+                title: "Standard Operating Procedure & Digital Check-In Protocols for University Guest House",
+                category: "Operational Guidelines",
+                authority: "estate",
+                authorityLabel: "Estate Office",
+                signatory: "Dr. Dev Raj, Estate Officer",
+                issueDate: "10/09/2026",
+                effectiveDate: "15/09/2026",
+                fileName: "SOP_CheckIn_Verification_2026.pdf",
+                fileSize: "620 KB",
+                summary: "Guidelines for mandatory Aadhaar/Govt ID verification, DD/MM/YYYY ledger booking entries, digital payment collection, and checkout audit compliance.",
+                fullContent: "All visiting guests and sponsoring departments are hereby notified that physical or verified digital Government Photo Identity (Aadhaar / Voter ID / Official Service ID) is mandatory at the reception desk prior to key handover. Standard checkout time is fixed at 12:00 Noon. All dining hall orders must be requisitioned with 3 hours prior notice to the Guest House Care-Taker.",
+                status: "ACTIVE",
+                isPublic: true,
+                createdAt: "2026-09-10T09:15:00.000Z"
+            }
+        ];
+
+        let uploadedNotifFileObj = null;
+        let currentViewingNotif = null;
+
+        function getOfficialNotifications() {
+            try {
+                const stored = localStorage.getItem('uhf_official_notifications');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch (e) {
+                console.error("Error reading notifications", e);
+            }
+            saveOfficialNotifications(defaultOfficialNotifications);
+            return defaultOfficialNotifications;
+        }
+
+        function saveOfficialNotifications(list) {
+            try {
+                localStorage.setItem('uhf_official_notifications', JSON.stringify(list));
+            } catch (e) {
+                console.error("Error saving notifications", e);
+            }
+            updateNotificationBadge();
+        }
+
+        function updateNotificationBadge() {
+            const list = getOfficialNotifications();
+            const badge = document.getElementById('notifBadge');
+            if (badge) badge.innerText = list.length;
+            const counter = document.getElementById('notifRecordCount');
+            if (counter) counter.innerText = list.length;
+        }
+
+        function updateNotificationJurisdictionUI() {
+            const alertBox = document.getElementById('notifJurisdictionAlert');
+            const badge = document.getElementById('notifConsolePermBadge');
+            if (!alertBox) return;
+
+            if (currentRole === 'estate_admin') {
+                alertBox.className = 'alert d-flex align-items-center py-2 px-3 mb-4 shadow-sm border border-warning alert-warning';
+                alertBox.innerHTML = `
+                    <i class="bi bi-building fs-3 text-warning me-3"></i>
+                    <div class="small">
+                        <strong>Estate Office Jurisdiction:</strong> You have full <strong>Create, Edit, and Delete</strong> authority for Estate Office notifications (tariffs, operational guidelines, room rules). Vice-Chancellor Secretariat directives are <strong>view &amp; download only</strong>.
+                    </div>
+                `;
+                if (badge) {
+                    badge.className = 'badge bg-warning text-dark';
+                    badge.innerText = 'Estate Office Authority';
+                }
+            } else if (currentRole === 'vc_secretariat') {
+                alertBox.className = 'alert d-flex align-items-center py-2 px-3 mb-4 shadow-sm border border-danger alert-danger';
+                alertBox.innerHTML = `
+                    <i class="bi bi-crown fs-3 text-danger me-3"></i>
+                    <div class="small">
+                        <strong>Vice-Chancellor Secretariat Apex Authority:</strong> You hold executive authority to <strong>issue, edit, and revoke</strong> Vice-Chancellor protocol directives, presidential orders, and university statutory orders.
+                    </div>
+                `;
+                if (badge) {
+                    badge.className = 'badge bg-danger';
+                    badge.innerText = 'VC Secretariat Apex Control';
+                }
+            } else {
+                alertBox.className = 'alert d-flex align-items-center py-2 px-3 mb-4 shadow-sm border alert-secondary';
+                alertBox.innerHTML = `
+                    <i class="bi bi-info-circle fs-3 text-secondary me-3"></i>
+                    <div class="small">
+                        <strong>Official University Notifications Registry:</strong> View and search statutory orders and notifications governing UHF Nauni guest house operations.
+                    </div>
+                `;
+                if (badge) {
+                    badge.className = 'badge bg-secondary';
+                    badge.innerText = 'Read Only View';
+                }
+            }
+        }
+
+        function filterNotifications() {
+            renderNotificationsTable();
+        }
+
+        function onNotifAuthorityChange() {
+            const auth = document.getElementById('notifFormAuthority').value;
+            const signInput = document.getElementById('notifFormSignatory');
+            const hint = document.getElementById('notifAuthorityHint');
+            const cat = document.getElementById('notifFormCategory');
+            if (auth === 'vc') {
+                if (signInput && !signInput.value.includes('Vice-Chancellor')) signInput.value = 'Secretary to Vice-Chancellor';
+                if (hint) hint.innerHTML = '<span class="text-danger fw-bold"><i class="bi bi-crown me-1"></i>Apex Executive Jurisdiction (VC Secretariat)</span>';
+                if (cat && cat.value === 'Tariffs & Stay Charges') cat.value = 'Presidential VVIP Directives';
+            } else {
+                if (signInput && signInput.value.includes('Vice-Chancellor')) signInput.value = 'Dr. Dev Raj, Estate Officer';
+                if (hint) hint.innerHTML = '<span class="text-warning fw-bold"><i class="bi bi-building me-1"></i>Estate Office Jurisdiction</span>';
+            }
+        }
+
+        function renderNotificationsTable() {
+            const tbody = document.getElementById('notificationsTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const list = getOfficialNotifications();
+            const searchVal = (document.getElementById('notifSearchInput')?.value || '').toLowerCase().trim();
+            const authFilter = document.getElementById('notifAuthorityFilter')?.value || 'all';
+            const catFilter = document.getElementById('notifCategoryFilter')?.value || 'all';
+
+            const filtered = list.filter(item => {
+                const matchSearch = !searchVal ||
+                    (item.orderNumber && item.orderNumber.toLowerCase().includes(searchVal)) ||
+                    (item.title && item.title.toLowerCase().includes(searchVal)) ||
+                    (item.summary && item.summary.toLowerCase().includes(searchVal)) ||
+                    (item.signatory && item.signatory.toLowerCase().includes(searchVal));
+
+                const matchAuth = (authFilter === 'all') || (item.authority === authFilter);
+                const matchCat = (catFilter === 'all') || (item.category === catFilter);
+
+                return matchSearch && matchAuth && matchCat;
+            });
+
+            const countEl = document.getElementById('notifRecordCount');
+            if (countEl) countEl.innerText = filtered.length;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center py-5 text-muted">
+                            <i class="bi bi-file-earmark-x fs-1 d-block mb-2 text-secondary"></i>
+                            No statutory notifications found matching your filter criteria.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const tr = document.createElement('tr');
+
+                // Authority badge
+                let authBadge = '';
+                if (item.authority === 'vc') {
+                    authBadge = `<span class="badge bg-danger text-white"><i class="bi bi-crown me-1"></i>VC Secretariat</span>`;
+                } else {
+                    authBadge = `<span class="badge bg-warning text-dark"><i class="bi bi-building me-1"></i>Estate Office</span>`;
+                }
+
+                // Status badge
+                let statusBadge = '';
+                if (item.status === 'ACTIVE') {
+                    statusBadge = `<span class="badge bg-success">ACTIVE</span>`;
+                } else if (item.status === 'DRAFT') {
+                    statusBadge = `<span class="badge bg-secondary">DRAFT</span>`;
+                } else {
+                    statusBadge = `<span class="badge bg-dark">SUPERSEDED</span>`;
+                }
+
+                const isPublicBadge = item.isPublic 
+                    ? `<span class="badge bg-success-subtle text-success border border-success-subtle ms-1" title="Published to public website"><i class="bi bi-globe"></i> Public</span>` 
+                    : `<span class="badge bg-light text-muted border ms-1" title="Internal only"><i class="bi bi-lock"></i> Internal</span>`;
+
+                tr.innerHTML = `
+                    <td>
+                        <strong class="text-navy">${item.orderNumber}</strong>
+                        <div class="small text-muted"><i class="bi bi-calendar-event me-1"></i>Dated: ${item.issueDate}</div>
+                        ${isPublicBadge}
+                    </td>
+                    <td>
+                        <div class="fw-bold text-dark mb-1">${item.title}</div>
+                        <div class="small text-muted text-truncate" style="max-width: 380px;">${item.summary || item.fullContent || ''}</div>
+                    </td>
+                    <td>${authBadge}</td>
+                    <td>
+                        <div class="small fw-semibold text-dark">${item.category}</div>
+                        <div class="text-muted" style="font-size: 0.76rem;">Effective: ${item.effectiveDate || item.issueDate}</div>
+                    </td>
+                    <td>
+                        <div class="small fw-semibold text-dark">${item.signatory}</div>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0)" onclick="downloadNotificationDoc('${item.id}')" class="text-decoration-none fw-semibold small text-primary d-inline-flex align-items-center">
+                            <i class="bi bi-file-earmark-pdf text-danger fs-5 me-1"></i>
+                            <span>${item.fileName || 'Signed_Order.pdf'}</span>
+                        </a>
+                        <div class="text-muted" style="font-size: 0.72rem;">${item.fileSize || '1.2 MB'}</div>
+                    </td>
+                    <td class="text-end">
+                        <div class="btn-group btn-group-sm">
+                            <button type="button" class="btn btn-outline-primary" onclick="openViewNotificationModal('${item.id}')" title="View Official University Letterhead">
+                                <i class="bi bi-file-earmark-text"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="openEditNotificationModal('${item.id}')" title="Edit Notification">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-danger" onclick="deleteNotification('${item.id}')" title="Delete Notification">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openCreateNotificationModal() {
+            const form = document.getElementById('notificationForm');
+            if (form) form.reset();
+            document.getElementById('notifFormId').value = '';
+            document.getElementById('notificationModalTitle').innerHTML = '<i class="bi bi-cloud-arrow-up-fill me-2 text-warning"></i>Issue / Upload Statutory Notification';
+            document.getElementById('btnSubmitNotifForm').innerHTML = '<i class="bi bi-cloud-arrow-up-fill me-1"></i> Save &amp; Publish Notification';
+            document.getElementById('notifFileCurrentBadge').innerText = 'Current File: None';
+            uploadedNotifFileObj = null;
+
+            // Pre-select Authority and signatory based on current persona
+            const authSelect = document.getElementById('notifFormAuthority');
+            const signInput = document.getElementById('notifFormSignatory');
+            if (currentRole === 'vc_secretariat') {
+                if (authSelect) authSelect.value = 'vc';
+                if (signInput) signInput.value = 'Secretary to Vice-Chancellor';
+                document.getElementById('notifFormOrderNum').value = 'UHF/VCS/GH-DIR/2026/' + Math.floor(10 + Math.random() * 90);
+                document.getElementById('notifFormCategory').value = 'Presidential VVIP Directives';
+            } else {
+                if (authSelect) authSelect.value = 'estate';
+                if (signInput) signInput.value = 'Dr. Dev Raj, Estate Officer';
+                document.getElementById('notifFormOrderNum').value = 'UHF/EO-GH/2026/' + Math.floor(100 + Math.random() * 900);
+                document.getElementById('notifFormCategory').value = 'Tariffs & Stay Charges';
+            }
+
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            const todayStr = `${day}/${month}/${year}`;
+            document.getElementById('notifFormIssueDate').value = todayStr;
+            document.getElementById('notifFormEffectiveDate').value = todayStr;
+            document.getElementById('notifFormStatus').value = 'ACTIVE';
+            document.getElementById('notifFormPublic').checked = true;
+
+            onNotifAuthorityChange();
+
+            const modal = new bootstrap.Modal(document.getElementById('notificationModal'));
+            modal.show();
+        }
+
+        function openEditNotificationModal(id) {
+            const list = getOfficialNotifications();
+            const item = list.find(n => n.id === id);
+            if (!item) return;
+
+            // Jurisdiction check
+            if (item.authority === 'vc' && currentRole === 'estate_admin') {
+                alert("⚠️ Jurisdiction Restriction:\n\nEstate Office does not possess authority to modify Vice-Chancellor Secretariat apex directives.\n\nPlease switch to the Vice-Chancellor Secretariat account to edit this notification.");
+                return;
+            }
+
+            document.getElementById('notifFormId').value = item.id;
+            document.getElementById('notificationModalTitle').innerHTML = `<i class="bi bi-pencil-square me-2 text-warning"></i>Edit Notification: ${item.orderNumber}`;
+            document.getElementById('btnSubmitNotifForm').innerHTML = '<i class="bi bi-check2-circle me-1"></i> Update Notification';
+
+            document.getElementById('notifFormOrderNum').value = item.orderNumber || '';
+            document.getElementById('notifFormTitle').value = item.title || '';
+            document.getElementById('notifFormCategory').value = item.category || 'General Administration';
+            document.getElementById('notifFormAuthority').value = item.authority || 'estate';
+            document.getElementById('notifFormIssueDate').value = item.issueDate || '';
+            document.getElementById('notifFormEffectiveDate').value = item.effectiveDate || '';
+            document.getElementById('notifFormSignatory').value = item.signatory || '';
+            document.getElementById('notifFormSummary').value = item.summary || item.fullContent || '';
+            document.getElementById('notifFormStatus').value = item.status || 'ACTIVE';
+            document.getElementById('notifFormPublic').checked = (item.isPublic !== false);
+            document.getElementById('notifFileCurrentBadge').innerText = `Current File: ${item.fileName || 'Signed_Notification.pdf'} (${item.fileSize || '1.2 MB'})`;
+            uploadedNotifFileObj = null;
+
+            onNotifAuthorityChange();
+
+            const modal = new bootstrap.Modal(document.getElementById('notificationModal'));
+            modal.show();
+        }
+
+        function handleNotifFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            uploadedNotifFileObj = {
+                name: file.name,
+                size: (file.size / (1024 * 1024)).toFixed(1) + ' MB'
+            };
+            document.getElementById('notifFileCurrentBadge').innerText = `Uploaded: ${file.name} (${uploadedNotifFileObj.size})`;
+        }
+
+        function handleNotificationFormSubmit(e) {
+            e.preventDefault();
+            const editId = document.getElementById('notifFormId').value;
+            const authority = document.getElementById('notifFormAuthority').value;
+
+            // Enforce authority matching role
+            if (authority === 'vc' && currentRole === 'estate_admin') {
+                alert("⚠️ Jurisdiction Warning:\n\nEstate Office cannot issue orders under Vice-Chancellor Secretariat authority.\nAuthority changed to Estate Office.");
+                return;
+            }
+
+            const list = getOfficialNotifications();
+            let fileName = 'Notification_Document.pdf';
+            let fileSize = '1.2 MB';
+
+            if (uploadedNotifFileObj) {
+                fileName = uploadedNotifFileObj.name;
+                fileSize = uploadedNotifFileObj.size;
+            }
+
+            if (editId) {
+                const index = list.findIndex(n => n.id === editId);
+                if (index !== -1) {
+                    list[index].orderNumber = document.getElementById('notifFormOrderNum').value.trim();
+                    list[index].title = document.getElementById('notifFormTitle').value.trim();
+                    list[index].category = document.getElementById('notifFormCategory').value;
+                    list[index].authority = authority;
+                    list[index].authorityLabel = authority === 'vc' ? 'Vice-Chancellor Secretariat' : 'Estate Office';
+                    list[index].issueDate = document.getElementById('notifFormIssueDate').value.trim();
+                    list[index].effectiveDate = document.getElementById('notifFormEffectiveDate').value.trim();
+                    list[index].signatory = document.getElementById('notifFormSignatory').value.trim();
+                    list[index].summary = document.getElementById('notifFormSummary').value.trim();
+                    list[index].fullContent = document.getElementById('notifFormSummary').value.trim();
+                    list[index].status = document.getElementById('notifFormStatus').value;
+                    list[index].isPublic = document.getElementById('notifFormPublic').checked;
+                    if (uploadedNotifFileObj) {
+                        list[index].fileName = fileName;
+                        list[index].fileSize = fileSize;
+                    }
+                    saveOfficialNotifications(list);
+                    alert(`✅ Notification "${list[index].orderNumber}" updated successfully!`);
+                }
+            } else {
+                const newId = 'notif_' + Date.now();
+                const newNotification = {
+                    id: newId,
+                    orderNumber: document.getElementById('notifFormOrderNum').value.trim(),
+                    title: document.getElementById('notifFormTitle').value.trim(),
+                    category: document.getElementById('notifFormCategory').value,
+                    authority: authority,
+                    authorityLabel: authority === 'vc' ? 'Vice-Chancellor Secretariat' : 'Estate Office',
+                    signatory: document.getElementById('notifFormSignatory').value.trim(),
+                    issueDate: document.getElementById('notifFormIssueDate').value.trim(),
+                    effectiveDate: document.getElementById('notifFormEffectiveDate').value.trim(),
+                    fileName: fileName,
+                    fileSize: fileSize,
+                    summary: document.getElementById('notifFormSummary').value.trim(),
+                    fullContent: document.getElementById('notifFormSummary').value.trim(),
+                    status: document.getElementById('notifFormStatus').value,
+                    isPublic: document.getElementById('notifFormPublic').checked,
+                    createdAt: new Date().toISOString()
+                };
+                list.unshift(newNotification);
+                saveOfficialNotifications(list);
+                alert(`✅ Statutory Notification "${newNotification.orderNumber}" successfully uploaded & enacted!`);
+            }
+
+            bootstrap.Modal.getInstance(document.getElementById('notificationModal')).hide();
+            renderNotificationsTable();
+            updateNotificationBadge();
+        }
+
+        function deleteNotification(id) {
+            const list = getOfficialNotifications();
+            const item = list.find(n => n.id === id);
+            if (!item) return;
+
+            // Jurisdiction check
+            if (item.authority === 'vc' && currentRole === 'estate_admin') {
+                alert("⚠️ Jurisdiction Restriction:\n\nEstate Office cannot revoke or delete Vice-Chancellor Secretariat statutory directives.");
+                return;
+            }
+
+            if (confirm(`Are you sure you want to revoke and delete notification:\n\n"${item.orderNumber} - ${item.title}"?\n\nThis will remove it from active gazettes.`)) {
+                const updated = list.filter(n => n.id !== id);
+                saveOfficialNotifications(updated);
+                renderNotificationsTable();
+                updateNotificationBadge();
+                alert(`🗑️ Notification "${item.orderNumber}" has been revoked and removed.`);
+            }
+        }
+
+        function openViewNotificationModal(id) {
+            const list = getOfficialNotifications();
+            const item = list.find(n => n.id === id);
+            if (!item) return;
+            currentViewingNotif = item;
+
+            const container = document.getElementById('letterheadContent');
+            if (!container) return;
+
+            const isVC = item.authority === 'vc';
+            const authorityHeader = isVC 
+                ? 'VICE-CHANCELLOR SECRETARIAT' 
+                : 'ESTATE ORGANIZATION &bull; GUEST HOUSE DIVISION';
+
+            container.innerHTML = `
+                <div class="border p-4 p-md-5 bg-white shadow-sm" style="font-family: 'Times New Roman', Times, serif; color: #111; line-height: 1.6;">
+                    <!-- University Letterhead Header -->
+                    <div class="text-center pb-3 border-bottom border-2 border-dark mb-4">
+                        <img src="university_logo.jpg" alt="UHF Crest" style="width: 72px; height: 72px; object-fit: contain; margin-bottom: 8px;">
+                        <h4 class="fw-bold mb-0 text-uppercase" style="letter-spacing: 1.5px; font-size: 1.25rem;">Dr. Yashwant Singh Parmar University of Horticulture &amp; Forestry</h4>
+                        <div class="fw-bold text-uppercase" style="letter-spacing: 1px; font-size: 0.95rem;">Nauni, Solan (Himachal Pradesh) - 173230</div>
+                        <div class="fw-bold text-decoration-underline mt-1" style="font-size: 0.9rem; color: #0f3d26;">${authorityHeader}</div>
+                    </div>
+
+                    <!-- Reference Number & Date Bar -->
+                    <div class="d-flex justify-content-between align-items-center mb-4 fw-bold" style="font-size: 0.95rem;">
+                        <div>Ref. No.: <span class="text-decoration-underline">${item.orderNumber}</span></div>
+                        <div>Dated: <span class="text-decoration-underline">${item.issueDate}</span></div>
+                    </div>
+
+                    <!-- Heading -->
+                    <div class="text-center my-3">
+                        <h5 class="fw-bold text-uppercase text-decoration-underline mb-1" style="letter-spacing: 1px;">
+                            ${isVC ? 'APEX STATUTORY NOTIFICATION' : 'OFFICIAL STATUTORY NOTIFICATION'}
+                        </h5>
+                        <div class="fst-italic text-muted small">(Subject: ${item.title})</div>
+                    </div>
+
+                    <!-- Body / Directives -->
+                    <div class="my-4 text-justify" style="font-size: 1rem; text-align: justify; text-justify: inter-word;">
+                        <p>${item.summary || item.fullContent}</p>
+                        ${item.fullContent && item.fullContent !== item.summary ? `<p class="mt-3">${item.fullContent}</p>` : ''}
+                        
+                        <div class="p-3 my-3 bg-light border border-secondary rounded-2" style="font-family: sans-serif; font-size: 0.88rem;">
+                            <div class="fw-bold mb-1"><i class="bi bi-info-circle me-1 text-primary"></i> Statutory Enactment Details:</div>
+                            <div class="row g-2">
+                                <div class="col-sm-6"><strong>Enactment Category:</strong> ${item.category}</div>
+                                <div class="col-sm-6"><strong>Effective From:</strong> ${item.effectiveDate || item.issueDate}</div>
+                                <div class="col-sm-6"><strong>Enacting Authority:</strong> ${item.authorityLabel}</div>
+                                <div class="col-sm-6"><strong>Official File Attachment:</strong> ${item.fileName || 'Order.pdf'} (${item.fileSize || '1 MB'})</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Signature Block -->
+                    <div class="row mt-5 pt-4">
+                        <div class="col-6">
+                            <div class="small fst-italic text-muted">
+                                <div>Dr. YSP UHF Nauni (Solan)</div>
+                                <div>Statutory Guest House Protocol</div>
+                            </div>
+                        </div>
+                        <div class="col-6 text-end">
+                            <div class="fw-bold">${item.signatory}</div>
+                            <div class="fst-italic small">${item.authorityLabel}</div>
+                            <div class="small">Dr. Y.S. Parmar UHF Nauni</div>
+                        </div>
+                    </div>
+
+                    <!-- Endorsement / Distribution Block -->
+                    <div class="border-top pt-3 mt-4 small text-muted" style="font-size: 0.8rem; font-family: sans-serif;">
+                        <strong>Endorsement No. Even &amp; Date As Above:</strong> Copy forwarded for information &amp; strict compliance to:
+                        <ol class="mb-0 ps-3 mt-1">
+                            <li>The Secretary to the Hon'ble Vice-Chancellor, UHF Nauni.</li>
+                            <li>The Registrar &amp; Comptroller, Dr. YSP UHF Nauni.</li>
+                            <li>All Deans / Directors / Heads of Departments / Section In-charges.</li>
+                            <li>Care-Taker, University Main Guest House / Kisan Bhawan.</li>
+                            <li>Official Institutional Portal &amp; Notice Board.</li>
+                        </ol>
+                    </div>
+                </div>
+            `;
+
+            const modal = new bootstrap.Modal(document.getElementById('viewNotificationModal'));
+            modal.show();
+        }
+
+        function downloadLetterheadDocument() {
+            if (!currentViewingNotif) return;
+            const content = document.getElementById('letterheadContent').innerHTML;
+            const fullHtml = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="utf-8">
+                    <title>${currentViewingNotif.orderNumber} - Letterhead</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <style>
+                        body { padding: 40px; font-family: 'Times New Roman', serif; background: #fff; }
+                        @media print { body { padding: 0; } }
+                    </style>
+                </head>
+                <body>
+                    ${content}
+                </body>
+                </html>
+            `;
+            const blob = new Blob([fullHtml], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${currentViewingNotif.orderNumber.replace(/[\/\\?%*:|"<>]/g, '_')}_Official_Letterhead.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function printLetterhead() {
+            const printWin = window.open('', '', 'width=900,height=750');
+            const content = document.getElementById('letterheadContent').innerHTML;
+            printWin.document.write(`
+                <html>
+                <head>
+                    <title>Print Order - Dr. YSP UHF Nauni</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <style>
+                        body { padding: 20px; font-family: 'Times New Roman', serif; }
+                    </style>
+                </head>
+                <body onload="window.print(); window.close();">
+                    ${content}
+                </body>
+                </html>
+            `);
+            printWin.document.close();
+        }
+
+        function downloadNotificationDoc(id) {
+            const list = getOfficialNotifications();
+            const item = list.find(n => n.id === id);
+            if (!item) return;
+            openViewNotificationModal(id);
+            downloadLetterheadDocument();
         }
     </script>
 </body>

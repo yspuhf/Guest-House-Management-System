@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -302,6 +302,11 @@
                     <li class="nav-item"><a class="nav-link nav-link-lodge" href="#amenities">Dining & Hall</a></li>
 
                     <li class="nav-item"><a class="nav-link nav-link-lodge" href="#track">Track Status</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-lodge text-success fw-bold" href="javascript:void(0)" onclick="openPublicNotificationsModal()">
+                            <i class="bi bi-file-earmark-text me-1"></i> Notifications
+                        </a>
+                    </li>
                     <li class="nav-item ms-lg-2">
                         <button class="btn btn-gold text-white" onclick="openBookingModal('estate')">
                             <i class="bi bi-calendar2-check me-1"></i> Book Stay
@@ -993,6 +998,75 @@
         </div>
     </div>
 
+    <!-- 7. Public Statutory Notifications & Gazettes Modal -->
+    <div class="modal fade" id="publicNotificationsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-success text-white p-3">
+                    <div class="d-flex align-items-center">
+                        <img src="university_logo.jpg" alt="University Logo" class="rounded-circle bg-white p-1 me-2" style="width: 40px; height: 40px; object-fit: contain;">
+                        <div>
+                            <h5 class="modal-title font-serif fw-bold mb-0 text-white">Statutory Notifications &amp; Office Orders</h5>
+                            <small class="text-white-50" style="font-size: 0.75rem;">Dr. Y.S. Parmar UHF Nauni &bull; Official Institutional Registry</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 bg-light">
+                    <!-- Notification Filter Strip -->
+                    <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-4 pb-2 border-bottom">
+                        <div class="d-flex flex-wrap gap-1" id="publicNotifCategoryPills">
+                            <button type="button" class="btn btn-sm btn-success rounded-pill px-3 active" onclick="filterPublicNotifs('all', this)">All Orders</button>
+                            <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3" onclick="filterPublicNotifs('estate', this)">Estate Office Tariffs</button>
+                            <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="filterPublicNotifs('vc', this)">VC Directives</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="filterPublicNotifs('Operational Guidelines', this)">SOPs &amp; Guidelines</button>
+                        </div>
+                        <div class="text-muted small">
+                            <i class="bi bi-shield-check text-success me-1"></i>Enforced under Competent University Authority
+                        </div>
+                    </div>
+
+                    <!-- Notification Cards Grid -->
+                    <div class="row g-3" id="publicNotificationsContainer">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+                <div class="modal-footer bg-white d-flex justify-content-between">
+                    <div class="small text-muted">
+                        <i class="bi bi-info-circle me-1 text-primary"></i>All orders enacted in accordance with Notification No. UHF/EO-55/2025/- 1615-40
+                    </div>
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. Public Letterhead Gazette Modal -->
+    <div class="modal fade" id="publicLetterheadModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white p-3">
+                    <h5 class="modal-title font-serif fw-bold mb-0 text-white"><i class="bi bi-file-earmark-text me-2 text-warning"></i>Official University Gazette Order</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 bg-white" id="publicLetterheadContent">
+                    <!-- Populated dynamically -->
+                </div>
+                <div class="modal-footer bg-light d-flex justify-content-between">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Back to Notifications</button>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-primary" onclick="downloadPublicLetterhead()">
+                            <i class="bi bi-download me-1"></i> Download Official Document
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="printPublicLetterhead()">
+                            <i class="bi bi-printer me-1"></i> Print Order
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap 5 Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Flatpickr Datepicker JS (Strict DD/MM/YYYY) -->
@@ -1013,6 +1087,9 @@
                 renderNotificationTable();
                 const wing = document.getElementById('searchWing') ? document.getElementById('searchWing').value : 'estate';
                 onWingSelectionChange(wing);
+            }
+            if (e.key === 'uhf_official_notifications') {
+                renderPublicNotificationsList();
             }
         });
 
@@ -1783,6 +1860,309 @@
             } else {
                 alert(`No active booking record found matching "${code}". Please check the reference number.`);
             }
+        }
+
+        // ==========================================
+        // PUBLIC STATUTORY NOTIFICATIONS & ORDERS
+        // ==========================================
+        const defaultPublicNotifications = [
+            {
+                id: "notif_1615_40",
+                orderNumber: "UHF/EO-55/2025/- 1615-40",
+                title: "Master Tariff Revision & Visitor Categorization for University Guest Houses",
+                category: "Tariffs & Stay Charges",
+                authority: "estate",
+                authorityLabel: "Estate Office",
+                signatory: "Dr. Dev Raj, Estate Officer",
+                issueDate: "25/07/2026",
+                effectiveDate: "01/08/2026",
+                fileName: "Notification_1615-40_Signed.pdf",
+                fileSize: "1.4 MB",
+                summary: "Statutory revision of stay tariffs, dormitory allocations, and dining hall charges across 11 visitor categories under Estate Organization.",
+                fullContent: "In supersession of all previous orders and pursuant to the sanction of the Competent University Authority, revised stay charges, dormitory rates, and dining facilities for the University Main Guest House, VIP Suites Annexe, and Forest Rest House are hereby promulgated with immediate effect. All requisitions shall be routed and categorized strictly under Categories 1 to 11. Room sets 1 & 2 (Presidential Suites) remain reserved under the exclusive sanction jurisdiction of the Vice-Chancellor Secretariat.",
+                status: "ACTIVE",
+                isPublic: true,
+                createdAt: "2026-07-25T10:00:00.000Z"
+            },
+            {
+                id: "notif_vc_dir_08",
+                orderNumber: "UHF/VCS/GH-DIR/2026/08",
+                title: "Apex Protocol Directive: Vice-Chancellor VIP Suites & Presidential Wing Sanction Protocol",
+                category: "Presidential VVIP Directives",
+                authority: "vc",
+                authorityLabel: "Vice-Chancellor Secretariat",
+                signatory: "Secretary to Vice-Chancellor",
+                issueDate: "15/08/2026",
+                effectiveDate: "15/08/2026",
+                fileName: "VC_Apex_Directive_Suites_1-2.pdf",
+                fileSize: "840 KB",
+                summary: "Mandatory protocol directive reserving Suites 1 & 2 exclusively for Constitutional dignitaries, State Guests, Chancellor, and Vice-Chancellor official guests with single-point sanction from VC Secretariat.",
+                fullContent: "By order of the Hon'ble Vice-Chancellor, accommodation in VVIP Presidential Suites (Suites 1 & 2, Top Floor) shall be accorded exclusively to Constitutional dignitaries, statutory university guests, State Guests, and apex institutional delegations. No local booking, offline allotment, or verbal reservation by any other administrative wing shall be entertained. The Estate Office shall maintain real-time transparent visibility of requisitions while formal confirmation resides exclusively with the VC Secretariat.",
+                status: "ACTIVE",
+                isPublic: true,
+                createdAt: "2026-08-15T11:30:00.000Z"
+            },
+            {
+                id: "notif_eo_sop_194",
+                orderNumber: "UHF/EO-GH/2026/194",
+                title: "Standard Operating Procedure & Digital Check-In Protocols for University Guest House",
+                category: "Operational Guidelines",
+                authority: "estate",
+                authorityLabel: "Estate Office",
+                signatory: "Dr. Dev Raj, Estate Officer",
+                issueDate: "10/09/2026",
+                effectiveDate: "15/09/2026",
+                fileName: "SOP_CheckIn_Verification_2026.pdf",
+                fileSize: "620 KB",
+                summary: "Guidelines for mandatory Aadhaar/Govt ID verification, DD/MM/YYYY ledger booking entries, digital payment collection, and checkout audit compliance.",
+                fullContent: "All visiting guests and sponsoring departments are hereby notified that physical or verified digital Government Photo Identity (Aadhaar / Voter ID / Official Service ID) is mandatory at the reception desk prior to key handover. Standard checkout time is fixed at 12:00 Noon. All dining hall orders must be requisitioned with 3 hours prior notice to the Guest House Care-Taker.",
+                status: "ACTIVE",
+                isPublic: true,
+                createdAt: "2026-09-10T09:15:00.000Z"
+            }
+        ];
+
+        let activePublicNotifFilter = 'all';
+        let currentPublicViewingNotif = null;
+
+        function getPublicOfficialNotifications() {
+            try {
+                const stored = localStorage.getItem('uhf_official_notifications');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        return parsed.filter(n => n.isPublic !== false && n.status === 'ACTIVE');
+                    }
+                }
+            } catch (e) {
+                console.error("Error reading public notifications", e);
+            }
+            return defaultPublicNotifications;
+        }
+
+        function openPublicNotificationsModal() {
+            renderPublicNotificationsList('all');
+            const modal = new bootstrap.Modal(document.getElementById('publicNotificationsModal'));
+            modal.show();
+        }
+
+        function filterPublicNotifs(filterType, btn) {
+            activePublicNotifFilter = filterType;
+            if (btn) {
+                const pills = document.querySelectorAll('#publicNotifCategoryPills button');
+                pills.forEach(p => {
+                    p.classList.remove('btn-success', 'btn-danger', 'btn-secondary', 'active', 'text-white');
+                    p.classList.add('btn-outline-secondary');
+                });
+                btn.classList.remove('btn-outline-secondary', 'btn-outline-success', 'btn-outline-danger');
+                if (filterType === 'vc') btn.classList.add('btn-danger', 'active', 'text-white');
+                else if (filterType === 'estate') btn.classList.add('btn-success', 'active', 'text-white');
+                else btn.classList.add('btn-success', 'active', 'text-white');
+            }
+            renderPublicNotificationsList(filterType);
+        }
+
+        function renderPublicNotificationsList(filterType) {
+            const container = document.getElementById('publicNotificationsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const list = getPublicOfficialNotifications();
+            const filter = filterType || activePublicNotifFilter;
+
+            const filtered = list.filter(item => {
+                if (filter === 'all') return true;
+                if (filter === 'estate' || filter === 'vc') return item.authority === filter;
+                return item.category === filter;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12 text-center py-5 text-muted">
+                        <i class="bi bi-file-earmark-x fs-1 text-secondary d-block mb-2"></i>
+                        No published statutory orders matching this filter.
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const isVC = item.authority === 'vc';
+                const col = document.createElement('div');
+                col.className = 'col-md-6 col-lg-4';
+                col.innerHTML = `
+                    <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden bg-white">
+                        <div class="card-header ${isVC ? 'bg-danger text-white' : 'bg-success text-white'} py-2 px-3 d-flex justify-content-between align-items-center">
+                            <span class="small fw-bold"><i class="${isVC ? 'bi bi-crown' : 'bi bi-building'} me-1"></i>${item.authorityLabel}</span>
+                            <span class="badge ${isVC ? 'bg-white text-danger' : 'bg-white text-success'} rounded-pill" style="font-size: 0.7rem;">Official Gazette</span>
+                        </div>
+                        <div class="card-body p-3 d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-center mb-1 text-muted small" style="font-size: 0.78rem;">
+                                <span class="font-monospace fw-bold text-dark">${item.orderNumber}</span>
+                                <span><i class="bi bi-calendar3 me-1"></i>${item.issueDate}</span>
+                            </div>
+                            <h6 class="fw-bold font-serif text-dark mb-2">${item.title}</h6>
+                            <p class="small text-muted mb-3 flex-grow-1" style="line-height: 1.45;">
+                                ${item.summary || item.fullContent}
+                            </p>
+                            <div class="d-flex align-items-center gap-1 mb-3">
+                                <span class="badge bg-light text-dark border text-truncate" style="font-size: 0.72rem; max-width: 180px;">${item.category}</span>
+                                <span class="badge bg-light text-secondary border ms-auto" style="font-size: 0.72rem;">Effective: ${item.effectiveDate || item.issueDate}</span>
+                            </div>
+                            <div class="pt-2 border-top d-flex gap-2">
+                                <button type="button" class="btn btn-sm btn-outline-success flex-grow-1" onclick="viewPublicLetterhead('${item.id}')">
+                                    <i class="bi bi-file-earmark-text me-1"></i> View Order
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="viewPublicLetterhead('${item.id}'); downloadPublicLetterhead();" title="Download Document">
+                                    <i class="bi bi-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(col);
+            });
+        }
+
+        function viewPublicLetterhead(id) {
+            const list = getPublicOfficialNotifications();
+            const item = list.find(n => n.id === id);
+            if (!item) return;
+            currentPublicViewingNotif = item;
+
+            const isVC = item.authority === 'vc';
+            const authorityHeader = isVC 
+                ? 'VICE-CHANCELLOR SECRETARIAT' 
+                : 'ESTATE ORGANIZATION &bull; GUEST HOUSE DIVISION';
+
+            const container = document.getElementById('publicLetterheadContent');
+            if (!container) return;
+
+            container.innerHTML = `
+                <div class="border p-4 p-md-5 bg-white shadow-sm" style="font-family: 'Times New Roman', Times, serif; color: #111; line-height: 1.6;">
+                    <!-- University Letterhead Header -->
+                    <div class="text-center pb-3 border-bottom border-2 border-dark mb-4">
+                        <img src="university_logo.jpg" alt="UHF Crest" style="width: 72px; height: 72px; object-fit: contain; margin-bottom: 8px;">
+                        <h4 class="fw-bold mb-0 text-uppercase" style="letter-spacing: 1.5px; font-size: 1.25rem;">Dr. Yashwant Singh Parmar University of Horticulture &amp; Forestry</h4>
+                        <div class="fw-bold text-uppercase" style="letter-spacing: 1px; font-size: 0.95rem;">Nauni, Solan (Himachal Pradesh) - 173230</div>
+                        <div class="fw-bold text-decoration-underline mt-1" style="font-size: 0.9rem; color: #0f3d26;">${authorityHeader}</div>
+                    </div>
+
+                    <!-- Reference Number & Date Bar -->
+                    <div class="d-flex justify-content-between align-items-center mb-4 fw-bold" style="font-size: 0.95rem;">
+                        <div>Ref. No.: <span class="text-decoration-underline">${item.orderNumber}</span></div>
+                        <div>Dated: <span class="text-decoration-underline">${item.issueDate}</span></div>
+                    </div>
+
+                    <!-- Heading -->
+                    <div class="text-center my-3">
+                        <h5 class="fw-bold text-uppercase text-decoration-underline mb-1" style="letter-spacing: 1px;">
+                            ${isVC ? 'APEX STATUTORY NOTIFICATION' : 'OFFICIAL STATUTORY NOTIFICATION'}
+                        </h5>
+                        <div class="fst-italic text-muted small">(Subject: ${item.title})</div>
+                    </div>
+
+                    <!-- Body / Directives -->
+                    <div class="my-4 text-justify" style="font-size: 1rem; text-align: justify; text-justify: inter-word;">
+                        <p>${item.summary || item.fullContent}</p>
+                        ${item.fullContent && item.fullContent !== item.summary ? `<p class="mt-3">${item.fullContent}</p>` : ''}
+                        
+                        <div class="p-3 my-3 bg-light border border-secondary rounded-2" style="font-family: sans-serif; font-size: 0.88rem;">
+                            <div class="fw-bold mb-1"><i class="bi bi-info-circle me-1 text-primary"></i> Statutory Enactment Details:</div>
+                            <div class="row g-2">
+                                <div class="col-sm-6"><strong>Enactment Category:</strong> ${item.category}</div>
+                                <div class="col-sm-6"><strong>Effective From:</strong> ${item.effectiveDate || item.issueDate}</div>
+                                <div class="col-sm-6"><strong>Enacting Authority:</strong> ${item.authorityLabel}</div>
+                                <div class="col-sm-6"><strong>Official File Attachment:</strong> ${item.fileName || 'Signed_Order.pdf'} (${item.fileSize || '1 MB'})</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Signature Block -->
+                    <div class="row mt-5 pt-4">
+                        <div class="col-6">
+                            <div class="small fst-italic text-muted">
+                                <div>Dr. YSP UHF Nauni (Solan)</div>
+                                <div>Statutory Guest House Protocol</div>
+                            </div>
+                        </div>
+                        <div class="col-6 text-end">
+                            <div class="fw-bold">${item.signatory}</div>
+                            <div class="fst-italic small">${item.authorityLabel}</div>
+                            <div class="small">Dr. Y.S. Parmar UHF Nauni</div>
+                        </div>
+                    </div>
+
+                    <!-- Endorsement / Distribution Block -->
+                    <div class="border-top pt-3 mt-4 small text-muted" style="font-size: 0.8rem; font-family: sans-serif;">
+                        <strong>Endorsement No. Even &amp; Date As Above:</strong> Copy forwarded for information &amp; strict compliance to:
+                        <ol class="mb-0 ps-3 mt-1">
+                            <li>The Secretary to the Hon'ble Vice-Chancellor, UHF Nauni.</li>
+                            <li>The Registrar &amp; Comptroller, Dr. YSP UHF Nauni.</li>
+                            <li>All Deans / Directors / Heads of Departments / Section In-charges.</li>
+                            <li>Care-Taker, University Main Guest House / Kisan Bhawan.</li>
+                            <li>Official Institutional Portal &amp; Notice Board.</li>
+                        </ol>
+                    </div>
+                </div>
+            `;
+
+            const notifModal = bootstrap.Modal.getInstance(document.getElementById('publicNotificationsModal'));
+            if (notifModal) notifModal.hide();
+
+            const modal = new bootstrap.Modal(document.getElementById('publicLetterheadModal'));
+            modal.show();
+        }
+
+        function downloadPublicLetterhead() {
+            if (!currentPublicViewingNotif) return;
+            const content = document.getElementById('publicLetterheadContent').innerHTML;
+            const fullHtml = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="utf-8">
+                    <title>${currentPublicViewingNotif.orderNumber} - Letterhead</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <style>
+                        body { padding: 40px; font-family: 'Times New Roman', serif; background: #fff; }
+                        @media print { body { padding: 0; } }
+                    </style>
+                </head>
+                <body>
+                    ${content}
+                </body>
+                </html>
+            `;
+            const blob = new Blob([fullHtml], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${currentPublicViewingNotif.orderNumber.replace(/[\/\\?%*:|"<>]/g, '_')}_Official_Letterhead.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function printPublicLetterhead() {
+            const printWin = window.open('', '', 'width=900,height=750');
+            const content = document.getElementById('publicLetterheadContent').innerHTML;
+            printWin.document.write(`
+                <html>
+                <head>
+                    <title>Print Order - Dr. YSP UHF Nauni</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <style>
+                        body { padding: 20px; font-family: 'Times New Roman', serif; }
+                    </style>
+                </head>
+                <body onload="window.print(); window.close();">
+                    ${content}
+                </body>
+                </html>
+            `);
+            printWin.document.close();
         }
     </script>
 </body>
