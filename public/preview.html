@@ -282,7 +282,7 @@
                 </button>
 
                 <!-- Public Portal Link -->
-                <a href="/" target="_blank" class="btn btn-sm btn-success fw-bold">
+                <a href="index.html" class="btn btn-sm btn-success fw-bold">
                     <i class="bi bi-globe me-1"></i> Public Website
                 </a>
             </div>
@@ -2345,19 +2345,26 @@
             const loginScreen = document.getElementById('institutionalLoginScreen');
             const appContainer = document.getElementById('appContainer');
 
-            if (savedAccount === 'vc_secretariat') {
+            // If URL explicitly requests login via hash (#login) or query (?action=login)
+            const isExplicitLogin = window.location.hash === '#login' || 
+                                    window.location.search.includes('action=login') || 
+                                    window.location.search.includes('login=1') ||
+                                    window.location.search.includes('login=true');
+
+            if (!isExplicitLogin && savedAccount === 'vc_secretariat') {
                 if (loginScreen) loginScreen.style.display = 'none';
                 if (appContainer) appContainer.style.display = 'block';
                 setRole('vc_secretariat', 'Vice-Chancellor Secretariat', 'vc.secretariat@yspuniversity.ac.in');
-            } else if (savedAccount === 'estate_admin') {
+            } else if (!isExplicitLogin && savedAccount === 'estate_admin') {
                 if (loginScreen) loginScreen.style.display = 'none';
                 if (appContainer) appContainer.style.display = 'block';
                 setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in');
             } else {
-                // Initial visit or after logout: present the separate institutional login portals
+                // Present the separate institutional login portals
                 if (loginScreen) loginScreen.style.display = 'block';
                 if (appContainer) appContainer.style.display = 'none';
                 setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
 
             renderEstateTariffEditor();
@@ -2373,8 +2380,20 @@
             // Hash navigation
             if (window.location.hash) {
                 const tab = window.location.hash.replace('#', '');
-                showTab(tab);
+                if (tab === 'login') {
+                    logoutAccount();
+                } else {
+                    showTab(tab);
+                }
             }
+
+            window.addEventListener('hashchange', function () {
+                if (window.location.hash === '#login') {
+                    logoutAccount();
+                } else if (window.location.hash) {
+                    showTab(window.location.hash.replace('#', ''));
+                }
+            });
         });
 
         function handleEstateLogin(event) {
@@ -3077,6 +3096,10 @@
         }
 
         function showTab(tabId) {
+            if (tabId === 'login') {
+                logoutAccount();
+                return;
+            }
             document.querySelectorAll('.view-panel').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.sidebar .nav-link').forEach(el => el.classList.remove('active'));
 
