@@ -273,6 +273,24 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
         }
+
+        /* High Z-Index & Visibility for Calendar Pickers */
+        .flatpickr-calendar {
+            z-index: 105000 !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+            border-radius: 10px !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+        .flatpickr-day.selected {
+            background: #1d4d31 !important;
+            border-color: #1d4d31 !important;
+        }
+        .flatpickr-day.today {
+            border-color: #16a34a !important;
+        }
+        #uhfCalendarDropdownPopup {
+            z-index: 105000 !important;
+        }
     </style>
 </head>
 
@@ -413,7 +431,9 @@
                             <input type="text" id="searchCheckIn" class="form-control form-control-lg fs-6 fw-bold"
                                 placeholder="DD/MM/YYYY" maxlength="10" required onchange="onSearchCheckInChange()"
                                 oninput="maskDateInput(event); updateEstimatedSearchPrice()"
-                                onclick="openDatePicker('searchCheckIn')">
+                                onclick="openDatePicker('searchCheckIn')"
+                                onfocus="openDatePicker('searchCheckIn')"
+                                autocomplete="off">
                             <button class="btn btn-outline-secondary" type="button"
                                 onclick="openDatePicker('searchCheckIn')" title="Open Calendar"><i
                                     class="bi bi-calendar-event text-success"></i></button>
@@ -434,7 +454,9 @@
                                 class="form-control form-control-lg fs-6 fw-bold border-danger text-danger"
                                 placeholder="DD/MM/YYYY" maxlength="10" required onchange="onSearchCheckOutChange()"
                                 oninput="maskDateInput(event); updateEstimatedSearchPrice()"
-                                onclick="openDatePicker('searchCheckOut')">
+                                onclick="openDatePicker('searchCheckOut')"
+                                onfocus="openDatePicker('searchCheckOut')"
+                                autocomplete="off">
                             <button class="btn btn-outline-danger" type="button"
                                 onclick="openDatePicker('searchCheckOut')" title="Open Calendar"><i
                                     class="bi bi-calendar-check"></i></button>
@@ -929,7 +951,9 @@
                                         placeholder="DD/MM/YYYY" maxlength="10" required
                                         onchange="onModalCheckInChange()"
                                         oninput="maskDateInput(event); calcModalTariff()"
-                                        onclick="openDatePicker('modalCheckIn')">
+                                        onclick="openDatePicker('modalCheckIn')"
+                                        onfocus="openDatePicker('modalCheckIn')"
+                                        autocomplete="off">
                                     <button class="btn btn-outline-secondary" type="button"
                                         onclick="openDatePicker('modalCheckIn')" title="Open Calendar"><i
                                             class="bi bi-calendar-event text-success"></i></button>
@@ -949,7 +973,9 @@
                                         placeholder="DD/MM/YYYY" maxlength="10" required
                                         onchange="onModalCheckOutChange()"
                                         oninput="maskDateInput(event); calcModalTariff()"
-                                        onclick="openDatePicker('modalCheckOut')">
+                                        onclick="openDatePicker('modalCheckOut')"
+                                        onfocus="openDatePicker('modalCheckOut')"
+                                        autocomplete="off">
                                     <button class="btn btn-outline-primary" type="button"
                                         onclick="openDatePicker('modalCheckOut')" title="Open Calendar"><i
                                             class="bi bi-calendar-check"></i></button>
@@ -1075,10 +1101,11 @@
     <script src="estate_tariffs.js"></script>
 
     <script>
-        // Initialize dynamic categories and tables
+        // Initialize dynamic categories, tables, and booking date pickers
         document.addEventListener('DOMContentLoaded', function () {
             renderNotificationTable();
             onWingSelectionChange('estate');
+            initializeBookingDates();
         });
 
         // Live cross-tab sync when Estate Admin saves changes in the Console
@@ -1278,6 +1305,234 @@
             return formatDMY(result);
         }
 
+        // ==========================================
+        // UNIVERSAL CALENDAR DROPDOWN COMPONENT (DD/MM/YYYY)
+        // Works seamlessly with or without external Flatpickr CDN
+        // ==========================================
+        const UHFCalendarDropdown = (function () {
+            let activeInput = null;
+            let currentYear = new Date().getFullYear();
+            let currentMonth = new Date().getMonth();
+            let popupEl = null;
+
+            function createPopup() {
+                if (popupEl) return popupEl;
+                popupEl = document.createElement('div');
+                popupEl.id = 'uhfCalendarDropdownPopup';
+                popupEl.style.cssText = `
+                    position: absolute;
+                    z-index: 105000;
+                    background: #ffffff;
+                    border: 1px solid #cbd5e1;
+                    box-shadow: 0 14px 32px rgba(0,0,0,0.18);
+                    border-radius: 10px;
+                    padding: 14px;
+                    width: 295px;
+                    font-family: system-ui, -apple-system, sans-serif;
+                    display: none;
+                `;
+                document.body.appendChild(popupEl);
+
+                // Close when clicking outside
+                document.addEventListener('click', function (e) {
+                    if (popupEl && popupEl.style.display !== 'none') {
+                        if (!popupEl.contains(e.target) && e.target !== activeInput && !e.target.closest('button[onclick*="' + (activeInput ? activeInput.id : '') + '"]')) {
+                            close();
+                        }
+                    }
+                });
+
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') close();
+                });
+
+                window.addEventListener('resize', function () {
+                    if (popupEl && popupEl.style.display !== 'none' && activeInput) {
+                        position(activeInput);
+                    }
+                });
+
+                return popupEl;
+            }
+
+            function open(inputEl) {
+                if (!inputEl) return;
+                activeInput = inputEl;
+                const popup = createPopup();
+
+                let d = parseDateDMY(inputEl.value);
+                if (isNaN(d.getTime())) d = new Date();
+                currentYear = d.getFullYear();
+                currentMonth = d.getMonth();
+
+                render();
+                position(inputEl);
+                popup.style.display = 'block';
+            }
+
+            function close() {
+                if (popupEl) popupEl.style.display = 'none';
+                activeInput = null;
+            }
+
+            function position(inputEl) {
+                const rect = inputEl.getBoundingClientRect();
+                const popup = createPopup();
+                const scrollY = window.scrollY || window.pageYOffset;
+                const scrollX = window.scrollX || window.pageXOffset;
+
+                let top = rect.bottom + scrollY + 4;
+                let left = rect.left + scrollX;
+
+                // Ensure it fits on screen
+                if (left + 305 > window.innerWidth) {
+                    left = window.innerWidth - 315;
+                }
+                if (left < 10) left = 10;
+
+                popup.style.top = top + 'px';
+                popup.style.left = left + 'px';
+            }
+
+            function render() {
+                const popup = createPopup();
+                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                const daysOfWeek = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                const selectedDate = parseDateDMY(activeInput ? activeInput.value : '');
+
+                // Min date enforcement
+                let minDate = today;
+                if (activeInput && (activeInput.id === 'checkOutDate' || activeInput.id === 'searchCheckOut' || activeInput.id === 'modalCheckOut')) {
+                    const inId = activeInput.id.replace('CheckOut', 'CheckIn').replace('checkOut', 'checkIn');
+                    const inEl = document.getElementById(inId);
+                    if (inEl && inEl.value) {
+                        const inDate = parseDateDMY(inEl.value);
+                        minDate = new Date(inDate.getTime() + 86400000);
+                    }
+                }
+
+                // Month details
+                const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
+                const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+                let html = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <button type="button" id="uhfCalPrev" class="btn btn-sm btn-outline-secondary py-0 px-2 fw-bold" style="font-size:0.85rem;">&larr;</button>
+                        <div style="font-weight:700; color:#123321; font-size:0.95rem;">${months[currentMonth]} ${currentYear}</div>
+                        <button type="button" id="uhfCalNext" class="btn btn-sm btn-outline-secondary py-0 px-2 fw-bold" style="font-size:0.85rem;">&rarr;</button>
+                    </div>
+                    <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:2px; text-align:center; margin-bottom:6px;">
+                        ${daysOfWeek.map(dw => `<div style="font-size:0.75rem; font-weight:700; color:#64748b; padding:2px;">${dw}</div>`).join('')}
+                    </div>
+                    <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:3px; text-align:center;">
+                `;
+
+                // Empty cells before month starts
+                for (let i = 0; i < firstDayIndex; i++) {
+                    html += `<div></div>`;
+                }
+
+                // Day numbers
+                for (let day = 1; day <= lastDate; day++) {
+                    const thisDate = new Date(currentYear, currentMonth, day);
+                    thisDate.setHours(0, 0, 0, 0);
+
+                    const isPast = thisDate < minDate;
+                    const isSelected = selectedDate && thisDate.getTime() === selectedDate.getTime();
+                    const isToday = thisDate.getTime() === today.getTime();
+
+                    let btnStyle = `
+                        padding: 6px 0;
+                        font-size: 0.84rem;
+                        font-weight: ${isSelected ? '700' : '500'};
+                        border-radius: 6px;
+                        cursor: ${isPast ? 'not-allowed' : 'pointer'};
+                        background: ${isSelected ? '#1d4d31' : (isToday ? '#f0fdf4' : '#ffffff')};
+                        color: ${isSelected ? '#ffffff' : (isPast ? '#cbd5e1' : (isToday ? '#15803d' : '#1e293b'))};
+                        border: ${isToday && !isSelected ? '1px solid #86efac' : 'none'};
+                        transition: all 0.15s ease;
+                    `;
+
+                    html += `<div class="uhf-cal-day" data-day="${day}" style="${btnStyle}" ${isPast ? 'data-disabled="true"' : ''}>${day}</div>`;
+                }
+
+                html += `
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding-top:8px; border-top:1px solid #f1f5f9;">
+                        <button type="button" id="uhfCalToday" class="btn btn-sm btn-link text-success p-0 fw-bold" style="font-size:0.78rem; text-decoration:none;">Today</button>
+                        <button type="button" id="uhfCalClose" class="btn btn-sm btn-link text-muted p-0" style="font-size:0.78rem; text-decoration:none;">Close</button>
+                    </div>
+                `;
+
+                popup.innerHTML = html;
+
+                // Event handlers
+                popup.querySelector('#uhfCalPrev').onclick = function (e) {
+                    e.stopPropagation();
+                    currentMonth--;
+                    if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+                    render();
+                };
+                popup.querySelector('#uhfCalNext').onclick = function (e) {
+                    e.stopPropagation();
+                    currentMonth++;
+                    if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+                    render();
+                };
+                popup.querySelector('#uhfCalToday').onclick = function (e) {
+                    e.stopPropagation();
+                    const now = new Date();
+                    selectDate(now.getDate(), now.getMonth(), now.getFullYear());
+                };
+                popup.querySelector('#uhfCalClose').onclick = function (e) {
+                    e.stopPropagation();
+                    close();
+                };
+
+                popup.querySelectorAll('.uhf-cal-day').forEach(el => {
+                    if (el.getAttribute('data-disabled') === 'true') return;
+                    el.addEventListener('mouseenter', function () {
+                        if (this.style.background !== 'rgb(29, 77, 49)' && this.style.background !== '#1d4d31') {
+                            this.style.background = '#e2e8f0';
+                        }
+                    });
+                    el.addEventListener('mouseleave', function () {
+                        if (this.style.background !== 'rgb(29, 77, 49)' && this.style.background !== '#1d4d31') {
+                            this.style.background = '#ffffff';
+                        }
+                    });
+                    el.onclick = function (e) {
+                        e.stopPropagation();
+                        const day = parseInt(this.getAttribute('data-day'), 10);
+                        selectDate(day, currentMonth, currentYear);
+                    };
+                });
+            }
+
+            function selectDate(day, month, year) {
+                if (!activeInput) return;
+                const dd = String(day).padStart(2, '0');
+                const mm = String(month + 1).padStart(2, '0');
+                const val = `${dd}/${mm}/${year}`;
+                activeInput.value = val;
+
+                // Trigger change & input events so all calculations update
+                activeInput.dispatchEvent(new Event('input', { bubbles: true }));
+                activeInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+                close();
+            }
+
+            return {
+                open: open,
+                close: close
+            };
+        })();
+
         function initializeBookingDates() {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
@@ -1289,48 +1544,64 @@
             // 1. Search Bar
             const searchIn = document.getElementById('searchCheckIn');
             const searchOut = document.getElementById('searchCheckOut');
-            if (searchIn) searchIn.value = todayStr;
-            if (searchOut) searchOut.value = defaultOutStr;
+            if (searchIn && !searchIn.value) searchIn.value = todayStr;
+            if (searchOut && !searchOut.value) searchOut.value = defaultOutStr;
 
             // 2. Modal
             const modalIn = document.getElementById('modalCheckIn');
             const modalOut = document.getElementById('modalCheckOut');
-            if (modalIn) modalIn.value = todayStr;
-            if (modalOut) modalOut.value = defaultOutStr;
+            if (modalIn && !modalIn.value) modalIn.value = todayStr;
+            if (modalOut && !modalOut.value) modalOut.value = defaultOutStr;
 
             // Initialize Flatpickr if library available
             if (typeof flatpickr !== 'undefined') {
-                searchInPicker = flatpickr("#searchCheckIn", {
-                    dateFormat: "d/m/Y",
-                    minDate: "today",
-                    defaultDate: today,
-                    allowInput: true,
-                    onChange: function () { onSearchCheckInChange(); }
-                });
+                try {
+                    if (searchIn && !searchIn._flatpickr) {
+                        searchInPicker = flatpickr(searchIn, {
+                            dateFormat: "d/m/Y",
+                            minDate: "today",
+                            defaultDate: searchIn.value || today,
+                            allowInput: true,
+                            disableMobile: true,
+                            onChange: function () { onSearchCheckInChange(); }
+                        });
+                    }
 
-                searchOutPicker = flatpickr("#searchCheckOut", {
-                    dateFormat: "d/m/Y",
-                    minDate: minOut,
-                    defaultDate: defaultOut,
-                    allowInput: true,
-                    onChange: function () { onSearchCheckOutChange(); }
-                });
+                    if (searchOut && !searchOut._flatpickr) {
+                        searchOutPicker = flatpickr(searchOut, {
+                            dateFormat: "d/m/Y",
+                            minDate: minOut,
+                            defaultDate: searchOut.value || defaultOut,
+                            allowInput: true,
+                            disableMobile: true,
+                            onChange: function () { onSearchCheckOutChange(); }
+                        });
+                    }
 
-                modalInPicker = flatpickr("#modalCheckIn", {
-                    dateFormat: "d/m/Y",
-                    minDate: "today",
-                    defaultDate: today,
-                    allowInput: true,
-                    onChange: function () { onModalCheckInChange(); }
-                });
+                    if (modalIn && !modalIn._flatpickr) {
+                        modalInPicker = flatpickr(modalIn, {
+                            dateFormat: "d/m/Y",
+                            minDate: "today",
+                            defaultDate: modalIn.value || today,
+                            allowInput: true,
+                            disableMobile: true,
+                            onChange: function () { onModalCheckInChange(); }
+                        });
+                    }
 
-                modalOutPicker = flatpickr("#modalCheckOut", {
-                    dateFormat: "d/m/Y",
-                    minDate: minOut,
-                    defaultDate: defaultOut,
-                    allowInput: true,
-                    onChange: function () { onModalCheckOutChange(); }
-                });
+                    if (modalOut && !modalOut._flatpickr) {
+                        modalOutPicker = flatpickr(modalOut, {
+                            dateFormat: "d/m/Y",
+                            minDate: minOut,
+                            defaultDate: modalOut.value || defaultOut,
+                            allowInput: true,
+                            disableMobile: true,
+                            onChange: function () { onModalCheckOutChange(); }
+                        });
+                    }
+                } catch (err) {
+                    console.warn("Flatpickr init handled via fallback dropdown", err);
+                }
             }
 
             updateDurationBadge('search');
@@ -1341,13 +1612,21 @@
         function openDatePicker(inputId) {
             const el = document.getElementById(inputId);
             if (!el) return;
-            if (el._flatpickr) {
-                el._flatpickr.open();
-            } else if (el.showPicker) {
-                try { el.showPicker(); } catch (e) { el.focus(); }
-            } else {
-                el.focus();
+
+            // Ensure initialized
+            if (typeof flatpickr !== 'undefined') {
+                if (!el._flatpickr) initializeBookingDates();
             }
+
+            if (el._flatpickr) {
+                try {
+                    el._flatpickr.open();
+                    return;
+                } catch (e) { }
+            }
+
+            // Universal Fallback Calendar Dropdown
+            UHFCalendarDropdown.open(el);
         }
 
         function updateDurationBadge(scope) {
@@ -1501,6 +1780,7 @@
         }
 
         function openBookingModal(wing, setType, catId) {
+            initializeBookingDates();
             if (wing) document.getElementById('modalWing').value = wing;
             handleModalWingChange();
             if (setType) document.getElementById('modalSetType').value = setType;
