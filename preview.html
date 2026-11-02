@@ -147,7 +147,7 @@
 <body>
 
     <!-- Dedicated Institutional Separate Login Portals Screen -->
-    <div id="institutionalLoginScreen" class="py-5" style="min-height: 100vh; background: linear-gradient(135deg, #071927 0%, #0d2b45 50%, #163e63 100%); display: none;">
+    <div id="institutionalLoginScreen" class="py-5" style="min-height: 100vh; background: linear-gradient(135deg, #071927 0%, #0d2b45 50%, #163e63 100%); display: block;">
         <div class="container py-4">
             <!-- University Header -->
             <div class="text-center mb-5 text-white">
@@ -243,7 +243,7 @@
 
             <!-- Footer Return Link -->
             <div class="text-center mt-5">
-                <a href="/" class="btn btn-outline-light px-4 py-2 fw-semibold">
+                <a href="index.html" class="btn btn-outline-light px-4 py-2 fw-semibold">
                     <i class="bi bi-arrow-left me-2"></i> Return to Public Guest House Website
                 </a>
             </div>
@@ -251,7 +251,7 @@
     </div>
 
     <!-- Main Application Container -->
-    <div id="appContainer">
+    <div id="appContainer" style="display: none;">
         <!-- Top University Banner Header -->
         <header class="navbar navbar-expand-lg navbar-dark navbar-university sticky-top px-3 py-2">
             <div class="d-flex align-items-center text-white">
@@ -2336,35 +2336,30 @@
         });
 
         document.addEventListener('DOMContentLoaded', function () {
-            // Check active session from localStorage
-            let savedAccount = null;
-            try {
-                savedAccount = localStorage.getItem('uhf_active_account');
-            } catch (e) { }
-
             const loginScreen = document.getElementById('institutionalLoginScreen');
             const appContainer = document.getElementById('appContainer');
 
-            // If URL explicitly requests login via hash (#login) or query (?action=login)
-            const isExplicitLogin = window.location.hash === '#login' || 
-                                    window.location.search.includes('action=login') || 
-                                    window.location.search.includes('login=1') ||
-                                    window.location.search.includes('login=true');
+            // Check if user is currently authenticated in this browser session
+            let authenticatedRole = null;
+            try {
+                authenticatedRole = sessionStorage.getItem('uhf_authenticated_role');
+            } catch (e) { }
 
-            if (!isExplicitLogin && savedAccount === 'vc_secretariat') {
-                if (loginScreen) loginScreen.style.display = 'none';
-                if (appContainer) appContainer.style.display = 'block';
-                setRole('vc_secretariat', 'Vice-Chancellor Secretariat', 'vc.secretariat@yspuniversity.ac.in');
-            } else if (!isExplicitLogin && savedAccount === 'estate_admin') {
-                if (loginScreen) loginScreen.style.display = 'none';
-                if (appContainer) appContainer.style.display = 'block';
-                setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in');
-            } else {
-                // Present the separate institutional login portals
+            // When entering, if not authenticated in this session OR if URL requests #login, ALWAYS show the login page
+            const mustShowLogin = !authenticatedRole || window.location.hash === '#login';
+
+            if (mustShowLogin) {
                 if (loginScreen) loginScreen.style.display = 'block';
                 if (appContainer) appContainer.style.display = 'none';
-                setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({ top: 0, behavior: 'instant' });
+            } else {
+                if (loginScreen) loginScreen.style.display = 'none';
+                if (appContainer) appContainer.style.display = 'block';
+                if (authenticatedRole === 'vc_secretariat') {
+                    setRole('vc_secretariat', 'Vice-Chancellor Secretariat', 'vc.secretariat@yspuniversity.ac.in');
+                } else {
+                    setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in');
+                }
             }
 
             renderEstateTariffEditor();
@@ -2377,12 +2372,12 @@
             renderNotificationsTable();
             updateNotificationBadge();
 
-            // Hash navigation
+            // Hash navigation: only activate view if authenticated; otherwise force login
             if (window.location.hash) {
                 const tab = window.location.hash.replace('#', '');
                 if (tab === 'login') {
                     logoutAccount();
-                } else {
+                } else if (!mustShowLogin) {
                     showTab(tab);
                 }
             }
@@ -2391,7 +2386,13 @@
                 if (window.location.hash === '#login') {
                     logoutAccount();
                 } else if (window.location.hash) {
-                    showTab(window.location.hash.replace('#', ''));
+                    let curRole = null;
+                    try { curRole = sessionStorage.getItem('uhf_authenticated_role'); } catch(e){}
+                    if (curRole) {
+                        showTab(window.location.hash.replace('#', ''));
+                    } else {
+                        logoutAccount();
+                    }
                 }
             });
         });
@@ -2399,6 +2400,7 @@
         function handleEstateLogin(event) {
             if (event) event.preventDefault();
             try {
+                sessionStorage.setItem('uhf_authenticated_role', 'estate_admin');
                 localStorage.setItem('uhf_active_account', 'estate_admin');
             } catch (e) { }
 
@@ -2408,6 +2410,8 @@
             if (appContainer) appContainer.style.display = 'block';
 
             setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in');
+            showTab('dashboard');
+            window.location.hash = '#dashboard';
             window.scrollTo({ top: 0, behavior: 'smooth' });
             showLoginAlertBanner('estate_admin', 'Estate Officer (Admin)');
         }
@@ -2415,6 +2419,7 @@
         function handleVCLogin(event) {
             if (event) event.preventDefault();
             try {
+                sessionStorage.setItem('uhf_authenticated_role', 'vc_secretariat');
                 localStorage.setItem('uhf_active_account', 'vc_secretariat');
             } catch (e) { }
 
@@ -2424,12 +2429,15 @@
             if (appContainer) appContainer.style.display = 'block';
 
             setRole('vc_secretariat', 'Vice-Chancellor Secretariat', 'vc.secretariat@yspuniversity.ac.in');
+            showTab('dashboard');
+            window.location.hash = '#dashboard';
             window.scrollTo({ top: 0, behavior: 'smooth' });
             showLoginAlertBanner('vc_secretariat', 'Vice-Chancellor Secretariat');
         }
 
         function logoutAccount() {
             try {
+                sessionStorage.removeItem('uhf_authenticated_role');
                 localStorage.removeItem('uhf_active_account');
             } catch (e) { }
 
@@ -2438,8 +2446,9 @@
             if (appContainer) appContainer.style.display = 'none';
             if (loginScreen) loginScreen.style.display = 'block';
 
+            window.location.hash = '#login';
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            showToast('Signed out of institutional account');
+            showToast('Signed out of institutional account. Please sign in to continue.');
         }
 
         function showLoginAlertBanner(roleKey, roleName) {
