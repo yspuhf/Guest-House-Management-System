@@ -376,20 +376,16 @@
                         </div>
                     </div>
 
-                    <!-- 5. Check-Out Date (True HTML Select Dropdown) -->
+                    <!-- 5. Check-Out Date -->
                     <div class="col-xl-2 col-md-6">
                         <label class="form-label fw-semibold small text-muted d-flex justify-content-between align-items-center">
                             <span><i class="bi bi-calendar-check me-1 text-danger"></i> Check-Out Date *</span>
-                            <span class="badge bg-danger text-white py-0 px-1" style="font-size: 0.65rem;">Select</span>
+                            <span class="badge bg-danger text-white py-0 px-1" id="searchDurationBadge" style="font-size: 0.65rem;">3 Nights</span>
                         </label>
                         <div class="input-group">
-                            <select id="searchCheckOutSelect" class="form-select form-select-lg fs-6 fw-bold border-danger text-danger" onchange="onSearchCheckOutSelectChange(this.value)">
-                                <!-- Dynamically populated based on Check-In Date -->
-                            </select>
-                            <button class="btn btn-outline-danger" type="button" onclick="openDatePicker('searchCheckOutCustom')" title="Pick Custom Date from Calendar"><i class="bi bi-calendar3"></i></button>
+                            <input type="date" id="searchCheckOut" class="form-control form-control-lg fs-6 fw-bold border-danger text-danger" required onchange="onSearchCheckOutChange()" oninput="updateEstimatedSearchPrice()" onclick="try{this.showPicker()}catch(e){}">
+                            <button class="btn btn-outline-danger" type="button" onclick="openDatePicker('searchCheckOut')" title="Open Calendar"><i class="bi bi-calendar-check"></i></button>
                         </div>
-                        <input type="hidden" id="searchCheckOut">
-                        <input type="date" id="searchCheckOutCustom" class="form-control form-control-sm mt-1" style="display:none;" onchange="onCustomDatePicked('search', this.value)">
                     </div>
                 </div>
 
@@ -818,16 +814,12 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold small d-flex justify-content-between align-items-center">
                                     <span>Check-Out Date *</span>
-                                    <span class="badge bg-primary text-white py-0 px-1" style="font-size: 0.65rem;">Select</span>
+                                    <span class="badge bg-primary text-white py-0 px-1" id="modalDurationBadge" style="font-size: 0.65rem;">3 Nights</span>
                                 </label>
                                 <div class="input-group">
-                                    <select id="modalCheckOutSelect" class="form-select fw-bold border-primary text-primary" onchange="onModalCheckOutSelectChange(this.value)">
-                                        <!-- Dynamically populated -->
-                                    </select>
-                                    <button class="btn btn-outline-primary" type="button" onclick="openDatePicker('modalCheckOutCustom')" title="Pick from Calendar"><i class="bi bi-calendar3"></i></button>
+                                    <input type="date" id="modalCheckOut" class="form-control fw-bold border-primary text-primary" required onchange="onModalCheckOutChange()" oninput="calcModalTariff()" onclick="try{this.showPicker()}catch(e){}">
+                                    <button class="btn btn-outline-primary" type="button" onclick="openDatePicker('modalCheckOut')" title="Open Calendar"><i class="bi bi-calendar-check"></i></button>
                                 </div>
-                                <input type="hidden" id="modalCheckOut">
-                                <input type="date" id="modalCheckOutCustom" class="form-control form-control-sm mt-1" style="display:none;" onchange="onCustomDatePicked('modal', this.value)">
                             </div>
 
                             <div class="col-md-6">
@@ -1043,51 +1035,42 @@
             const defaultCheckOut = getDateAfterDays(today, 3);
             const minCheckOut = getDateAfterDays(today, 1);
 
-            // 1. Search Bar (Floating)
+            // 1. Search Bar
             const searchIn = document.getElementById('searchCheckIn');
-            const searchOutHidden = document.getElementById('searchCheckOut');
-            const searchOutCustom = document.getElementById('searchCheckOutCustom');
+            const searchOut = document.getElementById('searchCheckOut');
             if (searchIn) {
                 searchIn.min = today;
                 if (!searchIn.value || searchIn.value < today) {
                     searchIn.value = today;
                 }
             }
-            if (searchOutHidden) {
-                if (!searchOutHidden.value || searchOutHidden.value <= today) {
-                    searchOutHidden.value = defaultCheckOut;
+            if (searchOut) {
+                const minOut = searchIn && searchIn.value ? getDateAfterDays(searchIn.value, 1) : minCheckOut;
+                searchOut.min = minOut;
+                if (!searchOut.value || searchOut.value <= today || searchOut.value < minOut) {
+                    searchOut.value = defaultCheckOut;
                 }
             }
-            if (searchOutCustom) {
-                searchOutCustom.min = minCheckOut;
-                searchOutCustom.value = searchOutHidden ? searchOutHidden.value : defaultCheckOut;
-            }
-            if (searchIn && searchOutHidden) {
-                populateCheckOutDropdown('search', searchIn.value, searchOutHidden.value);
-            }
+            updateDurationBadge('search');
+            updateEstimatedSearchPrice();
 
             // 2. Modal
             const modalIn = document.getElementById('modalCheckIn');
-            const modalOutHidden = document.getElementById('modalCheckOut');
-            const modalOutCustom = document.getElementById('modalCheckOutCustom');
+            const modalOut = document.getElementById('modalCheckOut');
             if (modalIn) {
                 modalIn.min = today;
                 if (!modalIn.value || modalIn.value < today) {
                     modalIn.value = today;
                 }
             }
-            if (modalOutHidden) {
-                if (!modalOutHidden.value || modalOutHidden.value <= today) {
-                    modalOutHidden.value = defaultCheckOut;
+            if (modalOut) {
+                const minOut = modalIn && modalIn.value ? getDateAfterDays(modalIn.value, 1) : minCheckOut;
+                modalOut.min = minOut;
+                if (!modalOut.value || modalOut.value <= today || modalOut.value < minOut) {
+                    modalOut.value = defaultCheckOut;
                 }
             }
-            if (modalOutCustom) {
-                modalOutCustom.min = minCheckOut;
-                modalOutCustom.value = modalOutHidden ? modalOutHidden.value : defaultCheckOut;
-            }
-            if (modalIn && modalOutHidden) {
-                populateCheckOutDropdown('modal', modalIn.value, modalOutHidden.value);
-            }
+            updateDurationBadge('modal');
         }
 
         function openDatePicker(inputId) {
@@ -1100,189 +1083,118 @@
             }
         }
 
-        // Populate Check-Out Dropdown dynamically from Check-In date (Only future dates permitted)
-        function populateCheckOutDropdown(scope, checkInDateStr, selectedCheckOutStr) {
-            const today = getTodayString();
-            let inDate = parseLocalDate(checkInDateStr);
-            let inDateStr = formatLocalDate(inDate);
-
-            // Strict clamp: Check-In cannot be in the past
-            if (inDateStr < today) {
-                inDateStr = today;
-                inDate = parseLocalDate(today);
-            }
-
-            const minOutDateStr = getDateAfterDays(inDateStr, 1);
-
-            let selectId = 'searchCheckOutSelect';
-            let hiddenId = 'searchCheckOut';
-            let customId = 'searchCheckOutCustom';
-
+        function updateDurationBadge(scope) {
+            let inId = 'searchCheckIn', outId = 'searchCheckOut', badgeId = 'searchDurationBadge';
             if (scope === 'modal') {
-                selectId = 'modalCheckOutSelect';
-                hiddenId = 'modalCheckOut';
-                customId = 'modalCheckOutCustom';
+                inId = 'modalCheckIn'; outId = 'modalCheckOut'; badgeId = 'modalDurationBadge';
+            }
+            const inEl = document.getElementById(inId);
+            const outEl = document.getElementById(outId);
+            const badgeEl = document.getElementById(badgeId);
+            if (!inEl || !outEl || !badgeEl) return;
+
+            if (!inEl.value || !outEl.value) {
+                badgeEl.innerText = '--';
+                return;
             }
 
-            const selectEl = document.getElementById(selectId);
-            const hiddenEl = document.getElementById(hiddenId);
-            const customEl = document.getElementById(customId);
-
-            if (customEl) {
-                customEl.min = minOutDateStr;
-            }
-
-            if (!selectEl) return;
-            selectEl.innerHTML = '';
-
-            const durations = [
-                { nights: 1, label: '1 Night' },
-                { nights: 2, label: '2 Nights' },
-                { nights: 3, label: '3 Nights' },
-                { nights: 4, label: '4 Nights' },
-                { nights: 5, label: '5 Nights' },
-                { nights: 6, label: '6 Nights' },
-                { nights: 7, label: '7 Nights (1 Week)' },
-                { nights: 8, label: '8 Nights' },
-                { nights: 9, label: '9 Nights' },
-                { nights: 10, label: '10 Nights' },
-                { nights: 12, label: '12 Nights' },
-                { nights: 14, label: '14 Nights (2 Weeks)' },
-                { nights: 21, label: '21 Nights (3 Weeks)' },
-                { nights: 30, label: '30 Nights (1 Month)' }
-            ];
-
-            let found = false;
-            durations.forEach(d => {
-                const outDateStr = getDateAfterDays(inDateStr, d.nights);
-                const parts = outDateStr.split('-');
-                const displayDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
-
-                const opt = document.createElement('option');
-                opt.value = outDateStr;
-                opt.innerText = `${displayDate} (${d.label})`;
-
-                if (selectedCheckOutStr && outDateStr === selectedCheckOutStr) {
-                    opt.selected = true;
-                    found = true;
-                } else if (!selectedCheckOutStr && d.nights === 3) {
-                    opt.selected = true;
-                    found = true;
-                }
-                selectEl.appendChild(opt);
-            });
-
-            const customOpt = document.createElement('option');
-            customOpt.value = 'custom';
-            customOpt.innerText = '\u{1F4C5} Pick Custom Future Date...';
-            if (!found && selectedCheckOutStr && selectedCheckOutStr >= minOutDateStr) {
-                customOpt.selected = true;
-                found = true;
-            }
-            selectEl.appendChild(customOpt);
-
-            const effectiveVal = (selectEl.value === 'custom' || !found) ? (selectedCheckOutStr && selectedCheckOutStr >= minOutDateStr ? selectedCheckOutStr : getDateAfterDays(inDateStr, 3)) : selectEl.value;
-            if (hiddenEl) {
-                hiddenEl.value = effectiveVal;
-            }
-        }
-
-        function onSearchCheckOutSelectChange(val) {
-            if (val === 'custom') {
-                const customEl = document.getElementById('searchCheckOutCustom');
-                customEl.style.display = 'block';
-                openDatePicker('searchCheckOutCustom');
-            } else {
-                document.getElementById('searchCheckOut').value = val;
-                const customEl = document.getElementById('searchCheckOutCustom');
-                if (customEl) customEl.style.display = 'none';
-                updateEstimatedSearchPrice();
-            }
-        }
-
-        function onModalCheckOutSelectChange(val) {
-            if (val === 'custom') {
-                const customEl = document.getElementById('modalCheckOutCustom');
-                customEl.style.display = 'block';
-                openDatePicker('modalCheckOutCustom');
-            } else {
-                document.getElementById('modalCheckOut').value = val;
-                const customEl = document.getElementById('modalCheckOutCustom');
-                if (customEl) customEl.style.display = 'none';
-                calcModalTariff();
-            }
-        }
-
-        function onCustomDatePicked(scope, val) {
-            if (!val) return;
-            const today = getTodayString();
-            let inDateStr = today;
-            if (scope === 'search') inDateStr = document.getElementById('searchCheckIn').value;
-            else if (scope === 'modal') inDateStr = document.getElementById('modalCheckIn').value;
-
-            const minOut = getDateAfterDays(inDateStr, 1);
-            if (val < minOut) {
-                alert(`Invalid Date: Check-Out date cannot be in the past or on/before Check-In date. Minimum check-out date is ${minOut}.`);
-                val = minOut;
-            }
-
-            if (scope === 'search') {
-                document.getElementById('searchCheckOut').value = val;
-                populateCheckOutDropdown('search', inDateStr, val);
-                updateEstimatedSearchPrice();
-            } else if (scope === 'modal') {
-                document.getElementById('modalCheckOut').value = val;
-                populateCheckOutDropdown('modal', inDateStr, val);
-                calcModalTariff();
-            }
+            const d1 = new Date(inEl.value);
+            const d2 = new Date(outEl.value);
+            let diff = d2 - d1;
+            let nights = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            if (isNaN(nights) || nights < 1) nights = 1;
+            badgeEl.innerText = `${nights} Night${nights > 1 ? 's' : ''}`;
         }
 
         function onSearchCheckInChange() {
             const inEl = document.getElementById('searchCheckIn');
-            if (!inEl) return;
+            const outEl = document.getElementById('searchCheckOut');
+            if (!inEl || !outEl) return;
             const today = getTodayString();
             if (inEl.value < today) {
                 alert(`Invalid Date: Booking for past/back dates is not permitted.\n\nCheck-In has been adjusted to today (${today}).`);
                 inEl.value = today;
             }
-            const currentOut = document.getElementById('searchCheckOut') ? document.getElementById('searchCheckOut').value : null;
-            populateCheckOutDropdown('search', inEl.value, currentOut);
+            const minOut = getDateAfterDays(inEl.value, 1);
+            outEl.min = minOut;
+            if (outEl.value < minOut) {
+                outEl.value = minOut;
+            }
+            updateDurationBadge('search');
+            updateEstimatedSearchPrice();
+        }
+
+        function onSearchCheckOutChange() {
+            const inEl = document.getElementById('searchCheckIn');
+            const outEl = document.getElementById('searchCheckOut');
+            if (!inEl || !outEl) return;
+            const minOut = getDateAfterDays(inEl.value, 1);
+            if (outEl.value < minOut) {
+                alert(`Invalid Date: Check-Out date cannot be in the past or on/before Check-In date (${inEl.value}).\n\nResetting to minimum valid date: ${minOut}.`);
+                outEl.value = minOut;
+            }
+            updateDurationBadge('search');
             updateEstimatedSearchPrice();
         }
 
         function onModalCheckInChange() {
             const inEl = document.getElementById('modalCheckIn');
-            if (!inEl) return;
+            const outEl = document.getElementById('modalCheckOut');
+            if (!inEl || !outEl) return;
             const today = getTodayString();
             if (inEl.value < today) {
                 alert(`Invalid Date: Booking for past/back dates is not permitted.\n\nCheck-In has been adjusted to today (${today}).`);
                 inEl.value = today;
             }
-            const currentOut = document.getElementById('modalCheckOut') ? document.getElementById('modalCheckOut').value : null;
-            populateCheckOutDropdown('modal', inEl.value, currentOut);
+            const minOut = getDateAfterDays(inEl.value, 1);
+            outEl.min = minOut;
+            if (outEl.value < minOut) {
+                outEl.value = minOut;
+            }
+            updateDurationBadge('modal');
+            calcModalTariff();
+        }
+
+        function onModalCheckOutChange() {
+            const inEl = document.getElementById('modalCheckIn');
+            const outEl = document.getElementById('modalCheckOut');
+            if (!inEl || !outEl) return;
+            const minOut = getDateAfterDays(inEl.value, 1);
+            if (outEl.value < minOut) {
+                alert(`Invalid Date: Check-Out date cannot be in the past or on/before Check-In date (${inEl.value}).\n\nResetting to minimum valid date: ${minOut}.`);
+                outEl.value = minOut;
+            }
+            updateDurationBadge('modal');
             calcModalTariff();
         }
 
         function setStayDays(scope, days) {
-            let inId = 'searchCheckIn';
-            let callback = updateEstimatedSearchPrice;
-
+            let inId = 'searchCheckIn', outId = 'searchCheckOut', callback = updateEstimatedSearchPrice;
             if (scope === 'modal') {
-                inId = 'modalCheckIn';
-                callback = calcModalTariff;
+                inId = 'modalCheckIn'; outId = 'modalCheckOut'; callback = calcModalTariff;
             }
 
             const inEl = document.getElementById(inId);
-            if (!inEl) return;
+            const outEl = document.getElementById(outId);
+            if (!inEl || !outEl) return;
 
             const today = getTodayString();
             if (!inEl.value || inEl.value < today) {
                 inEl.value = today;
             }
 
-            const outDateStr = getDateAfterDays(inEl.value, days);
-            populateCheckOutDropdown(scope, inEl.value, outDateStr);
+            outEl.value = getDateAfterDays(inEl.value, days);
+            updateDurationBadge(scope);
             if (callback) callback();
+        }
+
+        // Backward compatibility helpers
+        function populateCheckOutDropdown() {}
+        function onSearchCheckOutSelectChange(val) { onSearchCheckOutChange(); }
+        function onModalCheckOutSelectChange(val) { onModalCheckOutChange(); }
+        function onCustomDatePicked(scope, val) {
+            if (scope === 'search') onSearchCheckOutChange();
+            else if (scope === 'modal') onModalCheckOutChange();
         }
 
         function openBookingModal(wing, setType, catId) {
