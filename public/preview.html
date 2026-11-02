@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,21 +21,25 @@
             --body-bg: #f8fafc;
             --forest-green: #1b4332;
         }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: var(--body-bg);
             color: #334155;
             min-height: 100vh;
         }
+
         .navbar-university {
             background: linear-gradient(135deg, #0d2b45 0%, #163e63 100%);
             border-bottom: 3px solid var(--accent-gold);
         }
+
         .sidebar {
             background-color: var(--sidebar-bg);
             min-height: calc(100vh - 66px);
-            box-shadow: 2px 0 6px rgba(0,0,0,0.05);
+            box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
         }
+
         .sidebar .nav-header {
             font-size: 0.72rem;
             text-transform: uppercase;
@@ -43,6 +48,7 @@
             padding: 1rem 1rem 0.35rem;
             font-weight: 700;
         }
+
         .sidebar .nav-link {
             color: #cbd5e1;
             padding: 0.55rem 1rem;
@@ -52,24 +58,29 @@
             transition: all 0.15s ease-in-out;
             cursor: pointer;
         }
+
         .sidebar .nav-link:hover {
             color: #fff;
             background-color: var(--sidebar-hover);
         }
+
         .sidebar .nav-link.active {
             color: #fff;
             background-color: #2563eb;
             font-weight: 600;
         }
+
         .card-stat {
             border-radius: 10px;
             border: 1px solid var(--border-color);
             transition: transform 0.2s, box-shadow 0.2s;
         }
+
         .card-stat:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
+
         .cal-cell {
             min-width: 65px;
             height: 48px;
@@ -78,25 +89,30 @@
             text-align: center;
             font-size: 0.75rem;
         }
+
         .cal-day-cell {
             width: 13.5%;
             text-align: center;
             font-weight: 600;
             background-color: #f1f5f9;
         }
+
         .status-badge {
             font-size: 0.72rem;
             padding: 4px 8px;
             border-radius: 20px;
             font-weight: 600;
         }
+
         .badge-status {
             font-size: 0.72rem;
             letter-spacing: 0.03em;
         }
+
         .table-responsive {
             border-radius: 8px;
         }
+
         .stamp-box {
             border: 2px dashed #dc3545;
             color: #dc3545;
@@ -109,14 +125,17 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- Top University Banner Header -->
     <header class="navbar navbar-expand-lg navbar-dark navbar-university sticky-top px-3 py-2">
         <div class="d-flex align-items-center text-white">
-            <img src="university_logo.jpg" alt="University Emblem" class="me-3 rounded-circle bg-white p-1" style="height: 48px; width: 48px; object-fit: contain;">
+            <img src="university_logo.jpg" alt="University Emblem" class="me-3 rounded-circle bg-white p-1"
+                style="height: 48px; width: 48px; object-fit: contain;">
             <div>
-                <h5 class="mb-0 fw-bold tracking-tight text-white font-serif">Dr. Yashwant Singh Parmar University of Horticulture & Forestry</h5>
+                <h5 class="mb-0 fw-bold tracking-tight text-white font-serif">Dr. Yashwant Singh Parmar University of
+                    Horticulture & Forestry</h5>
                 <small class="text-warning fw-semibold" style="font-size: 0.8rem;">
                     Nauni, Solan (H.P.) &bull; Central Guest House Management Portal
                 </small>
@@ -126,59 +145,88 @@
         <div class="ms-auto d-flex align-items-center gap-2">
             <!-- Dedicated Dual-Account Quick Switcher -->
             <div class="btn-group btn-group-sm shadow-sm me-1" role="group" aria-label="Primary Institutional Accounts">
-                <button type="button" class="btn btn-warning text-dark fw-bold px-3 active" id="btnSwitchEstate" onclick="performAccountLogin('estate_admin')">
+                <button type="button" class="btn btn-warning text-dark fw-bold px-3 active" id="btnSwitchEstate"
+                    onclick="performAccountLogin('estate_admin')">
                     <i class="bi bi-building me-1"></i> Estate Office
                 </button>
-                <button type="button" class="btn btn-outline-light text-white fw-bold px-3" id="btnSwitchVC" onclick="performAccountLogin('vc_secretariat')">
+                <button type="button" class="btn btn-outline-light text-white fw-bold px-3" id="btnSwitchVC"
+                    onclick="performAccountLogin('vc_secretariat')">
                     <i class="bi bi-crown me-1 text-warning"></i> VC Secretariat
                 </button>
             </div>
 
             <!-- Account Access Login Modal Trigger -->
-            <button type="button" class="btn btn-sm btn-outline-warning text-white fw-semibold px-2" onclick="openLoginModal()" title="Open Institutional Account Sign-in Portal">
+            <button type="button" class="btn btn-sm btn-outline-warning text-white fw-semibold px-2"
+                onclick="openLoginModal()" title="Open Institutional Account Sign-in Portal">
                 <i class="bi bi-key-fill text-warning me-1"></i> Account Login
             </button>
 
             <!-- Extended Role Switcher Dropdown -->
             <div class="dropdown">
-                <button class="btn btn-sm btn-outline-warning dropdown-toggle fw-semibold" type="button" data-bs-toggle="dropdown" id="roleDropdownBtn">
-                    <i class="bi bi-person-badge me-1"></i> <span id="currentRoleLabel" class="badge bg-warning text-dark ms-1">Estate Officer (Admin)</span>
+                <button class="btn btn-sm btn-outline-warning dropdown-toggle fw-semibold" type="button"
+                    data-bs-toggle="dropdown" id="roleDropdownBtn">
+                    <i class="bi bi-person-badge me-1"></i> <span id="currentRoleLabel"
+                        class="badge bg-warning text-dark ms-1">Estate Officer (Admin)</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow" style="min-width: 330px;">
-                    <li><h6 class="dropdown-header text-uppercase fw-bold text-navy">Primary Institutional Authorities</h6></li>
                     <li>
-                        <a class="dropdown-item py-2" href="javascript:void(0)" onclick="setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in')">
+                        <h6 class="dropdown-header text-uppercase fw-bold text-navy">Primary Institutional Authorities
+                        </h6>
+                    </li>
+                    <li>
+                        <a class="dropdown-item py-2" href="javascript:void(0)"
+                            onclick="setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in')">
                             <div class="d-flex align-items-center justify-content-between">
-                                <span class="fw-bold text-dark"><i class="bi bi-building text-warning me-2"></i>Estate Office</span>
+                                <span class="fw-bold text-dark"><i class="bi bi-building text-warning me-2"></i>Estate
+                                    Office</span>
                                 <span class="badge bg-warning text-dark">All Sets except VVIP</span>
                             </div>
-                            <small class="text-muted d-block ps-4 mt-1">VIP, Ordinary, Dorms, Tariffs (View-only for VVIP)</small>
+                            <small class="text-muted d-block ps-4 mt-1">VIP, Ordinary, Dorms, Tariffs (View-only for
+                                VVIP)</small>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item py-2" href="javascript:void(0)" onclick="setRole('vc_secretariat', 'Vice-Chancellor Secretariat', 'vc.secretariat@yspuniversity.ac.in')">
+                        <a class="dropdown-item py-2" href="javascript:void(0)"
+                            onclick="setRole('vc_secretariat', 'Vice-Chancellor Secretariat', 'vc.secretariat@yspuniversity.ac.in')">
                             <div class="d-flex align-items-center justify-content-between">
-                                <span class="fw-bold text-danger"><i class="bi bi-crown text-danger me-2"></i>VC Secretariat</span>
+                                <span class="fw-bold text-danger"><i class="bi bi-crown text-danger me-2"></i>VC
+                                    Secretariat</span>
                                 <span class="badge bg-danger">VVIP Requests Only</span>
                             </div>
-                            <small class="text-muted d-block ps-4 mt-1">Apex exclusive authority for VVIP Presidential Suites</small>
+                            <small class="text-muted d-block ps-4 mt-1">Apex exclusive authority for VVIP Presidential
+                                Suites</small>
                         </a>
                     </li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><h6 class="dropdown-header text-muted">Other Operational Roles</h6></li>
-                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('admin', 'System Administrator', 'admin@yspuniversity.ac.in')"><i class="bi bi-shield-lock text-danger me-2"></i> System Administrator</a></li>
-                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('dee_incharge', 'DEE Incharge (Kisan Bhawan)', 'dee.kisan@yspuniversity.ac.in')"><i class="bi bi-tree text-success me-2"></i> DEE Incharge (Kisan Bhawan)</a></li>
-                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('caretaker', 'Care-Taker (Front Desk)', 'caretaker.main@yspuniversity.ac.in')"><i class="bi bi-door-open text-primary me-2"></i> Care-Taker (Front Desk)</a></li>
-                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="setRole('finance', 'Comptroller / Finance', 'finance.officer@yspuniversity.ac.in')"><i class="bi bi-currency-rupee text-success me-2"></i> Comptroller (Finance & GST)</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <h6 class="dropdown-header text-muted">Other Operational Roles</h6>
+                    </li>
+                    <li><a class="dropdown-item" href="javascript:void(0)"
+                            onclick="setRole('admin', 'System Administrator', 'admin@yspuniversity.ac.in')"><i
+                                class="bi bi-shield-lock text-danger me-2"></i> System Administrator</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)"
+                            onclick="setRole('dee_incharge', 'DEE Incharge (Kisan Bhawan)', 'dee.kisan@yspuniversity.ac.in')"><i
+                                class="bi bi-tree text-success me-2"></i> DEE Incharge (Kisan Bhawan)</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)"
+                            onclick="setRole('caretaker', 'Care-Taker (Front Desk)', 'caretaker.main@yspuniversity.ac.in')"><i
+                                class="bi bi-door-open text-primary me-2"></i> Care-Taker (Front Desk)</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)"
+                            onclick="setRole('finance', 'Comptroller / Finance', 'finance.officer@yspuniversity.ac.in')"><i
+                                class="bi bi-currency-rupee text-success me-2"></i> Comptroller (Finance & GST)</a></li>
                 </ul>
             </div>
 
             <!-- User Pill -->
-            <div class="d-none d-lg-flex align-items-center text-white bg-dark bg-opacity-25 px-3 py-1 rounded border border-light border-opacity-25">
+            <div
+                class="d-none d-lg-flex align-items-center text-white bg-dark bg-opacity-25 px-3 py-1 rounded border border-light border-opacity-25">
                 <i class="bi bi-person-circle fs-5 text-warning me-2" id="currentUserIcon"></i>
                 <div class="text-start">
-                    <div class="fw-semibold text-white small lh-1" id="currentUserName">Dr. Dev Raj (Estate Officer)</div>
-                    <small class="text-white-50" style="font-size: 0.68rem;" id="currentUserEmail">estate.officer@yspuniversity.ac.in</small>
+                    <div class="fw-semibold text-white small lh-1" id="currentUserName">Dr. Dev Raj (Estate Officer)
+                    </div>
+                    <small class="text-white-50" style="font-size: 0.68rem;"
+                        id="currentUserEmail">estate.officer@yspuniversity.ac.in</small>
                 </div>
             </div>
 
@@ -254,7 +302,8 @@
                         </li>
                     </ul>
 
-                    <div class="mt-4 p-2 bg-dark bg-opacity-50 rounded text-center border border-secondary border-opacity-25">
+                    <div
+                        class="mt-4 p-2 bg-dark bg-opacity-50 rounded text-center border border-secondary border-opacity-25">
                         <small class="text-white-50 d-block mb-1">Authoritative Notice:</small>
                         <span class="badge bg-primary text-wrap text-start d-block" style="font-size: 0.65rem;">
                             UHF/EO-55/2025/- 1615-40<br>Dated: 25/7/2026
@@ -269,13 +318,16 @@
 
                 <!-- 1. DASHBOARD VIEW -->
                 <div id="view-dashboard" class="view-panel">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
                         <div>
                             <h3 class="h4 fw-bold text-navy mb-0">Central Guest House Operations Dashboard</h3>
-                            <small class="text-muted">Accommodation management center &bull; Dr. YSP UHF Nauni (Solan)</small>
+                            <small class="text-muted">Accommodation management center &bull; Dr. YSP UHF Nauni
+                                (Solan)</small>
                         </div>
                         <div class="btn-toolbar mb-2 mb-md-0 gap-2">
-                            <button class="btn btn-sm btn-outline-warning text-dark fw-bold" onclick="showTab('tariffs')">
+                            <button class="btn btn-sm btn-outline-warning text-dark fw-bold"
+                                onclick="showTab('tariffs')">
                                 <i class="bi bi-sliders2 me-1"></i> Estate Tariff Console
                             </button>
                             <button class="btn btn-sm btn-outline-primary" onclick="showTab('calendar')">
@@ -288,11 +340,17 @@
                     </div>
 
                     <!-- Account Jurisdiction & Policy Banner -->
-                    <div id="accountJurisdictionBanner" class="alert d-flex align-items-center mb-4 py-2 px-3 shadow-sm border border-warning alert-warning">
+                    <div id="accountJurisdictionBanner"
+                        class="alert d-flex align-items-center mb-4 py-2 px-3 shadow-sm border border-warning alert-warning">
                         <i class="bi bi-building fs-3 text-warning me-3"></i>
                         <div class="small">
-                            <strong>Estate Office Active Account:</strong> You handle all accommodation sets related to the Estate Office (VIP Suites, Ordinary Double Rooms, Dormitories, Dining Hall, and Notification 1615-40 Tariffs).
-                            <span class="badge bg-dark ms-1"><i class="bi bi-shield-lock me-1"></i>VVIP Policy:</span> You have <strong>full view-only visibility</strong> of VVIP Presidential Suite booking requests for hospitality readiness, while sanction authority is exclusively handled by the <strong>Vice-Chancellor Secretariat</strong>.
+                            <strong>Estate Office Active Account:</strong> You handle all accommodation sets related to
+                            the Estate Office (VIP Suites, Ordinary Double Rooms, Dormitories, Dining Hall, and
+                            Notification 1615-40 Tariffs).
+                            <span class="badge bg-dark ms-1"><i class="bi bi-shield-lock me-1"></i>VVIP Policy:</span>
+                            You have <strong>full view-only visibility</strong> of VVIP Presidential Suite booking
+                            requests for hospitality readiness, while sanction authority is exclusively handled by the
+                            <strong>Vice-Chancellor Secretariat</strong>.
                         </div>
                     </div>
 
@@ -346,7 +404,8 @@
                                     <div>
                                         <small class="text-muted text-uppercase fw-semibold">Revenue (MTD)</small>
                                         <h3 class="fw-bold text-info mb-0 mt-1">&#8377;1,42,500</h3>
-                                        <small class="text-success"><i class="bi bi-check-all"></i> 100% reconciled</small>
+                                        <small class="text-success"><i class="bi bi-check-all"></i> 100%
+                                            reconciled</small>
                                     </div>
                                     <div class="bg-info bg-opacity-10 p-3 rounded-circle text-info fs-3">
                                         <i class="bi bi-currency-rupee"></i>
@@ -359,7 +418,8 @@
                     <!-- Active Reservations Table -->
                     <div class="card border-0 shadow-sm mb-4">
                         <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                            <h5 class="card-title fw-bold mb-0"><i class="bi bi-list-task me-2 text-primary"></i>Active Booking Dossiers</h5>
+                            <h5 class="card-title fw-bold mb-0"><i class="bi bi-list-task me-2 text-primary"></i>Active
+                                Booking Dossiers</h5>
                             <span class="badge bg-primary">Live Database Records</span>
                         </div>
                         <div class="card-body p-0">
@@ -387,24 +447,30 @@
 
                 <!-- 2. ESTATE OFFICER TARIFF & CATEGORY CONFIGURATION CONSOLE -->
                 <div id="view-tariffs" class="view-panel" style="display:none;">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
                         <div>
                             <div class="d-flex align-items-center gap-2">
-                                <h3 class="h4 fw-bold text-navy mb-0">Estate Officer Tariff & Category Configuration Console</h3>
+                                <h3 class="h4 fw-bold text-navy mb-0">Estate Officer Tariff & Category Configuration
+                                    Console</h3>
                                 <span class="badge bg-success" id="estateConsolePermBadge">Admin Write Access</span>
                             </div>
                             <small class="text-muted">
-                                Authoritative master under Notification No. <strong id="consoleDocNum">UHF/EO-55/2025/- 1615-40</strong> &bull; Dated: <strong id="consoleDocDate">25/7/2026</strong>
+                                Authoritative master under Notification No. <strong id="consoleDocNum">UHF/EO-55/2025/-
+                                    1615-40</strong> &bull; Dated: <strong id="consoleDocDate">25/7/2026</strong>
                             </small>
                         </div>
                         <div class="btn-toolbar mb-2 mb-md-0 gap-2">
-                            <button class="btn btn-sm btn-outline-danger" onclick="resetEstateTariffsToSignedDefaults()" id="btnResetTariffs">
+                            <button class="btn btn-sm btn-outline-danger" onclick="resetEstateTariffsToSignedDefaults()"
+                                id="btnResetTariffs">
                                 <i class="bi bi-arrow-counterclockwise me-1"></i> Reset to Signed Defaults
                             </button>
-                            <button class="btn btn-sm btn-outline-primary" onclick="openAddCategoryModal()" id="btnAddCategory">
+                            <button class="btn btn-sm btn-outline-primary" onclick="openAddCategoryModal()"
+                                id="btnAddCategory">
                                 <i class="bi bi-plus-circle me-1"></i> Add Custom Category
                             </button>
-                            <button class="btn btn-sm btn-success fw-bold px-3" onclick="saveEstateTariffsFromForm()" id="btnSaveTariffs">
+                            <button class="btn btn-sm btn-success fw-bold px-3" onclick="saveEstateTariffsFromForm()"
+                                id="btnSaveTariffs">
                                 <i class="bi bi-cloud-arrow-up-fill me-1"></i> Save & Publish All Changes
                             </button>
                         </div>
@@ -414,29 +480,39 @@
                     <div id="tariffAccessAlert" class="alert alert-success d-flex align-items-center py-2 px-3 mb-4">
                         <i class="bi bi-shield-check fs-4 me-3 text-success"></i>
                         <div>
-                            <strong>Estate Admin Authorized:</strong> Logged in as <strong id="alertUserName">Dr. Dev Raj (Estate Officer)</strong>. You have full administrative authorization to edit guest categories, VVIP/VIP/Ordinary stay rates, dining hall charges, and notification metadata. All modifications will immediately reflect in the reservation calculator and the public portal.
+                            <strong>Estate Admin Authorized:</strong> Logged in as <strong id="alertUserName">Dr. Dev
+                                Raj (Estate Officer)</strong>. You have full administrative authorization to edit guest
+                            categories, VVIP/VIP/Ordinary stay rates, dining hall charges, and notification metadata.
+                            All modifications will immediately reflect in the reservation calculator and the public
+                            portal.
                         </div>
                     </div>
 
                     <!-- Console Navigation Tabs -->
                     <ul class="nav nav-tabs mb-3" id="tariffConsoleTabs" role="tablist">
                         <li class="nav-item">
-                            <button class="nav-link active fw-semibold" id="tab-stay-rates" data-bs-toggle="tab" data-bs-target="#panel-stay-rates" type="button">
-                                <i class="bi bi-building me-1 text-primary"></i> 1. Stay Charges Matrix (Categories 1 &ndash; 11)
+                            <button class="nav-link active fw-semibold" id="tab-stay-rates" data-bs-toggle="tab"
+                                data-bs-target="#panel-stay-rates" type="button">
+                                <i class="bi bi-building me-1 text-primary"></i> 1. Stay Charges Matrix (Categories 1
+                                &ndash; 11)
                             </button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link fw-semibold" id="tab-dining-rates" data-bs-toggle="tab" data-bs-target="#panel-dining-rates" type="button">
-                                <i class="bi bi-cup-hot me-1 text-success"></i> 2. Dining Hall &amp; Lounge Charges (Page 2)
+                            <button class="nav-link fw-semibold" id="tab-dining-rates" data-bs-toggle="tab"
+                                data-bs-target="#panel-dining-rates" type="button">
+                                <i class="bi bi-cup-hot me-1 text-success"></i> 2. Dining Hall &amp; Lounge Charges
+                                (Page 2)
                             </button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link fw-semibold" id="tab-meta-rates" data-bs-toggle="tab" data-bs-target="#panel-meta-rates" type="button">
+                            <button class="nav-link fw-semibold" id="tab-meta-rates" data-bs-toggle="tab"
+                                data-bs-target="#panel-meta-rates" type="button">
                                 <i class="bi bi-file-earmark-text me-1 text-warning"></i> 3. Notification Particulars
                             </button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link fw-semibold" id="tab-sandbox-rates" data-bs-toggle="tab" data-bs-target="#panel-sandbox-rates" type="button">
+                            <button class="nav-link fw-semibold" id="tab-sandbox-rates" data-bs-toggle="tab"
+                                data-bs-target="#panel-sandbox-rates" type="button">
                                 <i class="bi bi-calculator me-1 text-info"></i> 4. Live Tariff Calculation Sandbox
                             </button>
                         </li>
@@ -446,17 +522,23 @@
                         <!-- TAB 1: Stay Rates Matrix -->
                         <div class="tab-pane fade show active" id="panel-stay-rates">
                             <div class="card border-0 shadow-sm mb-4">
-                                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                                    <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-table me-2 text-primary"></i>Estate Office Stay Charges (Notification 1615-40 Categories)</h6>
-                                    <span class="badge bg-light text-dark border">Rates in INR (&#8377;) per set per day</span>
+                                <div
+                                    class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                                    <h6 class="fw-bold mb-0 text-dark"><i
+                                            class="bi bi-table me-2 text-primary"></i>Estate Office Stay Charges
+                                        (Notification 1615-40 Categories)</h6>
+                                    <span class="badge bg-light text-dark border">Rates in INR (&#8377;) per set per
+                                        day</span>
                                 </div>
                                 <div class="card-body p-0">
                                     <div class="table-responsive">
-                                        <table class="table table-hover table-bordered align-middle mb-0" id="estateTariffsEditableTable">
+                                        <table class="table table-hover table-bordered align-middle mb-0"
+                                            id="estateTariffsEditableTable">
                                             <thead class="table-light text-center">
                                                 <tr>
                                                     <th style="width: 75px;">Sr. No.</th>
-                                                    <th style="min-width: 280px;" class="text-start">Category &amp; Dignitary Scope (Full Text)</th>
+                                                    <th style="min-width: 280px;" class="text-start">Category &amp;
+                                                        Dignitary Scope (Full Text)</th>
                                                     <th style="width: 170px;">Short Label</th>
                                                     <th style="width: 125px;">VVIP Set (&#8377;)</th>
                                                     <th style="width: 125px;">VIP Set (&#8377;)</th>
@@ -470,9 +552,12 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="card-footer bg-light py-2 text-muted small d-flex justify-content-between align-items-center">
-                                    <span>All edits are auto-validated and persisted to browser storage and shared data master.</span>
-                                    <button class="btn btn-sm btn-success fw-bold" onclick="saveEstateTariffsFromForm()">
+                                <div
+                                    class="card-footer bg-light py-2 text-muted small d-flex justify-content-between align-items-center">
+                                    <span>All edits are auto-validated and persisted to browser storage and shared data
+                                        master.</span>
+                                    <button class="btn btn-sm btn-success fw-bold"
+                                        onclick="saveEstateTariffsFromForm()">
                                         <i class="bi bi-save me-1"></i> Save Changes Now
                                     </button>
                                 </div>
@@ -483,7 +568,9 @@
                         <div class="tab-pane fade" id="panel-dining-rates">
                             <div class="card border-0 shadow-sm mb-4">
                                 <div class="card-header bg-white py-3">
-                                    <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-cup-straw me-2 text-success"></i>Use of Lounge and Dining Hall of Guest House (Page 2 of Official Notification)</h6>
+                                    <h6 class="fw-bold mb-0 text-dark"><i
+                                            class="bi bi-cup-straw me-2 text-success"></i>Use of Lounge and Dining Hall
+                                        of Guest House (Page 2 of Official Notification)</h6>
                                 </div>
                                 <div class="card-body p-0">
                                     <div class="table-responsive">
@@ -509,11 +596,15 @@
                         <div class="tab-pane fade" id="panel-meta-rates">
                             <div class="card border-0 shadow-sm mb-4">
                                 <div class="card-body p-4">
-                                    <h6 class="fw-bold text-primary mb-3"><i class="bi bi-pencil-square me-2"></i>Official University Notification Particulars</h6>
+                                    <h6 class="fw-bold text-primary mb-3"><i
+                                            class="bi bi-pencil-square me-2"></i>Official University Notification
+                                        Particulars</h6>
                                     <div class="row g-3">
                                         <div class="col-md-6">
-                                            <label class="form-label fw-semibold">Endorsement / Notification Number</label>
-                                            <input type="text" class="form-control" id="metaDocNumber" value="UHF/EO-55/2025/- 1615-40">
+                                            <label class="form-label fw-semibold">Endorsement / Notification
+                                                Number</label>
+                                            <input type="text" class="form-control" id="metaDocNumber"
+                                                value="UHF/EO-55/2025/- 1615-40">
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label fw-semibold">Date of Issuance</label>
@@ -521,11 +612,13 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label fw-semibold">Approving Authority</label>
-                                            <input type="text" class="form-control" id="metaAuthority" value="Hon'ble Vice Chancellor, Dr. Yashwant Singh Parmar UHF Nauni (Solan)">
+                                            <input type="text" class="form-control" id="metaAuthority"
+                                                value="Hon'ble Vice Chancellor, Dr. Yashwant Singh Parmar UHF Nauni (Solan)">
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label fw-semibold">Issuing Officer / Organization</label>
-                                            <input type="text" class="form-control" id="metaIssuer" value="Estate Officer, Estate Organization, Dr. YSP UHF Nauni">
+                                            <input type="text" class="form-control" id="metaIssuer"
+                                                value="Estate Officer, Estate Organization, Dr. YSP UHF Nauni">
                                         </div>
                                     </div>
                                 </div>
@@ -536,11 +629,13 @@
                         <div class="tab-pane fade" id="panel-sandbox-rates">
                             <div class="card border-0 shadow-sm mb-4">
                                 <div class="card-body p-4">
-                                    <h6 class="fw-bold text-info mb-3"><i class="bi bi-cpu me-2"></i>Live Tariff Calculation Simulator (Verify Real-Time Calculation)</h6>
+                                    <h6 class="fw-bold text-info mb-3"><i class="bi bi-cpu me-2"></i>Live Tariff
+                                        Calculation Simulator (Verify Real-Time Calculation)</h6>
                                     <div class="row g-3 align-items-end mb-4">
                                         <div class="col-md-3">
                                             <label class="form-label fw-semibold">Select Accommodation Wing</label>
-                                            <select class="form-select border-primary" id="sbWing" onchange="updateSandboxControls()">
+                                            <select class="form-select border-primary" id="sbWing"
+                                                onchange="updateSandboxControls()">
                                                 <option value="estate" selected>Estate Office Wing</option>
                                                 <option value="dee">Directorate of Extension Education (DEE)</option>
                                             </select>
@@ -553,32 +648,40 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label fw-semibold">Guest Category</label>
-                                            <select class="form-select" id="sbCategory" onchange="runSandboxCalculation()">
+                                            <select class="form-select" id="sbCategory"
+                                                onchange="runSandboxCalculation()">
                                                 <!-- dynamic -->
                                             </select>
                                         </div>
                                         <div class="col-md-2">
                                             <label class="form-label fw-semibold">Nights</label>
-                                            <input type="number" class="form-control" id="sbNights" value="3" min="1" max="30" onchange="runSandboxCalculation()">
+                                            <input type="number" class="form-control" id="sbNights" value="3" min="1"
+                                                max="30" onchange="runSandboxCalculation()">
                                         </div>
                                     </div>
 
-                                    <div class="p-3 bg-light rounded border border-primary border-opacity-25 d-flex justify-content-between align-items-center flex-wrap">
+                                    <div
+                                        class="p-3 bg-light rounded border border-primary border-opacity-25 d-flex justify-content-between align-items-center flex-wrap">
                                         <div>
                                             <span class="text-muted d-block small">Applied Rate per Night:</span>
-                                            <strong class="fs-4 text-dark" id="sbDisplayRate">&#8377;1,500 / night</strong>
+                                            <strong class="fs-4 text-dark" id="sbDisplayRate">&#8377;1,500 /
+                                                night</strong>
                                         </div>
                                         <div>
                                             <span class="text-muted d-block small">Subtotal Room Charge:</span>
-                                            <strong class="fs-4 text-primary" id="sbDisplaySubtotal">&#8377;4,500.00</strong>
+                                            <strong class="fs-4 text-primary"
+                                                id="sbDisplaySubtotal">&#8377;4,500.00</strong>
                                         </div>
                                         <div>
-                                            <span class="text-muted d-block small">GST (12% if &ge; &#8377;1,000):</span>
-                                            <strong class="fs-4 text-warning text-dark" id="sbDisplayGst">&#8377;540.00</strong>
+                                            <span class="text-muted d-block small">GST (12% if &ge;
+                                                &#8377;1,000):</span>
+                                            <strong class="fs-4 text-warning text-dark"
+                                                id="sbDisplayGst">&#8377;540.00</strong>
                                         </div>
                                         <div>
                                             <span class="text-muted d-block small">Total Bill:</span>
-                                            <strong class="fs-3 text-success" id="sbDisplayTotal">&#8377;5,040.00</strong>
+                                            <strong class="fs-3 text-success"
+                                                id="sbDisplayTotal">&#8377;5,040.00</strong>
                                         </div>
                                     </div>
                                 </div>
@@ -592,9 +695,11 @@
                     <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
                         <div>
                             <h3 class="h4 fw-bold text-navy mb-0">Submit Guest House Requisition</h3>
-                            <small class="text-muted">Standard institutional booking form governed by University Guest House Rules &amp; Notification 1615-40</small>
+                            <small class="text-muted">Standard institutional booking form governed by University Guest
+                                House Rules &amp; Notification 1615-40</small>
                         </div>
-                        <button class="btn btn-sm btn-outline-secondary" onclick="showTab('dashboard')">&larr; Back to Dashboard</button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="showTab('dashboard')">&larr; Back to
+                            Dashboard</button>
                     </div>
 
                     <div class="row">
@@ -602,94 +707,149 @@
                             <div class="card shadow-sm border-0 mb-4">
                                 <div class="card-body p-4">
                                     <form id="reservationForm" onsubmit="handleReservationSubmit(event)">
-                                        <h5 class="fw-bold text-primary mb-3"><i class="bi bi-building-gear me-2"></i>1. Accommodation Wing & Category (User Choice)</h5>
+                                        <h5 class="fw-bold text-primary mb-3"><i class="bi bi-building-gear me-2"></i>1.
+                                            Accommodation Wing & Category (User Choice)</h5>
                                         <div class="row g-3 mb-4">
                                             <div class="col-md-6">
-                                                <label class="form-label fw-semibold text-primary"><i class="bi bi-building me-1"></i>Accommodation Wing <span class="badge bg-primary-subtle text-primary ms-1">User Selected</span> <span class="text-danger">*</span></label>
-                                                <select class="form-select border-primary fw-bold" id="bookingWing" required onchange="handleAdminBookingWingChange()">
-                                                    <option value="estate" selected>Estate Office Wing (Main GH, VIP Suites, FRH)</option>
-                                                    <option value="dee">Directorate of Extension Education (DEE - Kisan Bhawan)</option>
+                                                <label class="form-label fw-semibold text-primary"><i
+                                                        class="bi bi-building me-1"></i>Accommodation Wing <span
+                                                        class="badge bg-primary-subtle text-primary ms-1">User
+                                                        Selected</span> <span class="text-danger">*</span></label>
+                                                <select class="form-select border-primary fw-bold" id="bookingWing"
+                                                    required onchange="handleAdminBookingWingChange()">
+                                                    <option value="estate" selected>Estate Office Wing (Main GH, VIP
+                                                        Suites, FRH)</option>
+                                                    <option value="dee">Directorate of Extension Education (DEE - Kisan
+                                                        Bhawan)</option>
                                                 </select>
-                                                <small class="text-muted" id="adminBookingWingHint">Governed by: Estate Officer &amp; Registrar (Notification 1615-40)</small>
+                                                <small class="text-muted" id="adminBookingWingHint">Governed by: Estate
+                                                    Officer &amp; Registrar (Notification 1615-40)</small>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="form-label fw-semibold">Tariff Category <span class="text-danger">*</span></label>
-                                                <select class="form-select" id="bookingCategory" required onchange="calculateTariffEstimate()">
+                                                <label class="form-label fw-semibold">Tariff Category <span
+                                                        class="text-danger">*</span></label>
+                                                <select class="form-select" id="bookingCategory" required
+                                                    onchange="calculateTariffEstimate()">
                                                     <!-- Populated dynamically via estate_tariffs.js -->
                                                 </select>
-                                                <small class="text-muted" id="bookingCategoryHint">Official category mapping from Notification UHF/EO-55/2025/- 1615-40</small>
+                                                <small class="text-muted" id="bookingCategoryHint">Official category
+                                                    mapping from Notification UHF/EO-55/2025/- 1615-40</small>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="form-label fw-semibold">Room / Set Type <span class="text-danger">*</span></label>
-                                                <select class="form-select" id="bookingSetType" required onchange="calculateTariffEstimate()">
+                                                <label class="form-label fw-semibold">Room / Set Type <span
+                                                        class="text-danger">*</span></label>
+                                                <select class="form-select" id="bookingSetType" required
+                                                    onchange="calculateTariffEstimate()">
                                                     <!-- Populated dynamically via handleAdminBookingWingChange -->
                                                 </select>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="form-label fw-semibold">Preferred Guest House / Facility</label>
+                                                <label class="form-label fw-semibold">Preferred Guest House /
+                                                    Facility</label>
                                                 <select class="form-select" id="bookingGuestHouse" required>
                                                     <!-- Populated dynamically via handleAdminBookingWingChange -->
                                                 </select>
                                             </div>
                                         </div>
 
-                                        <h5 class="fw-bold text-primary mb-3"><i class="bi bi-calendar-range me-2"></i>2. Stay Schedule</h5>
+                                        <h5 class="fw-bold text-primary mb-3"><i
+                                                class="bi bi-calendar-range me-2"></i>2. Stay Schedule</h5>
                                         <div class="row g-3 mb-4">
                                             <div class="col-md-6">
-                                                <label class="form-label fw-semibold">Check-in Date <span class="text-danger">*</span> <small class="text-muted">(DD/MM/YYYY)</small></label>
+                                                <label class="form-label fw-semibold">Check-in Date <span
+                                                        class="text-danger">*</span> <small
+                                                        class="text-muted">(DD/MM/YYYY)</small></label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control fw-bold" id="checkInDate" placeholder="DD/MM/YYYY" maxlength="10" required onchange="onAdminCheckInChange()" oninput="maskDateInput(event); calculateTariffEstimate()" onclick="openDatePicker('checkInDate')">
-                                                    <button class="btn btn-outline-secondary" type="button" onclick="openDatePicker('checkInDate')" title="Open Calendar"><i class="bi bi-calendar-event text-success"></i></button>
+                                                    <input type="text" class="form-control fw-bold" id="checkInDate"
+                                                        placeholder="DD/MM/YYYY" maxlength="10" required
+                                                        onchange="onAdminCheckInChange()"
+                                                        oninput="maskDateInput(event); calculateTariffEstimate()"
+                                                        onclick="openDatePicker('checkInDate')">
+                                                    <button class="btn btn-outline-secondary" type="button"
+                                                        onclick="openDatePicker('checkInDate')" title="Open Calendar"><i
+                                                            class="bi bi-calendar-event text-success"></i></button>
                                                 </div>
                                                 <small class="text-muted">Standard Check-in: 12:00 PM</small>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="form-label fw-semibold d-flex justify-content-between align-items-center">
-                                                    <span>Check-out Date &amp; Duration <span class="text-danger">*</span> <small class="text-muted">(DD/MM/YYYY)</small></span>
-                                                    <span class="badge bg-primary text-white py-0 px-1" id="adminDurationBadge" style="font-size: 0.65rem;">3 Nights</span>
+                                                <label
+                                                    class="form-label fw-semibold d-flex justify-content-between align-items-center">
+                                                    <span>Check-out Date &amp; Duration <span
+                                                            class="text-danger">*</span> <small
+                                                            class="text-muted">(DD/MM/YYYY)</small></span>
+                                                    <span class="badge bg-primary text-white py-0 px-1"
+                                                        id="adminDurationBadge" style="font-size: 0.65rem;">3
+                                                        Nights</span>
                                                 </label>
                                                 <div class="input-group">
-                                                    <input type="text" id="checkOutDate" class="form-control fw-bold border-primary text-primary" placeholder="DD/MM/YYYY" maxlength="10" required onchange="onAdminCheckOutChange()" oninput="maskDateInput(event); calculateTariffEstimate()" onclick="openDatePicker('checkOutDate')">
-                                                    <button class="btn btn-outline-primary" type="button" onclick="openDatePicker('checkOutDate')" title="Open Calendar"><i class="bi bi-calendar-check"></i></button>
+                                                    <input type="text" id="checkOutDate"
+                                                        class="form-control fw-bold border-primary text-primary"
+                                                        placeholder="DD/MM/YYYY" maxlength="10" required
+                                                        onchange="onAdminCheckOutChange()"
+                                                        oninput="maskDateInput(event); calculateTariffEstimate()"
+                                                        onclick="openDatePicker('checkOutDate')">
+                                                    <button class="btn btn-outline-primary" type="button"
+                                                        onclick="openDatePicker('checkOutDate')"
+                                                        title="Open Calendar"><i
+                                                            class="bi bi-calendar-check"></i></button>
                                                 </div>
                                                 <div class="d-flex justify-content-between align-items-center mt-1">
                                                     <small class="text-muted">Standard Check-out: 11:00 AM</small>
                                                     <div class="btn-group btn-group-sm" role="group">
-                                                        <button type="button" class="btn btn-outline-primary py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('admin', 1)">1N</button>
-                                                        <button type="button" class="btn btn-outline-primary py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('admin', 2)">2N</button>
-                                                        <button type="button" class="btn btn-outline-primary py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('admin', 3)">3N</button>
-                                                        <button type="button" class="btn btn-outline-primary py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('admin', 5)">5N</button>
-                                                        <button type="button" class="btn btn-outline-primary py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('admin', 7)">7N</button>
+                                                        <button type="button" class="btn btn-outline-primary py-0 px-2"
+                                                            style="font-size: 0.72rem;"
+                                                            onclick="setStayDays('admin', 1)">1N</button>
+                                                        <button type="button" class="btn btn-outline-primary py-0 px-2"
+                                                            style="font-size: 0.72rem;"
+                                                            onclick="setStayDays('admin', 2)">2N</button>
+                                                        <button type="button" class="btn btn-outline-primary py-0 px-2"
+                                                            style="font-size: 0.72rem;"
+                                                            onclick="setStayDays('admin', 3)">3N</button>
+                                                        <button type="button" class="btn btn-outline-primary py-0 px-2"
+                                                            style="font-size: 0.72rem;"
+                                                            onclick="setStayDays('admin', 5)">5N</button>
+                                                        <button type="button" class="btn btn-outline-primary py-0 px-2"
+                                                            style="font-size: 0.72rem;"
+                                                            onclick="setStayDays('admin', 7)">7N</button>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-12">
-                                                <label class="form-label fw-semibold">Sponsoring Department / Requisitioner</label>
-                                                <input type="text" class="form-control" value="Department of Tree Improvement & Genetic Resources" required>
+                                                <label class="form-label fw-semibold">Sponsoring Department / Institutional Affiliation <small class="text-muted fw-normal">(Optional)</small></label>
+                                                <input type="text" class="form-control" placeholder="e.g. Department of Tree Improvement & Genetic Resources (Optional)">
                                             </div>
                                         </div>
 
-                                        <h5 class="fw-bold text-primary mb-3"><i class="bi bi-person-badge me-2"></i>3. Primary Guest Particulars</h5>
+                                        <h5 class="fw-bold text-primary mb-3"><i class="bi bi-person-badge me-2"></i>3.
+                                            Primary Guest Particulars</h5>
                                         <div class="row g-3 mb-4">
                                             <div class="col-md-6">
-                                                <label class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" id="guestName" placeholder="e.g. Dr. Ramesh Gupta" required>
+                                                <label class="form-label fw-semibold">Full Name <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="guestName"
+                                                    placeholder="e.g. Dr. Ramesh Gupta" required>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="form-label fw-semibold">Designation / Affiliation <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" placeholder="e.g. Principal Scientist, ICAR" required>
+                                                <label class="form-label fw-semibold">Designation / Affiliation <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control"
+                                                    placeholder="e.g. Principal Scientist, ICAR" required>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="form-label fw-semibold">Mobile Number <span class="text-danger">*</span></label>
-                                                <input type="tel" class="form-control" placeholder="10-digit mobile number" required>
+                                                <label class="form-label fw-semibold">Mobile Number <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="tel" class="form-control"
+                                                    placeholder="10-digit mobile number" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label fw-semibold">Official Email</label>
-                                                <input type="email" class="form-control" placeholder="guest@organization.gov.in">
+                                                <input type="email" class="form-control"
+                                                    placeholder="guest@organization.gov.in">
                                             </div>
                                             <div class="col-12">
                                                 <label class="form-label fw-semibold">Purpose of Visit</label>
-                                                <textarea class="form-control" rows="2" placeholder="Academic conference / External viva examination / Official university inspection..."></textarea>
+                                                <textarea class="form-control" rows="2"
+                                                    placeholder="Academic conference / External viva examination / Official university inspection..."></textarea>
                                             </div>
                                         </div>
 
@@ -709,8 +869,11 @@
                             <div class="card border-0 shadow-sm bg-light">
                                 <div class="card-body p-4">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h5 class="fw-bold text-dark mb-0"><i class="bi bi-calculator me-2 text-primary"></i>Tariff Estimation</h5>
-                                        <button class="btn btn-sm btn-outline-warning text-dark" onclick="showTab('tariffs')"><i class="bi bi-sliders"></i> Edit Tariffs</button>
+                                        <h5 class="fw-bold text-dark mb-0"><i
+                                                class="bi bi-calculator me-2 text-primary"></i>Tariff Estimation</h5>
+                                        <button class="btn btn-sm btn-outline-warning text-dark"
+                                            onclick="showTab('tariffs')"><i class="bi bi-sliders"></i> Edit
+                                            Tariffs</button>
                                     </div>
                                     <ul class="list-group list-group-flush rounded mb-3">
                                         <li class="list-group-item d-flex justify-content-between bg-white">
@@ -729,7 +892,8 @@
                                             <span>GST (12% if &ge; &#8377;1,000):</span>
                                             <strong class="text-success" id="estGst">&#8377;540.00</strong>
                                         </li>
-                                        <li class="list-group-item d-flex justify-content-between bg-white fs-5 fw-bold text-primary">
+                                        <li
+                                            class="list-group-item d-flex justify-content-between bg-white fs-5 fw-bold text-primary">
                                             <span>Estimated Total:</span>
                                             <span id="estTotal">&#8377;5,040.00</span>
                                         </li>
@@ -737,7 +901,8 @@
 
                                     <div class="alert alert-info py-2 px-3 small mb-0">
                                         <i class="bi bi-info-circle-fill me-1"></i>
-                                        <strong>Rules Note:</strong> Rate calculated dynamically from active Estate Officer master tariffs. Check-out day is non-billable.
+                                        <strong>Rules Note:</strong> Rate calculated dynamically from active Estate
+                                        Officer master tariffs. Check-out day is non-billable.
                                     </div>
                                 </div>
                             </div>
@@ -750,17 +915,21 @@
                     <div class="d-flex justify-content-between align-items-center flex-wrap pb-2 mb-3 border-bottom">
                         <div>
                             <div class="d-flex align-items-center gap-2">
-                                <h3 class="h4 fw-bold text-navy mb-0">University Main Guest House &bull; Room Allocation Grid</h3>
+                                <h3 class="h4 fw-bold text-navy mb-0">University Main Guest House &bull; Room Allocation
+                                    Grid</h3>
                                 <span class="badge bg-primary">21 Lodging Units &bull; 44 Beds</span>
                             </div>
-                            <small class="text-muted">Master room rack mapped to official University blueprint (Top Floor, First Floor, Ground Floor)</small>
+                            <small class="text-muted">Master room rack mapped to official University blueprint (Top
+                                Floor, First Floor, Ground Floor)</small>
                         </div>
                         <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
                             <div class="btn-group btn-group-sm" role="group">
-                                <button type="button" class="btn btn-primary active fw-bold" id="btnViewMatrix" onclick="setGridViewMode('matrix')">
+                                <button type="button" class="btn btn-primary active fw-bold" id="btnViewMatrix"
+                                    onclick="setGridViewMode('matrix')">
                                     <i class="bi bi-calendar3 me-1"></i> 7-Day Matrix Grid
                                 </button>
-                                <button type="button" class="btn btn-outline-primary fw-bold" id="btnViewBlueprint" onclick="setGridViewMode('blueprint')">
+                                <button type="button" class="btn btn-outline-primary fw-bold" id="btnViewBlueprint"
+                                    onclick="setGridViewMode('blueprint')">
                                     <i class="bi bi-diagram-3 me-1"></i> Floor Plan Blueprint
                                 </button>
                             </div>
@@ -775,9 +944,11 @@
                                     <div>
                                         <div class="text-muted small fw-semibold text-uppercase">1. VVIP Suites</div>
                                         <h5 class="fw-bold text-danger mb-0">4 Rooms (Double)</h5>
-                                        <small class="text-muted" style="font-size:0.72rem;">VVIP 1, 2, 11, 12 &bull; <strong class="text-danger">VC Sanction</strong></small>
+                                        <small class="text-muted" style="font-size:0.72rem;">VVIP 1, 2, 11, 12 &bull;
+                                            <strong class="text-danger">VC Sanction</strong></small>
                                     </div>
-                                    <span class="badge bg-danger bg-opacity-10 text-danger fs-5 p-2 rounded-circle"><i class="bi bi-crown"></i></span>
+                                    <span class="badge bg-danger bg-opacity-10 text-danger fs-5 p-2 rounded-circle"><i
+                                            class="bi bi-crown"></i></span>
                                 </div>
                             </div>
                         </div>
@@ -787,9 +958,11 @@
                                     <div>
                                         <div class="text-muted small fw-semibold text-uppercase">2. VIP Rooms (AC)</div>
                                         <h5 class="fw-bold text-warning text-dark mb-0">4 Rooms (Double)</h5>
-                                        <small class="text-muted" style="font-size:0.72rem;">VIP 13, 14, 15, 16 &bull; <strong class="text-primary">Estate Office</strong></small>
+                                        <small class="text-muted" style="font-size:0.72rem;">VIP 13, 14, 15, 16 &bull;
+                                            <strong class="text-primary">Estate Office</strong></small>
                                     </div>
-                                    <span class="badge bg-warning bg-opacity-10 text-dark fs-5 p-2 rounded-circle"><i class="bi bi-star-fill"></i></span>
+                                    <span class="badge bg-warning bg-opacity-10 text-dark fs-5 p-2 rounded-circle"><i
+                                            class="bi bi-star-fill"></i></span>
                                 </div>
                             </div>
                         </div>
@@ -797,11 +970,14 @@
                             <div class="card border-0 shadow-sm p-2 bg-white border-start border-primary border-3">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <div class="text-muted small fw-semibold text-uppercase">3. AC Ordinary Rooms</div>
+                                        <div class="text-muted small fw-semibold text-uppercase">3. AC Ordinary Rooms
+                                        </div>
                                         <h5 class="fw-bold text-primary mb-0">12 Rooms (Double)</h5>
-                                        <small class="text-muted" style="font-size:0.72rem;">Std 3-10 (Top) &amp; 17-20 (1st) &bull; <strong class="text-primary">Estate Office</strong></small>
+                                        <small class="text-muted" style="font-size:0.72rem;">Std 3-10 (Top) &amp; 17-20
+                                            (1st) &bull; <strong class="text-primary">Estate Office</strong></small>
                                     </div>
-                                    <span class="badge bg-primary bg-opacity-10 text-primary fs-5 p-2 rounded-circle"><i class="bi bi-door-closed-fill"></i></span>
+                                    <span class="badge bg-primary bg-opacity-10 text-primary fs-5 p-2 rounded-circle"><i
+                                            class="bi bi-door-closed-fill"></i></span>
                                 </div>
                             </div>
                         </div>
@@ -809,22 +985,31 @@
                             <div class="card border-0 shadow-sm p-2 bg-white border-start border-success border-3">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <div class="text-muted small fw-semibold text-uppercase">4. Dormitory &amp; Halls</div>
+                                        <div class="text-muted small fw-semibold text-uppercase">4. Dormitory &amp;
+                                            Halls</div>
                                         <h5 class="fw-bold text-success mb-0">1 Dorm (4-Bed) + Halls</h5>
-                                        <small class="text-muted" style="font-size:0.72rem;">Ground Floor &bull; <strong class="text-primary">Estate Office</strong></small>
+                                        <small class="text-muted" style="font-size:0.72rem;">Ground Floor &bull; <strong
+                                                class="text-primary">Estate Office</strong></small>
                                     </div>
-                                    <span class="badge bg-success bg-opacity-10 text-success fs-5 p-2 rounded-circle"><i class="bi bi-people-fill"></i></span>
+                                    <span class="badge bg-success bg-opacity-10 text-success fs-5 p-2 rounded-circle"><i
+                                            class="bi bi-people-fill"></i></span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Role Authority Guidance for Grid -->
-                    <div id="gridJurisdictionAlert" class="alert d-flex align-items-center py-2 px-3 mb-3 border shadow-sm alert-warning border-warning">
+                    <div id="gridJurisdictionAlert"
+                        class="alert d-flex align-items-center py-2 px-3 mb-3 border shadow-sm alert-warning border-warning">
                         <i class="bi bi-building fs-4 text-warning me-3"></i>
                         <div class="small">
-                            <strong>Estate Office Room Rack Control:</strong> You have direct allocation and key issuance authority for <strong>VIP Rooms (13-16)</strong>, <strong>Ordinary Rooms (3-10, 17-20)</strong>, and <strong>Dormitory 1 (4-Bed)</strong>. 
-                            <span class="badge bg-danger ms-1"><i class="bi bi-crown me-1"></i>VVIP Set Policy:</span> <strong>VVIP Rooms (1, 2, 11, 12)</strong> are visible for logistics/housekeeping preparation, but room allocation is strictly sanctioned by the <strong>Vice-Chancellor Secretariat</strong>.
+                            <strong>Estate Office Room Rack Control:</strong> You have direct allocation and key
+                            issuance authority for <strong>VIP Rooms (13-16)</strong>, <strong>Ordinary Rooms (3-10,
+                                17-20)</strong>, and <strong>Dormitory 1 (4-Bed)</strong>.
+                            <span class="badge bg-danger ms-1"><i class="bi bi-crown me-1"></i>VVIP Set Policy:</span>
+                            <strong>VVIP Rooms (1, 2, 11, 12)</strong> are visible for logistics/housekeeping
+                            preparation, but room allocation is strictly sanctioned by the <strong>Vice-Chancellor
+                                Secretariat</strong>.
                         </div>
                     </div>
 
@@ -833,26 +1018,34 @@
                         <div class="card-body p-2 d-flex flex-wrap justify-content-between align-items-center gap-2">
                             <!-- Floor Filter Buttons -->
                             <div class="btn-group btn-group-sm" role="group" aria-label="Floor Filter">
-                                <button type="button" class="btn btn-outline-secondary active fw-semibold" id="btnFloorAll" onclick="filterGridFloor('all')">
+                                <button type="button" class="btn btn-outline-secondary active fw-semibold"
+                                    id="btnFloorAll" onclick="filterGridFloor('all')">
                                     All Levels (21 Units)
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorTop" onclick="filterGridFloor('top')">
+                                <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorTop"
+                                    onclick="filterGridFloor('top')">
                                     Top Floor (VVIP 1-2 &amp; Std 3-10)
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorFirst" onclick="filterGridFloor('first')">
+                                <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorFirst"
+                                    onclick="filterGridFloor('first')">
                                     First Floor (VVIP 11-12, VIP 13-16, Std 17-20)
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorGround" onclick="filterGridFloor('ground')">
+                                <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorGround"
+                                    onclick="filterGridFloor('ground')">
                                     Ground Floor (Dormitory 1 &amp; Halls)
                                 </button>
                             </div>
 
                             <!-- Legend Badges -->
                             <div class="d-flex flex-wrap gap-2 small">
-                                <span class="badge bg-success"><i class="bi bi-circle-fill me-1" style="font-size:0.6rem;"></i> Available</span>
-                                <span class="badge bg-danger"><i class="bi bi-circle-fill me-1" style="font-size:0.6rem;"></i> Occupied / In-House</span>
-                                <span class="badge bg-warning text-dark"><i class="bi bi-circle-fill me-1" style="font-size:0.6rem;"></i> Reserved / Sanction Pending</span>
-                                <span class="badge bg-secondary"><i class="bi bi-circle-fill me-1" style="font-size:0.6rem;"></i> Store / Facility</span>
+                                <span class="badge bg-success"><i class="bi bi-circle-fill me-1"
+                                        style="font-size:0.6rem;"></i> Available</span>
+                                <span class="badge bg-danger"><i class="bi bi-circle-fill me-1"
+                                        style="font-size:0.6rem;"></i> Occupied / In-House</span>
+                                <span class="badge bg-warning text-dark"><i class="bi bi-circle-fill me-1"
+                                        style="font-size:0.6rem;"></i> Reserved / Sanction Pending</span>
+                                <span class="badge bg-secondary"><i class="bi bi-circle-fill me-1"
+                                        style="font-size:0.6rem;"></i> Store / Facility</span>
                             </div>
                         </div>
                     </div>
@@ -861,7 +1054,8 @@
                     <div id="gridMatrixContainer" class="card border-0 shadow-sm mb-4">
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-bordered mb-0 align-middle small table-hover" id="calendarMatrixTable">
+                                <table class="table table-bordered mb-0 align-middle small table-hover"
+                                    id="calendarMatrixTable">
                                     <thead class="table-dark text-center" id="calendarMatrixHead">
                                         <!-- Dynamically generated with rolling dates from current date -->
                                     </thead>
@@ -875,53 +1069,117 @@
 
                     <!-- VIEW MODE 2: ARCHITECTURAL BLUEPRINT SCHEMATIC (Per Image 2) -->
                     <div id="gridBlueprintContainer" class="card border-0 shadow-sm mb-4" style="display:none;">
-                        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-2">
-                            <span class="fw-bold font-serif"><i class="bi bi-diagram-3 me-2 text-warning"></i>Architectural Floor Plan Schematic &bull; University Guest House</span>
-                            <small class="text-white-50">Click any room for instant dossier particulars and allocation authority</small>
+                        <div
+                            class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-2">
+                            <span class="fw-bold font-serif"><i
+                                    class="bi bi-diagram-3 me-2 text-warning"></i>Architectural Floor Plan Schematic
+                                &bull; University Guest House</span>
+                            <small class="text-white-50">Click any room for instant dossier particulars and allocation
+                                authority</small>
                         </div>
                         <div class="card-body p-4 bg-light">
                             <!-- TOP FLOOR BLUEPRINT ROW -->
                             <div class="mb-4">
                                 <div class="d-flex align-items-center mb-2">
                                     <span class="badge bg-dark me-2">TOP FLOOR</span>
-                                    <span class="text-muted small">2 VVIP Rooms &bull; 8 Standard Rooms &bull; Top Floor Store</span>
+                                    <span class="text-muted small">2 VVIP Rooms &bull; 8 Standard Rooms &bull; Top Floor
+                                        Store</span>
                                 </div>
                                 <div class="blueprint-corridor-box p-3 bg-white border rounded shadow-sm">
                                     <div class="row g-2 text-center">
                                         <div class="col-md-2 col-4">
-                                            <div class="blueprint-room p-2 border border-danger border-2 rounded bg-danger-subtle cursor-pointer" onclick="openRoomActionModal('VVIP 1', 'vvip', 'top')">
-                                                <div class="fw-bold text-danger"><i class="bi bi-crown me-1"></i>VVIP 1</div>
-                                                <small class="d-block text-muted" style="font-size:0.7rem;">Double Bedded</small>
-                                                <span class="badge bg-danger text-white mt-1" style="font-size:0.65rem;">Reserved (Bhutan)</span>
+                                            <div class="blueprint-room p-2 border border-danger border-2 rounded bg-danger-subtle cursor-pointer"
+                                                onclick="openRoomActionModal('VVIP 1', 'vvip', 'top')">
+                                                <div class="fw-bold text-danger"><i class="bi bi-crown me-1"></i>VVIP 1
+                                                </div>
+                                                <small class="d-block text-muted" style="font-size:0.7rem;">Double
+                                                    Bedded</small>
+                                                <span class="badge bg-danger text-white mt-1"
+                                                    style="font-size:0.65rem;">Reserved (Bhutan)</span>
                                             </div>
                                         </div>
                                         <div class="col-md-2 col-4">
-                                            <div class="blueprint-room p-2 border border-danger border-2 rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('VVIP 2', 'vvip', 'top')">
-                                                <div class="fw-bold text-danger"><i class="bi bi-crown me-1"></i>VVIP 2</div>
-                                                <small class="d-block text-muted" style="font-size:0.7rem;">Double Bedded</small>
-                                                <span class="badge bg-success text-white mt-1" style="font-size:0.65rem;">Available</span>
+                                            <div class="blueprint-room p-2 border border-danger border-2 rounded bg-success-subtle cursor-pointer"
+                                                onclick="openRoomActionModal('VVIP 2', 'vvip', 'top')">
+                                                <div class="fw-bold text-danger"><i class="bi bi-crown me-1"></i>VVIP 2
+                                                </div>
+                                                <small class="d-block text-muted" style="font-size:0.7rem;">Double
+                                                    Bedded</small>
+                                                <span class="badge bg-success text-white mt-1"
+                                                    style="font-size:0.65rem;">Available</span>
                                             </div>
                                         </div>
                                         <div class="col-md-1 col-4">
                                             <div class="blueprint-room p-2 border rounded bg-secondary-subtle">
                                                 <div class="fw-bold text-secondary">STORE</div>
-                                                <small class="d-block text-muted" style="font-size:0.7rem;">Linen</small>
-                                                <span class="badge bg-secondary text-white mt-1" style="font-size:0.65rem;">Utility</span>
+                                                <small class="d-block text-muted"
+                                                    style="font-size:0.7rem;">Linen</small>
+                                                <span class="badge bg-secondary text-white mt-1"
+                                                    style="font-size:0.65rem;">Utility</span>
                                             </div>
                                         </div>
                                         <div class="col-md-7 col-12">
-                                            <div class="p-1 bg-light border border-secondary border-dashed rounded text-muted mb-1 small fw-semibold">
+                                            <div
+                                                class="p-1 bg-light border border-secondary border-dashed rounded text-muted mb-1 small fw-semibold">
                                                 &larr; TOP FLOOR CENTRAL CORRIDOR &rarr;
                                             </div>
                                             <div class="row g-1">
-                                                <div class="col"><div class="p-1 border rounded bg-danger-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 10', 'standard', 'top')"><strong style="font-size:0.75rem;">STD 10</strong><br><span class="badge bg-danger" style="font-size:0.6rem;">Occupied</span></div></div>
-                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 9', 'standard', 'top')"><strong style="font-size:0.75rem;">STD 9</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
-                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 8', 'standard', 'top')"><strong style="font-size:0.75rem;">STD 8</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
-                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 7', 'standard', 'top')"><strong style="font-size:0.75rem;">STD 7</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
-                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 6', 'standard', 'top')"><strong style="font-size:0.75rem;">STD 6</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
-                                                <div class="col"><div class="p-1 border rounded bg-danger-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 5', 'standard', 'top')"><strong style="font-size:0.75rem;">STD 5</strong><br><span class="badge bg-danger" style="font-size:0.6rem;">Occupied</span></div></div>
-                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 4', 'standard', 'top')"><strong style="font-size:0.75rem;">STD 4</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
-                                                <div class="col"><div class="p-1 border rounded bg-danger-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 3', 'standard', 'top')"><strong style="font-size:0.75rem;">STD 3</strong><br><span class="badge bg-danger" style="font-size:0.6rem;">Occupied</span></div></div>
+                                                <div class="col">
+                                                    <div class="p-1 border rounded bg-danger-subtle cursor-pointer"
+                                                        onclick="openRoomActionModal('STANDARD 10', 'standard', 'top')">
+                                                        <strong style="font-size:0.75rem;">STD 10</strong><br><span
+                                                            class="badge bg-danger"
+                                                            style="font-size:0.6rem;">Occupied</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="p-1 border rounded bg-success-subtle cursor-pointer"
+                                                        onclick="openRoomActionModal('STANDARD 9', 'standard', 'top')">
+                                                        <strong style="font-size:0.75rem;">STD 9</strong><br><span
+                                                            class="badge bg-success"
+                                                            style="font-size:0.6rem;">Free</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="p-1 border rounded bg-success-subtle cursor-pointer"
+                                                        onclick="openRoomActionModal('STANDARD 8', 'standard', 'top')">
+                                                        <strong style="font-size:0.75rem;">STD 8</strong><br><span
+                                                            class="badge bg-success"
+                                                            style="font-size:0.6rem;">Free</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="p-1 border rounded bg-success-subtle cursor-pointer"
+                                                        onclick="openRoomActionModal('STANDARD 7', 'standard', 'top')">
+                                                        <strong style="font-size:0.75rem;">STD 7</strong><br><span
+                                                            class="badge bg-success"
+                                                            style="font-size:0.6rem;">Free</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="p-1 border rounded bg-success-subtle cursor-pointer"
+                                                        onclick="openRoomActionModal('STANDARD 6', 'standard', 'top')">
+                                                        <strong style="font-size:0.75rem;">STD 6</strong><br><span
+                                                            class="badge bg-success"
+                                                            style="font-size:0.6rem;">Free</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="p-1 border rounded bg-danger-subtle cursor-pointer"
+                                                        onclick="openRoomActionModal('STANDARD 5', 'standard', 'top')">
+                                                        <strong style="font-size:0.75rem;">STD 5</strong><br><span
+                                                            class="badge bg-danger"
+                                                            style="font-size:0.6rem;">Occupied</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="p-1 border rounded bg-success-subtle cursor-pointer"
+                                                        onclick="openRoomActionModal('STANDARD 4', 'standard', 'top')">
+                                                        <strong style="font-size:0.75rem;">STD 4</strong><br><span
+                                                            class="badge bg-success"
+                                                            style="font-size:0.6rem;">Free</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="p-1 border rounded bg-danger-subtle cursor-pointer"
+                                                        onclick="openRoomActionModal('STANDARD 3', 'standard', 'top')">
+                                                        <strong style="font-size:0.75rem;">STD 3</strong><br><span
+                                                            class="badge bg-danger"
+                                                            style="font-size:0.6rem;">Occupied</span></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -932,44 +1190,104 @@
                             <div class="mb-4">
                                 <div class="d-flex align-items-center mb-2">
                                     <span class="badge bg-dark me-2">FIRST FLOOR</span>
-                                    <span class="text-muted small">2 VVIP Rooms &bull; 4 VIP (AC) Rooms &bull; 4 Standard (AC) Rooms &bull; Club Room</span>
+                                    <span class="text-muted small">2 VVIP Rooms &bull; 4 VIP (AC) Rooms &bull; 4
+                                        Standard (AC) Rooms &bull; Club Room</span>
                                 </div>
                                 <div class="blueprint-corridor-box p-3 bg-white border rounded shadow-sm">
                                     <div class="row g-2 text-center">
                                         <div class="col-md-2 col-4">
-                                            <div class="blueprint-room p-2 border border-danger border-2 rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('VVIP 12', 'vvip', 'first')">
-                                                <div class="fw-bold text-danger"><i class="bi bi-crown me-1"></i>VVIP 12</div>
-                                                <small class="d-block text-muted" style="font-size:0.7rem;">Double Bedded</small>
-                                                <span class="badge bg-success text-white mt-1" style="font-size:0.65rem;">Available</span>
+                                            <div class="blueprint-room p-2 border border-danger border-2 rounded bg-success-subtle cursor-pointer"
+                                                onclick="openRoomActionModal('VVIP 12', 'vvip', 'first')">
+                                                <div class="fw-bold text-danger"><i class="bi bi-crown me-1"></i>VVIP 12
+                                                </div>
+                                                <small class="d-block text-muted" style="font-size:0.7rem;">Double
+                                                    Bedded</small>
+                                                <span class="badge bg-success text-white mt-1"
+                                                    style="font-size:0.65rem;">Available</span>
                                             </div>
                                         </div>
                                         <div class="col-md-2 col-4">
-                                            <div class="blueprint-room p-2 border border-danger border-2 rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('VVIP 11', 'vvip', 'first')">
-                                                <div class="fw-bold text-danger"><i class="bi bi-crown me-1"></i>VVIP 11</div>
-                                                <small class="d-block text-muted" style="font-size:0.7rem;">Double Bedded</small>
-                                                <span class="badge bg-success text-white mt-1" style="font-size:0.65rem;">Available</span>
+                                            <div class="blueprint-room p-2 border border-danger border-2 rounded bg-success-subtle cursor-pointer"
+                                                onclick="openRoomActionModal('VVIP 11', 'vvip', 'first')">
+                                                <div class="fw-bold text-danger"><i class="bi bi-crown me-1"></i>VVIP 11
+                                                </div>
+                                                <small class="d-block text-muted" style="font-size:0.7rem;">Double
+                                                    Bedded</small>
+                                                <span class="badge bg-success text-white mt-1"
+                                                    style="font-size:0.65rem;">Available</span>
                                             </div>
                                         </div>
                                         <div class="col-md-1 col-4">
                                             <div class="blueprint-room p-2 border rounded bg-info-subtle">
                                                 <div class="fw-bold text-info text-dark">CLUB</div>
-                                                <small class="d-block text-muted" style="font-size:0.7rem;">Lounge</small>
-                                                <span class="badge bg-info text-dark mt-1" style="font-size:0.65rem;">Facility</span>
+                                                <small class="d-block text-muted"
+                                                    style="font-size:0.7rem;">Lounge</small>
+                                                <span class="badge bg-info text-dark mt-1"
+                                                    style="font-size:0.65rem;">Facility</span>
                                             </div>
                                         </div>
                                         <div class="col-md-7 col-12">
-                                            <div class="p-1 bg-light border border-secondary border-dashed rounded text-muted mb-1 small fw-semibold">
+                                            <div
+                                                class="p-1 bg-light border border-secondary border-dashed rounded text-muted mb-1 small fw-semibold">
                                                 &larr; FIRST FLOOR CENTRAL CORRIDOR &rarr;
                                             </div>
                                             <div class="row g-1">
-                                                <div class="col"><div class="p-1 border border-warning rounded bg-danger-subtle cursor-pointer" onclick="openRoomActionModal('VIP 13, AC', 'vip', 'first')"><strong style="font-size:0.75rem;">VIP 13 AC</strong><br><span class="badge bg-danger" style="font-size:0.6rem;">Dr. Verma</span></div></div>
-                                                <div class="col"><div class="p-1 border border-warning rounded bg-danger-subtle cursor-pointer" onclick="openRoomActionModal('VIP 14, AC', 'vip', 'first')"><strong style="font-size:0.75rem;">VIP 14 AC</strong><br><span class="badge bg-danger" style="font-size:0.6rem;">IAS Officer</span></div></div>
-                                                <div class="col"><div class="p-1 border border-warning rounded bg-warning-subtle cursor-pointer" onclick="openRoomActionModal('VIP 15, AC', 'vip', 'first')"><strong style="font-size:0.75rem;">VIP 15 AC</strong><br><span class="badge bg-warning text-dark" style="font-size:0.6rem;">Reserved</span></div></div>
-                                                <div class="col"><div class="p-1 border border-warning rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('VIP 16, AC', 'vip', 'first')"><strong style="font-size:0.75rem;">VIP 16 AC</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
-                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 20, AC', 'standard', 'first')"><strong style="font-size:0.75rem;">STD 20 AC</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
-                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 19, AC', 'standard', 'first')"><strong style="font-size:0.75rem;">STD 19 AC</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
-                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 18', 'standard', 'first')"><strong style="font-size:0.75rem;">STD 18</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
-                                                <div class="col"><div class="p-1 border rounded bg-success-subtle cursor-pointer" onclick="openRoomActionModal('STANDARD 17', 'standard', 'first')"><strong style="font-size:0.75rem;">STD 17</strong><br><span class="badge bg-success" style="font-size:0.6rem;">Free</span></div></div>
+                                                <div class="col">
+                                                    <div class="p-1 border border-warning rounded bg-danger-subtle cursor-pointer"
+                                                        onclick="openRoomActionModal('VIP 13, AC', 'vip', 'first')">
+                                                        <strong style="font-size:0.75rem;">VIP 13 AC</strong><br><span
+                                                            class="badge bg-danger" style="font-size:0.6rem;">Dr.
+                                                            Verma</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="p-1 border border-warning rounded bg-danger-subtle cursor-pointer"
+                                                        onclick="openRoomActionModal('VIP 14, AC', 'vip', 'first')">
+                                                        <strong style="font-size:0.75rem;">VIP 14 AC</strong><br><span
+                                                            class="badge bg-danger" style="font-size:0.6rem;">IAS
+                                                            Officer</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="p-1 border border-warning rounded bg-warning-subtle cursor-pointer"
+                                                        onclick="openRoomActionModal('VIP 15, AC', 'vip', 'first')">
+                                                        <strong style="font-size:0.75rem;">VIP 15 AC</strong><br><span
+                                                            class="badge bg-warning text-dark"
+                                                            style="font-size:0.6rem;">Reserved</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="p-1 border border-warning rounded bg-success-subtle cursor-pointer"
+                                                        onclick="openRoomActionModal('VIP 16, AC', 'vip', 'first')">
+                                                        <strong style="font-size:0.75rem;">VIP 16 AC</strong><br><span
+                                                            class="badge bg-success"
+                                                            style="font-size:0.6rem;">Free</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="p-1 border rounded bg-success-subtle cursor-pointer"
+                                                        onclick="openRoomActionModal('STANDARD 20, AC', 'standard', 'first')">
+                                                        <strong style="font-size:0.75rem;">STD 20 AC</strong><br><span
+                                                            class="badge bg-success"
+                                                            style="font-size:0.6rem;">Free</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="p-1 border rounded bg-success-subtle cursor-pointer"
+                                                        onclick="openRoomActionModal('STANDARD 19, AC', 'standard', 'first')">
+                                                        <strong style="font-size:0.75rem;">STD 19 AC</strong><br><span
+                                                            class="badge bg-success"
+                                                            style="font-size:0.6rem;">Free</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="p-1 border rounded bg-success-subtle cursor-pointer"
+                                                        onclick="openRoomActionModal('STANDARD 18', 'standard', 'first')">
+                                                        <strong style="font-size:0.75rem;">STD 18</strong><br><span
+                                                            class="badge bg-success"
+                                                            style="font-size:0.6rem;">Free</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="p-1 border rounded bg-success-subtle cursor-pointer"
+                                                        onclick="openRoomActionModal('STANDARD 17', 'standard', 'first')">
+                                                        <strong style="font-size:0.75rem;">STD 17</strong><br><span
+                                                            class="badge bg-success"
+                                                            style="font-size:0.6rem;">Free</span></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -980,7 +1298,8 @@
                             <div>
                                 <div class="d-flex align-items-center mb-2">
                                     <span class="badge bg-dark me-2">GROUND FLOOR</span>
-                                    <span class="text-muted small">Entry Porch &bull; Main Event Hall &bull; Office &bull; Dining & Mess &bull; Dormitory 1 (4-Bed) &bull; Staff</span>
+                                    <span class="text-muted small">Entry Porch &bull; Main Event Hall &bull; Office
+                                        &bull; Dining & Mess &bull; Dormitory 1 (4-Bed) &bull; Staff</span>
                                 </div>
                                 <div class="blueprint-corridor-box p-3 bg-white border rounded shadow-sm">
                                     <div class="row g-2 text-center align-items-stretch">
@@ -991,38 +1310,55 @@
                                             </div>
                                         </div>
                                         <div class="col-md-2 col-4">
-                                            <div class="p-2 border rounded bg-warning-subtle h-100 cursor-pointer" onclick="openRoomActionModal('MAIN HALL', 'facility', 'ground')">
-                                                <div class="fw-bold text-dark"><i class="bi bi-building me-1"></i>MAIN HALL</div>
-                                                <small class="text-muted" style="font-size:0.7rem;">Conferences/Marriages</small>
-                                                <span class="badge bg-warning text-dark mt-1" style="font-size:0.65rem;">Council Meet</span>
+                                            <div class="p-2 border rounded bg-warning-subtle h-100 cursor-pointer"
+                                                onclick="openRoomActionModal('MAIN HALL', 'facility', 'ground')">
+                                                <div class="fw-bold text-dark"><i class="bi bi-building me-1"></i>MAIN
+                                                    HALL</div>
+                                                <small class="text-muted"
+                                                    style="font-size:0.7rem;">Conferences/Marriages</small>
+                                                <span class="badge bg-warning text-dark mt-1"
+                                                    style="font-size:0.65rem;">Council Meet</span>
                                             </div>
                                         </div>
                                         <div class="col-md-2 col-4">
                                             <div class="p-2 border rounded bg-primary-subtle h-100">
-                                                <div class="fw-bold text-primary"><i class="bi bi-briefcase me-1"></i>OFFICE</div>
-                                                <small class="text-muted" style="font-size:0.7rem;">Estate Caretaker</small>
-                                                <span class="badge bg-primary text-white mt-1" style="font-size:0.65rem;">Active Desk</span>
+                                                <div class="fw-bold text-primary"><i
+                                                        class="bi bi-briefcase me-1"></i>OFFICE</div>
+                                                <small class="text-muted" style="font-size:0.7rem;">Estate
+                                                    Caretaker</small>
+                                                <span class="badge bg-primary text-white mt-1"
+                                                    style="font-size:0.65rem;">Active Desk</span>
                                             </div>
                                         </div>
                                         <div class="col-md-2 col-6">
-                                            <div class="p-2 border rounded bg-success-subtle h-100 cursor-pointer" onclick="openRoomActionModal('DINING & MESS', 'facility', 'ground')">
-                                                <div class="fw-bold text-success"><i class="bi bi-cup-hot me-1"></i>DINING &amp; MESS</div>
-                                                <small class="text-muted" style="font-size:0.7rem;">Kitchen / 60 Seats</small>
-                                                <span class="badge bg-success text-white mt-1" style="font-size:0.65rem;">Catering On</span>
+                                            <div class="p-2 border rounded bg-success-subtle h-100 cursor-pointer"
+                                                onclick="openRoomActionModal('DINING & MESS', 'facility', 'ground')">
+                                                <div class="fw-bold text-success"><i
+                                                        class="bi bi-cup-hot me-1"></i>DINING &amp; MESS</div>
+                                                <small class="text-muted" style="font-size:0.7rem;">Kitchen / 60
+                                                    Seats</small>
+                                                <span class="badge bg-success text-white mt-1"
+                                                    style="font-size:0.65rem;">Catering On</span>
                                             </div>
                                         </div>
                                         <div class="col-md-2 col-6">
-                                            <div class="p-2 border border-success border-2 rounded bg-danger-subtle h-100 cursor-pointer" onclick="openRoomActionModal('DORMITORY 1', 'dormitory', 'ground')">
-                                                <div class="fw-bold text-success"><i class="bi bi-people me-1"></i>DORMITORY 1</div>
-                                                <small class="text-muted" style="font-size:0.7rem;">4-Bedded Capacity</small>
-                                                <span class="badge bg-danger text-white mt-1" style="font-size:0.65rem;">4 Beds Occupied</span>
+                                            <div class="p-2 border border-success border-2 rounded bg-danger-subtle h-100 cursor-pointer"
+                                                onclick="openRoomActionModal('DORMITORY 1', 'dormitory', 'ground')">
+                                                <div class="fw-bold text-success"><i
+                                                        class="bi bi-people me-1"></i>DORMITORY 1</div>
+                                                <small class="text-muted" style="font-size:0.7rem;">4-Bedded
+                                                    Capacity</small>
+                                                <span class="badge bg-danger text-white mt-1"
+                                                    style="font-size:0.65rem;">4 Beds Occupied</span>
                                             </div>
                                         </div>
                                         <div class="col-md-2 col-12">
                                             <div class="p-2 border rounded bg-secondary-subtle h-100">
                                                 <div class="fw-bold">STAFF &amp; STORES</div>
-                                                <small class="text-muted" style="font-size:0.7rem;">3 Stores &bull; Staff</small>
-                                                <span class="badge bg-secondary text-white mt-1" style="font-size:0.65rem;">Service Area</span>
+                                                <small class="text-muted" style="font-size:0.7rem;">3 Stores &bull;
+                                                    Staff</small>
+                                                <span class="badge bg-secondary text-white mt-1"
+                                                    style="font-size:0.65rem;">Service Area</span>
                                             </div>
                                         </div>
                                     </div>
@@ -1037,7 +1373,8 @@
                     <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
                         <div>
                             <h3 class="h4 fw-bold text-navy mb-0">Multi-Tier Institutional Approvals Queue</h3>
-                            <small class="text-muted">Digital routing docket governed by University Guest House Regulations &amp; Jurisdiction Rules</small>
+                            <small class="text-muted">Digital routing docket governed by University Guest House
+                                Regulations &amp; Jurisdiction Rules</small>
                         </div>
                     </div>
 
@@ -1045,15 +1382,20 @@
                     <div class="card border-0 shadow-sm mb-3 bg-light">
                         <div class="card-body p-2 d-flex flex-wrap justify-content-between align-items-center gap-2">
                             <div class="btn-group" role="group" aria-label="Docket Selector">
-                                <button type="button" class="btn btn-outline-danger btn-sm fw-bold active" id="btnDocketVvip" onclick="switchWorkflowDocket('GH-2026-10-0003')">
-                                    <i class="bi bi-crown me-1"></i> Docket 1: VVIP Suite #201 (Bhutan Delegation) <span class="badge bg-danger ms-1">VVIP Set</span>
+                                <button type="button" class="btn btn-outline-danger btn-sm fw-bold active"
+                                    id="btnDocketVvip" onclick="switchWorkflowDocket('GH-2026-10-0003')">
+                                    <i class="bi bi-crown me-1"></i> Docket 1: VVIP Suite #201 (Bhutan Delegation) <span
+                                        class="badge bg-danger ms-1">VVIP Set</span>
                                 </button>
-                                <button type="button" class="btn btn-outline-primary btn-sm fw-bold" id="btnDocketEstate" onclick="switchWorkflowDocket('GH-2026-10-0005')">
-                                    <i class="bi bi-building me-1"></i> Docket 2: VIP Suite #102 (ICAR ADG) <span class="badge bg-primary ms-1">Estate Office</span>
+                                <button type="button" class="btn btn-outline-primary btn-sm fw-bold"
+                                    id="btnDocketEstate" onclick="switchWorkflowDocket('GH-2026-10-0005')">
+                                    <i class="bi bi-building me-1"></i> Docket 2: VIP Suite #102 (ICAR ADG) <span
+                                        class="badge bg-primary ms-1">Estate Office</span>
                                 </button>
                             </div>
                             <div id="workflowDocketAuthorityBadge">
-                                <span class="badge bg-danger px-3 py-2"><i class="bi bi-crown me-1"></i>Authority: Vice-Chancellor Secretariat Only</span>
+                                <span class="badge bg-danger px-3 py-2"><i class="bi bi-crown me-1"></i>Authority:
+                                    Vice-Chancellor Secretariat Only</span>
                             </div>
                         </div>
                     </div>
@@ -1069,17 +1411,20 @@
                     <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
                         <div>
                             <h3 class="h4 fw-bold text-navy mb-0">Care-Taker Front Desk & Key Issuance</h3>
-                            <small class="text-muted">Guest arrival verification, government ID capture, and physical key handover</small>
+                            <small class="text-muted">Guest arrival verification, government ID capture, and physical
+                                key handover</small>
                         </div>
                     </div>
 
                     <div class="card border-0 shadow-sm mb-4">
                         <div class="card-body p-4">
-                            <h5 class="fw-bold mb-3"><i class="bi bi-qr-code-scan me-2 text-primary"></i>Rapid Arrival Processing</h5>
+                            <h5 class="fw-bold mb-3"><i class="bi bi-qr-code-scan me-2 text-primary"></i>Rapid Arrival
+                                Processing</h5>
                             <div class="row g-3 align-items-end">
                                 <div class="col-md-5">
                                     <label class="form-label fw-semibold">Scan QR or Enter Booking Reference</label>
-                                    <input type="text" class="form-control form-control-lg" placeholder="GH-2026-10-0002" value="GH-2026-10-0002">
+                                    <input type="text" class="form-control form-control-lg"
+                                        placeholder="GH-2026-10-0002" value="GH-2026-10-0002">
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label fw-semibold">Verify Government Photo ID</label>
@@ -1090,7 +1435,8 @@
                                     </select>
                                 </div>
                                 <div class="col-md-3">
-                                    <button class="btn btn-primary btn-lg w-100 fw-semibold" onclick="quickCheckIn('GH-2026-10-0002')">
+                                    <button class="btn btn-primary btn-lg w-100 fw-semibold"
+                                        onclick="quickCheckIn('GH-2026-10-0002')">
                                         <i class="bi bi-key-fill me-1"></i> Check In Guest
                                     </button>
                                 </div>
@@ -1104,7 +1450,8 @@
                     <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
                         <div>
                             <h3 class="h4 fw-bold text-navy mb-0">Finance, Invoicing & GST Settlement</h3>
-                            <small class="text-muted">Comptroller division accounting ledger and cashier receipt generation</small>
+                            <small class="text-muted">Comptroller division accounting ledger and cashier receipt
+                                generation</small>
                         </div>
                         <button class="btn btn-sm btn-outline-primary" onclick="showReceiptModal()">
                             <i class="bi bi-printer me-1"></i> View Sample Official Receipt
@@ -1133,23 +1480,29 @@
                                             <td class="fw-bold">INV-2026-0001</td>
                                             <td>GH-2026-10-0001</td>
                                             <td>Dr. A. K. Verma</td>
-                                            <td><span class="badge bg-info text-dark">1(i) Official (VIP Set)</span></td>
+                                            <td><span class="badge bg-info text-dark">1(i) Official (VIP Set)</span>
+                                            </td>
                                             <td>&#8377;4,500.00</td>
                                             <td>&#8377;540.00</td>
                                             <td class="fw-bold text-success">&#8377;5,040.00</td>
                                             <td><span class="badge bg-light text-dark border">POS Card</span></td>
-                                            <td><button class="btn btn-sm btn-outline-secondary" onclick="showReceiptModal()"><i class="bi bi-printer"></i></button></td>
+                                            <td><button class="btn btn-sm btn-outline-secondary"
+                                                    onclick="showReceiptModal()"><i class="bi bi-printer"></i></button>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td class="fw-bold">INV-2026-0002</td>
                                             <td>GH-2026-09-0118</td>
                                             <td>Dr. P. C. Sharma</td>
-                                            <td><span class="badge bg-warning text-dark">9. Private Person (VVIP Set)</span></td>
+                                            <td><span class="badge bg-warning text-dark">9. Private Person (VVIP
+                                                    Set)</span></td>
                                             <td>&#8377;9,000.00</td>
                                             <td>&#8377;1,080.00</td>
                                             <td class="fw-bold text-success">&#8377;10,080.00</td>
                                             <td><span class="badge bg-light text-dark border">UPI / QR</span></td>
-                                            <td><button class="btn btn-sm btn-outline-secondary" onclick="showReceiptModal()"><i class="bi bi-printer"></i></button></td>
+                                            <td><button class="btn btn-sm btn-outline-secondary"
+                                                    onclick="showReceiptModal()"><i class="bi bi-printer"></i></button>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -1163,7 +1516,8 @@
                     <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
                         <div>
                             <h3 class="h4 fw-bold text-navy mb-0">Public Guest House Request Tracker</h3>
-                            <small class="text-muted">Track application status in real-time without institutional sign-in</small>
+                            <small class="text-muted">Track application status in real-time without institutional
+                                sign-in</small>
                         </div>
                     </div>
 
@@ -1173,10 +1527,12 @@
                                 <div class="card-body p-4 text-center">
                                     <i class="bi bi-geo-alt-fill text-warning fs-1"></i>
                                     <h4 class="fw-bold mt-2">Track Your Reservation Status</h4>
-                                    <p class="text-muted small">Enter your 14-character Booking Reference or Registered 10-digit Mobile Number</p>
+                                    <p class="text-muted small">Enter your 14-character Booking Reference or Registered
+                                        10-digit Mobile Number</p>
 
                                     <div class="input-group input-group-lg my-4">
-                                        <input type="text" id="trackInput" class="form-control" placeholder="e.g. GH-2026-10-0001 or 9816012345" value="GH-2026-10-0001">
+                                        <input type="text" id="trackInput" class="form-control"
+                                            placeholder="e.g. GH-2026-10-0001 or 9816012345" value="GH-2026-10-0001">
                                         <button class="btn btn-primary px-4" onclick="performTracking()">
                                             <i class="bi bi-search me-1"></i> Track Now
                                         </button>
@@ -1186,38 +1542,47 @@
 
                             <!-- Tracking Result Card -->
                             <div class="card border-0 shadow-sm" id="trackingResult">
-                                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                                    <h5 class="fw-bold mb-0">Dossier: <span class="text-primary">GH-2026-10-0001</span></h5>
+                                <div
+                                    class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                                    <h5 class="fw-bold mb-0">Dossier: <span class="text-primary">GH-2026-10-0001</span>
+                                    </h5>
                                     <span class="badge bg-success px-3 py-2">CHECKED IN (ROOM #101)</span>
                                 </div>
                                 <div class="card-body p-4">
                                     <div class="row mb-3">
                                         <div class="col-sm-6 mb-2"><strong>Guest:</strong> Dr. A. K. Verma</div>
-                                        <div class="col-sm-6 mb-2"><strong>Facility:</strong> Estate Office Wing &bull; Main Guest House</div>
+                                        <div class="col-sm-6 mb-2"><strong>Facility:</strong> Estate Office Wing &bull;
+                                            Main Guest House</div>
                                         <div class="col-sm-6 mb-2"><strong>Check-In:</strong> 28/10/2026, 12:00 PM</div>
-                                        <div class="col-sm-6 mb-2"><strong>Check-Out:</strong> 31/10/2026, 11:00 AM</div>
+                                        <div class="col-sm-6 mb-2"><strong>Check-Out:</strong> 31/10/2026, 11:00 AM
+                                        </div>
                                     </div>
 
                                     <h6 class="fw-bold mt-4 mb-3">Lifecycle Progress Trail:</h6>
                                     <ul class="list-group list-group-flush border-top border-bottom">
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <div><i class="bi bi-check-circle-fill text-success me-2"></i> Requisition Submitted online by Faculty</div>
+                                            <div><i class="bi bi-check-circle-fill text-success me-2"></i> Requisition
+                                                Submitted online by Faculty</div>
                                             <small class="text-muted">26/10/2026, 09:30 AM</small>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <div><i class="bi bi-check-circle-fill text-success me-2"></i> Endorsed by Dean, College of Forestry</div>
+                                            <div><i class="bi bi-check-circle-fill text-success me-2"></i> Endorsed by
+                                                Dean, College of Forestry</div>
                                             <small class="text-muted">26/10/2026, 11:15 AM</small>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <div><i class="bi bi-check-circle-fill text-success me-2"></i> Approved by Estate Officer &amp; Registrar</div>
+                                            <div><i class="bi bi-check-circle-fill text-success me-2"></i> Approved by
+                                                Estate Officer &amp; Registrar</div>
                                             <small class="text-muted">26/10/2026, 02:40 PM</small>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <div><i class="bi bi-check-circle-fill text-success me-2"></i> Room Allocated: VIP Suite #101</div>
+                                            <div><i class="bi bi-check-circle-fill text-success me-2"></i> Room
+                                                Allocated: VIP Suite #101</div>
                                             <small class="text-muted">27/10/2026, 10:00 AM</small>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <div><i class="bi bi-check-circle-fill text-success me-2"></i> Front Desk Check-in & Key Handover Completed</div>
+                                            <div><i class="bi bi-check-circle-fill text-success me-2"></i> Front Desk
+                                                Check-in & Key Handover Completed</div>
                                             <small class="text-muted">28/10/2026, 12:05 PM</small>
                                         </li>
                                     </ul>
@@ -1232,15 +1597,18 @@
                     <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
                         <div>
                             <h3 class="h4 fw-bold text-navy mb-0">Master Institutional Booking Register</h3>
-                            <small class="text-muted">Complete historical archive of all university guest house stays</small>
+                            <small class="text-muted">Complete historical archive of all university guest house
+                                stays</small>
                         </div>
                     </div>
                     <div class="card border-0 shadow-sm">
                         <div class="card-body p-4 text-center text-muted">
                             <i class="bi bi-archive fs-1 text-secondary mb-2"></i>
                             <h5>Searchable Archive (2026 - Present)</h5>
-                            <p class="small">Use the dashboard and public tracker to query live individual records, or export full audit registers.</p>
-                            <button class="btn btn-outline-primary" onclick="showTab('dashboard')">Return to Active Dashboard</button>
+                            <p class="small">Use the dashboard and public tracker to query live individual records, or
+                                export full audit registers.</p>
+                            <button class="btn btn-outline-primary" onclick="showTab('dashboard')">Return to Active
+                                Dashboard</button>
                         </div>
                     </div>
                 </div>
@@ -1254,13 +1622,16 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
                 <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title font-serif"><i class="bi bi-receipt me-2"></i>Official Cashier Bill & Receipt</h5>
+                    <h5 class="modal-title font-serif"><i class="bi bi-receipt me-2"></i>Official Cashier Bill & Receipt
+                    </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4 bg-white" id="printableReceipt">
                     <div class="text-center mb-3">
-                        <h6 class="fw-bold mb-0 text-navy font-serif">DR. Y.S. PARMAR UNIVERSITY OF HORTICULTURE & FORESTRY</h6>
-                        <small class="text-muted">Estate Organization &bull; University Guest House, Nauni, Solan (H.P.)</small>
+                        <h6 class="fw-bold mb-0 text-navy font-serif">DR. Y.S. PARMAR UNIVERSITY OF HORTICULTURE &
+                            FORESTRY</h6>
+                        <small class="text-muted">Estate Organization &bull; University Guest House, Nauni, Solan
+                            (H.P.)</small>
                         <div class="text-danger fw-bold small mt-1">Ref: Notification No. UHF/EO-55/2025/- 1615-40</div>
                     </div>
                     <hr>
@@ -1269,17 +1640,34 @@
                         <div class="col-6 text-end"><strong>Date:</strong> 28/10/2026</div>
                         <div class="col-6"><strong>Guest:</strong> Dr. A. K. Verma</div>
                         <div class="col-6 text-end"><strong>Room:</strong> VIP Suite #101</div>
-                        <div class="col-12 mt-1"><strong>Tariff Category:</strong> 1(i) HP/Univ/ICAR Official Visit</div>
+                        <div class="col-12 mt-1"><strong>Tariff Category:</strong> 1(i) HP/Univ/ICAR Official Visit
+                        </div>
                     </div>
 
                     <table class="table table-sm table-bordered small">
                         <thead class="table-light">
-                            <tr><th>Description</th><th class="text-end">Nights</th><th class="text-end">Amount (INR)</th></tr>
+                            <tr>
+                                <th>Description</th>
+                                <th class="text-end">Nights</th>
+                                <th class="text-end">Amount (INR)</th>
+                            </tr>
                         </thead>
                         <tbody>
-                            <tr><td>VIP Set Stay Charges (&#8377;1,500/night)</td><td class="text-end">3</td><td class="text-end">&#8377;4,500.00</td></tr>
-                            <tr><td>GST @ 12% (CGST 6% + SGST 6%)</td><td class="text-end">&mdash;</td><td class="text-end">&#8377;540.00</td></tr>
-                            <tr class="table-light fw-bold"><td>Total Reconciled</td><td class="text-end">3</td><td class="text-end">&#8377;5,040.00</td></tr>
+                            <tr>
+                                <td>VIP Set Stay Charges (&#8377;1,500/night)</td>
+                                <td class="text-end">3</td>
+                                <td class="text-end">&#8377;4,500.00</td>
+                            </tr>
+                            <tr>
+                                <td>GST @ 12% (CGST 6% + SGST 6%)</td>
+                                <td class="text-end">&mdash;</td>
+                                <td class="text-end">&#8377;540.00</td>
+                            </tr>
+                            <tr class="table-light fw-bold">
+                                <td>Total Reconciled</td>
+                                <td class="text-end">3</td>
+                                <td class="text-end">&#8377;5,040.00</td>
+                            </tr>
                         </tbody>
                     </table>
 
@@ -1293,7 +1681,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="window.print()"><i class="bi bi-printer me-1"></i> Print Receipt</button>
+                    <button type="button" class="btn btn-primary" onclick="window.print()"><i
+                            class="bi bi-printer me-1"></i> Print Receipt</button>
                 </div>
             </div>
         </div>
@@ -1311,15 +1700,19 @@
                     <form id="addCategoryForm" onsubmit="handleAddCategorySubmit(event)">
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Serial Number</label>
-                            <input type="text" class="form-control" id="newCatSrNo" placeholder="e.g. 12 or 4(iii)" required>
+                            <input type="text" class="form-control" id="newCatSrNo" placeholder="e.g. 12 or 4(iii)"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Category Title &amp; Eligibility Scope</label>
-                            <textarea class="form-control" id="newCatTitle" rows="3" placeholder="Full legal text defining this class of dignitaries / visitors" required></textarea>
+                            <textarea class="form-control" id="newCatTitle" rows="3"
+                                placeholder="Full legal text defining this class of dignitaries / visitors"
+                                required></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Short Label (for Dropdowns)</label>
-                            <input type="text" class="form-control" id="newCatShort" placeholder="e.g. State Corporation Executives" required>
+                            <input type="text" class="form-control" id="newCatShort"
+                                placeholder="e.g. State Corporation Executives" required>
                         </div>
                         <div class="row g-2 mb-3">
                             <div class="col-4">
@@ -1337,7 +1730,8 @@
                         </div>
                         <div class="d-flex justify-content-end gap-2">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-success fw-bold"><i class="bi bi-check2 me-1"></i> Add Category</button>
+                            <button type="submit" class="btn btn-success fw-bold"><i class="bi bi-check2 me-1"></i> Add
+                                Category</button>
                         </div>
                     </form>
                 </div>
@@ -1345,52 +1739,66 @@
         </div>
     </div>
 
-                <!-- Institutional Account Access & Login Modal -->
-    <div class="modal fade" id="accountLoginModal" tabindex="-1" aria-labelledby="accountLoginModalLabel" aria-hidden="true">
+    <!-- Institutional Account Access & Login Modal -->
+    <div class="modal fade" id="accountLoginModal" tabindex="-1" aria-labelledby="accountLoginModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" style="max-width: 580px;">
             <div class="modal-content border-0 shadow-lg">
                 <div class="modal-header bg-dark text-white p-3">
                     <div class="d-flex align-items-center">
-                        <img src="university_logo.jpg" alt="University Logo" class="rounded-circle bg-white p-1 me-2" style="width: 36px; height: 36px; object-fit: contain;">
+                        <img src="university_logo.jpg" alt="University Logo" class="rounded-circle bg-white p-1 me-2"
+                            style="width: 36px; height: 36px; object-fit: contain;">
                         <div>
-                            <h6 class="modal-title font-serif fw-bold mb-0 text-white" id="accountLoginModalLabel">Institutional Account Access Portal</h6>
-                            <small class="text-warning" style="font-size: 0.72rem;">Dr. Y.S. Parmar UHF Nauni &bull; Central Guest House System</small>
+                            <h6 class="modal-title font-serif fw-bold mb-0 text-white" id="accountLoginModalLabel">
+                                Institutional Account Access Portal</h6>
+                            <small class="text-warning" style="font-size: 0.72rem;">Dr. Y.S. Parmar UHF Nauni &bull;
+                                Central Guest House System</small>
                         </div>
                     </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4 bg-light">
                     <p class="text-muted small text-center mb-3">
-                        Please select your authorized administrative persona to access university guest house dossiers, room rack, and approval queues:
+                        Please select your authorized administrative persona to access university guest house dossiers,
+                        room rack, and approval queues:
                     </p>
 
                     <!-- Two Primary Account Selection Cards -->
                     <div class="row g-3 mb-3">
                         <!-- Account 1: Estate Office -->
                         <div class="col-12">
-                            <div class="card border border-warning shadow-sm p-3 bg-white cursor-pointer" onclick="performAccountLogin('estate_admin')" style="transition: all 0.2s ease;">
+                            <div class="card border border-warning shadow-sm p-3 bg-white cursor-pointer"
+                                onclick="performAccountLogin('estate_admin')" style="transition: all 0.2s ease;">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div class="d-flex align-items-center">
                                         <div class="bg-warning bg-opacity-25 text-dark p-2 rounded-circle me-3 fs-4">
                                             <i class="bi bi-building"></i>
                                         </div>
                                         <div>
-                                            <h6 class="fw-bold text-dark mb-0">Estate Office (Administrative Control)</h6>
-                                            <div class="small text-muted"><strong>Officer:</strong> Dr. Dev Raj &bull; <span class="text-primary">estate.officer@yspuniversity.ac.in</span></div>
-                                            <span class="badge bg-warning text-dark mt-1">Handles All Sets except VVIP</span>
+                                            <h6 class="fw-bold text-dark mb-0">Estate Office (Administrative Control)
+                                            </h6>
+                                            <div class="small text-muted"><strong>Officer:</strong> Dr. Dev Raj &bull;
+                                                <span class="text-primary">estate.officer@yspuniversity.ac.in</span>
+                                            </div>
+                                            <span class="badge bg-warning text-dark mt-1">Handles All Sets except
+                                                VVIP</span>
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-sm btn-warning text-dark fw-bold px-3">Sign In &rarr;</button>
+                                    <button type="button" class="btn btn-sm btn-warning text-dark fw-bold px-3">Sign In
+                                        &rarr;</button>
                                 </div>
                                 <small class="text-muted d-block mt-2 ps-1" style="font-size: 0.75rem;">
-                                    &bull; Direct management of VIP Suites, Ordinary rooms, Dormitories, Dining Hall, and Notification 1615-40 Tariffs. View-only visibility for VVIP Suites.
+                                    &bull; Direct management of VIP Suites, Ordinary rooms, Dormitories, Dining Hall,
+                                    and Notification 1615-40 Tariffs. View-only visibility for VVIP Suites.
                                 </small>
                             </div>
                         </div>
 
                         <!-- Account 2: Vice-Chancellor Secretariat -->
                         <div class="col-12">
-                            <div class="card border border-danger shadow-sm p-3 bg-white cursor-pointer" onclick="performAccountLogin('vc_secretariat')" style="transition: all 0.2s ease;">
+                            <div class="card border border-danger shadow-sm p-3 bg-white cursor-pointer"
+                                onclick="performAccountLogin('vc_secretariat')" style="transition: all 0.2s ease;">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div class="d-flex align-items-center">
                                         <div class="bg-danger bg-opacity-25 text-danger p-2 rounded-circle me-3 fs-4">
@@ -1398,14 +1806,18 @@
                                         </div>
                                         <div>
                                             <h6 class="fw-bold text-danger mb-0">Vice-Chancellor Secretariat</h6>
-                                            <div class="small text-muted"><strong>Officer:</strong> Special Secretary to VC &bull; <span class="text-danger">vc.secretariat@yspuniversity.ac.in</span></div>
+                                            <div class="small text-muted"><strong>Officer:</strong> Special Secretary to
+                                                VC &bull; <span
+                                                    class="text-danger">vc.secretariat@yspuniversity.ac.in</span></div>
                                             <span class="badge bg-danger mt-1">VVIP Requests Only</span>
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-sm btn-danger fw-bold text-white px-3">Sign In &rarr;</button>
+                                    <button type="button" class="btn btn-sm btn-danger fw-bold text-white px-3">Sign In
+                                        &rarr;</button>
                                 </div>
                                 <small class="text-muted d-block mt-2 ps-1" style="font-size: 0.75rem;">
-                                    &bull; Apex sanctioning authority with exclusive jurisdiction to review, approve, and allocate VVIP Presidential Suites. Routine sets are delegated to Estate Office.
+                                    &bull; Apex sanctioning authority with exclusive jurisdiction to review, approve,
+                                    and allocate VVIP Presidential Suites. Routine sets are delegated to Estate Office.
                                 </small>
                             </div>
                         </div>
@@ -1419,15 +1831,19 @@
                         </div>
                         <form onsubmit="handleManualLoginSubmit(event)">
                             <div class="mb-2">
-                                <input type="email" class="form-control form-control-sm" id="manualLoginEmail" placeholder="Institutional Email (@yspuniversity.ac.in)" value="estate.officer@yspuniversity.ac.in">
+                                <input type="email" class="form-control form-control-sm" id="manualLoginEmail"
+                                    placeholder="Institutional Email (@yspuniversity.ac.in)"
+                                    value="estate.officer@yspuniversity.ac.in">
                             </div>
                             <div class="mb-2">
-                                <input type="password" class="form-control form-control-sm" id="manualLoginPass" value="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" placeholder="Password">
+                                <input type="password" class="form-control form-control-sm" id="manualLoginPass"
+                                    value="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" placeholder="Password">
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="rememberMe" checked>
-                                    <label class="form-check-label small text-muted" for="rememberMe">Remember active session</label>
+                                    <label class="form-check-label small text-muted" for="rememberMe">Remember active
+                                        session</label>
                                 </div>
                                 <button type="submit" class="btn btn-sm btn-primary fw-bold px-3">
                                     <i class="bi bi-box-arrow-in-right me-1"></i> Log In to Portal
@@ -1437,7 +1853,8 @@
                     </div>
                 </div>
                 <div class="modal-footer p-2 bg-white d-flex justify-content-between">
-                    <small class="text-muted" style="font-size: 0.7rem;"><i class="bi bi-shield-lock me-1"></i> Dr. YSP UHF Nauni Security Gateway</small>
+                    <small class="text-muted" style="font-size: 0.7rem;"><i class="bi bi-shield-lock me-1"></i> Dr. YSP
+                        UHF Nauni Security Gateway</small>
                     <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -1449,7 +1866,8 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
                 <div class="modal-header bg-dark text-white" id="roomActionHeader">
-                    <h5 class="modal-title font-serif" id="roomActionTitle"><i class="bi bi-door-open me-2 text-warning"></i>Room Dossier &amp; Status</h5>
+                    <h5 class="modal-title font-serif" id="roomActionTitle"><i
+                            class="bi bi-door-open me-2 text-warning"></i>Room Dossier &amp; Status</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4 bg-light" id="roomActionBody">
@@ -1467,14 +1885,18 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content border-0 shadow">
                 <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title font-serif"><i class="bi bi-crown text-warning me-2"></i>VVIP Suite Dossier (Estate Office View-Only Inspection)</h5>
+                    <h5 class="modal-title font-serif"><i class="bi bi-crown text-warning me-2"></i>VVIP Suite Dossier
+                        (Estate Office View-Only Inspection)</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4 bg-light">
                     <div class="alert alert-warning border-warning d-flex align-items-center py-2 px-3 mb-3">
                         <i class="bi bi-shield-lock-fill text-warning fs-3 me-3"></i>
                         <div class="small">
-                            <strong>Estate Office Visibility Notice:</strong> Per Dr. YSP UHF Guest House Regulations, Estate Office has <strong>transparent view-only access</strong> for logistical and housekeeping readiness (linen, protocol, VIP catering). Final approval authority is strictly vested in the <strong>Vice-Chancellor Secretariat</strong>.
+                            <strong>Estate Office Visibility Notice:</strong> Per Dr. YSP UHF Guest House Regulations,
+                            Estate Office has <strong>transparent view-only access</strong> for logistical and
+                            housekeeping readiness (linen, protocol, VIP catering). Final approval authority is strictly
+                            vested in the <strong>Vice-Chancellor Secretariat</strong>.
                         </div>
                     </div>
 
@@ -1482,33 +1904,46 @@
                         <div class="d-flex justify-content-between align-items-start border-bottom pb-2 mb-2">
                             <div>
                                 <h5 class="fw-bold text-navy mb-0" id="vvipModalRef">GH-2026-10-0003</h5>
-                                <small class="text-muted">Accommodation Wing: Estate Office Wing &bull; Main Guest House</small>
+                                <small class="text-muted">Accommodation Wing: Estate Office Wing &bull; Main Guest
+                                    House</small>
                             </div>
-                            <span class="badge bg-danger px-3 py-2"><i class="bi bi-crown me-1"></i>VVIP Presidential Suite #201</span>
+                            <span class="badge bg-danger px-3 py-2"><i class="bi bi-crown me-1"></i>VVIP Presidential
+                                Suite #201</span>
                         </div>
                         <div class="row g-3 small mt-1">
-                            <div class="col-md-6"><strong>Primary Guest:</strong> <span id="vvipModalGuest">Sh. Tenzin Norbu & Delegation</span></div>
-                            <div class="col-md-6"><strong>Official Designation:</strong> <span id="vvipModalDesig">Agricultural Officer, Thimphu, Bhutan</span></div>
-                            <div class="col-md-6"><strong>Dates & Stay:</strong> <span id="vvipModalDates">01/11/2026 to 04/11/2026 (3 Nights)</span></div>
-                            <div class="col-md-6"><strong>Notification Category:</strong> <span id="vvipModalCat">5. Educational Tour & Training from Nepal & Bhutan</span></div>
-                            <div class="col-md-6"><strong>Sponsoring Department:</strong> <span>Prof. S. K. Bhardwaj, Dept of Silviculture</span></div>
-                            <div class="col-md-6"><strong>Estimated Tariff:</strong> <span class="fw-bold text-success">&#8377;3,500/night (Total: &#8377;10,500 + GST)</span></div>
+                            <div class="col-md-6"><strong>Primary Guest:</strong> <span id="vvipModalGuest">Sh. Tenzin
+                                    Norbu & Delegation</span></div>
+                            <div class="col-md-6"><strong>Official Designation:</strong> <span
+                                    id="vvipModalDesig">Agricultural Officer, Thimphu, Bhutan</span></div>
+                            <div class="col-md-6"><strong>Dates & Stay:</strong> <span id="vvipModalDates">01/11/2026 to
+                                    04/11/2026 (3 Nights)</span></div>
+                            <div class="col-md-6"><strong>Notification Category:</strong> <span id="vvipModalCat">5.
+                                    Educational Tour & Training from Nepal & Bhutan</span></div>
+                            <div class="col-md-6"><strong>Sponsoring Department:</strong> <span>Prof. S. K. Bhardwaj,
+                                    Dept of Silviculture</span></div>
+                            <div class="col-md-6"><strong>Estimated Tariff:</strong> <span
+                                    class="fw-bold text-success">&#8377;3,500/night (Total: &#8377;10,500 + GST)</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="card border-0 shadow-sm p-3 bg-white">
-                        <h6 class="fw-bold text-navy mb-2"><i class="bi bi-clipboard-check text-primary me-2"></i>Estate Office Logistics Readiness Checklist:</h6>
+                        <h6 class="fw-bold text-navy mb-2"><i class="bi bi-clipboard-check text-primary me-2"></i>Estate
+                            Office Logistics Readiness Checklist:</h6>
                         <ul class="list-group list-group-flush small">
                             <li class="list-group-item d-flex justify-content-between align-items-center py-2">
-                                <span><i class="bi bi-check2-circle text-success me-2"></i>Presidential Suite Sanitation & Linen Preparation</span>
+                                <span><i class="bi bi-check2-circle text-success me-2"></i>Presidential Suite Sanitation
+                                    & Linen Preparation</span>
                                 <span class="badge bg-success-subtle text-success">Prepared</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center py-2">
-                                <span><i class="bi bi-check2-circle text-success me-2"></i>Care-Taker & Cook Notification for Official Catering</span>
+                                <span><i class="bi bi-check2-circle text-success me-2"></i>Care-Taker & Cook
+                                    Notification for Official Catering</span>
                                 <span class="badge bg-success-subtle text-success">Dispatched</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center py-2">
-                                <span><i class="bi bi-clock-history text-warning me-2"></i>Final Administrative Sanction & Key Allocation</span>
+                                <span><i class="bi bi-clock-history text-warning me-2"></i>Final Administrative Sanction
+                                    & Key Allocation</span>
                                 <span class="badge bg-warning text-dark">Pending VC Secretariat</span>
                             </li>
                         </ul>
@@ -1516,7 +1951,8 @@
                 </div>
                 <div class="modal-footer bg-white">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close View</button>
-                    <button type="button" class="btn btn-danger fw-bold" onclick="switchToVcSecretariatFromModal()"><i class="bi bi-crown me-1"></i> Switch to VC Secretariat to Sanction</button>
+                    <button type="button" class="btn btn-danger fw-bold" onclick="switchToVcSecretariatFromModal()"><i
+                            class="bi bi-crown me-1"></i> Switch to VC Secretariat to Sanction</button>
                 </div>
             </div>
         </div>
@@ -1527,16 +1963,20 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2"></i>Return Requisition Dossier</h5>
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2"></i>Return Requisition Dossier
+                    </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="small text-muted">Please specify official administrative reason for returning or declining this requisition:</p>
-                    <textarea class="form-control" id="rejectionReason" rows="3" placeholder="e.g. VIP Suite reserved for Hon'ble Chancellor visit / Incomplete guest particulars..."></textarea>
+                    <p class="small text-muted">Please specify official administrative reason for returning or declining
+                        this requisition:</p>
+                    <textarea class="form-control" id="rejectionReason" rows="3"
+                        placeholder="e.g. VIP Suite reserved for Hon'ble Chancellor visit / Incomplete guest particulars..."></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" onclick="confirmRejection()"><i class="bi bi-x-octagon me-1"></i> Confirm Rejection</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmRejection()"><i
+                            class="bi bi-x-octagon me-1"></i> Confirm Rejection</button>
                 </div>
             </div>
         </div>
@@ -1556,7 +1996,7 @@
         let activeWorkflowRef = 'GH-2026-10-0003';
 
         // Master Live Dossiers with Strict Institutional Jurisdiction
-                let currentGridFloor = 'all';
+        let currentGridFloor = 'all';
         let currentGridViewMode = 'matrix';
 
         // Master University Main Guest House Room Rack (Strictly mapped to Images 1 & 2)
@@ -1674,7 +2114,7 @@
         ];
         let pendingDossierRef = '';
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             renderEstateTariffEditor();
             renderBookingsTable();
             renderWorkflowDocket();
@@ -1685,7 +2125,7 @@
             let savedAccount = 'estate_admin';
             try {
                 savedAccount = localStorage.getItem('uhf_active_account') || 'estate_admin';
-            } catch (e) {}
+            } catch (e) { }
 
             if (savedAccount === 'vc_secretariat') {
                 performAccountLogin('vc_secretariat');
@@ -1703,7 +2143,7 @@
             }
         });
 
-                function openLoginModal() {
+        function openLoginModal() {
             const modal = new bootstrap.Modal(document.getElementById('accountLoginModal'));
             modal.show();
         }
@@ -1719,7 +2159,7 @@
 
             try {
                 localStorage.setItem('uhf_active_account', roleKey);
-            } catch (e) {}
+            } catch (e) { }
 
             setRole(roleKey, roleName, email);
 
@@ -1765,7 +2205,7 @@
             `;
             document.body.appendChild(toast);
             setTimeout(() => {
-                try { toast.remove(); } catch (e) {}
+                try { toast.remove(); } catch (e) { }
             }, 3500);
         }
 
@@ -2155,7 +2595,7 @@
             openWorkflowForDossier('GH-2026-10-0003');
         }
 
-                function setGridViewMode(mode) {
+        function setGridViewMode(mode) {
             currentGridViewMode = mode;
             const matrixEl = document.getElementById('gridMatrixContainer');
             const blueprintEl = document.getElementById('gridBlueprintContainer');
@@ -2409,7 +2849,7 @@
             if (tabId === 'calendar') { renderRoomGrid(); }
             if (tabId === 'tariffs') {
                 renderEstateTariffEditor();
-            renderRoomGrid();
+                renderRoomGrid();
             }
         }
 
@@ -2426,7 +2866,7 @@
             categories.forEach((cat) => {
                 const tr = document.createElement('tr');
                 tr.id = `row-${cat.id}`;
-                
+
                 let vvipCell = `<input type="number" class="form-control form-control-sm text-center fw-bold" id="vvip-${cat.id}" value="${cat.vvip || 0}" ${disabledAttr}>`;
                 let vipCell = `<input type="number" class="form-control form-control-sm text-center fw-bold" id="vip-${cat.id}" value="${cat.vip || 0}" ${disabledAttr}>`;
                 let ordCell = `<input type="number" class="form-control form-control-sm text-center fw-bold" id="ord-${cat.id}" value="${cat.ordinary || 0}" ${disabledAttr}>`;
@@ -2592,7 +3032,7 @@
             if (confirm('Are you sure you want to reset all categories and rates to the original signed Notification No. UHF/EO-55/2025/- 1615-40 defaults?')) {
                 EstateTariffManager.resetToDefaults();
                 renderEstateTariffEditor();
-            renderRoomGrid();
+                renderRoomGrid();
                 handleAdminBookingWingChange();
                 alert('Tariffs restored to original signed university notification defaults.');
             }
@@ -2641,7 +3081,7 @@
                 categories = categories.filter(c => c.id !== id);
                 EstateTariffManager.saveEstateCategories(categories);
                 renderEstateTariffEditor();
-            renderRoomGrid();
+                renderRoomGrid();
                 handleAdminBookingWingChange();
             }
         }
@@ -2723,7 +3163,7 @@
                     const m = parseInt(parts[1], 10) - 1;
                     const y = parseInt(parts[2], 10);
                     const dt = new Date(y, m, d);
-                    dt.setHours(0,0,0,0);
+                    dt.setHours(0, 0, 0, 0);
                     return dt;
                 }
             } else if (str.includes('-')) {
@@ -2731,17 +3171,17 @@
                 if (parts.length === 3) {
                     if (parts[0].length === 4) {
                         const dt = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
-                        dt.setHours(0,0,0,0);
+                        dt.setHours(0, 0, 0, 0);
                         return dt;
                     } else {
                         const dt = new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
-                        dt.setHours(0,0,0,0);
+                        dt.setHours(0, 0, 0, 0);
                         return dt;
                     }
                 }
             }
             const dt = new Date(str);
-            dt.setHours(0,0,0,0);
+            dt.setHours(0, 0, 0, 0);
             return isNaN(dt.getTime()) ? new Date() : dt;
         }
 
@@ -2766,7 +3206,7 @@
 
         function initializeAdminBookingDates() {
             const today = new Date();
-            today.setHours(0,0,0,0);
+            today.setHours(0, 0, 0, 0);
             const todayStr = formatDMY(today);
             const defaultOut = new Date(today.getTime() + (3 * 86400000));
             const defaultOutStr = formatDMY(defaultOut);
@@ -2784,7 +3224,7 @@
                     minDate: "today",
                     defaultDate: today,
                     allowInput: true,
-                    onChange: function() { onAdminCheckInChange(); }
+                    onChange: function () { onAdminCheckInChange(); }
                 });
 
                 adminOutPicker = flatpickr("#checkOutDate", {
@@ -2792,7 +3232,7 @@
                     minDate: minOut,
                     defaultDate: defaultOut,
                     allowInput: true,
-                    onChange: function() { onAdminCheckOutChange(); }
+                    onChange: function () { onAdminCheckOutChange(); }
                 });
             }
 
@@ -2838,7 +3278,7 @@
             if (!inEl || !outEl) return;
 
             const today = new Date();
-            today.setHours(0,0,0,0);
+            today.setHours(0, 0, 0, 0);
             let inDate = parseDateDMY(inEl.value);
 
             if (inDate < today) {
@@ -2899,7 +3339,7 @@
         }
 
         // Backward compatibility stubs
-        function populateCheckOutDropdown() {}
+        function populateCheckOutDropdown() { }
         function onAdminCheckOutSelectChange(val) { onAdminCheckOutChange(); }
         function onCustomDatePicked(scope, val) { onAdminCheckOutChange(); }
 
@@ -2907,7 +3347,7 @@
             const wing = document.getElementById('bookingWing').value;
             const catId = document.getElementById('bookingCategory').value;
             const setType = document.getElementById('bookingSetType').value;
-            
+
             const checkInVal = document.getElementById('checkInDate').value;
             const checkOutVal = document.getElementById('checkOutDate').value;
             const checkIn = parseDateDMY(checkInVal);
@@ -2927,9 +3367,9 @@
 
             document.getElementById('estNights').innerText = `${nights} Night${nights > 1 ? 's' : ''}`;
             document.getElementById('estRate').innerText = `₹${rate.toLocaleString('en-IN')} / night`;
-            document.getElementById('estSubtotal').innerText = `₹${subtotal.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
-            document.getElementById('estGst').innerText = gst > 0 ? `₹${gst.toLocaleString('en-IN', {minimumFractionDigits: 2})}` : `₹0.00 (Exempt < ₹1,000)`;
-            document.getElementById('estTotal').innerText = `₹${total.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('estSubtotal').innerText = `₹${subtotal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+            document.getElementById('estGst').innerText = gst > 0 ? `₹${gst.toLocaleString('en-IN', { minimumFractionDigits: 2 })}` : `₹0.00 (Exempt < ₹1,000)`;
+            document.getElementById('estTotal').innerText = `₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
         }
 
         function updateSandboxControls() {
@@ -2987,14 +3427,14 @@
             const total = subtotal + gst;
 
             document.getElementById('sbDisplayRate').innerText = `₹${rate.toLocaleString('en-IN')} / night`;
-            document.getElementById('sbDisplaySubtotal').innerText = `₹${subtotal.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
-            document.getElementById('sbDisplayGst').innerText = gst > 0 ? `₹${gst.toLocaleString('en-IN', {minimumFractionDigits: 2})}` : `₹0.00 (Exempt)`;
-            document.getElementById('sbDisplayTotal').innerText = `₹${total.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('sbDisplaySubtotal').innerText = `₹${subtotal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+            document.getElementById('sbDisplayGst').innerText = gst > 0 ? `₹${gst.toLocaleString('en-IN', { minimumFractionDigits: 2 })}` : `₹0.00 (Exempt)`;
+            document.getElementById('sbDisplayTotal').innerText = `₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
         }
 
         function handleReservationSubmit(e) {
             const today = new Date();
-            today.setHours(0,0,0,0);
+            today.setHours(0, 0, 0, 0);
             const checkInVal = document.getElementById('checkInDate').value;
             const checkOutVal = document.getElementById('checkOutDate').value;
             const inDate = parseDateDMY(checkInVal);
@@ -3083,7 +3523,7 @@
 
         function confirmRejection() {
             const reason = document.getElementById('rejectionReason').value;
-            if(!reason.trim()) {
+            if (!reason.trim()) {
                 alert('Please enter formal rejection remarks.');
                 return;
             }
@@ -3105,7 +3545,7 @@
 
         function performTracking() {
             const val = document.getElementById('trackInput').value.trim();
-            if(!val) {
+            if (!val) {
                 alert('Please enter a booking reference or mobile number.');
                 return;
             }
@@ -3118,4 +3558,5 @@
         }
     </script>
 </body>
+
 </html>

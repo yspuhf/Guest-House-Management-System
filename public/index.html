@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +8,16 @@
     <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <!-- Flatpickr Datepicker CSS (Strict DD/MM/YYYY) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    
+
     <style>
         :root {
             --forest-dark: #123321;
@@ -46,6 +49,7 @@
             padding: 12px 0;
             transition: all 0.3s ease;
         }
+
         .nav-link-lodge {
             color: var(--forest-dark);
             font-weight: 500;
@@ -53,6 +57,7 @@
             padding: 8px 14px !important;
             transition: color 0.2s;
         }
+
         .nav-link-lodge:hover {
             color: var(--warm-gold);
         }
@@ -62,12 +67,13 @@
             position: relative;
             min-height: 85vh;
             background: linear-gradient(180deg, rgba(14, 38, 25, 0.65) 0%, rgba(14, 38, 25, 0.82) 100%),
-                        url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+                url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
             display: flex;
             align-items: center;
             color: #ffffff;
             padding: 80px 0 140px;
         }
+
         .hero-badge {
             background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(8px);
@@ -90,7 +96,7 @@
             border-radius: 16px;
             box-shadow: 0 20px 45px rgba(18, 51, 33, 0.14);
             padding: 26px 30px;
-            border: 1px solid rgba(0,0,0,0.06);
+            border: 1px solid rgba(0, 0, 0, 0.06);
         }
 
         /* Buttons */
@@ -103,12 +109,14 @@
             transition: all 0.2s ease;
             border: none;
         }
+
         .btn-gold:hover {
             background-color: var(--warm-gold-hover);
             color: #ffffff;
             transform: translateY(-1px);
             box-shadow: 0 6px 14px rgba(197, 155, 39, 0.3);
         }
+
         .btn-forest {
             background-color: var(--forest-green);
             color: #ffffff;
@@ -118,6 +126,7 @@
             transition: all 0.2s ease;
             border: none;
         }
+
         .btn-forest:hover {
             background-color: var(--forest-dark);
             color: #ffffff;
@@ -129,30 +138,35 @@
             background: #ffffff;
             border-radius: 16px;
             overflow: hidden;
-            border: 1px solid rgba(0,0,0,0.07);
+            border: 1px solid rgba(0, 0, 0, 0.07);
             transition: all 0.3s ease;
             height: 100%;
             display: flex;
             flex-direction: column;
         }
+
         .room-card:hover {
             transform: translateY(-6px);
             box-shadow: 0 16px 32px rgba(18, 51, 33, 0.1);
         }
+
         .room-img-wrapper {
             position: relative;
             height: 240px;
             overflow: hidden;
         }
+
         .room-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
         }
+
         .room-card:hover .room-img {
             transform: scale(1.06);
         }
+
         .room-badge-category {
             position: absolute;
             top: 14px;
@@ -165,6 +179,7 @@
             font-size: 0.75rem;
             font-weight: 600;
         }
+
         .room-badge-price {
             position: absolute;
             bottom: 14px;
@@ -175,7 +190,7 @@
             border-radius: 8px;
             font-weight: 700;
             font-size: 0.88rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         }
 
         /* Wing Badge Indicator */
@@ -189,6 +204,7 @@
             border-radius: 4px;
             display: inline-block;
         }
+
         .wing-indicator-dee {
             background-color: #fef3c7;
             color: #92400e;
@@ -229,11 +245,13 @@
             padding: 70px 0 25px;
             font-size: 0.88rem;
         }
+
         .footer-link {
             color: #cbd5e1;
             text-decoration: none;
             transition: color 0.2s;
         }
+
         .footer-link:hover {
             color: var(--warm-gold);
         }
@@ -246,17 +264,18 @@
             border-radius: 50%;
             background: #ffffff;
             padding: 2px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .notification-card {
             background: #ffffff;
             border: 2px solid #0f766e;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
         }
     </style>
 </head>
+
 <body>
 
     <!-- 1. Main Navigation Header -->
@@ -266,7 +285,8 @@
                 <img src="university_logo.jpg" alt="Dr. YSP UHF Nauni Logo" class="university-logo-header">
                 <div>
                     <span class="font-serif fw-bold fs-5 text-dark lh-1 d-block">Dr. Y.S. Parmar UHF Nauni</span>
-                    <small class="text-success fw-semibold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.5px;">Central Guest House Management Portal</small>
+                    <small class="text-success fw-semibold text-uppercase"
+                        style="font-size: 0.72rem; letter-spacing: 0.5px;">Central Guest House Management Portal</small>
                 </div>
             </a>
 
@@ -277,9 +297,10 @@
             <div class="collapse navbar-collapse" id="navLodgeContent">
                 <ul class="navbar-nav ms-auto align-items-center gap-1">
                     <li class="nav-item"><a class="nav-link nav-link-lodge" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-lodge" href="#accommodations">Accommodations</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-lodge" href="#accommodations">Accommodations</a>
+                    </li>
                     <li class="nav-item"><a class="nav-link nav-link-lodge" href="#amenities">Dining & Hall</a></li>
-                    
+
                     <li class="nav-item"><a class="nav-link nav-link-lodge" href="#track">Track Status</a></li>
                     <li class="nav-item ms-lg-2">
                         <button class="btn btn-gold text-white" onclick="openBookingModal('estate')">
@@ -303,7 +324,9 @@
                         Official Academic & VIP Hospitality in Solan Hills
                     </h1>
                     <p class="lead text-light text-opacity-90 mb-4" style="max-width: 650px;">
-                        Operated in accordance with <strong>Estate Organization Notification No. UHF/EO-55/2025/- 1615-40</strong>, providing accommodation across the <strong>Estate Office</strong> and <strong>Directorate of Extension Education (DEE)</strong> wings.
+                        Operated in accordance with <strong>Estate Organization Notification No. UHF/EO-55/2025/-
+                            1615-40</strong>, providing accommodation across the <strong>Estate Office</strong> and
+                        <strong>Directorate of Extension Education (DEE)</strong> wings.
                     </p>
                     <div class="d-flex flex-wrap gap-3">
                         <button class="btn btn-gold btn-lg px-4" onclick="openBookingModal('estate')">
@@ -315,16 +338,20 @@
                     </div>
                 </div>
                 <div class="col-lg-4 d-none d-lg-block text-end">
-                    <div class="bg-white bg-opacity-10 backdrop-blur p-4 rounded-4 border border-light border-opacity-25 text-start">
+                    <div
+                        class="bg-white bg-opacity-10 backdrop-blur p-4 rounded-4 border border-light border-opacity-25 text-start">
                         <div class="d-flex align-items-center gap-3 mb-3">
-                            <img src="university_logo.jpg" alt="Logo" style="width: 50px; height: 50px; object-fit: contain; border-radius: 50%; background: #fff; padding: 2px;">
+                            <img src="university_logo.jpg" alt="Logo"
+                                style="width: 50px; height: 50px; object-fit: contain; border-radius: 50%; background: #fff; padding: 2px;">
                             <div>
                                 <h6 class="text-warning mb-0 fw-bold">Dr. Y.S. Parmar UHF</h6>
                                 <small class="text-white-50">Established 1985 &bull; Solan (H.P.)</small>
                             </div>
                         </div>
-                        <p class="small text-light mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i> <strong>Estate Office:</strong> VVIP, VIP &amp; Ordinary Sets</p>
-                        <p class="small text-light mb-0"><i class="bi bi-check-circle-fill text-warning me-2"></i> <strong>DEE Wing:</strong> Kisan Bhawan &amp; Trainees Wing</p>
+                        <p class="small text-light mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i>
+                            <strong>Estate Office:</strong> VVIP, VIP &amp; Ordinary Sets</p>
+                        <p class="small text-light mb-0"><i class="bi bi-check-circle-fill text-warning me-2"></i>
+                            <strong>DEE Wing:</strong> Kisan Bhawan &amp; Trainees Wing</p>
                     </div>
                 </div>
             </div>
@@ -341,7 +368,9 @@
                         <label class="form-label fw-semibold small text-muted">
                             <i class="bi bi-building-gear me-1 text-success"></i> 1. Accommodation Wing *
                         </label>
-                        <select id="searchWing" class="form-select form-select-lg fs-6 fw-bold border-success text-success" onchange="onWingSelectionChange(this.value)">
+                        <select id="searchWing"
+                            class="form-select form-select-lg fs-6 fw-bold border-success text-success"
+                            onchange="onWingSelectionChange(this.value)">
                             <option value="estate" selected>Estate Office (Main GH, VIP Suites, FRH)</option>
                             <option value="dee">Directorate of Extension Education (DEE)</option>
                         </select>
@@ -352,7 +381,8 @@
                         <label class="form-label fw-semibold small text-muted" id="searchSetLabel">
                             <i class="bi bi-door-closed me-1 text-primary"></i> 2. Room Set / Class *
                         </label>
-                        <select id="searchSetType" class="form-select form-select-lg fs-6 fw-semibold" onchange="updateEstimatedSearchPrice()">
+                        <select id="searchSetType" class="form-select form-select-lg fs-6 fw-semibold"
+                            onchange="updateEstimatedSearchPrice()">
                             <!-- Populated dynamically via JS -->
                         </select>
                     </div>
@@ -362,7 +392,8 @@
                         <label class="form-label fw-semibold small text-muted">
                             <i class="bi bi-person-badge me-1 text-primary"></i> 3. Category (Notification 1615-40) *
                         </label>
-                        <select id="searchCategory" class="form-select form-select-lg fs-6" onchange="updateEstimatedSearchPrice()">
+                        <select id="searchCategory" class="form-select form-select-lg fs-6"
+                            onchange="updateEstimatedSearchPrice()">
                             <!-- Populated dynamically via JS -->
                         </select>
                     </div>
@@ -370,23 +401,38 @@
                     <!-- 4. Check-In -->
                     <div class="col-xl-2 col-md-6">
                         <label class="form-label fw-semibold small text-muted">
-                            <i class="bi bi-calendar-event me-1 text-success"></i> Check-In Date * <small class="text-secondary">(DD/MM/YYYY)</small>
+                            <i class="bi bi-calendar-event me-1 text-success"></i> Check-In Date * <small
+                                class="text-secondary">(DD/MM/YYYY)</small>
                         </label>
                         <div class="input-group">
-                            <input type="text" id="searchCheckIn" class="form-control form-control-lg fs-6 fw-bold" placeholder="DD/MM/YYYY" maxlength="10" required onchange="onSearchCheckInChange()" oninput="maskDateInput(event); updateEstimatedSearchPrice()" onclick="openDatePicker('searchCheckIn')">
-                            <button class="btn btn-outline-secondary" type="button" onclick="openDatePicker('searchCheckIn')" title="Open Calendar"><i class="bi bi-calendar-event text-success"></i></button>
+                            <input type="text" id="searchCheckIn" class="form-control form-control-lg fs-6 fw-bold"
+                                placeholder="DD/MM/YYYY" maxlength="10" required onchange="onSearchCheckInChange()"
+                                oninput="maskDateInput(event); updateEstimatedSearchPrice()"
+                                onclick="openDatePicker('searchCheckIn')">
+                            <button class="btn btn-outline-secondary" type="button"
+                                onclick="openDatePicker('searchCheckIn')" title="Open Calendar"><i
+                                    class="bi bi-calendar-event text-success"></i></button>
                         </div>
                     </div>
 
                     <!-- 5. Check-Out Date -->
                     <div class="col-xl-2 col-md-6">
-                        <label class="form-label fw-semibold small text-muted d-flex justify-content-between align-items-center">
-                            <span><i class="bi bi-calendar-check me-1 text-danger"></i> Check-Out Date * <small class="text-secondary">(DD/MM/YYYY)</small></span>
-                            <span class="badge bg-danger text-white py-0 px-1" id="searchDurationBadge" style="font-size: 0.65rem;">3 Nights</span>
+                        <label
+                            class="form-label fw-semibold small text-muted d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-calendar-check me-1 text-danger"></i> Check-Out Date * <small
+                                    class="text-secondary">(DD/MM/YYYY)</small></span>
+                            <span class="badge bg-danger text-white py-0 px-1" id="searchDurationBadge"
+                                style="font-size: 0.65rem;">3 Nights</span>
                         </label>
                         <div class="input-group">
-                            <input type="text" id="searchCheckOut" class="form-control form-control-lg fs-6 fw-bold border-danger text-danger" placeholder="DD/MM/YYYY" maxlength="10" required onchange="onSearchCheckOutChange()" oninput="maskDateInput(event); updateEstimatedSearchPrice()" onclick="openDatePicker('searchCheckOut')">
-                            <button class="btn btn-outline-danger" type="button" onclick="openDatePicker('searchCheckOut')" title="Open Calendar"><i class="bi bi-calendar-check"></i></button>
+                            <input type="text" id="searchCheckOut"
+                                class="form-control form-control-lg fs-6 fw-bold border-danger text-danger"
+                                placeholder="DD/MM/YYYY" maxlength="10" required onchange="onSearchCheckOutChange()"
+                                oninput="maskDateInput(event); updateEstimatedSearchPrice()"
+                                onclick="openDatePicker('searchCheckOut')">
+                            <button class="btn btn-outline-danger" type="button"
+                                onclick="openDatePicker('searchCheckOut')" title="Open Calendar"><i
+                                    class="bi bi-calendar-check"></i></button>
                         </div>
                     </div>
                 </div>
@@ -394,22 +440,30 @@
                 <!-- Rate Estimation Strip -->
                 <div class="mt-3 pt-3 border-top d-flex flex-wrap justify-content-between align-items-center">
                     <div class="d-flex align-items-center gap-3">
-                        <span class="badge bg-success-subtle text-success border border-success px-2 py-1" id="rateBadgeNotice">
+                        <span class="badge bg-success-subtle text-success border border-success px-2 py-1"
+                            id="rateBadgeNotice">
                             Notification No. 1615-40 Applied
                         </span>
                         <div class="small text-muted">
-                            Applicable Nightly Rate: <strong class="text-dark fs-6" id="searchCalculatedRate">₹1,500.00 / night</strong> &bull; 
-                            Est. Total (3 Nights): <strong class="text-success fs-6" id="searchCalculatedTotal">₹4,500.00</strong>
+                            Applicable Nightly Rate: <strong class="text-dark fs-6" id="searchCalculatedRate">₹1,500.00
+                                / night</strong> &bull;
+                            Est. Total (3 Nights): <strong class="text-success fs-6"
+                                id="searchCalculatedTotal">₹4,500.00</strong>
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-2 mt-2 mt-md-0 flex-wrap">
                         <div class="d-flex align-items-center gap-1 me-2">
                             <span class="small text-muted" style="font-size: 0.75rem;">Quick Nights:</span>
-                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('search', 1)">1N</button>
-                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('search', 2)">2N</button>
-                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('search', 3)">3N</button>
-                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('search', 5)">5N</button>
-                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2" style="font-size: 0.72rem;" onclick="setStayDays('search', 7)">1W</button>
+                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2"
+                                style="font-size: 0.72rem;" onclick="setStayDays('search', 1)">1N</button>
+                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2"
+                                style="font-size: 0.72rem;" onclick="setStayDays('search', 2)">2N</button>
+                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2"
+                                style="font-size: 0.72rem;" onclick="setStayDays('search', 3)">3N</button>
+                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2"
+                                style="font-size: 0.72rem;" onclick="setStayDays('search', 5)">5N</button>
+                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2"
+                                style="font-size: 0.72rem;" onclick="setStayDays('search', 7)">1W</button>
                         </div>
                         <button type="submit" class="btn btn-forest px-4 py-2 fw-semibold">
                             <i class="bi bi-calendar2-plus me-1"></i> Reserve with This Category
@@ -424,10 +478,12 @@
     <section id="accommodations" class="py-5 my-4">
         <div class="container">
             <div class="text-center mb-4">
-                <span class="text-success fw-bold text-uppercase small" style="letter-spacing: 1px;">Campus Accommodation Wings</span>
+                <span class="text-success fw-bold text-uppercase small" style="letter-spacing: 1px;">Campus
+                    Accommodation Wings</span>
                 <h2 class="font-serif display-5 fw-bold text-dark mt-1">Our Guest Houses & Room Sets</h2>
                 <p class="text-muted mx-auto" style="max-width: 650px;">
-                    Stay charges as notified by the Estate Organization: VVIP Sets, VIP Sets, Ordinary Rooms, and DEE Trainees Lodging.
+                    Stay charges as notified by the Estate Organization: VVIP Sets, VIP Sets, Ordinary Rooms, and DEE
+                    Trainees Lodging.
                 </p>
             </div>
 
@@ -438,18 +494,22 @@
                 <div class="col-lg-4 col-md-6 room-card-col" data-wing="estate">
                     <div class="room-card">
                         <div class="room-img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80" alt="VVIP Suite" class="room-img">
+                            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80"
+                                alt="VVIP Suite" class="room-img">
                             <span class="room-badge-category">Main Guest House</span>
-                            <span class="room-badge-price">VVIP: From ₹2,500 <small class="text-muted">/ day</small></span>
+                            <span class="room-badge-price">VVIP: From ₹2,500 <small class="text-muted">/
+                                    day</small></span>
                         </div>
                         <div class="p-4 d-flex flex-column flex-grow-1">
                             <div class="mb-2">
-                                <span class="wing-indicator-estate"><i class="bi bi-building me-1"></i> Estate Office Wing</span>
+                                <span class="wing-indicator-estate"><i class="bi bi-building me-1"></i> Estate Office
+                                    Wing</span>
                                 <span class="badge bg-warning text-dark ms-1">VVIP Set</span>
                             </div>
                             <h4 class="font-serif fw-bold mb-2">VVIP Presidential Suite</h4>
                             <p class="text-muted small mb-3">
-                                Grand master bedroom with executive salon, private conference seating, kitchen pantry, and scenic Giri valley view.
+                                Grand master bedroom with executive salon, private conference seating, kitchen pantry,
+                                and scenic Giri valley view.
                             </p>
                             <div class="mb-3">
                                 <span class="amenity-pill"><i class="bi bi-snow"></i> AC & Heat</span>
@@ -458,8 +518,10 @@
                                 <span class="amenity-pill"><i class="bi bi-water"></i> Geyser</span>
                             </div>
                             <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
-                                <small class="text-danger fw-semibold"><i class="bi bi-crown"></i> Sanction: Vice-Chancellor Secretariat</small>
-                                <button class="btn btn-sm btn-forest" onclick="openBookingModal('estate', 'vvip', 'cat_1_official')">Reserve Now</button>
+                                <small class="text-danger fw-semibold"><i class="bi bi-crown"></i> Sanction:
+                                    Vice-Chancellor Secretariat</small>
+                                <button class="btn btn-sm btn-forest"
+                                    onclick="openBookingModal('estate', 'vvip', 'cat_1_official')">Reserve Now</button>
                             </div>
                         </div>
                     </div>
@@ -469,18 +531,22 @@
                 <div class="col-lg-4 col-md-6 room-card-col" data-wing="estate">
                     <div class="room-card">
                         <div class="room-img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80" alt="VIP Set" class="room-img">
+                            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80"
+                                alt="VIP Set" class="room-img">
                             <span class="room-badge-category">VIP Suites Annexe</span>
-                            <span class="room-badge-price">VIP: From ₹1,500 <small class="text-muted">/ day</small></span>
+                            <span class="room-badge-price">VIP: From ₹1,500 <small class="text-muted">/
+                                    day</small></span>
                         </div>
                         <div class="p-4 d-flex flex-column flex-grow-1">
                             <div class="mb-2">
-                                <span class="wing-indicator-estate"><i class="bi bi-building me-1"></i> Estate Office Wing</span>
+                                <span class="wing-indicator-estate"><i class="bi bi-building me-1"></i> Estate Office
+                                    Wing</span>
                                 <span class="badge bg-primary text-white ms-1">VIP Set</span>
                             </div>
                             <h4 class="font-serif fw-bold mb-2">VIP Executive Suite</h4>
                             <p class="text-muted small mb-3">
-                                Well-appointed suite featuring king bed, dedicated workspace, sofa seating, modern washroom, and tea/coffee amenities.
+                                Well-appointed suite featuring king bed, dedicated workspace, sofa seating, modern
+                                washroom, and tea/coffee amenities.
                             </p>
                             <div class="mb-3">
                                 <span class="amenity-pill"><i class="bi bi-snow"></i> AC</span>
@@ -489,8 +555,10 @@
                                 <span class="amenity-pill"><i class="bi bi-sun"></i> Balcony</span>
                             </div>
                             <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
-                                <small class="text-primary fw-semibold"><i class="bi bi-check2-circle"></i> Estate Officer Incharge</small>
-                                <button class="btn btn-sm btn-forest" onclick="openBookingModal('estate', 'vip', 'cat_1_official')">Reserve Now</button>
+                                <small class="text-primary fw-semibold"><i class="bi bi-check2-circle"></i> Estate
+                                    Officer Incharge</small>
+                                <button class="btn btn-sm btn-forest"
+                                    onclick="openBookingModal('estate', 'vip', 'cat_1_official')">Reserve Now</button>
                             </div>
                         </div>
                     </div>
@@ -500,18 +568,22 @@
                 <div class="col-lg-4 col-md-6 room-card-col" data-wing="estate">
                     <div class="room-card">
                         <div class="room-img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80" alt="Ordinary Set" class="room-img">
+                            <img src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80"
+                                alt="Ordinary Set" class="room-img">
                             <span class="room-badge-category">Main Guest House</span>
-                            <span class="room-badge-price">Ordinary: From ₹1,000 <small class="text-muted">/ day</small></span>
+                            <span class="room-badge-price">Ordinary: From ₹1,000 <small class="text-muted">/
+                                    day</small></span>
                         </div>
                         <div class="p-4 d-flex flex-column flex-grow-1">
                             <div class="mb-2">
-                                <span class="wing-indicator-estate"><i class="bi bi-building me-1"></i> Estate Office Wing</span>
+                                <span class="wing-indicator-estate"><i class="bi bi-building me-1"></i> Estate Office
+                                    Wing</span>
                                 <span class="badge bg-secondary text-white ms-1">Ordinary Set</span>
                             </div>
                             <h4 class="font-serif fw-bold mb-2">Ordinary Double Room</h4>
                             <p class="text-muted small mb-3">
-                                Comfortable double occupancy room with attached bath, study desk, solar hot water, and campus greenery view.
+                                Comfortable double occupancy room with attached bath, study desk, solar hot water, and
+                                campus greenery view.
                             </p>
                             <div class="mb-3">
                                 <span class="amenity-pill"><i class="bi bi-people"></i> Twin/Double</span>
@@ -521,7 +593,9 @@
                             </div>
                             <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
                                 <small class="text-secondary fw-semibold">Standard Booking</small>
-                                <button class="btn btn-sm btn-forest" onclick="openBookingModal('estate', 'ordinary', 'cat_1_official')">Reserve Now</button>
+                                <button class="btn btn-sm btn-forest"
+                                    onclick="openBookingModal('estate', 'ordinary', 'cat_1_official')">Reserve
+                                    Now</button>
                             </div>
                         </div>
                     </div>
@@ -531,18 +605,22 @@
                 <div class="col-lg-4 col-md-6 room-card-col" data-wing="estate">
                     <div class="room-card">
                         <div class="room-img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=800&q=80" alt="Forest Rest House" class="room-img">
+                            <img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=800&q=80"
+                                alt="Forest Rest House" class="room-img">
                             <span class="room-badge-category">Forest Rest House</span>
                             <span class="room-badge-price">From ₹1,000 <small class="text-muted">/ day</small></span>
                         </div>
                         <div class="p-4 d-flex flex-column flex-grow-1">
                             <div class="mb-2">
-                                <span class="wing-indicator-estate"><i class="bi bi-building me-1"></i> Estate Office Wing</span>
-                                <span class="badge bg-success-subtle text-success border border-success ms-1">FRH Arboretum</span>
+                                <span class="wing-indicator-estate"><i class="bi bi-building me-1"></i> Estate Office
+                                    Wing</span>
+                                <span class="badge bg-success-subtle text-success border border-success ms-1">FRH
+                                    Arboretum</span>
                             </div>
                             <h4 class="font-serif fw-bold mb-2">Heritage Woodland Suite</h4>
                             <p class="text-muted small mb-3">
-                                Colonial architecture stone-and-timber cottage situated inside the university forestry plantation, offering serene quietude.
+                                Colonial architecture stone-and-timber cottage situated inside the university forestry
+                                plantation, offering serene quietude.
                             </p>
                             <div class="mb-3">
                                 <span class="amenity-pill"><i class="bi bi-tree"></i> Woodland Lawn</span>
@@ -551,8 +629,10 @@
                                 <span class="amenity-pill"><i class="bi bi-p-circle"></i> Parking</span>
                             </div>
                             <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
-                                <small class="text-success fw-semibold"><i class="bi bi-shield-check"></i> Estate Office</small>
-                                <button class="btn btn-sm btn-forest" onclick="openBookingModal('estate', 'vip', 'cat_1_official')">Reserve Now</button>
+                                <small class="text-success fw-semibold"><i class="bi bi-shield-check"></i> Estate
+                                    Office</small>
+                                <button class="btn btn-sm btn-forest"
+                                    onclick="openBookingModal('estate', 'vip', 'cat_1_official')">Reserve Now</button>
                             </div>
                         </div>
                     </div>
@@ -562,17 +642,20 @@
                 <div class="col-lg-4 col-md-6 room-card-col" data-wing="dee">
                     <div class="room-card border-warning border-opacity-50">
                         <div class="room-img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=80" alt="Farmers Hostel" class="room-img">
+                            <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=80"
+                                alt="Farmers Hostel" class="room-img">
                             <span class="room-badge-category bg-warning text-dark">Kisan Bhawan</span>
                             <span class="room-badge-price">From ₹100 <small class="text-muted">/ day</small></span>
                         </div>
                         <div class="p-4 d-flex flex-column flex-grow-1">
                             <div class="mb-2">
-                                <span class="wing-indicator-dee"><i class="bi bi-flower1 me-1"></i> Directorate of Extension Education</span>
+                                <span class="wing-indicator-dee"><i class="bi bi-flower1 me-1"></i> Directorate of
+                                    Extension Education</span>
                             </div>
                             <h4 class="font-serif fw-bold mb-2">Farmers Hostel Double Room</h4>
                             <p class="text-muted small mb-3">
-                                Subsidized lodging designed for farmers, orchardists, KVK trainees, and agricultural extension delegates visiting UHF Nauni.
+                                Subsidized lodging designed for farmers, orchardists, KVK trainees, and agricultural
+                                extension delegates visiting UHF Nauni.
                             </p>
                             <div class="mb-3">
                                 <span class="amenity-pill"><i class="bi bi-people"></i> Twin Beds</span>
@@ -581,8 +664,11 @@
                                 <span class="amenity-pill"><i class="bi bi-bus-front"></i> Bus Parking</span>
                             </div>
                             <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
-                                <small class="text-warning-emphasis fw-bold"><i class="bi bi-check-circle"></i> DEE Sanction</small>
-                                <button class="btn btn-sm btn-forest" onclick="openBookingModal('dee', 'double', 'dee_farmers_training')">Reserve Now</button>
+                                <small class="text-warning-emphasis fw-bold"><i class="bi bi-check-circle"></i> DEE
+                                    Sanction</small>
+                                <button class="btn btn-sm btn-forest"
+                                    onclick="openBookingModal('dee', 'double', 'dee_farmers_training')">Reserve
+                                    Now</button>
                             </div>
                         </div>
                     </div>
@@ -598,12 +684,13 @@
                 <div class="col-lg-6">
                     <span class="text-success fw-bold text-uppercase small">Estate Organization Facilities</span>
                     <h2 class="font-serif display-6 fw-bold text-dark mt-1 mb-4">Lounge & Dining Hall Reservations</h2>
-                    
+
                     <div class="p-3 bg-light rounded-3 border mb-3">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="fw-bold mb-1">Campus Residents / Employees (Functions)</h6>
-                                <p class="text-muted small mb-0">Use of Dining Hall for birthdays &amp; family celebrations</p>
+                                <p class="text-muted small mb-0">Use of Dining Hall for birthdays &amp; family
+                                    celebrations</p>
                             </div>
                             <span class="badge bg-success fs-6">₹1,000 / day</span>
                         </div>
@@ -623,7 +710,8 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="fw-bold mb-1">Outside Agencies (Marriages / Events)</h6>
-                                <p class="text-muted small mb-0">Commercial usage by external parties subject to Estate sanction</p>
+                                <p class="text-muted small mb-0">Commercial usage by external parties subject to Estate
+                                    sanction</p>
                             </div>
                             <span class="badge bg-dark fs-6">₹10,000 / day</span>
                         </div>
@@ -632,7 +720,8 @@
 
                 <div class="col-lg-6">
                     <div class="position-relative">
-                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="Dining Hall" class="img-fluid rounded-4 shadow">
+                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80"
+                            alt="Dining Hall" class="img-fluid rounded-4 shadow">
                         <div class="position-absolute bottom-0 end-0 bg-white p-3 rounded-3 shadow m-4 border">
                             <div class="d-flex align-items-center gap-2">
                                 <i class="bi bi-file-earmark-pdf-fill fs-3 text-danger"></i>
@@ -654,22 +743,27 @@
             <div class="tracker-banner">
                 <div class="row align-items-center">
                     <div class="col-lg-6 mb-4 mb-lg-0">
-                        <span class="badge bg-warning text-dark mb-2 fw-semibold px-3 py-1">Online Request Tracker</span>
+                        <span class="badge bg-warning text-dark mb-2 fw-semibold px-3 py-1">Online Request
+                            Tracker</span>
                         <h2 class="font-serif display-6 fw-bold mb-2">Track Your Reservation Status</h2>
                         <p class="text-light text-opacity-80 small mb-0">
-                            Check the endorsement and approval status of your application across the Estate Office or DEE wing in real-time.
+                            Check the endorsement and approval status of your application across the Estate Office or
+                            DEE wing in real-time.
                         </p>
                     </div>
                     <div class="col-lg-6">
                         <div class="bg-white p-4 rounded-3 text-dark">
-                            <label class="form-label fw-bold small text-muted">Enter Booking Reference or Mobile Number:</label>
+                            <label class="form-label fw-bold small text-muted">Enter Booking Reference or Mobile
+                                Number:</label>
                             <div class="input-group">
-                                <input type="text" id="trackInputCode" class="form-control" placeholder="e.g. GH-2026-10-0001" value="GH-2026-10-0001">
+                                <input type="text" id="trackInputCode" class="form-control"
+                                    placeholder="e.g. GH-2026-10-0001" value="GH-2026-10-0001">
                                 <button class="btn btn-gold" onclick="executeTracking()">
                                     <i class="bi bi-search me-1"></i> Search
                                 </button>
                             </div>
-                            <small class="text-muted mt-2 d-block">Sample Demo Dossiers: <code>GH-2026-10-0001</code> (Estate Office), <code>GH-2026-10-0004</code> (DEE Kisan Bhawan)</small>
+                            <small class="text-muted mt-2 d-block">Sample Demo Dossiers: <code>GH-2026-10-0001</code>
+                                (Estate Office), <code>GH-2026-10-0004</code> (DEE Kisan Bhawan)</small>
                         </div>
                     </div>
                 </div>
@@ -683,11 +777,13 @@
                         </div>
                         <div class="text-end">
                             <small class="text-muted d-block">Managing Wing &amp; Set</small>
-                            <strong class="text-success" id="trackRoom">Estate Office &bull; VVIP Presidential Suite #101</strong>
+                            <strong class="text-success" id="trackRoom">Estate Office &bull; VVIP Presidential Suite
+                                #101</strong>
                         </div>
                     </div>
                     <div class="row g-2 small mb-3">
-                        <div class="col-md-4"><strong>Primary Guest:</strong> <span id="trackGuest">Dr. A. K. Verma (ICAR Professor)</span></div>
+                        <div class="col-md-4"><strong>Primary Guest:</strong> <span id="trackGuest">Dr. A. K. Verma
+                                (ICAR Professor)</span></div>
                         <div class="col-md-4"><strong>Category:</strong> 1(i) Central Govt / ICAR Official</div>
                         <div class="col-md-4"><strong>Tariff:</strong> ₹2,500 / night (Notification 1615-40)</div>
                     </div>
@@ -696,7 +792,8 @@
                         <div class="d-flex align-items-center justify-content-between mt-2 flex-wrap gap-2">
                             <span class="text-success"><i class="bi bi-check-circle-fill"></i> 1. Submitted</span>
                             <span class="text-success"><i class="bi bi-check-circle-fill"></i> 2. HOD Endorsed</span>
-                            <span class="text-success"><i class="bi bi-check-circle-fill"></i> 3. Estate Officer Sanctioned</span>
+                            <span class="text-success"><i class="bi bi-check-circle-fill"></i> 3. Estate Officer
+                                Sanctioned</span>
                             <span class="text-success"><i class="bi bi-check-circle-fill"></i> 4. Key Issued</span>
                         </div>
                     </div>
@@ -714,11 +811,13 @@
                         <img src="university_logo.jpg" alt="Logo" class="university-logo-header">
                         <div>
                             <h5 class="text-white font-serif fw-bold mb-0">Dr. Y.S. Parmar UHF</h5>
-                            <small class="text-success fw-semibold">Estate Organization &bull; Guest House Portal</small>
+                            <small class="text-success fw-semibold">Estate Organization &bull; Guest House
+                                Portal</small>
                         </div>
                     </div>
                     <p class="text-muted small">
-                        Serving the academic, research, state, and farming communities in Himachal Pradesh with premier accommodations under Notification No. UHF/EO-55/2025/- 1615-40.
+                        Serving the academic, research, state, and farming communities in Himachal Pradesh with premier
+                        accommodations under Notification No. UHF/EO-55/2025/- 1615-40.
                     </p>
                 </div>
 
@@ -727,9 +826,11 @@
                     <ul class="list-unstyled small space-y-2">
                         <li class="mb-2"><a href="#home" class="footer-link">Home</a></li>
                         <li class="mb-2"><a href="#accommodations" class="footer-link">Room Sets</a></li>
-                        <li class="mb-2"><a href="/preview.html#tariffs" class="footer-link text-warning fw-semibold">Official Notification (Tariffs)</a></li>
+                        <li class="mb-2"><a href="/preview.html#tariffs"
+                                class="footer-link text-warning fw-semibold">Official Notification (Tariffs)</a></li>
                         <li class="mb-2"><a href="#track" class="footer-link">Track Application</a></li>
-                        <li class="mb-2"><a href="/preview.html#tariffs" class="footer-link text-warning fw-semibold">Estate Admin Console</a></li>
+                        <li class="mb-2"><a href="/preview.html#tariffs"
+                                class="footer-link text-warning fw-semibold">Estate Admin Console</a></li>
                     </ul>
                 </div>
 
@@ -747,9 +848,12 @@
 
                 <div class="col-lg-3 col-md-4">
                     <h6 class="text-white fw-bold mb-3">Contact Desks</h6>
-                    <p class="small text-muted mb-1"><i class="bi bi-building me-2"></i> Estate Office: +91 1792-252244</p>
-                    <p class="small text-muted mb-1"><i class="bi bi-flower1 me-2"></i> DEE Kisan Bhawan: +91 1792-252310</p>
-                    <p class="small text-muted mb-1"><i class="bi bi-envelope me-2"></i> guesthouse@yspuniversity.ac.in</p>
+                    <p class="small text-muted mb-1"><i class="bi bi-building me-2"></i> Estate Office: +91 1792-252244
+                    </p>
+                    <p class="small text-muted mb-1"><i class="bi bi-flower1 me-2"></i> DEE Kisan Bhawan: +91
+                        1792-252310</p>
+                    <p class="small text-muted mb-1"><i class="bi bi-envelope me-2"></i> guesthouse@yspuniversity.ac.in
+                    </p>
                     <p class="small text-muted mb-0"><i class="bi bi-geo-alt me-2"></i> Nauni, Solan (H.P.) 173230</p>
                 </div>
             </div>
@@ -759,8 +863,10 @@
                     &copy; 2026 Dr. Y.S. Parmar University of Horticulture and Forestry. All rights reserved.
                 </div>
                 <div class="d-flex gap-3 mt-2 mt-md-0">
-                    <span class="text-success"><i class="bi bi-check2-circle me-1"></i> Public Domain &amp; Institutional Assets</span>
-                    <a href="/preview.html" class="text-warning text-decoration-none fw-semibold">Switch Demo Personas &rarr;</a>
+                    <span class="text-success"><i class="bi bi-check2-circle me-1"></i> Public Domain &amp;
+                        Institutional Assets</span>
+                    <a href="/preview.html" class="text-warning text-decoration-none fw-semibold">Switch Demo Personas
+                        &rarr;</a>
                 </div>
             </div>
         </div>
@@ -771,7 +877,8 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title font-serif"><i class="bi bi-building me-2"></i>Reserve Guest House Accommodation</h5>
+                    <h5 class="modal-title font-serif"><i class="bi bi-building me-2"></i>Reserve Guest House
+                        Accommodation</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
@@ -782,51 +889,72 @@
                                 <label class="form-label fw-semibold small text-success">
                                     <i class="bi bi-building-gear me-1"></i> Accommodation Wing (User Decides) *
                                 </label>
-                                <select class="form-select border-success fw-bold text-success" id="modalWing" required onchange="handleModalWingChange()">
+                                <select class="form-select border-success fw-bold text-success" id="modalWing" required
+                                    onchange="handleModalWingChange()">
                                     <option value="estate" selected>Estate Office Wing (Main GH, VIP, FRH)</option>
                                     <option value="dee">Directorate of Extension Education (DEE - Kisan Bhawan)</option>
                                 </select>
-                                <small class="text-muted" id="modalWingHint">Sanction: Estate Officer &amp; Registrar</small>
+                                <small class="text-muted" id="modalWingHint">Sanction: Estate Officer &amp;
+                                    Registrar</small>
                             </div>
 
                             <!-- Room Set Selector -->
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold small">Room Set / Category *</label>
-                                <select class="form-select fw-bold" id="modalSetType" required onchange="calcModalTariff()">
+                                <select class="form-select fw-bold" id="modalSetType" required
+                                    onchange="calcModalTariff()">
                                     <!-- Populated dynamically via JS -->
                                 </select>
                             </div>
 
                             <!-- Detailed Notification Category -->
                             <div class="col-12">
-                                <label class="form-label fw-semibold small">Entitled Visitor Category (Notification 1615-40) *</label>
+                                <label class="form-label fw-semibold small">Entitled Visitor Category (Notification
+                                    1615-40) *</label>
                                 <select class="form-select" id="modalCategory" required onchange="calcModalTariff()">
                                     <!-- Populated dynamically via JS -->
                                 </select>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold small">Check-In Date * <small class="text-muted">(DD/MM/YYYY)</small></label>
+                                <label class="form-label fw-semibold small">Check-In Date * <small
+                                        class="text-muted">(DD/MM/YYYY)</small></label>
                                 <div class="input-group">
-                                    <input type="text" id="modalCheckIn" class="form-control fw-bold" placeholder="DD/MM/YYYY" maxlength="10" required onchange="onModalCheckInChange()" oninput="maskDateInput(event); calcModalTariff()" onclick="openDatePicker('modalCheckIn')">
-                                    <button class="btn btn-outline-secondary" type="button" onclick="openDatePicker('modalCheckIn')" title="Open Calendar"><i class="bi bi-calendar-event text-success"></i></button>
+                                    <input type="text" id="modalCheckIn" class="form-control fw-bold"
+                                        placeholder="DD/MM/YYYY" maxlength="10" required
+                                        onchange="onModalCheckInChange()"
+                                        oninput="maskDateInput(event); calcModalTariff()"
+                                        onclick="openDatePicker('modalCheckIn')">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        onclick="openDatePicker('modalCheckIn')" title="Open Calendar"><i
+                                            class="bi bi-calendar-event text-success"></i></button>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold small d-flex justify-content-between align-items-center">
+                                <label
+                                    class="form-label fw-semibold small d-flex justify-content-between align-items-center">
                                     <span>Check-Out Date * <small class="text-muted">(DD/MM/YYYY)</small></span>
-                                    <span class="badge bg-primary text-white py-0 px-1" id="modalDurationBadge" style="font-size: 0.65rem;">3 Nights</span>
+                                    <span class="badge bg-primary text-white py-0 px-1" id="modalDurationBadge"
+                                        style="font-size: 0.65rem;">3 Nights</span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="text" id="modalCheckOut" class="form-control fw-bold border-primary text-primary" placeholder="DD/MM/YYYY" maxlength="10" required onchange="onModalCheckOutChange()" oninput="maskDateInput(event); calcModalTariff()" onclick="openDatePicker('modalCheckOut')">
-                                    <button class="btn btn-outline-primary" type="button" onclick="openDatePicker('modalCheckOut')" title="Open Calendar"><i class="bi bi-calendar-check"></i></button>
+                                    <input type="text" id="modalCheckOut"
+                                        class="form-control fw-bold border-primary text-primary"
+                                        placeholder="DD/MM/YYYY" maxlength="10" required
+                                        onchange="onModalCheckOutChange()"
+                                        oninput="maskDateInput(event); calcModalTariff()"
+                                        onclick="openDatePicker('modalCheckOut')">
+                                    <button class="btn btn-outline-primary" type="button"
+                                        onclick="openDatePicker('modalCheckOut')" title="Open Calendar"><i
+                                            class="bi bi-calendar-check"></i></button>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold small">Primary Guest Name *</label>
-                                <input type="text" id="modalGuestName" class="form-control" placeholder="e.g. Dr. A. K. Verma" required>
+                                <input type="text" id="modalGuestName" class="form-control"
+                                    placeholder="e.g. Dr. A. K. Verma" required>
                             </div>
 
                             <div class="col-md-6">
@@ -835,20 +963,24 @@
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label fw-semibold small">Sponsoring Department / Institutional Affiliation</label>
-                                <input type="text" class="form-control" value="Department of Tree Improvement &amp; Genetic Resources">
+                                <label class="form-label fw-semibold small">Sponsoring Department / Institutional Affiliation <small class="text-muted fw-normal">(Optional)</small></label>
+                                <input type="text" class="form-control" placeholder="e.g. Department of Tree Improvement &amp; Genetic Resources (Optional)">
                             </div>
 
                             <div class="col-12">
                                 <label class="form-label fw-semibold small">Purpose of Visit</label>
-                                <textarea class="form-control" rows="2" placeholder="Official academic viva / External expert for Board of Studies / Farmers field workshop"></textarea>
+                                <textarea class="form-control" rows="2"
+                                    placeholder="Official academic viva / External expert for Board of Studies / Farmers field workshop"></textarea>
                             </div>
                         </div>
 
                         <!-- Estimate Box -->
-                        <div class="p-3 bg-light rounded-3 border mt-3 d-flex justify-content-between align-items-center">
+                        <div
+                            class="p-3 bg-light rounded-3 border mt-3 d-flex justify-content-between align-items-center">
                             <div>
-                                <small class="text-muted d-block">Estimated Total (Nights: <span id="modalNights">3</span> &bull; Rate: <span id="modalRateUnit">₹1,500/day</span>)</small>
+                                <small class="text-muted d-block">Estimated Total (Nights: <span
+                                        id="modalNights">3</span> &bull; Rate: <span
+                                        id="modalRateUnit">₹1,500/day</span>)</small>
                                 <h4 class="fw-bold text-success mb-0" id="modalTotal">₹4,500.00</h4>
                             </div>
                             <button type="submit" class="btn btn-gold btn-lg px-4">
@@ -870,13 +1002,13 @@
 
     <script>
         // Initialize dynamic categories and tables
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             renderNotificationTable();
             onWingSelectionChange('estate');
         });
 
         // Live cross-tab sync when Estate Admin saves changes in the Console
-        window.addEventListener('storage', function(e) {
+        window.addEventListener('storage', function (e) {
             if (e.key === 'uhf_estate_categories' || e.key === 'uhf_dining_hall_rates' || e.key === 'uhf_estate_meta') {
                 renderNotificationTable();
                 const wing = document.getElementById('searchWing') ? document.getElementById('searchWing').value : 'estate';
@@ -1006,7 +1138,7 @@
             document.getElementById('searchCalculatedTotal').innerText = `₹${total.toFixed(2)}`;
         }
 
-                        // Date helpers in local client time (Prevents back-dated bookings)
+        // Date helpers in local client time (Prevents back-dated bookings)
         let searchInPicker, searchOutPicker, modalInPicker, modalOutPicker;
 
         function maskDateInput(e) {
@@ -1028,7 +1160,7 @@
                     const m = parseInt(parts[1], 10) - 1;
                     const y = parseInt(parts[2], 10);
                     const dt = new Date(y, m, d);
-                    dt.setHours(0,0,0,0);
+                    dt.setHours(0, 0, 0, 0);
                     return dt;
                 }
             } else if (str.includes('-')) {
@@ -1036,17 +1168,17 @@
                 if (parts.length === 3) {
                     if (parts[0].length === 4) {
                         const dt = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
-                        dt.setHours(0,0,0,0);
+                        dt.setHours(0, 0, 0, 0);
                         return dt;
                     } else {
                         const dt = new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
-                        dt.setHours(0,0,0,0);
+                        dt.setHours(0, 0, 0, 0);
                         return dt;
                     }
                 }
             }
             const dt = new Date(str);
-            dt.setHours(0,0,0,0);
+            dt.setHours(0, 0, 0, 0);
             return isNaN(dt.getTime()) ? new Date() : dt;
         }
 
@@ -1071,7 +1203,7 @@
 
         function initializeBookingDates() {
             const today = new Date();
-            today.setHours(0,0,0,0);
+            today.setHours(0, 0, 0, 0);
             const todayStr = formatDMY(today);
             const defaultOut = new Date(today.getTime() + (3 * 86400000));
             const defaultOutStr = formatDMY(defaultOut);
@@ -1096,7 +1228,7 @@
                     minDate: "today",
                     defaultDate: today,
                     allowInput: true,
-                    onChange: function() { onSearchCheckInChange(); }
+                    onChange: function () { onSearchCheckInChange(); }
                 });
 
                 searchOutPicker = flatpickr("#searchCheckOut", {
@@ -1104,7 +1236,7 @@
                     minDate: minOut,
                     defaultDate: defaultOut,
                     allowInput: true,
-                    onChange: function() { onSearchCheckOutChange(); }
+                    onChange: function () { onSearchCheckOutChange(); }
                 });
 
                 modalInPicker = flatpickr("#modalCheckIn", {
@@ -1112,7 +1244,7 @@
                     minDate: "today",
                     defaultDate: today,
                     allowInput: true,
-                    onChange: function() { onModalCheckInChange(); }
+                    onChange: function () { onModalCheckInChange(); }
                 });
 
                 modalOutPicker = flatpickr("#modalCheckOut", {
@@ -1120,7 +1252,7 @@
                     minDate: minOut,
                     defaultDate: defaultOut,
                     allowInput: true,
-                    onChange: function() { onModalCheckOutChange(); }
+                    onChange: function () { onModalCheckOutChange(); }
                 });
             }
 
@@ -1170,7 +1302,7 @@
             if (!inEl || !outEl) return;
 
             const today = new Date();
-            today.setHours(0,0,0,0);
+            today.setHours(0, 0, 0, 0);
             let inDate = parseDateDMY(inEl.value);
 
             if (inDate < today) {
@@ -1217,7 +1349,7 @@
             if (!inEl || !outEl) return;
 
             const today = new Date();
-            today.setHours(0,0,0,0);
+            today.setHours(0, 0, 0, 0);
             let inDate = parseDateDMY(inEl.value);
 
             if (inDate < today) {
@@ -1283,7 +1415,7 @@
         }
 
         // Backward compatibility helpers
-        function populateCheckOutDropdown() {}
+        function populateCheckOutDropdown() { }
         function onSearchCheckOutSelectChange(val) { onSearchCheckOutChange(); }
         function onModalCheckOutSelectChange(val) { onModalCheckOutChange(); }
         function onCustomDatePicked(scope, val) {
@@ -1404,7 +1536,7 @@
 
         function handleModalSubmit(e) {
             const today = new Date();
-            today.setHours(0,0,0,0);
+            today.setHours(0, 0, 0, 0);
             const checkInVal = document.getElementById('modalCheckIn').value;
             const checkOutVal = document.getElementById('modalCheckOut').value;
             const inDate = parseDateDMY(checkInVal);
@@ -1436,10 +1568,11 @@
 
         function executeTracking() {
             const code = document.getElementById('trackInputCode').value.trim();
-            if(!code) return;
+            if (!code) return;
             document.getElementById('trackingOutput').style.display = 'block';
             document.getElementById('trackTitle').innerText = 'Booking #' + code;
         }
     </script>
 </body>
+
 </html>
