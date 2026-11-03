@@ -28,9 +28,9 @@ class StoreBookingRequest extends FormRequest
             'accepted_terms' => 'accepted',
 
             // Primary Guest
-            'primary_guest_name' => 'required|string|max:150',
+            'primary_guest_name' => 'required|string|min:3|max:150',
             'primary_guest_designation' => 'nullable|string|max:100',
-            'primary_guest_phone' => 'required|string|max:20',
+            'primary_guest_phone' => 'required|string|min:7|max:20',
             'primary_guest_email' => 'nullable|email|max:150',
             'primary_guest_id_type' => 'nullable|string|max:50',
             'primary_guest_id_number' => 'nullable|string|max:100',
@@ -49,9 +49,12 @@ class StoreBookingRequest extends FormRequest
     {
         return [
             'departure_date.after' => 'Departure date must be after arrival date.',
+            'arrival_date.after_or_equal' => 'Arrival date cannot be in the past.',
             'accepted_terms.accepted' => 'You must accept the guest house rules and booking terms.',
             'primary_guest_name.required' => 'Primary guest name is mandatory.',
+            'primary_guest_name.min' => 'Primary guest name must be at least 3 characters.',
             'primary_guest_phone.required' => 'Primary guest contact number is required.',
+            'primary_guest_phone.min' => 'Contact phone number must be at least 7 digits.',
         ];
     }
 }

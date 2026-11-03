@@ -346,6 +346,43 @@ class EstateTariffManager {
             return cat.rate || 150;
         }
     }
+
+    static getCategoryById(id) {
+        const estate = this.getEstateCategories().find(c => c.id === id);
+        if (estate) {
+            return Object.assign({}, estate, {
+                vipRate: estate.vip,
+                vvipRate: estate.vvip,
+                ordinaryRate: estate.ordinary
+            });
+        }
+        const dee = this.getDeeCategories().find(c => c.id === id);
+        if (dee) {
+            return Object.assign({}, dee, {
+                vipRate: dee.rate || 150,
+                dormRate: dee.dormRate || 100
+            });
+        }
+        return null;
+    }
+
+    static calculateTariff(categoryId, setType, nights = 1) {
+        const rate = this.calculateStayRate('estate', categoryId, setType);
+        let surcharge = 0;
+        let hasSurcharge = false;
+        if (nights > 7) {
+            hasSurcharge = true;
+            surcharge = Math.round(rate * 0.5 * (nights - 7));
+        }
+        const total = (rate * nights) + surcharge;
+        return {
+            baseNightlyRate: rate,
+            nights: nights,
+            hasSurcharge: hasSurcharge,
+            surchargeAmount: surcharge,
+            total: total
+        };
+    }
 }
 
 // Attach to window object for global browser access
@@ -355,4 +392,3 @@ if (typeof window !== 'undefined') {
     window.DEFAULT_DINING_HALL_RATES = DEFAULT_DINING_HALL_RATES;
     window.DEFAULT_DEE_CATEGORIES = DEFAULT_DEE_CATEGORIES;
 }
-

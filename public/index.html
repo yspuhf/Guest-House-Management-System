@@ -625,7 +625,7 @@
                     </div>
                     <div class="p-3 bg-light rounded border small">
                         <strong>Lifecycle Progress:</strong>
-                        <div class="d-flex align-items-center justify-content-between mt-2 flex-wrap gap-2">
+                        <div id="trackTimeline" class="d-flex align-items-center justify-content-between mt-2 flex-wrap gap-2">
                             <span class="text-success"><i class="bi bi-check-circle-fill"></i> 1. Submitted</span>
                             <span class="text-success"><i class="bi bi-check-circle-fill"></i> 2. HOD Endorsed</span>
                             <span class="text-success"><i class="bi bi-check-circle-fill"></i> 3. Estate Officer
@@ -1786,6 +1786,16 @@
             }
         ];
 
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
         function getInstitutionalDossiers() {
             try {
                 const stored = localStorage.getItem('uhf_institutional_dossiers');
@@ -1809,95 +1819,156 @@
             }
         }
 
-        function handleModalSubmit(e) {
-            e.preventDefault();
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const checkInVal = document.getElementById('modalCheckIn').value;
-            const checkOutVal = document.getElementById('modalCheckOut').value;
-            const inDate = parseDateDMY(checkInVal);
-            const outDate = parseDateDMY(checkOutVal);
-
-            if (inDate < today) {
-                alert(`Booking Error: Check-in date (${checkInVal}) cannot be in the past. Please select today (${formatDMY(today)}) or later.`);
+                function handleModalSubmit(e) {
+            if (e && typeof e.preventDefault === 'function') {
+                e.preventDefault();
+            }
+            if (window.__isModalSubmitting) {
                 return;
             }
-            if (outDate <= inDate) {
-                alert("Booking Error: Check-out date must be at least one day after check-in date.");
-                return;
-            }
+            window.__isModalSubmitting = true;
 
-            const wing = document.getElementById('modalWing').value;
-            const wingName = wing === 'estate' ? 'Estate Office Wing' : 'DEE Wing (Kisan Bhawan)';
-            const guest = document.getElementById('modalGuestName').value.trim();
-            const mobile = document.getElementById('modalMobile') ? document.getElementById('modalMobile').value.trim() : '';
-            const sponsoringDept = document.getElementById('modalSponsoringDept') ? document.getElementById('modalSponsoringDept').value.trim() : '';
-            const purpose = document.getElementById('modalPurpose') ? document.getElementById('modalPurpose').value.trim() : '';
-            
-            const setTypeSelect = document.getElementById('modalSetType');
-            const setType = setTypeSelect ? setTypeSelect.value : 'vip';
-            const setTypeLabel = setTypeSelect && setTypeSelect.selectedOptions[0] ? setTypeSelect.selectedOptions[0].text : setType;
-            
-            const catSelect = document.getElementById('modalCategory');
-            const catLabel = catSelect && catSelect.selectedOptions[0] ? catSelect.selectedOptions[0].text : 'Official Delegate';
-            const totalEst = document.getElementById('modalTotal') ? document.getElementById('modalTotal').innerText : '₹1,500.00';
+            try {
+                const guestInput = document.getElementById('modalGuestName');
+                const guest = guestInput ? guestInput.value.trim() : '';
 
-            const isVvip = setType.toLowerCase().includes('vvip') || setTypeLabel.toLowerCase().includes('vvip');
-            const ref = 'GH-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
-            let diffDays = Math.ceil((outDate - inDate) / (1000 * 60 * 60 * 24));
-            if (isNaN(diffDays) || diffDays < 1) diffDays = 1;
+                if (!guest || guest.length < 3) {
+                    alert("Booking Error: Please enter a valid guest name (at least 3 characters).");
+                    window.__isModalSubmitting = false;
+                    return;
+                }
+                if (guest.length > 250) {
+                    alert("Booking Error: Guest name is too long (maximum 250 characters).");
+                    window.__isModalSubmitting = false;
+                    return;
+                }
 
-            let roomDisplay = '';
-            let roomClass = 'ordinary';
-            if (isVvip) {
-                roomDisplay = 'Main GH • VVIP Suite #202 (Presidential)';
-                roomClass = 'vvip';
-            } else if (setType.toLowerCase().includes('vip')) {
-                roomDisplay = 'Main GH • VIP Suite #103';
-                roomClass = 'vip';
-            } else if (setType.toLowerCase().includes('dorm') || wing === 'dee') {
-                roomDisplay = 'Kisan Bhawan • Farmers Dormitory';
-                roomClass = 'dormitory';
-            } else {
-                roomDisplay = 'Main GH • Standard AC Room #104';
-                roomClass = 'ordinary';
-            }
+                const checkInVal = document.getElementById('modalCheckIn') ? document.getElementById('modalCheckIn').value : '';
+                const checkOutVal = document.getElementById('modalCheckOut') ? document.getElementById('modalCheckOut').value : '';
+                const inDate = parseDateDMY(checkInVal);
+                const outDate = parseDateDMY(checkOutVal);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
 
-            const newDossier = {
-                ref: ref,
-                guest: guest,
-                designation: sponsoringDept ? `${sponsoringDept}` : 'Visiting Guest / Official Delegate',
-                mobile: mobile,
-                wing: wingName,
-                wingType: wing,
-                room: roomDisplay,
-                roomClass: roomClass,
-                isVvip: isVvip,
-                dates: `${formatDMY(inDate)} &rarr; ${formatDMY(outDate)}`,
-                duration: `${diffDays} Night${diffDays > 1 ? 's' : ''} &bull; 1 Guest`,
-                category: catLabel,
-                status: isVvip ? 'PENDING_VC_APPROVAL' : 'PENDING_ESTATE_APPROVAL',
-                handledBy: isVvip ? 'vc' : (wing === 'dee' ? 'dee' : 'estate'),
-                sponsor: sponsoringDept || 'Self / Institutional Booking',
-                tariff: totalEst,
-                purpose: purpose,
-                createdAt: new Date().toISOString()
-            };
+                if (isNaN(inDate.getTime()) || isNaN(outDate.getTime())) {
+                    alert("Booking Error: Please provide valid check-in and check-out dates in DD/MM/YYYY format.");
+                    window.__isModalSubmitting = false;
+                    return;
+                }
 
-            // Save to shared localStorage key 'uhf_institutional_dossiers'
-            const dossiers = getInstitutionalDossiers();
-            dossiers.unshift(newDossier);
-            saveInstitutionalDossiers(dossiers);
+                if (inDate < today) {
+                    alert(`Booking Error: Check-in date (${checkInVal}) cannot be in the past. Please select today (${formatDMY(today)}) or later.`);
+                    window.__isModalSubmitting = false;
+                    return;
+                }
+                if (outDate <= inDate) {
+                    alert("Booking Error: Check-out date must be at least one day after check-in date.");
+                    window.__isModalSubmitting = false;
+                    return;
+                }
 
-            alert(`✅ Application Submitted Under Notification 1615-40!\n\nReference: ${ref}\nGuest: ${guest}\nWing: ${wingName}\nRoom: ${roomDisplay}\nStatus: ${isVvip ? 'PENDING_VC_APPROVAL (Vice-Chancellor Apex Sanction Required)' : 'PENDING_ESTATE_APPROVAL'}\n\nYour requisition has been dispatched to the ${isVvip ? 'Vice-Chancellor Secretariat' : 'Estate Officer'} and is now reflecting in real-time across the management portal.`);
-            
-            bootstrap.Modal.getInstance(document.getElementById('bookingModal')).hide();
+                const mobile = document.getElementById('modalMobile') ? document.getElementById('modalMobile').value.trim() : '';
+                if (mobile && !/^[0-9+\-\s()]{7,20}$/.test(mobile)) {
+                    alert("Booking Error: Please enter a valid contact phone number (7 to 20 digits).");
+                    window.__isModalSubmitting = false;
+                    return;
+                }
 
-            // Auto-populate tracking code on page & display result
-            const trackInput = document.getElementById('trackInputCode');
-            if (trackInput) {
-                trackInput.value = ref;
-                executeTracking();
+                const wing = document.getElementById('modalWing') ? document.getElementById('modalWing').value : 'estate';
+                const wingName = wing === 'estate' ? 'Estate Office Wing' : 'DEE Wing (Kisan Bhawan)';
+                const sponsoringDept = document.getElementById('modalSponsoringDept') ? document.getElementById('modalSponsoringDept').value.trim() : '';
+                const purpose = document.getElementById('modalPurpose') ? document.getElementById('modalPurpose').value.trim() : '';
+                
+                const setTypeSelect = document.getElementById('modalSetType');
+                const setType = setTypeSelect ? setTypeSelect.value : 'vip';
+                const setTypeLabel = setTypeSelect && setTypeSelect.selectedOptions[0] ? setTypeSelect.selectedOptions[0].text : setType;
+                
+                const catSelect = document.getElementById('modalCategory');
+                const catLabel = catSelect && catSelect.selectedOptions[0] ? catSelect.selectedOptions[0].text : 'Official Delegate';
+                const totalEst = document.getElementById('modalTotal') ? document.getElementById('modalTotal').innerText : 'â‚¹1,500.00';
+
+                const isVvip = setType.toLowerCase().includes('vvip') || setTypeLabel.toLowerCase().includes('vvip');
+                const ref = 'GH-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
+                let diffDays = Math.ceil((outDate - inDate) / (1000 * 60 * 60 * 24));
+                if (isNaN(diffDays) || diffDays < 1) diffDays = 1;
+
+                let roomDisplay = '';
+                let roomClass = 'ordinary';
+                if (isVvip) {
+                    roomDisplay = 'Main GH â€¢ VVIP Suite #202 (Presidential)';
+                    roomClass = 'vvip';
+                } else if (setType.toLowerCase().includes('vip')) {
+                    roomDisplay = 'Main GH â€¢ VIP Suite #103';
+                    roomClass = 'vip';
+                } else if (setType.toLowerCase().includes('dorm') || wing === 'dee') {
+                    roomDisplay = 'Kisan Bhawan â€¢ Farmers Dormitory';
+                    roomClass = 'dormitory';
+                } else {
+                    roomDisplay = 'Main GH â€¢ Standard AC Room #104';
+                    roomClass = 'ordinary';
+                }
+
+                const newDossier = {
+                    ref: ref,
+                    guest: guest,
+                    designation: sponsoringDept ? `${sponsoringDept}` : 'Visiting Guest / Official Delegate',
+                    mobile: mobile,
+                    wing: wingName,
+                    wingType: wing,
+                    room: roomDisplay,
+                    roomClass: roomClass,
+                    isVvip: isVvip,
+                    dates: `${formatDMY(inDate)} &rarr; ${formatDMY(outDate)}`,
+                    duration: `${diffDays} Night${diffDays > 1 ? 's' : ''} &bull; 1 Guest`,
+                    category: catLabel,
+                    status: isVvip ? 'PENDING_VC_APPROVAL' : 'PENDING_ESTATE_APPROVAL',
+                    handledBy: isVvip ? 'vc' : (wing === 'dee' ? 'dee' : 'estate'),
+                    sponsor: sponsoringDept || 'Self / Institutional Booking',
+                    tariff: totalEst,
+                    purpose: purpose,
+                    createdAt: new Date().toISOString()
+                };
+
+                // Save to shared localStorage key 'uhf_institutional_dossiers'
+                const dossiers = getInstitutionalDossiers();
+                dossiers.unshift(newDossier);
+                saveInstitutionalDossiers(dossiers);
+
+                alert(`Application Submitted Under Notification 1615-40!\n\nReference: ${ref}\nGuest: ${guest}\nWing: ${wingName}\nRoom: ${roomDisplay}\nStatus: ${isVvip ? 'PENDING_VC_APPROVAL (Vice-Chancellor Apex Sanction Required)' : 'PENDING_ESTATE_APPROVAL'}\n\nYour requisition has been dispatched to the ${isVvip ? 'Vice-Chancellor Secretariat' : 'Estate Officer'} and is now reflecting in real-time across the management portal.`);
+                
+                const modalEl = document.getElementById('bookingModal');
+                if (modalEl) {
+                    try {
+                        if (window.bootstrap && bootstrap.Modal) {
+                            const inst = bootstrap.Modal.getInstance(modalEl) || (bootstrap.Modal.getOrCreateInstance ? bootstrap.Modal.getOrCreateInstance(modalEl) : null);
+                            if (inst && typeof inst.hide === 'function') {
+                                inst.hide();
+                            } else {
+                                modalEl.classList.remove('show');
+                                modalEl.style.display = 'none';
+                                document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+                                document.body.classList.remove('modal-open');
+                            }
+                        } else {
+                            modalEl.classList.remove('show');
+                            modalEl.style.display = 'none';
+                            document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+                            document.body.classList.remove('modal-open');
+                        }
+                    } catch (mErr) {
+                        modalEl.classList.remove('show');
+                        modalEl.style.display = 'none';
+                    }
+                }
+
+                // Auto-populate tracking code on page & display result
+                const trackInput = document.getElementById('trackInputCode');
+                if (trackInput) {
+                    trackInput.value = ref;
+                    executeTracking();
+                }
+            } finally {
+                window.__isModalSubmitting = false;
             }
         }
 
@@ -1909,10 +1980,12 @@
             openBookingModal(wing, setType, catId);
         }
 
-        function executeTracking() {
+                function executeTracking() {
             const codeInput = document.getElementById('trackInputCode');
             const code = codeInput ? codeInput.value.trim().toUpperCase() : '';
+            const output = document.getElementById('trackingOutput');
             if (!code) {
+                if (output) output.style.display = 'none';
                 alert("Please enter a valid Booking Reference (e.g. GH-2026-10-0001) or Mobile Number.");
                 return;
             }
@@ -1924,12 +1997,14 @@
                 (d.guest && d.guest.toUpperCase().includes(code))
             );
 
-            const output = document.getElementById('trackingOutput');
             if (found && output) {
                 output.style.display = 'block';
-                document.getElementById('trackTitle').innerText = 'Booking #' + found.ref;
-                document.getElementById('trackRoom').innerHTML = `${found.wing} &bull; ${found.room}`;
-                document.getElementById('trackGuest').innerText = `${found.guest} (${found.designation || 'Guest'})`;
+                const titleEl = document.getElementById('trackTitle');
+                if (titleEl) titleEl.innerText = 'Booking #' + found.ref;
+                const roomEl = document.getElementById('trackRoom');
+                if (roomEl) roomEl.innerHTML = `${escapeHtml(found.wing)} &bull; ${escapeHtml(found.room)}`;
+                const guestEl = document.getElementById('trackGuest');
+                if (guestEl) guestEl.innerText = `${found.guest} (${found.designation || 'Guest'})`;
 
                 const badge = document.getElementById('trackBadge');
                 if (badge) {
@@ -1941,7 +2016,7 @@
                 }
 
                 // Update timeline status
-                const timeline = output.querySelector('.d-flex.align-items-center.justify-content-between');
+                const timeline = document.getElementById('trackTimeline');
                 if (timeline) {
                     let s1 = '<span class="text-success"><i class="bi bi-check-circle-fill"></i> 1. Submitted</span>';
                     let s2 = found.status !== 'SUBMITTED' ? '<span class="text-success"><i class="bi bi-check-circle-fill"></i> 2. Endorsed</span>' : '<span class="text-muted"><i class="bi bi-circle"></i> 2. Endorsement Pending</span>';
@@ -1951,6 +2026,7 @@
                 }
                 output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             } else {
+                if (output) output.style.display = 'none';
                 alert(`No active booking record found matching "${code}". Please check the reference number.`);
             }
         }
@@ -2298,3 +2374,6 @@
 </body>
 
 </html>
+
+
+
