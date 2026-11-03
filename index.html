@@ -399,126 +399,6 @@
         </div>
     </section>
 
-    <!-- 4. Dynamic Floating Booking Bar (Categorized according to Notification & Wing) -->
-    <div class="container">
-        <div class="booking-floating-card">
-            <form onsubmit="handleQuickSearch(event)">
-                <div class="row g-3 align-items-end">
-                    <!-- 1. Wing Selector (User Decides) -->
-                    <div class="col-xl-3 col-md-6">
-                        <label class="form-label fw-semibold small text-muted">
-                            <i class="bi bi-building-gear me-1 text-success"></i> 1. Accommodation Wing *
-                        </label>
-                        <select id="searchWing"
-                            class="form-select form-select-lg fs-6 fw-bold border-success text-success"
-                            onchange="onWingSelectionChange(this.value)">
-                            <option value="estate" selected>Estate Office (Main GH, VIP Suites, FRH)</option>
-                            <option value="dee">Directorate of Extension Education (DEE)</option>
-                        </select>
-                    </div>
-
-                    <!-- 2. Room Set / Class (VVIP, VIP, Ordinary for Estate) -->
-                    <div class="col-xl-2 col-md-6">
-                        <label class="form-label fw-semibold small text-muted" id="searchSetLabel">
-                            <i class="bi bi-door-closed me-1 text-primary"></i> 2. Room Set / Class *
-                        </label>
-                        <select id="searchSetType" class="form-select form-select-lg fs-6 fw-semibold"
-                            onchange="updateEstimatedSearchPrice()">
-                            <!-- Populated dynamically via JS -->
-                        </select>
-                    </div>
-
-                    <!-- 3. Dynamic Category (From Notification Image) -->
-                    <div class="col-xl-3 col-md-12">
-                        <label class="form-label fw-semibold small text-muted">
-                            <i class="bi bi-person-badge me-1 text-primary"></i> 3. Category (Notification 1615-40) *
-                        </label>
-                        <select id="searchCategory" class="form-select form-select-lg fs-6"
-                            onchange="updateEstimatedSearchPrice()">
-                            <!-- Populated dynamically via JS -->
-                        </select>
-                    </div>
-
-                    <!-- 4. Check-In -->
-                    <div class="col-xl-2 col-md-6">
-                        <label class="form-label fw-semibold small text-muted">
-                            <i class="bi bi-calendar-event me-1 text-success"></i> Check-In Date * <small
-                                class="text-secondary">(DD/MM/YYYY)</small>
-                        </label>
-                        <div class="input-group">
-                            <input type="text" id="searchCheckIn" class="form-control form-control-lg fs-6 fw-bold"
-                                placeholder="DD/MM/YYYY" maxlength="10" required onchange="onSearchCheckInChange()"
-                                oninput="maskDateInput(event); updateEstimatedSearchPrice()"
-                                onclick="openDatePicker('searchCheckIn')"
-                                onfocus="openDatePicker('searchCheckIn')"
-                                autocomplete="off">
-                            <button class="btn btn-outline-secondary" type="button"
-                                onclick="openDatePicker('searchCheckIn')" title="Open Calendar"><i
-                                    class="bi bi-calendar-event text-success"></i></button>
-                        </div>
-                    </div>
-
-                    <!-- 5. Check-Out Date -->
-                    <div class="col-xl-2 col-md-6">
-                        <label
-                            class="form-label fw-semibold small text-muted d-flex justify-content-between align-items-center">
-                            <span><i class="bi bi-calendar-check me-1 text-danger"></i> Check-Out Date * <small
-                                    class="text-secondary">(DD/MM/YYYY)</small></span>
-                            <span class="badge bg-danger text-white py-0 px-1" id="searchDurationBadge"
-                                style="font-size: 0.65rem;">3 Nights</span>
-                        </label>
-                        <div class="input-group">
-                            <input type="text" id="searchCheckOut"
-                                class="form-control form-control-lg fs-6 fw-bold border-danger text-danger"
-                                placeholder="DD/MM/YYYY" maxlength="10" required onchange="onSearchCheckOutChange()"
-                                oninput="maskDateInput(event); updateEstimatedSearchPrice()"
-                                onclick="openDatePicker('searchCheckOut')"
-                                onfocus="openDatePicker('searchCheckOut')"
-                                autocomplete="off">
-                            <button class="btn btn-outline-danger" type="button"
-                                onclick="openDatePicker('searchCheckOut')" title="Open Calendar"><i
-                                    class="bi bi-calendar-check"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Rate Estimation Strip -->
-                <div class="mt-3 pt-3 border-top d-flex flex-wrap justify-content-between align-items-center">
-                    <div class="d-flex align-items-center gap-3">
-                        <span class="badge bg-success-subtle text-success border border-success px-2 py-1"
-                            id="rateBadgeNotice">
-                            Notification No. 1615-40 Applied
-                        </span>
-                        <div class="small text-muted">
-                            Applicable Nightly Rate: <strong class="text-dark fs-6" id="searchCalculatedRate">₹1,500.00
-                                / night</strong> &bull;
-                            Est. Total (3 Nights): <strong class="text-success fs-6"
-                                id="searchCalculatedTotal">₹4,500.00</strong>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center gap-2 mt-2 mt-md-0 flex-wrap">
-                        <div class="d-flex align-items-center gap-1 me-2">
-                            <span class="small text-muted" style="font-size: 0.75rem;">Quick Nights:</span>
-                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2"
-                                style="font-size: 0.72rem;" onclick="setStayDays('search', 1)">1N</button>
-                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2"
-                                style="font-size: 0.72rem;" onclick="setStayDays('search', 2)">2N</button>
-                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2"
-                                style="font-size: 0.72rem;" onclick="setStayDays('search', 3)">3N</button>
-                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2"
-                                style="font-size: 0.72rem;" onclick="setStayDays('search', 5)">5N</button>
-                            <button type="button" class="btn btn-sm btn-outline-success py-0 px-2"
-                                style="font-size: 0.72rem;" onclick="setStayDays('search', 7)">1W</button>
-                        </div>
-                        <button type="submit" class="btn btn-forest px-4 py-2 fw-semibold">
-                            <i class="bi bi-calendar2-plus me-1"></i> Reserve with This Category
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- 5. Accommodations Section with Wing Filters -->
     <section id="accommodations" class="py-5 my-4">
         <div class="container">
@@ -1067,7 +947,7 @@
         // Initialize dynamic categories, tables, and booking date pickers
         document.addEventListener('DOMContentLoaded', function () {
             renderNotificationTable();
-            onWingSelectionChange('estate');
+            filterRoomsByWing('all');
             initializeBookingDates();
         });
 
@@ -1144,56 +1024,68 @@
         }
 
         // When user changes Wing in floating search bar
+        // Accommodation wing and search price helper (guarded)
         function onWingSelectionChange(wing) {
             const setSelect = document.getElementById('searchSetType');
             const catSelect = document.getElementById('searchCategory');
-            setSelect.innerHTML = '';
-            catSelect.innerHTML = '';
+            if (setSelect && catSelect) {
+                setSelect.innerHTML = '';
+                catSelect.innerHTML = '';
 
-            if (wing === 'estate') {
-                document.getElementById('searchSetLabel').innerHTML = '<i class="bi bi-door-closed me-1 text-primary"></i> 2. Room Set *';
-                setSelect.innerHTML = `
-                    <option value="vip" selected>VIP Set (Annexe/Main)</option>
-                    <option value="vvip">VVIP Set (Pres. Suite)</option>
-                    <option value="ordinary">Ordinary Set (Double)</option>
-                    <option value="dormitory">Dormitory Bed</option>
-                    <option value="wash_change">Wash/Change (Short Stay)</option>
-                `;
+                if (wing === 'estate') {
+                    const label = document.getElementById('searchSetLabel');
+                    if (label) label.innerHTML = '<i class="bi bi-door-closed me-1 text-primary"></i> 2. Room Set *';
+                    setSelect.innerHTML = `
+                        <option value="vip" selected>VIP Set (Annexe/Main)</option>
+                        <option value="vvip">VVIP Set (Pres. Suite)</option>
+                        <option value="ordinary">Ordinary Set (Double)</option>
+                        <option value="dormitory">Dormitory Bed</option>
+                        <option value="wash_change">Wash/Change (Short Stay)</option>
+                    `;
 
-                const estateCats = EstateTariffManager.getEstateCategories();
-                estateCats.forEach(cat => {
-                    const opt = document.createElement('option');
-                    opt.value = cat.id;
-                    opt.innerText = `${cat.srNo}. ${cat.shortName}`;
-                    catSelect.appendChild(opt);
-                });
-            } else {
-                document.getElementById('searchSetLabel').innerHTML = '<i class="bi bi-door-closed me-1 text-warning"></i> 2. Facility Type *';
-                setSelect.innerHTML = `
-                    <option value="double" selected>Double Room (Kisan Bhawan)</option>
-                    <option value="dormitory">Farmers Dormitory Hall</option>
-                `;
+                    const estateCats = EstateTariffManager.getEstateCategories();
+                    estateCats.forEach(cat => {
+                        const opt = document.createElement('option');
+                        opt.value = cat.id;
+                        opt.innerText = `${cat.srNo}. ${cat.shortName}`;
+                        catSelect.appendChild(opt);
+                    });
+                } else {
+                    const label = document.getElementById('searchSetLabel');
+                    if (label) label.innerHTML = '<i class="bi bi-door-closed me-1 text-warning"></i> 2. Facility Type *';
+                    setSelect.innerHTML = `
+                        <option value="double" selected>Double Room (Kisan Bhawan)</option>
+                        <option value="dormitory">Farmers Dormitory Hall</option>
+                    `;
 
-                const deeCats = EstateTariffManager.getDeeCategories();
-                deeCats.forEach(cat => {
-                    const opt = document.createElement('option');
-                    opt.value = cat.id;
-                    opt.innerText = `${cat.srNo}: ${cat.shortName}`;
-                    catSelect.appendChild(opt);
-                });
+                    const deeCats = EstateTariffManager.getDeeCategories();
+                    deeCats.forEach(cat => {
+                        const opt = document.createElement('option');
+                        opt.value = cat.id;
+                        opt.innerText = `${cat.srNo}: ${cat.shortName}`;
+                        catSelect.appendChild(opt);
+                    });
+                }
             }
 
-            filterRoomsByWing(wing);
+            filterRoomsByWing(wing || 'all');
             updateEstimatedSearchPrice();
         }
 
         function updateEstimatedSearchPrice() {
-            const wing = document.getElementById('searchWing').value;
-            const setType = document.getElementById('searchSetType').value;
-            const catId = document.getElementById('searchCategory').value;
+            const wingEl = document.getElementById('searchWing');
+            const setEl = document.getElementById('searchSetType');
+            const catEl = document.getElementById('searchCategory');
+            const inEl = document.getElementById('searchCheckIn');
+            const outEl = document.getElementById('searchCheckOut');
+            if (!wingEl || !setEl || !catEl || !inEl || !outEl) return;
 
-            const checkIn = parseDateDMY(document.getElementById('searchCheckIn').value);
-            const checkOut = parseDateDMY(document.getElementById('searchCheckOut').value);
+            const wing = wingEl.value;
+            const setType = setEl.value;
+            const catId = catEl.value;
+
+            const checkIn = parseDateDMY(inEl.value);
+            const checkOut = parseDateDMY(outEl.value);
             let diff = checkOut - checkIn;
             let nights = Math.ceil(diff / (1000 * 60 * 60 * 24));
             if (isNaN(nights) || nights < 1) nights = 1;
@@ -1201,8 +1093,10 @@
             const rate = EstateTariffManager.calculateStayRate(wing, catId, setType);
             const total = rate * nights;
 
-            document.getElementById('searchCalculatedRate').innerText = `₹${rate.toFixed(2)} / day`;
-            document.getElementById('searchCalculatedTotal').innerText = `₹${total.toFixed(2)}`;
+            const rateEl = document.getElementById('searchCalculatedRate');
+            const totalEl = document.getElementById('searchCalculatedTotal');
+            if (rateEl) rateEl.innerText = '₹' + rate.toFixed(2) + ' / day';
+            if (totalEl) totalEl.innerText = '₹' + total.toFixed(2);
         }
 
         // Date helpers in local client time (Prevents back-dated bookings)
@@ -1830,23 +1724,9 @@
         }
 
         function filterRoomsByWing(wing, btn) {
-            if (btn) {
-                document.querySelectorAll('#wingFilterButtons button').forEach(b => {
-                    b.classList.remove('btn-success', 'active', 'text-white');
-                    b.classList.add('btn-outline-success');
-                });
-                btn.classList.remove('btn-outline-success');
-                btn.classList.add('btn-success', 'active', 'text-white');
-            }
-
-            const select = document.getElementById('searchWing');
-            if (select && select.value !== wing && wing !== 'all') {
-                select.value = wing;
-            }
-
             document.querySelectorAll('.room-card-col').forEach(card => {
                 const cardWing = card.getAttribute('data-wing');
-                if (wing === 'all' || cardWing === wing) {
+                if (wing === 'all' || !wing || cardWing === wing) {
                     card.style.display = 'block';
                 } else {
                     card.style.display = 'none';
