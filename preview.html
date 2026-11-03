@@ -2336,7 +2336,6 @@
 
         let institutionalDossiers = getInstitutionalDossiers();
         let pendingDossierRef = '';
-        let activeWorkflowRef = 'GH-2026-10-0003';
 
         function updateDashboardCounters() {
             const pending = institutionalDossiers.filter(d => 
@@ -2485,11 +2484,11 @@
 
             if (feedbackEl) {
                 feedbackEl.style.display = 'block';
-                feedbackEl.innerHTML = 
+                feedbackEl.innerHTML = `
                     <div class="alert alert-success py-2 px-3 small mb-0">
                         <i class="bi bi-check-circle-fill me-1"></i> Authenticated as Estate Officer! Launching console...
                     </div>
-                ;
+                `;
             }
 
             isAuthTransitioning = true;
@@ -2539,11 +2538,11 @@
 
             if (feedbackEl) {
                 feedbackEl.style.display = 'block';
-                feedbackEl.innerHTML = 
+                feedbackEl.innerHTML = `
                     <div class="alert alert-success py-2 px-3 small mb-0">
                         <i class="bi bi-crown me-1 text-warning"></i> Authenticated as VC Secretariat! Launching apex console...
                     </div>
-                ;
+                `;
             }
 
             isAuthTransitioning = true;
