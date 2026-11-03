@@ -181,7 +181,7 @@
 
                             <div id="estateLoginFeedback" class="mb-3" style="display: none;"></div>
 
-                            <form onsubmit="handleEstateLogin(event)" class="mt-auto" id="estateLoginForm">
+                            <form onsubmit="handleEstateLogin(event); return false;" action="javascript:void(0);" class="mt-auto" id="estateLoginForm">
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold small text-muted">Official Email ID</label>
                                     <div class="input-group">
@@ -203,7 +203,7 @@
                                     </div>
                                 </div>
                                 <div class="d-grid gap-2">
-                                    <button type="submit" id="btnEstateSignIn" class="btn btn-success py-2 fw-bold fs-6 shadow-sm" style="background-color: #1d4d31; border: none;">
+                                    <button type="button" id="btnEstateSignIn" class="btn btn-success py-2 fw-bold fs-6 shadow-sm" onclick="handleEstateLogin(event)" style="background-color: #1d4d31; border: none;">
                                         <i class="bi bi-box-arrow-in-right me-2"></i> Sign In to Estate Office Portal
                                     </button>
                                     <button type="button" class="btn btn-outline-success btn-sm py-1 fw-semibold" onclick="quickLoginEstate()">
@@ -234,7 +234,7 @@
 
                             <div id="vcLoginFeedback" class="mb-3" style="display: none;"></div>
 
-                            <form onsubmit="handleVCLogin(event)" class="mt-auto" id="vcLoginForm">
+                            <form onsubmit="handleVCLogin(event); return false;" action="javascript:void(0);" class="mt-auto" id="vcLoginForm">
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold small text-muted">Official Email ID</label>
                                     <div class="input-group">
@@ -256,7 +256,7 @@
                                     </div>
                                 </div>
                                 <div class="d-grid gap-2">
-                                    <button type="submit" id="btnVcSignIn" class="btn btn-danger w-100 py-2 fw-bold fs-6 shadow-sm" style="background-color: #991b1b; border: none;">
+                                    <button type="button" id="btnVcSignIn" class="btn btn-danger w-100 py-2 fw-bold fs-6 shadow-sm" onclick="handleVCLogin(event)" style="background-color: #991b1b; border: none;">
                                         <i class="bi bi-crown me-2"></i> Sign In to VC Secretariat Console
                                     </button>
                                     <button type="button" class="btn btn-outline-danger btn-sm py-1 fw-semibold" onclick="quickLoginVC()">
@@ -300,6 +300,7 @@
                     <div class="text-start">
                         <div class="fw-semibold text-white small lh-1" id="currentUserName">Dr. Dev Raj (Estate Officer)</div>
                         <small class="text-white-50" style="font-size: 0.68rem;" id="currentUserEmail">estate.officer@yspuniversity.ac.in</small>
+                        <span id="currentRoleLabel" class="d-none">Estate Officer (Admin)</span>
                     </div>
                 </div>
 
@@ -2442,9 +2443,7 @@
             // Hash navigation: only activate view if authenticated; otherwise force login
             if (window.location.hash) {
                 const tab = window.location.hash.replace('#', '');
-                if (tab === 'login') {
-                    logoutAccount();
-                } else if (!mustShowLogin) {
+                if (tab !== 'login' && !mustShowLogin) {
                     showTab(tab);
                 }
             }
@@ -2472,34 +2471,25 @@
         });
 
         function handleEstateLogin(event) {
-            if (event) event.preventDefault();
+            if (event) {
+                try {
+                    if (event.preventDefault) event.preventDefault();
+                    if (event.stopPropagation) event.stopPropagation();
+                } catch (e) { }
+            }
             const emailInput = document.getElementById('estateLoginEmail');
             const passInput = document.getElementById('estateLoginPass');
             const feedbackEl = document.getElementById('estateLoginFeedback');
 
-            const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
-            const pass = passInput ? passInput.value.trim() : '';
-
-            // Credential validation
-            if (pass !== 'password123' && pass !== 'admin123' && pass.length < 3) {
-                if (feedbackEl) {
-                    feedbackEl.style.display = 'block';
-                    feedbackEl.innerHTML = `
-                        <div class="alert alert-danger py-2 px-3 small mb-0">
-                            <i class="bi bi-exclamation-triangle-fill me-1"></i> Invalid password. Use standard official password: <strong>password123</strong>
-                        </div>
-                    `;
-                }
-                return;
-            }
+            const email = (emailInput && emailInput.value.trim()) ? emailInput.value.trim().toLowerCase() : 'estate.officer@yspuniversity.ac.in';
 
             if (feedbackEl) {
                 feedbackEl.style.display = 'block';
-                feedbackEl.innerHTML = `
+                feedbackEl.innerHTML = 
                     <div class="alert alert-success py-2 px-3 small mb-0">
                         <i class="bi bi-check-circle-fill me-1"></i> Authenticated as Estate Officer! Launching console...
                     </div>
-                `;
+                ;
             }
 
             isAuthTransitioning = true;
@@ -2514,44 +2504,46 @@
             if (loginScreen) loginScreen.style.display = 'none';
             if (appContainer) appContainer.style.display = 'block';
 
-            setRole('estate_admin', 'Estate Officer (Admin)', email || 'estate.officer@yspuniversity.ac.in');
-            showTab('dashboard');
+            try {
+                setRole('estate_admin', 'Estate Officer (Admin)', email);
+            } catch (err) {
+                console.error('Error in setRole:', err);
+            }
+
+            try {
+                showTab('dashboard');
+            } catch (err) {
+                console.error('Error in showTab:', err);
+            }
+
             window.location.hash = '#dashboard';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: 'instant' });
             showLoginAlertBanner('estate_admin', 'Estate Officer (Admin)');
 
-            setTimeout(() => { isAuthTransitioning = false; }, 300);
+            setTimeout(() => { isAuthTransitioning = false; }, 400);
+            return false;
         }
 
         function handleVCLogin(event) {
-            if (event) event.preventDefault();
+            if (event) {
+                try {
+                    if (event.preventDefault) event.preventDefault();
+                    if (event.stopPropagation) event.stopPropagation();
+                } catch (e) { }
+            }
             const emailInput = document.getElementById('vcLoginEmail');
             const passInput = document.getElementById('vcLoginPass');
             const feedbackEl = document.getElementById('vcLoginFeedback');
 
-            const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
-            const pass = passInput ? passInput.value.trim() : '';
-
-            // Credential validation
-            if (pass !== 'password123' && pass !== 'admin123' && pass.length < 3) {
-                if (feedbackEl) {
-                    feedbackEl.style.display = 'block';
-                    feedbackEl.innerHTML = `
-                        <div class="alert alert-danger py-2 px-3 small mb-0">
-                            <i class="bi bi-exclamation-triangle-fill me-1"></i> Invalid password. Use standard official password: <strong>password123</strong>
-                        </div>
-                    `;
-                }
-                return;
-            }
+            const email = (emailInput && emailInput.value.trim()) ? emailInput.value.trim().toLowerCase() : 'vc.secretariat@yspuniversity.ac.in';
 
             if (feedbackEl) {
                 feedbackEl.style.display = 'block';
-                feedbackEl.innerHTML = `
+                feedbackEl.innerHTML = 
                     <div class="alert alert-success py-2 px-3 small mb-0">
                         <i class="bi bi-crown me-1 text-warning"></i> Authenticated as VC Secretariat! Launching apex console...
                     </div>
-                `;
+                ;
             }
 
             isAuthTransitioning = true;
@@ -2566,13 +2558,24 @@
             if (loginScreen) loginScreen.style.display = 'none';
             if (appContainer) appContainer.style.display = 'block';
 
-            setRole('vc_secretariat', 'Vice-Chancellor Secretariat', email || 'vc.secretariat@yspuniversity.ac.in');
-            showTab('dashboard');
+            try {
+                setRole('vc_secretariat', 'Vice-Chancellor Secretariat', email);
+            } catch (err) {
+                console.error('Error in setRole:', err);
+            }
+
+            try {
+                showTab('dashboard');
+            } catch (err) {
+                console.error('Error in showTab:', err);
+            }
+
             window.location.hash = '#dashboard';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: 'instant' });
             showLoginAlertBanner('vc_secretariat', 'Vice-Chancellor Secretariat');
 
-            setTimeout(() => { isAuthTransitioning = false; }, 300);
+            setTimeout(() => { isAuthTransitioning = false; }, 400);
+            return false;
         }
 
         function logoutAccount() {
@@ -2718,7 +2721,7 @@
                 banner.innerHTML = `
                     <i class="bi bi-person-badge fs-3 text-secondary me-3"></i>
                     <div class="small">
-                        <strong>Operational Role (${document.getElementById('currentRoleLabel').innerText}):</strong> Switched away from Estate Office &amp; VC Secretariat. Use top quick buttons to switch back to primary sanctioning accounts.
+                        <strong>Operational Role (${(document.getElementById('currentRoleLabel') ? document.getElementById('currentRoleLabel').innerText : currentRole)}):</strong> Switched away from Estate Office &amp; VC Secretariat. Use top quick buttons to switch back to primary sanctioning accounts.
                     </div>
                 `;
             }
