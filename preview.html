@@ -304,10 +304,7 @@
                     </div>
                 </div>
 
-                <!-- Quick Switch Account Button -->
-                <button type="button" id="btnQuickSwitchRole" class="btn btn-sm btn-outline-warning text-white fw-semibold" onclick="switchRoleQuick(currentRole === 'vc_secretariat' ? 'estate_admin' : 'vc_secretariat')" title="Switch directly between Estate Office and VC Secretariat">
-                    <i class="bi bi-arrow-left-right me-1 text-warning"></i> Switch Role
-                </button>
+
 
                 <!-- Sign Out Button -->
                 <button type="button" class="btn btn-sm btn-outline-light text-white fw-semibold" onclick="logoutAccount()" title="Sign out of current account">
@@ -333,27 +330,27 @@
                             </a>
                         </li>
 
-                        <div class="nav-header">Estate Administration</div>
-                        <li class="nav-item">
+                        <div class="nav-header" id="header-estate-admin">Estate Administration</div>
+                        <li class="nav-item" id="nav-item-tariffs">
                             <a class="nav-link" id="nav-tariffs" onclick="showTab('tariffs')">
                                 <i class="bi bi-sliders2 me-2 text-warning"></i> Estate Tariff Console
                                 <span class="badge bg-warning text-dark ms-1">Estate Admin</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" id="nav-item-notifications">
                             <a class="nav-link" id="nav-notifications" onclick="showTab('notifications')">
                                 <i class="bi bi-file-earmark-text me-2 text-info"></i> Statutory Notifications
                                 <span class="badge bg-primary text-white rounded-pill float-end" id="notifBadge">3</span>
                             </a>
                         </li>
 
-                        <div class="nav-header">Guest House Bookings</div>
-                        <li class="nav-item">
+                        <div class="nav-header" id="header-bookings">Guest House Bookings</div>
+                        <li class="nav-item" id="nav-item-booking">
                             <a class="nav-link" id="nav-booking" onclick="showTab('booking')">
                                 <i class="bi bi-calendar-plus me-2 text-success"></i> New Reservation
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" id="nav-item-register">
                             <a class="nav-link" id="nav-register" onclick="showTab('register')">
                                 <i class="bi bi-journal-text me-2 text-info"></i> Booking Register
                             </a>
@@ -385,7 +382,7 @@
                                 <i class="bi bi-receipt me-2 text-success"></i> Invoicing & Cashier
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" id="nav-item-tracker">
                             <a class="nav-link" id="nav-tracker" onclick="showTab('tracker')">
                                 <i class="bi bi-search me-2 text-warning"></i> Public Status Tracker
                             </a>
@@ -416,18 +413,21 @@
                                 (Solan)</small>
                         </div>
                         <div class="btn-toolbar mb-2 mb-md-0 gap-2">
-                            <button class="btn btn-sm btn-outline-info text-dark fw-bold"
+                            <button class="btn btn-sm btn-outline-info text-dark fw-bold" id="dashBtnNotifications"
                                 onclick="showTab('notifications')">
                                 <i class="bi bi-file-earmark-text me-1"></i> Notifications
                             </button>
-                            <button class="btn btn-sm btn-outline-warning text-dark fw-bold"
+                            <button class="btn btn-sm btn-outline-warning text-dark fw-bold" id="dashBtnTariffs"
                                 onclick="showTab('tariffs')">
                                 <i class="bi bi-sliders2 me-1"></i> Estate Tariff Console
                             </button>
-                            <button class="btn btn-sm btn-outline-primary" onclick="showTab('calendar')">
+                            <button class="btn btn-sm btn-outline-primary" id="dashBtnCalendar" onclick="showTab('calendar')">
                                 <i class="bi bi-calendar-event me-1"></i> View Live Calendar
                             </button>
-                            <button class="btn btn-sm btn-success" onclick="showTab('booking')">
+                            <button class="btn btn-sm btn-danger fw-bold" id="dashBtnApprovals" onclick="showTab('workflow')" style="display: none;">
+                                <i class="bi bi-crown me-1"></i> VVIP Approvals Queue
+                            </button>
+                            <button class="btn btn-sm btn-success" id="dashBtnBooking" onclick="showTab('booking')">
                                 <i class="bi bi-plus-circle me-1"></i> New Reservation
                             </button>
                         </div>
@@ -2638,8 +2638,47 @@
             }, 3500);
         }
 
+        function updateRoleNavVisibility(roleKey) {
+            const isVc = (roleKey === 'vc_secretariat');
+
+            // 1. Estate Administration section (Estate Tariff Console, Statutory Notifications)
+            const hEstate = document.getElementById('header-estate-admin');
+            const nTariffs = document.getElementById('nav-item-tariffs');
+            const nNotif = document.getElementById('nav-item-notifications');
+            if (hEstate) hEstate.style.display = isVc ? 'none' : 'block';
+            if (nTariffs) nTariffs.style.display = isVc ? 'none' : 'block';
+            if (nNotif) nNotif.style.display = isVc ? 'none' : 'block';
+
+            // 2. Front Desk & Allocation section (Room Calendar Grid, Check-in / Out Desk)
+            const hOps = document.getElementById('header-ops');
+            const nCal = document.getElementById('nav-item-calendar');
+            const nCheckin = document.getElementById('nav-item-checkin');
+            if (hOps) hOps.style.display = isVc ? 'none' : 'block';
+            if (nCal) nCal.style.display = isVc ? 'none' : 'block';
+            if (nCheckin) nCheckin.style.display = isVc ? 'none' : 'block';
+
+            // 3. Accounts & Oversight section (Invoicing & Cashier, Public Status Tracker)
+            const hFin = document.getElementById('header-finance');
+            const nBilling = document.getElementById('nav-item-billing');
+            const nTracker = document.getElementById('nav-item-tracker');
+            if (hFin) hFin.style.display = isVc ? 'none' : 'block';
+            if (nBilling) nBilling.style.display = isVc ? 'none' : 'block';
+            if (nTracker) nTracker.style.display = isVc ? 'none' : 'block';
+
+            // 4. Dashboard toolbar quick buttons
+            const bNotif = document.getElementById('dashBtnNotifications');
+            const bTariff = document.getElementById('dashBtnTariffs');
+            const bCal = document.getElementById('dashBtnCalendar');
+            const bAppr = document.getElementById('dashBtnApprovals');
+            if (bNotif) bNotif.style.display = isVc ? 'none' : 'inline-block';
+            if (bTariff) bTariff.style.display = isVc ? 'none' : 'inline-block';
+            if (bCal) bCal.style.display = isVc ? 'none' : 'inline-block';
+            if (bAppr) bAppr.style.display = isVc ? 'inline-block' : 'none';
+        }
+
         function setRole(roleKey, roleName, email) {
             currentRole = roleKey;
+            updateRoleNavVisibility(roleKey);
             const roleLabelEl = document.getElementById('currentRoleLabel');
             if (roleLabelEl) roleLabelEl.innerText = roleName;
             const emailEl = document.getElementById('currentUserEmail');
@@ -3269,6 +3308,13 @@
             if (tabId === 'login') {
                 logoutAccount();
                 return;
+            }
+
+            if (currentRole === 'vc_secretariat') {
+                const vcDisallowed = ['tariffs', 'notifications', 'calendar', 'checkin', 'billing', 'tracker'];
+                if (vcDisallowed.includes(tabId)) {
+                    tabId = 'dashboard';
+                }
             }
             document.querySelectorAll('.view-panel').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.sidebar .nav-link').forEach(el => el.classList.remove('active'));
