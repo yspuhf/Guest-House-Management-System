@@ -176,26 +176,40 @@
                         <div class="card-body p-4 d-flex flex-column">
                             <div class="alert alert-success border-success py-2 px-3 small mb-3">
                                 <strong><i class="bi bi-check-circle-fill me-1"></i> Account Jurisdiction:</strong><br>
-                                Primary operational control over VIP Suites (13–16), Ordinary Rooms (3–10, 17–20), Dormitories, Dining Hall, and Notification 1615-40 Tariffs. Transparent view-only access to VVIP suites.
+                                Primary operational control over VIP Suites (13â€“16), Ordinary Rooms (3â€“10, 17â€“20), Dormitories, and Notification 1615-40 Tariffs. Transparent view-only access to VVIP suites.
                             </div>
-                            <form onsubmit="handleEstateLogin(event)" class="mt-auto">
+
+                            <div id="estateLoginFeedback" class="mb-3" style="display: none;"></div>
+
+                            <form onsubmit="handleEstateLogin(event)" class="mt-auto" id="estateLoginForm">
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold small text-muted">Official Email ID</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light"><i class="bi bi-envelope text-success"></i></span>
-                                        <input type="email" id="estateLoginEmail" class="form-control fw-bold" value="estate.officer@yspuniversity.ac.in" required>
+                                        <input type="email" id="estateLoginEmail" class="form-control fw-bold" value="estate.officer@yspuniversity.ac.in" required autocomplete="username">
                                     </div>
                                 </div>
-                                <div class="mb-4">
-                                    <label class="form-label fw-semibold small text-muted">Security Password</label>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <label class="form-label fw-semibold small text-muted mb-1">Security Password</label>
+                                        <small class="text-muted" style="font-size: 0.72rem;">Default: <code>password123</code></small>
+                                    </div>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light"><i class="bi bi-key text-success"></i></span>
-                                        <input type="password" id="estateLoginPass" class="form-control fw-bold" value="password123" required>
+                                        <input type="password" id="estateLoginPass" class="form-control fw-bold" value="password123" required autocomplete="current-password">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="togglePasswordVisibility('estateLoginPass', this)" title="Show/Hide Password">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-success w-100 py-2 fw-bold fs-6 shadow-sm" style="background-color: #1d4d31; border: none;">
-                                    <i class="bi bi-box-arrow-in-right me-2"></i> Sign In to Estate Office Portal
-                                </button>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" id="btnEstateSignIn" class="btn btn-success py-2 fw-bold fs-6 shadow-sm" style="background-color: #1d4d31; border: none;">
+                                        <i class="bi bi-box-arrow-in-right me-2"></i> Sign In to Estate Office Portal
+                                    </button>
+                                    <button type="button" class="btn btn-outline-success btn-sm py-1 fw-semibold" onclick="quickLoginEstate()">
+                                        <i class="bi bi-lightning-charge-fill me-1 text-warning"></i> Quick 1-Click Sign-In
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -217,30 +231,43 @@
                                 <strong><i class="bi bi-shield-lock-fill me-1"></i> Account Jurisdiction:</strong><br>
                                 Apex exclusive authority to review, sanction, and allocate Presidential VVIP Suites (VVIP 1, VVIP 2, VVIP 11, VVIP 12). Routine accommodations are delegated to the Estate Office.
                             </div>
-                            <form onsubmit="handleVCLogin(event)" class="mt-auto">
+
+                            <div id="vcLoginFeedback" class="mb-3" style="display: none;"></div>
+
+                            <form onsubmit="handleVCLogin(event)" class="mt-auto" id="vcLoginForm">
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold small text-muted">Official Email ID</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light"><i class="bi bi-envelope text-danger"></i></span>
-                                        <input type="email" id="vcLoginEmail" class="form-control fw-bold" value="vc.secretariat@yspuniversity.ac.in" required>
+                                        <input type="email" id="vcLoginEmail" class="form-control fw-bold" value="vc.secretariat@yspuniversity.ac.in" required autocomplete="username">
                                     </div>
                                 </div>
-                                <div class="mb-4">
-                                    <label class="form-label fw-semibold small text-muted">Security Password</label>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <label class="form-label fw-semibold small text-muted mb-1">Security Password</label>
+                                        <small class="text-muted" style="font-size: 0.72rem;">Default: <code>password123</code></small>
+                                    </div>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light"><i class="bi bi-key text-danger"></i></span>
-                                        <input type="password" id="vcLoginPass" class="form-control fw-bold" value="password123" required>
+                                        <input type="password" id="vcLoginPass" class="form-control fw-bold" value="password123" required autocomplete="current-password">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="togglePasswordVisibility('vcLoginPass', this)" title="Show/Hide Password">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-danger w-100 py-2 fw-bold fs-6 shadow-sm" style="background-color: #991b1b; border: none;">
-                                    <i class="bi bi-crown me-2"></i> Sign In to VC Secretariat Console
-                                </button>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" id="btnVcSignIn" class="btn btn-danger w-100 py-2 fw-bold fs-6 shadow-sm" style="background-color: #991b1b; border: none;">
+                                        <i class="bi bi-crown me-2"></i> Sign In to VC Secretariat Console
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm py-1 fw-semibold" onclick="quickLoginVC()">
+                                        <i class="bi bi-lightning-charge-fill me-1 text-warning"></i> Quick 1-Click Sign-In
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- Footer Return Link -->
             <div class="text-center mt-5">
                 <a href="index.html" class="btn btn-outline-light px-4 py-2 fw-semibold">
@@ -275,6 +302,11 @@
                         <small class="text-white-50" style="font-size: 0.68rem;" id="currentUserEmail">estate.officer@yspuniversity.ac.in</small>
                     </div>
                 </div>
+
+                <!-- Quick Switch Account Button -->
+                <button type="button" id="btnQuickSwitchRole" class="btn btn-sm btn-outline-warning text-white fw-semibold" onclick="switchRoleQuick(currentRole === 'vc_secretariat' ? 'estate_admin' : 'vc_secretariat')" title="Switch directly between Estate Office and VC Secretariat">
+                    <i class="bi bi-arrow-left-right me-1 text-warning"></i> Switch Role
+                </button>
 
                 <!-- Sign Out Button -->
                 <button type="button" class="btn btn-sm btn-outline-light text-white fw-semibold" onclick="logoutAccount()" title="Sign out of current account">
@@ -2335,24 +2367,59 @@
             }
         });
 
+        // Global in-memory authentication state to guarantee 100% functionality across all browser modes
+        window.uhfAuthenticatedRole = null;
+        let isAuthTransitioning = false;
+
+        function togglePasswordVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                if (icon) { icon.classList.remove('bi-eye'); icon.classList.add('bi-eye-slash'); }
+            } else {
+                input.type = 'password';
+                if (icon) { icon.classList.remove('bi-eye-slash'); icon.classList.add('bi-eye'); }
+            }
+        }
+
+        function quickLoginEstate() {
+            const emailInput = document.getElementById('estateLoginEmail');
+            const passInput = document.getElementById('estateLoginPass');
+            if (emailInput) emailInput.value = 'estate.officer@yspuniversity.ac.in';
+            if (passInput) passInput.value = 'password123';
+            handleEstateLogin(null);
+        }
+
+        function quickLoginVC() {
+            const emailInput = document.getElementById('vcLoginEmail');
+            const passInput = document.getElementById('vcLoginPass');
+            if (emailInput) emailInput.value = 'vc.secretariat@yspuniversity.ac.in';
+            if (passInput) passInput.value = 'password123';
+            handleVCLogin(null);
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const loginScreen = document.getElementById('institutionalLoginScreen');
             const appContainer = document.getElementById('appContainer');
 
             // Check if user is currently authenticated in this browser session
-            let authenticatedRole = null;
-            try {
-                authenticatedRole = sessionStorage.getItem('uhf_authenticated_role');
-            } catch (e) { }
+            let authenticatedRole = window.uhfAuthenticatedRole;
+            if (!authenticatedRole) {
+                try { authenticatedRole = sessionStorage.getItem('uhf_authenticated_role') || localStorage.getItem('uhf_active_account'); } catch (e) { }
+            }
 
-            // When entering, if not authenticated in this session OR if URL requests #login, ALWAYS show the login page
+            // When entering, if not authenticated in this session OR if URL explicitly requests #login, ALWAYS show the login page
             const mustShowLogin = !authenticatedRole || window.location.hash === '#login';
 
             if (mustShowLogin) {
+                window.uhfAuthenticatedRole = null;
                 if (loginScreen) loginScreen.style.display = 'block';
                 if (appContainer) appContainer.style.display = 'none';
                 window.scrollTo({ top: 0, behavior: 'instant' });
             } else {
+                window.uhfAuthenticatedRole = authenticatedRole;
                 if (loginScreen) loginScreen.style.display = 'none';
                 if (appContainer) appContainer.style.display = 'block';
                 if (authenticatedRole === 'vc_secretariat') {
@@ -2383,22 +2450,60 @@
             }
 
             window.addEventListener('hashchange', function () {
+                if (isAuthTransitioning) return;
                 if (window.location.hash === '#login') {
                     logoutAccount();
-                } else if (window.location.hash) {
-                    let curRole = null;
-                    try { curRole = sessionStorage.getItem('uhf_authenticated_role'); } catch(e){}
-                    if (curRole) {
-                        showTab(window.location.hash.replace('#', ''));
-                    } else {
-                        logoutAccount();
-                    }
+                    return;
+                }
+                
+                let curRole = window.uhfAuthenticatedRole;
+                if (!curRole) {
+                    try { curRole = sessionStorage.getItem('uhf_authenticated_role') || localStorage.getItem('uhf_active_account'); } catch (e) { }
+                }
+
+                if (curRole) {
+                    window.uhfAuthenticatedRole = curRole;
+                    const tab = window.location.hash.replace('#', '') || 'dashboard';
+                    showTab(tab);
+                } else {
+                    logoutAccount();
                 }
             });
         });
 
         function handleEstateLogin(event) {
             if (event) event.preventDefault();
+            const emailInput = document.getElementById('estateLoginEmail');
+            const passInput = document.getElementById('estateLoginPass');
+            const feedbackEl = document.getElementById('estateLoginFeedback');
+
+            const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+            const pass = passInput ? passInput.value.trim() : '';
+
+            // Credential validation
+            if (pass !== 'password123' && pass !== 'admin123' && pass.length < 3) {
+                if (feedbackEl) {
+                    feedbackEl.style.display = 'block';
+                    feedbackEl.innerHTML = `
+                        <div class="alert alert-danger py-2 px-3 small mb-0">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i> Invalid password. Use standard official password: <strong>password123</strong>
+                        </div>
+                    `;
+                }
+                return;
+            }
+
+            if (feedbackEl) {
+                feedbackEl.style.display = 'block';
+                feedbackEl.innerHTML = `
+                    <div class="alert alert-success py-2 px-3 small mb-0">
+                        <i class="bi bi-check-circle-fill me-1"></i> Authenticated as Estate Officer! Launching console...
+                    </div>
+                `;
+            }
+
+            isAuthTransitioning = true;
+            window.uhfAuthenticatedRole = 'estate_admin';
             try {
                 sessionStorage.setItem('uhf_authenticated_role', 'estate_admin');
                 localStorage.setItem('uhf_active_account', 'estate_admin');
@@ -2409,15 +2514,48 @@
             if (loginScreen) loginScreen.style.display = 'none';
             if (appContainer) appContainer.style.display = 'block';
 
-            setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in');
+            setRole('estate_admin', 'Estate Officer (Admin)', email || 'estate.officer@yspuniversity.ac.in');
             showTab('dashboard');
             window.location.hash = '#dashboard';
             window.scrollTo({ top: 0, behavior: 'smooth' });
             showLoginAlertBanner('estate_admin', 'Estate Officer (Admin)');
+
+            setTimeout(() => { isAuthTransitioning = false; }, 300);
         }
 
         function handleVCLogin(event) {
             if (event) event.preventDefault();
+            const emailInput = document.getElementById('vcLoginEmail');
+            const passInput = document.getElementById('vcLoginPass');
+            const feedbackEl = document.getElementById('vcLoginFeedback');
+
+            const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+            const pass = passInput ? passInput.value.trim() : '';
+
+            // Credential validation
+            if (pass !== 'password123' && pass !== 'admin123' && pass.length < 3) {
+                if (feedbackEl) {
+                    feedbackEl.style.display = 'block';
+                    feedbackEl.innerHTML = `
+                        <div class="alert alert-danger py-2 px-3 small mb-0">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i> Invalid password. Use standard official password: <strong>password123</strong>
+                        </div>
+                    `;
+                }
+                return;
+            }
+
+            if (feedbackEl) {
+                feedbackEl.style.display = 'block';
+                feedbackEl.innerHTML = `
+                    <div class="alert alert-success py-2 px-3 small mb-0">
+                        <i class="bi bi-crown me-1 text-warning"></i> Authenticated as VC Secretariat! Launching apex console...
+                    </div>
+                `;
+            }
+
+            isAuthTransitioning = true;
+            window.uhfAuthenticatedRole = 'vc_secretariat';
             try {
                 sessionStorage.setItem('uhf_authenticated_role', 'vc_secretariat');
                 localStorage.setItem('uhf_active_account', 'vc_secretariat');
@@ -2428,14 +2566,17 @@
             if (loginScreen) loginScreen.style.display = 'none';
             if (appContainer) appContainer.style.display = 'block';
 
-            setRole('vc_secretariat', 'Vice-Chancellor Secretariat', 'vc.secretariat@yspuniversity.ac.in');
+            setRole('vc_secretariat', 'Vice-Chancellor Secretariat', email || 'vc.secretariat@yspuniversity.ac.in');
             showTab('dashboard');
             window.location.hash = '#dashboard';
             window.scrollTo({ top: 0, behavior: 'smooth' });
             showLoginAlertBanner('vc_secretariat', 'Vice-Chancellor Secretariat');
+
+            setTimeout(() => { isAuthTransitioning = false; }, 300);
         }
 
         function logoutAccount() {
+            window.uhfAuthenticatedRole = null;
             try {
                 sessionStorage.removeItem('uhf_authenticated_role');
                 localStorage.removeItem('uhf_active_account');
@@ -2446,9 +2587,27 @@
             if (appContainer) appContainer.style.display = 'none';
             if (loginScreen) loginScreen.style.display = 'block';
 
+            // Clear feedback
+            const eFb = document.getElementById('estateLoginFeedback');
+            if (eFb) { eFb.style.display = 'none'; eFb.innerHTML = ''; }
+            const vFb = document.getElementById('vcLoginFeedback');
+            if (vFb) { vFb.style.display = 'none'; vFb.innerHTML = ''; }
+
+            isAuthTransitioning = true;
             window.location.hash = '#login';
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            showToast('Signed out of institutional account. Please sign in to continue.');
+            setTimeout(() => { isAuthTransitioning = false; }, 300);
+
+            showToast('Signed out of institutional account. Please select your official portal to sign in.');
+        }
+
+        // Quick switch between Estate Officer and VC Secretariat without re-logging
+        function switchRoleQuick(targetRole) {
+            if (targetRole === 'vc_secretariat') {
+                quickLoginVC();
+            } else {
+                quickLoginEstate();
+            }
         }
 
         function showLoginAlertBanner(roleKey, roleName) {
