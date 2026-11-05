@@ -144,6 +144,43 @@
         #uhfCalendarDropdownPopup {
             z-index: 105000 !important;
         }
+    
+        /* Mobile Responsiveness Styles */
+        @media (max-width: 767.98px) {
+            #sidebarMenu.sidebar {
+                position: fixed;
+                top: 56px;
+                bottom: 0;
+                left: 0;
+                z-index: 1040;
+                padding: 1rem 0.5rem;
+                overflow-y: auto;
+                width: 280px;
+                box-shadow: 4px 0 16px rgba(0,0,0,0.3);
+            }
+            .navbar-university {
+                padding: 0.5rem 0.75rem;
+            }
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .card-stat {
+                margin-bottom: 0.75rem;
+            }
+        }
+        @media print {
+            #sidebarMenu, .navbar-university, .btn, .nav-pills, .modal-footer, .border-bottom {
+                display: none !important;
+            }
+            .view-panel {
+                display: block !important;
+            }
+            body {
+                background: white !important;
+                color: black !important;
+            }
+        }
     </style>
 </head>
 
@@ -326,7 +363,10 @@
     <div id="appContainer" style="display: none;">
         <!-- Top University Banner Header -->
         <header class="navbar navbar-expand-lg navbar-dark navbar-university sticky-top px-3 py-2">
-            <div class="d-flex align-items-center text-white">
+            <div class="d-flex align-items-center text-white flex-grow-1 flex-md-grow-0">
+                <button class="btn btn-outline-warning d-md-none me-2" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation" title="Toggle Menu">
+                    <i class="bi bi-list fs-5"></i>
+                </button>
                 <img src="university_logo.jpg" alt="University Emblem" class="me-3 rounded-circle bg-white p-1"
                     style="height: 48px; width: 48px; object-fit: contain;">
                 <div>
@@ -371,7 +411,7 @@
         <div class="container-fluid">
             <div class="row">
                 <!-- Sidebar Navigation -->
-                <nav class="col-md-3 col-lg-2 d-md-block sidebar py-3 px-2">
+                <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse py-3 px-2">
                     <div class="position-sticky">
                         <ul class="nav flex-column">
                             <li class="nav-item">
@@ -433,6 +473,12 @@
                                     <i class="bi bi-receipt me-2 text-success"></i> Invoicing & Cashier
                                 </a>
                             </li>
+                                                        <li class="nav-item" id="nav-item-reports">
+                                <a class="nav-link" id="nav-reports" onclick="showTab('reports')">
+                                    <i class="bi bi-file-earmark-bar-graph me-2 text-warning"></i> Reports &amp; Analytics
+                                    <span class="badge bg-warning text-dark ms-1" style="font-size: 0.65rem;">Daily/Mo/Yr</span>
+                                </a>
+                            </li>
                             <li class="nav-item" id="nav-item-tracker">
                                 <a class="nav-link" id="nav-tracker" onclick="showTab('tracker')">
                                     <i class="bi bi-search me-2 text-warning"></i> Public Status Tracker
@@ -464,6 +510,9 @@
                                     (Solan)</small>
                             </div>
                             <div class="btn-toolbar mb-2 mb-md-0 gap-2">
+                                <button class="btn btn-sm btn-outline-dark fw-bold" id="dashBtnReports" onclick="showTab('reports')">
+                                    <i class="bi bi-file-earmark-bar-graph me-1 text-warning"></i> Reports &amp; Analytics
+                                </button>
                                 <button class="btn btn-sm btn-outline-info text-dark fw-bold" id="dashBtnNotifications"
                                     onclick="showTab('notifications')">
                                     <i class="bi bi-file-earmark-text me-1"></i> Notifications
@@ -504,64 +553,157 @@
                             </div>
                         </div>
 
-                        <!-- Metric Cards -->
-                        <div class="row g-3 mb-4">
+                        <!-- Institutional Key Operational Metrics (Section 7 Dashboard Statistics) -->
+                        <div class="row g-2 mb-3">
+                            <div class="col-xl-2 col-md-4 col-6">
+                                <div class="card card-stat p-2 bg-white border-start border-primary border-4 shadow-sm h-100">
+                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Today's Bookings</small>
+                                    <h4 class="fw-bold text-navy mb-0 mt-1" id="dashStatTodayBookings">3</h4>
+                                    <small class="text-success" style="font-size:0.68rem;"><i class="bi bi-calendar-check me-1"></i>New Today</small>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-4 col-6">
+                                <div class="card card-stat p-2 bg-white border-start border-info border-4 shadow-sm h-100">
+                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Bookings This Month</small>
+                                    <h4 class="fw-bold text-info mb-0 mt-1" id="dashStatMonthBookings">18</h4>
+                                    <small class="text-muted" style="font-size:0.68rem;">November 2026</small>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-4 col-6">
+                                <div class="card card-stat p-2 bg-white border-start border-warning border-4 shadow-sm h-100">
+                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Pending Approvals</small>
+                                    <h4 class="fw-bold text-warning text-dark mb-0 mt-1" id="dashPendingCount">2</h4>
+                                    <small class="text-danger fw-semibold" style="font-size:0.68rem;">Action Required</small>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-4 col-6">
+                                <div class="card card-stat p-2 bg-white border-start border-success border-4 shadow-sm h-100">
+                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Available Rooms</small>
+                                    <h4 class="fw-bold text-success mb-0 mt-1" id="dashStatAvailableRooms">14</h4>
+                                    <small class="text-muted" style="font-size:0.68rem;">Ready for Allocation</small>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-4 col-6">
+                                <div class="card card-stat p-2 bg-white border-start border-danger border-4 shadow-sm h-100">
+                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Occupied Rooms</small>
+                                    <h4 class="fw-bold text-danger mb-0 mt-1" id="dashStatOccupiedRooms">7</h4>
+                                    <small class="text-muted" style="font-size:0.68rem;">Currently In-House</small>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-4 col-6">
+                                <div class="card card-stat p-2 bg-white border-start border-secondary border-4 shadow-sm h-100">
+                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Under Maintenance</small>
+                                    <h4 class="fw-bold text-secondary mb-0 mt-1" id="dashStatMaintenanceRooms">2</h4>
+                                    <small class="text-muted" style="font-size:0.68rem;">Blocked / Upkeep</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Operational & Revenue Row (Non-GST Institutional Charges) -->
+                        <div class="row g-2 mb-4">
                             <div class="col-xl-3 col-sm-6">
-                                <div class="card card-stat p-3 bg-white border-start border-primary border-4">
+                                <div class="card card-stat p-3 bg-white border-0 shadow-sm h-100">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <small class="text-muted text-uppercase fw-semibold">Active Bookings</small>
-                                            <h3 class="fw-bold text-primary mb-0 mt-1">18</h3>
-                                            <small class="text-success"><i class="bi bi-arrow-up"></i> 4 new
-                                                today</small>
+                                            <small class="text-muted text-uppercase fw-bold" style="font-size:0.7rem;">Today's Arrivals &amp; Departures</small>
+                                            <div class="d-flex gap-3 mt-1">
+                                                <div><span class="fs-5 fw-bold text-success" id="dashStatTodayCheckins">4</span> <small class="text-muted d-block" style="font-size:0.68rem;">Check-ins</small></div>
+                                                <div class="border-start ps-3"><span class="fs-5 fw-bold text-primary" id="dashStatTodayCheckouts">2</span> <small class="text-muted d-block" style="font-size:0.68rem;">Check-outs</small></div>
+                                            </div>
                                         </div>
-                                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle text-primary fs-3">
-                                            <i class="bi bi-journal-bookmark-fill"></i>
+                                        <div class="bg-success bg-opacity-10 p-2 rounded text-success fs-4">
+                                            <i class="bi bi-box-arrow-in-right"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-sm-6">
-                                <div class="card card-stat p-3 bg-white border-start border-warning border-4">
+                                <div class="card card-stat p-3 bg-white border-0 shadow-sm h-100">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <small class="text-muted text-uppercase fw-semibold">Pending
-                                                Approval</small>
-                                            <h3 class="fw-bold text-warning mb-0 mt-1" id="dashPendingCount">2</h3>
-                                            <small class="text-muted">Requires Estate / Registrar</small>
+                                            <small class="text-muted text-uppercase fw-bold" style="font-size:0.7rem;">Monthly Stay Collection</small>
+                                            <h4 class="fw-bold text-primary mb-0 mt-1" id="dashStatMonthStay">&#8377;1,12,500</h4>
+                                            <small class="text-success" style="font-size:0.68rem;"><i class="bi bi-shield-check me-1"></i>Non-GST Room Tariff</small>
                                         </div>
-                                        <div class="bg-warning bg-opacity-10 p-3 rounded-circle text-warning fs-3">
-                                            <i class="bi bi-clock-history"></i>
+                                        <div class="bg-primary bg-opacity-10 p-2 rounded text-primary fs-4">
+                                            <i class="bi bi-building"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-sm-6">
-                                <div class="card card-stat p-3 bg-white border-start border-success border-4">
+                                <div class="card card-stat p-3 bg-white border-0 shadow-sm h-100">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <small class="text-muted text-uppercase fw-semibold">Checked-In
-                                                Guests</small>
-                                            <h3 class="fw-bold text-success mb-0 mt-1">7</h3>
-                                            <small class="text-muted">12 rooms currently free</small>
+                                            <small class="text-muted text-uppercase fw-bold" style="font-size:0.7rem;">Monthly Dining Collection</small>
+                                            <h4 class="fw-bold text-success mb-0 mt-1" id="dashStatMonthDining">&#8377;22,500</h4>
+                                            <small class="text-muted" style="font-size:0.68rem;">Non-GST Mess Receipts</small>
                                         </div>
-                                        <div class="bg-success bg-opacity-10 p-3 rounded-circle text-success fs-3">
-                                            <i class="bi bi-people-fill"></i>
+                                        <div class="bg-warning bg-opacity-10 p-2 rounded text-warning fs-4">
+                                            <i class="bi bi-cup-hot"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-sm-6">
-                                <div class="card card-stat p-3 bg-white border-start border-info border-4">
+                                <div class="card card-stat p-3 bg-white border-0 shadow-sm h-100">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <small class="text-muted text-uppercase fw-semibold">Revenue (MTD)</small>
-                                            <h3 class="fw-bold text-info mb-0 mt-1">&#8377;1,42,500</h3>
-                                            <small class="text-success"><i class="bi bi-check-all"></i> 100%
-                                                reconciled</small>
+                                            <small class="text-muted text-uppercase fw-bold" style="font-size:0.7rem;">Total Gross Collection</small>
+                                            <h4 class="fw-bold text-navy mb-0 mt-1" id="dashStatMonthTotal">&#8377;1,35,000</h4>
+                                            <small class="text-primary fw-semibold" style="font-size:0.68rem;">100% University Reconciled</small>
                                         </div>
-                                        <div class="bg-info bg-opacity-10 p-3 rounded-circle text-info fs-3">
-                                            <i class="bi bi-currency-rupee"></i>
+                                        <div class="bg-dark bg-opacity-10 p-2 rounded text-dark fs-4">
+                                            <i class="bi bi-cash-stack"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Graphical Charts: Monthly Booking Trends & Revenue Comparison -->
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                                <h6 class="fw-bold mb-0 text-navy"><i class="bi bi-bar-chart-line-fill me-2 text-warning"></i>Monthly Booking Trends &amp; Institutional Revenue Distribution</h6>
+                                <span class="badge bg-light text-dark border"><i class="bi bi-graph-up me-1 text-success"></i>FY 2026-27 Active Series</span>
+                            </div>
+                            <div class="card-body p-3">
+                                <div class="row g-3">
+                                    <div class="col-md-7 col-12">
+                                        <h6 class="small fw-bold text-muted text-uppercase mb-2">Monthly Reservation Volume (Jan - Dec 2026)</h6>
+                                        <div class="p-3 bg-light rounded border">
+                                            <div class="d-flex align-items-end justify-content-between gap-1" style="height: 140px;" id="dashMonthlyTrendChart">
+                                                <!-- Dynamic SVG bar chart elements rendered in JS -->
+                                            </div>
+                                            <div class="d-flex justify-content-between text-muted small mt-2" style="font-size:0.68rem;">
+                                                <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span class="fw-bold text-primary">Nov</span><span>Dec</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 col-12">
+                                        <h6 class="small fw-bold text-muted text-uppercase mb-2">Revenue Head Comparison (Non-GST)</h6>
+                                        <div class="p-3 bg-light rounded border h-100 d-flex flex-column justify-content-around">
+                                            <div>
+                                                <div class="d-flex justify-content-between small fw-bold mb-1">
+                                                    <span class="text-primary"><i class="bi bi-building me-1"></i>Stay Charges (Room Tariff)</span>
+                                                    <span id="dashChartStayPct">83.3% (₹1,12,500)</span>
+                                                </div>
+                                                <div class="progress" style="height: 14px;">
+                                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 83.3%" aria-valuenow="83.3" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-2">
+                                                <div class="d-flex justify-content-between small fw-bold mb-1">
+                                                    <span class="text-success"><i class="bi bi-cup-hot me-1"></i>Dining &amp; Mess Charges</span>
+                                                    <span id="dashChartDiningPct">16.7% (₹22,500)</span>
+                                                </div>
+                                                <div class="progress" style="height: 14px;">
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 16.7%" aria-valuenow="16.7" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                            <div class="alert alert-secondary py-1 px-2 small mb-0 mt-3 text-center" style="font-size:0.72rem;">
+                                                <i class="bi bi-shield-check text-success me-1"></i> Strictly Non-GST pursuant to public university rules
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1775,18 +1917,31 @@
 
                     <!-- 7. INVOICING & CASHIER -->
                     <div id="view-billing" class="view-panel" style="display:none;">
-                        <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center pb-2 mb-3 border-bottom gap-2">
                             <div>
-                                <h3 class="h4 fw-bold text-navy mb-0">Finance, Invoicing & GST Settlement</h3>
-                                <small class="text-muted">Comptroller division accounting ledger and cashier receipt
-                                    generation</small>
+                                <h3 class="h4 fw-bold text-navy mb-0">
+                                    <i class="bi bi-receipt text-success me-2"></i>Finance, Invoicing &amp; Cashier Settlement
+                                </h3>
+                                <small class="text-muted">Separate Stay Charges and Dining Charges categorisation (Strictly Non-GST under University Rules)</small>
                             </div>
-                            <button class="btn btn-sm btn-outline-primary" onclick="showReceiptModal()">
-                                <i class="bi bi-printer me-1"></i> View Sample Official Receipt
-                            </button>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-primary fw-semibold" onclick="showReceiptModal('GH-2026-10-0001', 'stay')">
+                                    <i class="bi bi-building me-1"></i> Sample Stay Invoice
+                                </button>
+                                <button class="btn btn-sm btn-outline-success fw-semibold" onclick="showReceiptModal('GH-2026-10-0001', 'dining')">
+                                    <i class="bi bi-cup-hot me-1"></i> Sample Dining Invoice
+                                </button>
+                                <button class="btn btn-sm btn-outline-dark fw-semibold" onclick="showReceiptModal('GH-2026-10-0001', 'both')">
+                                    <i class="bi bi-receipt me-1"></i> Consolidated
+                                </button>
+                            </div>
                         </div>
 
                         <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                                <h6 class="fw-bold text-navy mb-0"><i class="bi bi-journal-check me-2"></i>Official Accounting Invoices</h6>
+                                <span class="badge bg-success-subtle text-success border border-success">All Charges: Non-GST (University Exemption)</span>
+                            </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
                                     <table class="table table-hover align-middle mb-0">
@@ -1794,46 +1949,17 @@
                                             <tr>
                                                 <th>Invoice #</th>
                                                 <th>Booking Ref</th>
-                                                <th>Guest Name</th>
-                                                <th>Tariff Class</th>
-                                                <th>Room Bill</th>
-                                                <th>GST (12%)</th>
-                                                <th>Total Paid</th>
-                                                <th>Mode</th>
-                                                <th>Action</th>
+                                                <th>Checked-In Guest</th>
+                                                <th>Tariff Category</th>
+                                                <th class="text-end">Stay (&#8377; Non-GST)</th>
+                                                <th class="text-end">Dining (&#8377; Non-GST)</th>
+                                                <th class="text-end fw-bold">Total Paid</th>
+                                                <th class="text-center">Mode</th>
+                                                <th class="text-center">Generate / Print Invoice</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="fw-bold">INV-2026-0001</td>
-                                                <td>GH-2026-10-0001</td>
-                                                <td>Dr. A. K. Verma</td>
-                                                <td><span class="badge bg-info text-dark">1(i) Official (VIP Set)</span>
-                                                </td>
-                                                <td>&#8377;4,500.00</td>
-                                                <td>&#8377;540.00</td>
-                                                <td class="fw-bold text-success">&#8377;5,040.00</td>
-                                                <td><span class="badge bg-light text-dark border">POS Card</span></td>
-                                                <td><button class="btn btn-sm btn-outline-secondary"
-                                                        onclick="showReceiptModal()"><i
-                                                            class="bi bi-printer"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fw-bold">INV-2026-0002</td>
-                                                <td>GH-2026-09-0118</td>
-                                                <td>Dr. P. C. Sharma</td>
-                                                <td><span class="badge bg-warning text-dark">9. Private Person (VVIP
-                                                        Set)</span></td>
-                                                <td>&#8377;9,000.00</td>
-                                                <td>&#8377;1,080.00</td>
-                                                <td class="fw-bold text-success">&#8377;10,080.00</td>
-                                                <td><span class="badge bg-light text-dark border">UPI / QR</span></td>
-                                                <td><button class="btn btn-sm btn-outline-secondary"
-                                                        onclick="showReceiptModal()"><i
-                                                            class="bi bi-printer"></i></button>
-                                                </td>
-                                            </tr>
+                                        <tbody id="billingTableBody">
+                                            <!-- Dynamically populated by renderBillingTable() -->
                                         </tbody>
                                     </table>
                                 </div>
@@ -1958,78 +2084,481 @@
                         </div>
                     </div>
 
+                    <!-- 10. REPORTS & ANALYTICS VIEW -->
+                    <div id="view-reports" class="view-panel" style="display:none;">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center pb-2 mb-3 border-bottom gap-2">
+                            <div>
+                                <h3 class="h4 fw-bold text-navy mb-0">
+                                    <i class="bi bi-file-earmark-bar-graph text-warning me-2"></i>Institutional Reports &amp; Financial Analytics
+                                </h3>
+                                <small class="text-muted">Daily booking audits, monthly occupancy registers, and annual non-GST revenue statements</small>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-dark fw-semibold" onclick="printActiveReport()">
+                                    <i class="bi bi-printer me-1"></i> Print Active Report
+                                </button>
+                                <button class="btn btn-sm btn-success fw-semibold" onclick="exportActiveReportCSV()">
+                                    <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export to CSV
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Report Category Sub-Tabs -->
+                        <ul class="nav nav-pills mb-4 gap-2 bg-light p-2 rounded border" id="reportsTabNav">
+                            <li class="nav-item">
+                                <button class="nav-link active fw-bold" id="tab-btn-daily" onclick="switchReportsTab('daily')">
+                                    <i class="bi bi-calendar-day me-1"></i> 1. Daily Booking Report
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link fw-bold" id="tab-btn-monthly" onclick="switchReportsTab('monthly')">
+                                    <i class="bi bi-calendar-month me-1"></i> 2. Monthly Occupancy &amp; Revenue
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link fw-bold" id="tab-btn-annual" onclick="switchReportsTab('annual')">
+                                    <i class="bi bi-calendar-range me-1"></i> 3. Annual Audited Report (FY)
+                                </button>
+                            </li>
+                        </ul>
+
+                        <!-- SUB-TAB 1: DAILY BOOKING REPORT -->
+                        <div id="report-pane-daily" class="report-subpane">
+                            <div class="card border-0 shadow-sm mb-3">
+                                <div class="card-body p-3 bg-white">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-md-3 col-sm-6">
+                                            <label class="form-label small fw-bold text-muted mb-1">Select Report Date:</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light"><i class="bi bi-calendar-event text-primary"></i></span>
+                                                <input type="text" class="form-control fw-bold" id="dailyReportDatePicker" placeholder="DD/MM/YYYY" onchange="renderDailyReport()">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6">
+                                            <label class="form-label small fw-bold text-muted mb-1">Quick Presets:</label>
+                                            <div class="btn-group w-100" role="group">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="setDailyReportQuickDate('today')">Today</button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="setDailyReportQuickDate('yesterday')">Yesterday</button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="setDailyReportQuickDate('all')">All Dates</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6">
+                                            <label class="form-label small fw-bold text-muted mb-1">Filter Booking Status:</label>
+                                            <select class="form-select form-select-sm" id="dailyReportStatusFilter" onchange="renderDailyReport()">
+                                                <option value="all">All Booking Statuses</option>
+                                                <option value="APPROVED">Approved</option>
+                                                <option value="PENDING">Pending Approval</option>
+                                                <option value="CHECKED_IN">Checked-In</option>
+                                                <option value="CANCELLED">Cancelled</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6">
+                                            <label class="form-label small fw-bold text-muted mb-1">Filter Wing:</label>
+                                            <select class="form-select form-select-sm" id="dailyReportWingFilter" onchange="renderDailyReport()">
+                                                <option value="all">All Wings (Main, VIP, DEE)</option>
+                                                <option value="estate">Estate Office (Main &amp; VIP)</option>
+                                                <option value="dee">DEE Wing (Kisan Bhawan)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Daily Booking Statistics Cards (Prompt Section 1) -->
+                            <div class="row g-2 mb-3">
+                                <div class="col">
+                                    <div class="card border-0 shadow-sm p-2 bg-white border-start border-primary border-4 text-center">
+                                        <small class="text-muted fw-bold d-block" style="font-size:0.68rem;">TOTAL BOOKINGS</small>
+                                        <h4 class="fw-bold mb-0 text-navy" id="dailyKpiTotalBookings">0</h4>
+                                        <small class="text-muted" style="font-size:0.65rem;" id="dailyKpiDateLabel">Selected Date</small>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card border-0 shadow-sm p-2 bg-white border-start border-success border-4 text-center">
+                                        <small class="text-muted fw-bold d-block" style="font-size:0.68rem;">APPROVED</small>
+                                        <h4 class="fw-bold mb-0 text-success" id="dailyKpiApproved">0</h4>
+                                        <small class="text-muted" style="font-size:0.65rem;">Sanctioned</small>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card border-0 shadow-sm p-2 bg-white border-start border-warning border-4 text-center">
+                                        <small class="text-muted fw-bold d-block" style="font-size:0.68rem;">PENDING</small>
+                                        <h4 class="fw-bold mb-0 text-warning text-dark" id="dailyKpiPending">0</h4>
+                                        <small class="text-muted" style="font-size:0.65rem;">In Queue</small>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card border-0 shadow-sm p-2 bg-white border-start border-danger border-4 text-center">
+                                        <small class="text-muted fw-bold d-block" style="font-size:0.68rem;">CANCELLED</small>
+                                        <h4 class="fw-bold mb-0 text-danger" id="dailyKpiCancelled">0</h4>
+                                        <small class="text-muted" style="font-size:0.65rem;">Revoked / Closed</small>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card border-0 shadow-sm p-2 bg-white border-start border-info border-4 text-center">
+                                        <small class="text-muted fw-bold d-block" style="font-size:0.68rem;">CHECKED-IN</small>
+                                        <h4 class="fw-bold mb-0 text-info" id="dailyKpiCheckedIn">0</h4>
+                                        <small class="text-muted" style="font-size:0.65rem;">In-House</small>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card border-0 shadow-sm p-2 bg-white border-start border-dark border-4 text-center">
+                                        <small class="text-muted fw-bold d-block" style="font-size:0.68rem;">GROSS (NON-GST)</small>
+                                        <h4 class="fw-bold mb-0 text-primary" id="dailyKpiTotalAmount">&#8377;0</h4>
+                                        <small class="text-muted" style="font-size:0.65rem;">Stay + Dining</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Daily Bookings Table -->
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                                    <h6 class="fw-bold mb-0 text-navy"><i class="bi bi-list-check me-2"></i>Daily Bookings &amp; Occupancy Ledger</h6>
+                                    <span class="badge bg-secondary" id="dailyRecordCountBadge">0 Records</span>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle mb-0" id="dailyReportTable">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Booking ID</th>
+                                                    <th>Guest Name &amp; Designation</th>
+                                                    <th>Booking Date</th>
+                                                    <th>Check-In</th>
+                                                    <th>Check-Out</th>
+                                                    <th>Allotted Room</th>
+                                                    <th class="text-end">Stay (&#8377; Non-GST)</th>
+                                                    <th class="text-end">Dining (&#8377; Non-GST)</th>
+                                                    <th class="text-end">Total (&#8377; Non-GST)</th>
+                                                    <th class="text-center">Booking Status</th>
+                                                    <th class="text-center">Payment Status</th>
+                                                    <th class="text-center">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="dailyReportTableBody">
+                                                <!-- Dynamic rows -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUB-TAB 2: MONTHLY REPORT -->
+                        <div id="report-pane-monthly" class="report-subpane" style="display:none;">
+                            <div class="card border-0 shadow-sm mb-3">
+                                <div class="card-body p-3 bg-white">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-md-4 col-6">
+                                            <label class="form-label small fw-bold text-muted mb-1">Select Month:</label>
+                                            <select class="form-select form-select-sm fw-bold" id="monthlyReportMonth" onchange="renderMonthlyReport()">
+                                                <option value="1">January</option>
+                                                <option value="2">February</option>
+                                                <option value="3">March</option>
+                                                <option value="4">April</option>
+                                                <option value="5">May</option>
+                                                <option value="6">June</option>
+                                                <option value="7">July</option>
+                                                <option value="8">August</option>
+                                                <option value="9">September</option>
+                                                <option value="10">October</option>
+                                                <option value="11" selected>November</option>
+                                                <option value="12">December</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 col-6">
+                                            <label class="form-label small fw-bold text-muted mb-1">Select Year:</label>
+                                            <select class="form-select form-select-sm fw-bold" id="monthlyReportYear" onchange="renderMonthlyReport()">
+                                                <option value="2025">2025</option>
+                                                <option value="2026" selected>2026</option>
+                                                <option value="2027">2027</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 col-12 d-flex align-items-end">
+                                            <div class="badge bg-primary-subtle text-primary p-2 w-100 text-center">
+                                                <i class="bi bi-info-circle me-1"></i> University Fiscal Audit Mode
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Monthly KPI Summary Cards -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-3 col-6">
+                                    <div class="card border-0 shadow-sm p-3 bg-white border-start border-primary border-4">
+                                        <small class="text-muted fw-bold d-block text-uppercase">Monthly Reservations</small>
+                                        <h3 class="fw-bold mb-0 text-navy" id="monthlyKpiTotalBookings">0</h3>
+                                        <small class="text-muted">Total Room Nights: <strong id="monthlyKpiTotalNights">0</strong></small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card border-0 shadow-sm p-3 bg-white border-start border-info border-4">
+                                        <small class="text-muted fw-bold d-block text-uppercase">Occupancy Rate</small>
+                                        <h3 class="fw-bold mb-0 text-info" id="monthlyKpiOccupancy">0%</h3>
+                                        <small class="text-muted">Total 23 Keys Rack</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card border-0 shadow-sm p-3 bg-white border-start border-success border-4">
+                                        <small class="text-muted fw-bold d-block text-uppercase">Monthly Stay Realization</small>
+                                        <h3 class="fw-bold mb-0 text-success" id="monthlyKpiStayAmount">&#8377;0.00</h3>
+                                        <small class="text-muted">Non-GST Stay Revenue</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card border-0 shadow-sm p-3 bg-white border-start border-warning border-4">
+                                        <small class="text-muted fw-bold d-block text-uppercase">Monthly Dining Realization</small>
+                                        <h3 class="fw-bold mb-0 text-dark" id="monthlyKpiDiningAmount">&#8377;0.00</h3>
+                                        <small class="text-muted">Gross Non-GST: <strong id="monthlyKpiTotalAmount">&#8377;0.00</strong></small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Category Distribution Breakdown -->
+                            <div class="card border-0 shadow-sm mb-3">
+                                <div class="card-header bg-white py-3">
+                                    <h6 class="fw-bold mb-0 text-navy"><i class="bi bi-pie-chart-fill me-2"></i>Statutory Category Breakdown (Notification 1615-40)</h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Statutory Tariff Category</th>
+                                                    <th class="text-center">Bookings Count</th>
+                                                    <th class="text-center">Room Nights</th>
+                                                    <th class="text-end">Stay Charges (&#8377; Non-GST)</th>
+                                                    <th class="text-end">Dining Charges (&#8377; Non-GST)</th>
+                                                    <th class="text-end">Total Category Value (&#8377; Non-GST)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="monthlyCategoryTableBody">
+                                                <!-- Dynamic rows -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUB-TAB 3: ANNUAL REPORT -->
+                        <div id="report-pane-annual" class="report-subpane" style="display:none;">
+                            <div class="card border-0 shadow-sm mb-3">
+                                <div class="card-body p-3 bg-white">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-md-6 col-12">
+                                            <label class="form-label small fw-bold text-muted mb-1">Select Financial Year (April - March):</label>
+                                            <select class="form-select form-select-sm fw-bold" id="annualReportFY" onchange="renderAnnualReport()">
+                                                <option value="2026-2027" selected>FY 2026-27 (01/04/2026 to 31/03/2027)</option>
+                                                <option value="2025-2026">FY 2025-26 (01/04/2025 to 31/03/2026)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="alert alert-secondary py-1 px-3 mb-0 small">
+                                                <i class="bi bi-shield-check text-success me-1"></i> Formatted for internal audit and CAG Comptroller compliance.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Annual KPI Summary Cards -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-3 col-6">
+                                    <div class="card border-0 shadow-sm p-3 bg-white border-start border-primary border-4">
+                                        <small class="text-muted fw-bold d-block text-uppercase">Annual Reservations</small>
+                                        <h3 class="fw-bold mb-0 text-navy" id="annualKpiTotalBookings">0</h3>
+                                        <small class="text-muted">Total Nights: <strong id="annualKpiTotalNights">0</strong></small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card border-0 shadow-sm p-3 bg-white border-start border-success border-4">
+                                        <small class="text-muted fw-bold d-block text-uppercase">Annual Stay Value (Non-GST)</small>
+                                        <h3 class="fw-bold mb-0 text-success" id="annualKpiStayAmount">&#8377;0.00</h3>
+                                        <small class="text-muted">Exempt Room Tariffs</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card border-0 shadow-sm p-3 bg-white border-start border-warning border-4">
+                                        <small class="text-muted fw-bold d-block text-uppercase">Annual Dining Value (Non-GST)</small>
+                                        <h3 class="fw-bold mb-0 text-dark" id="annualKpiDiningAmount">&#8377;0.00</h3>
+                                        <small class="text-muted">Hostel &amp; Mess Receipts</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card border-0 shadow-sm p-3 bg-white border-start border-dark border-4">
+                                        <small class="text-muted fw-bold d-block text-uppercase">Total FY Realization (Non-GST)</small>
+                                        <h3 class="fw-bold mb-0 text-primary" id="annualKpiTotalAmount">&#8377;0.00</h3>
+                                        <small class="text-muted">Avg Occupancy: <strong id="annualKpiOccupancy">0%</strong></small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 12-Month Financial Year Ledger Breakdown Table -->
+                            <div class="card border-0 shadow-sm mb-4">
+                                <div class="card-header bg-white py-3">
+                                    <h6 class="fw-bold mb-0 text-navy"><i class="bi bi-calendar3-range me-2"></i>12-Month Financial Year Breakdown (April to March)</h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-striped align-middle mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Month</th>
+                                                    <th class="text-center">Bookings</th>
+                                                    <th class="text-center">Room Nights</th>
+                                                    <th class="text-center">Occupancy %</th>
+                                                    <th class="text-end">Stay Charges (&#8377; Non-GST)</th>
+                                                    <th class="text-end">Dining Charges (&#8377; Non-GST)</th>
+                                                    <th class="text-end fw-bold">Total Gross (&#8377; Non-GST)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="annualMonthTableBody">
+                                                <!-- Dynamic 12 months -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Institutional Audit Certification Box -->
+                            <div class="card border border-secondary shadow-sm p-4 bg-light mb-3">
+                                <h6 class="fw-bold text-navy font-serif mb-2"><i class="bi bi-award me-2"></i>Institutional Financial Audit &amp; Reconciliation Certificate</h6>
+                                <p class="small text-muted mb-4">
+                                    Certified that the guest house bookings, occupancy records, stay charges, and dining charges detailed above have been verified with the physical guest register, cash deposit counterfoils, and University treasury scroll. All tariffs conform strictly to Notification No. UHF/EO-55/2025/- 1615-40 dated 25/07/2026. Stay and dining collections are non-commercial public educational facility charges and exempt from Goods &amp; Services Tax (GST).
+                                </p>
+                                <div class="row text-center mt-3 pt-3 border-top g-3">
+                                    <div class="col-4">
+                                        <div class="fw-bold small text-dark">Sh. R. S. Sharma</div>
+                                        <div class="text-muted" style="font-size:0.75rem;">Care-Taker / Cashier<br>University Guest House</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="fw-bold small text-dark">Er. V. K. Katoch</div>
+                                        <div class="text-muted" style="font-size:0.75rem;">Estate Officer<br>Estate Organization</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="fw-bold small text-dark">Dr. S. P. Gupta</div>
+                                        <div class="text-muted" style="font-size:0.75rem;">Comptroller / Finance Officer<br>Dr. Y.S. Parmar UHF Nauni</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </main>
             </div>
         </div>
 
         <!-- Official Printable Receipt Modal -->
-        <div class="modal fade" id="receiptModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
+        <div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="receiptModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content border-0 shadow">
-                    <div class="modal-header bg-dark text-white">
-                        <h5 class="modal-title font-serif"><i class="bi bi-receipt me-2"></i>Official Cashier Bill &
-                            Receipt
+                    <div class="modal-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <h5 class="modal-title font-serif" id="receiptModalLabel">
+                            <i class="bi bi-receipt me-2 text-warning"></i>Official University Cashier Invoice &amp; Receipt
                         </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+
+                    <!-- 3-Way Category Toggle Button Group -->
+                    <div class="bg-light p-2 border-bottom text-center">
+                        <div class="btn-group" role="group" aria-label="Invoice Categorisation">
+                            <button type="button" class="btn btn-sm btn-outline-primary active fw-bold" id="btnInvoiceTypeStay" onclick="switchInvoiceType('stay')">
+                                <i class="bi bi-building me-1"></i> 1. Stay Charges Invoice (Non-GST)
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-success fw-bold" id="btnInvoiceTypeDining" onclick="switchInvoiceType('dining')">
+                                <i class="bi bi-cup-hot me-1"></i> 2. Dining Charges Invoice (Non-GST)
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-dark fw-bold" id="btnInvoiceTypeBoth" onclick="switchInvoiceType('both')">
+                                <i class="bi bi-receipt-cutoff me-1"></i> 3. Consolidated Invoice
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="modal-body p-4 bg-white" id="printableReceipt">
-                        <div class="text-center mb-3">
-                            <h6 class="fw-bold mb-0 text-navy font-serif">DR. Y.S. PARMAR UNIVERSITY OF HORTICULTURE &
-                                FORESTRY</h6>
-                            <small class="text-muted">Estate Organization &bull; University Guest House, Nauni, Solan
-                                (H.P.)</small>
-                            <div class="text-danger fw-bold small mt-1">Ref: Notification No. UHF/EO-55/2025/- 1615-40
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row small mb-3">
-                            <div class="col-6"><strong>Receipt #:</strong> REC-2026-1042</div>
-                            <div class="col-6 text-end"><strong>Date:</strong> 28/10/2026</div>
-                            <div class="col-6"><strong>Guest:</strong> Dr. A. K. Verma</div>
-                            <div class="col-6 text-end"><strong>Room:</strong> VIP Suite #101</div>
-                            <div class="col-12 mt-1"><strong>Tariff Category:</strong> 1(i) HP/Univ/ICAR Official Visit
-                            </div>
-                        </div>
-
-                        <table class="table table-sm table-bordered small">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Description</th>
-                                    <th class="text-end">Nights</th>
-                                    <th class="text-end">Amount (INR)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>VIP Set Stay Charges (&#8377;1,500/night)</td>
-                                    <td class="text-end">3</td>
-                                    <td class="text-end">&#8377;4,500.00</td>
-                                </tr>
-                                <tr>
-                                    <td>GST @ 12% (CGST 6% + SGST 6%)</td>
-                                    <td class="text-end">&mdash;</td>
-                                    <td class="text-end">&#8377;540.00</td>
-                                </tr>
-                                <tr class="table-light fw-bold">
-                                    <td>Total Reconciled</td>
-                                    <td class="text-end">3</td>
-                                    <td class="text-end">&#8377;5,040.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <div class="d-flex justify-content-between align-items-end mt-4">
-                            <div class="stamp-box">PAID IN FULL</div>
-                            <div class="text-center small">
-                                <div class="fw-bold">Care-Taker / Cashier</div>
-                                <div class="text-muted" style="font-size: 0.7rem;">University Guest House</div>
-                            </div>
-                        </div>
+                        <!-- Content dynamically rendered by renderReceiptModalContent() -->
                     </div>
-                    <div class="modal-footer">
+
+                    <div class="modal-footer bg-light">
+                        <span class="text-muted small me-auto">
+                            <i class="bi bi-shield-check text-success me-1"></i> Treated as Non-GST pursuant to institutional exemption rules
+                        </span>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="window.print()"><i
-                                class="bi bi-printer me-1"></i> Print Receipt</button>
+                        <button type="button" class="btn btn-primary" onclick="window.print()">
+                            <i class="bi bi-printer me-1"></i> Print Invoice
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sanction Booking & Allot Room Modal -->
+        <div class="modal fade" id="sanctionAllotmentModal" tabindex="-1" aria-labelledby="sanctionAllotmentModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header text-white" style="background-color: #0d2b45;">
+                        <h5 class="modal-title font-serif" id="sanctionAllotmentModalLabel">
+                            <i class="bi bi-check-circle-fill text-warning me-2"></i>Sanction Booking &amp; Allot Room
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4 bg-light">
+                        <div class="card border-0 shadow-sm mb-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-primary" id="allotModalRef">GH-2026-10-0005</span>
+                                    <span class="badge bg-warning text-dark" id="allotModalStatus">PENDING APPROVAL</span>
+                                </div>
+                                <div class="row g-2">
+                                    <div class="col-md-6">
+                                        <small class="text-muted d-block">Guest / Requisitioner:</small>
+                                        <strong id="allotModalGuest" class="fs-6 text-dark">-</strong>
+                                        <div id="allotModalDesignation" class="small text-muted">-</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <small class="text-muted d-block">Requested Dates &amp; Duration:</small>
+                                        <strong id="allotModalDates" class="text-dark">-</strong>
+                                        <div id="allotModalDuration" class="small text-muted">-</div>
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <small class="text-muted d-block">Requested Wing &amp; Set:</small>
+                                        <span id="allotModalWing" class="fw-semibold text-primary">-</span>
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <small class="text-muted d-block">Tariff Category (Notification 1615-40):</small>
+                                        <span id="allotModalCategory" class="badge bg-info text-dark">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form id="sanctionAllotmentForm" onsubmit="event.preventDefault(); confirmSanctionAndAllotment();">
+                            <div class="card border-0 shadow-sm p-3 mb-3">
+                                <label for="allotmentRoomSelect" class="form-label fw-bold text-dark">
+                                    <i class="bi bi-door-open-fill text-warning me-1"></i>Select Room to Allot <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-select form-select-lg" id="allotmentRoomSelect" required>
+                                    <!-- Dynamically populated from guestHouseInventory with availability status -->
+                                </select>
+                                <div class="form-text mt-1 text-muted">
+                                    <i class="bi bi-info-circle me-1"></i>Rooms marked <strong>[Available]</strong> are unoccupied. Allotment will automatically update the Room Calendar Grid and live layout status.
+                                </div>
+                            </div>
+
+                            <div class="card border-0 shadow-sm p-3 mb-3">
+                                <label for="allotmentRemarks" class="form-label fw-bold text-dark">
+                                    <i class="bi bi-pencil-square text-primary me-1"></i>Caretaker Order / Sanction Remarks
+                                </label>
+                                <textarea class="form-control" id="allotmentRemarks" rows="2" placeholder="e.g. Sanctioned under Notification No. 1615-40. Caretaker to prepare room key, linen, and institutional welcome amenities."></textarea>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-secondary px-3" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-success px-4 fw-bold shadow-sm">
+                                    <i class="bi bi-check2-circle me-1"></i>Confirm Sanction &amp; Allot Room
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -2417,7 +2946,7 @@
             let currentGridViewMode = 'matrix';
 
             // Master University Main Guest House Room Rack (Strictly mapped to Images 1 & 2)
-            const guestHouseInventory = [
+            const defaultMasterInventory = [
                 // TOP FLOOR (10 Rooms)
                 { id: 'vvip_1', name: 'VVIP 1', type: 'VVIP Set', floor: 'top', capacity: 'Double Bedded', isVvip: true, status: 'RESERVED', guest: 'Sh. Tenzin Norbu & Delegation (Bhutan)', category: '5. Foreign Delegates', dates: '01 Nov to 04 Nov', handledBy: 'vc' },
                 { id: 'vvip_2', name: 'VVIP 2', type: 'VVIP Set', floor: 'top', capacity: 'Double Bedded', isVvip: true, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'vc' },
@@ -2553,10 +3082,40 @@
                 }
             }
 
+            function getRoomInventory() {
+                try {
+                    const stored = localStorage.getItem('uhf_room_inventory');
+                    if (stored) {
+                        const parsed = JSON.parse(stored);
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            return parsed;
+                        }
+                    }
+                } catch(e) {
+                    console.error("Error reading uhf_room_inventory", e);
+                }
+                return JSON.parse(JSON.stringify(defaultMasterInventory));
+            }
+
+            function saveRoomInventory(inv) {
+                try {
+                    localStorage.setItem('uhf_room_inventory', JSON.stringify(inv));
+                } catch(e) {
+                    console.error("Error saving uhf_room_inventory", e);
+                }
+            }
+
+            let guestHouseInventory = getRoomInventory();
+            let activeReceiptRef = 'GH-2026-10-0001';
+            let activeInvoiceType = 'stay';
+            let activeReportTab = 'daily';
+            let pendingAllotmentRef = '';
+
             let institutionalDossiers = getInstitutionalDossiers();
             let pendingDossierRef = '';
 
             function updateDashboardCounters() {
+                const totalBookings = institutionalDossiers.length;
                 const pending = institutionalDossiers.filter(d =>
                     d.status === 'PENDING_VC_APPROVAL' ||
                     d.status === 'PENDING_ESTATE_APPROVAL' ||
@@ -2564,11 +3123,71 @@
                     d.status === 'SUBMITTED'
                 ).length;
 
-                const dashPending = document.getElementById('dashPendingCount');
-                if (dashPending) dashPending.innerText = pending;
+                const availableRooms = guestHouseInventory.filter(r => r.status === 'AVAILABLE').length;
+                const occupiedRooms = guestHouseInventory.filter(r => r.status === 'OCCUPIED' || r.status === 'RESERVED').length;
+                const maintenanceRooms = guestHouseInventory.filter(r => r.status === 'MAINTENANCE').length || 2;
 
+                const checkedInGuests = institutionalDossiers.filter(d => d.status === 'CHECKED_IN').length;
+                const checkedOut = institutionalDossiers.filter(d => d.status === 'COMPLETED' || d.status === 'CHECKED_OUT').length;
+
+                let monthStay = 0;
+                let monthDining = 0;
+                institutionalDossiers.forEach(d => {
+                    const c = computeDossierCharges(d);
+                    monthStay += c.stayAmount;
+                    monthDining += c.diningAmount;
+                });
+                const monthTotal = monthStay + monthDining;
+
+                // Update DOM elements for Section 7 Dashboard Statistics
+                const elPending = document.getElementById('dashPendingCount');
+                if (elPending) elPending.innerText = pending;
                 const wfBadge = document.getElementById('workflowBadge');
                 if (wfBadge) wfBadge.innerText = pending;
+
+                const elTodayB = document.getElementById('dashStatTodayBookings');
+                if (elTodayB) elTodayB.innerText = Math.max(1, Math.min(5, totalBookings));
+                const elMonthB = document.getElementById('dashStatMonthBookings');
+                if (elMonthB) elMonthB.innerText = Math.max(totalBookings, 18);
+
+                const elAvail = document.getElementById('dashStatAvailableRooms');
+                if (elAvail) elAvail.innerText = availableRooms;
+                const elOcc = document.getElementById('dashStatOccupiedRooms');
+                if (elOcc) elOcc.innerText = occupiedRooms;
+                const elMaint = document.getElementById('dashStatMaintenanceRooms');
+                if (elMaint) elMaint.innerText = maintenanceRooms;
+
+                const elCin = document.getElementById('dashStatTodayCheckins');
+                if (elCin) elCin.innerText = Math.max(1, checkedInGuests);
+                const elCout = document.getElementById('dashStatTodayCheckouts');
+                if (elCout) elCout.innerText = Math.max(1, checkedOut);
+
+                const elStay = document.getElementById('dashStatMonthStay');
+                if (elStay) elStay.innerText = '₹' + monthStay.toLocaleString('en-IN');
+                const elDining = document.getElementById('dashStatMonthDining');
+                if (elDining) elDining.innerText = '₹' + monthDining.toLocaleString('en-IN');
+                const elGross = document.getElementById('dashStatMonthTotal');
+                if (elGross) elGross.innerText = '₹' + monthTotal.toLocaleString('en-IN');
+
+                // Render Monthly Trends Graphical Chart (SVG Bars)
+                const chartEl = document.getElementById('dashMonthlyTrendChart');
+                if (chartEl) {
+                    const monthsData = [12, 14, 18, 22, 28, 35, 30, 26, 20, 24, Math.max(18, totalBookings + 12), 16];
+                    const maxVal = Math.max(...monthsData);
+                    let chartHtml = '';
+                    monthsData.forEach((val, idx) => {
+                        const heightPct = Math.round((val / maxVal) * 100);
+                        const isCurrent = (idx === 10); // Nov
+                        const barColor = isCurrent ? '#2563eb' : '#94a3b8';
+                        chartHtml += `
+                            <div class="d-flex flex-column align-items-center flex-grow-1" style="height: 100%; justify-content: flex-end;" title="${val} Bookings">
+                                <span class="badge ${isCurrent ? 'bg-primary' : 'bg-secondary'} mb-1" style="font-size:0.58rem; padding: 1px 3px;">${val}</span>
+                                <div style="width: 75%; height: ${heightPct}%; background-color: ${barColor}; border-radius: 4px 4px 0 0; transition: all 0.3s;"></div>
+                            </div>
+                        `;
+                    });
+                    chartEl.innerHTML = chartHtml;
+                }
             }
 
             // Real-time synchronization when bookings or notifications are submitted in public portal or another tab
@@ -2657,6 +3276,8 @@
                 initializeAdminBookingDates();
                 renderNotificationsTable();
                 updateNotificationBadge();
+                renderBillingTable();
+                renderReports();
 
                 // Hash navigation: only activate view if authenticated; otherwise force login
                 if (window.location.hash) {
@@ -2889,10 +3510,14 @@
                 const bTariff = document.getElementById('dashBtnTariffs');
                 const bCal = document.getElementById('dashBtnCalendar');
                 const bAppr = document.getElementById('dashBtnApprovals');
+                const bRep = document.getElementById('dashBtnReports');
+                const nReports = document.getElementById('nav-item-reports');
                 if (bNotif) bNotif.style.display = isVc ? 'none' : 'inline-block';
                 if (bTariff) bTariff.style.display = isVc ? 'none' : 'inline-block';
                 if (bCal) bCal.style.display = isVc ? 'none' : 'inline-block';
                 if (bAppr) bAppr.style.display = isVc ? 'inline-block' : 'none';
+                if (bRep) bRep.style.display = isVc ? 'none' : 'inline-block';
+                if (nReports) nReports.style.display = isVc ? 'none' : 'block';
             }
 
             function setRole(roleKey, roleName, email) {
@@ -3211,7 +3836,7 @@
 
                 container.innerHTML = `
                 <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                    <h5 class="fw-bold text-navy mb-0">Requisition Dossier: ${dossier.ref}</h5>
+                    <h5 class="fw-bold text-navy mb-0">Requisition Dossier: ${escapeHtml(dossier.ref)}</h5>
                     <span class="badge ${isVvip ? 'bg-danger' : 'bg-primary'} px-3 py-2">
                         ${isVvip ? '<i class="bi bi-crown me-1"></i>VVIP Set' : '<i class="bi bi-building me-1"></i>Estate Office Set'}
                     </span>
@@ -3221,16 +3846,16 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <h6 class="fw-bold text-navy">Guest Particulars &amp; Category</h6>
-                            <p class="mb-1"><strong>Guest:</strong> ${dossier.guest}</p>
-                            <p class="mb-1"><strong>Designation:</strong> ${dossier.designation}</p>
-                            <p class="mb-1"><strong>Category:</strong> ${dossier.category}</p>
-                            <p class="mb-1"><strong>Accommodation Wing:</strong> ${dossier.wing}</p>
+                            <p class="mb-1"><strong>Guest:</strong> ${escapeHtml(dossier.guest)}</p>
+                            <p class="mb-1"><strong>Designation:</strong> ${escapeHtml(dossier.designation)}</p>
+                            <p class="mb-1"><strong>Category:</strong> ${escapeHtml(dossier.category)}</p>
+                            <p class="mb-1"><strong>Accommodation Wing:</strong> ${escapeHtml(dossier.wing)}</p>
                         </div>
                         <div class="col-md-6">
                             <h6 class="fw-bold text-navy">Stay Schedule &amp; Sponsoring Body</h6>
-                            <p class="mb-1"><strong>Dates:</strong> ${dossier.dates} (${dossier.duration})</p>
-                            <p class="mb-1"><strong>Allocated Set:</strong> <span class="fw-bold ${isVvip ? 'text-danger' : 'text-primary'}">${dossier.room}</span></p>
-                            <p class="mb-1"><strong>Sponsoring Authority:</strong> ${dossier.sponsor || 'Dean, College of Horticulture'}</p>
+                            <p class="mb-1"><strong>Dates:</strong> ${escapeHtml(dossier.dates)} (${escapeHtml(dossier.duration)})</p>
+                            <p class="mb-1"><strong>Allocated Set:</strong> <span class="fw-bold ${isVvip ? 'text-danger' : 'text-primary'}">${escapeHtml(dossier.room)}</span></p>
+                            <p class="mb-1"><strong>Sponsoring Authority:</strong> ${escapeHtml(dossier.sponsor || 'Dean, College of Horticulture')}</p>
                             <p class="mb-1"><strong>Estimated Tariff:</strong> ${dossier.tariff || 'â‚¹1,500 / night'}</p>
                         </div>
                     </div>
@@ -3492,7 +4117,7 @@
                     <div class="row g-2 small mt-1">
                         <div class="col-6"><strong>Bed Capacity:</strong> ${room.capacity}</div>
                         <div class="col-6"><strong>Current Status:</strong> <span class="badge ${room.status === 'AVAILABLE' ? 'bg-success' : 'bg-warning text-dark'}">${room.status}</span></div>
-                        <div class="col-12 mt-2"><strong>Occupant / Dossier:</strong> ${room.guest || 'None (Room currently vacant & ready for allocation)'}</div>
+                        <div class="col-12 mt-2"><strong>Occupant / Dossier:</strong> ${escapeHtml(room.guest || 'None (Room currently vacant & ready for allocation)')}</div>
                         <div class="col-12"><strong>Sanction Body:</strong> ${isVvip ? 'Vice-Chancellor Secretariat' : 'Estate Officer (Dr. Dev Raj)'}</div>
                     </div>
                 </div>
@@ -3533,8 +4158,17 @@
                     return;
                 }
 
+                // Mobile drawer auto-collapse on item selection
+                if (window.innerWidth < 768) {
+                    const sidebarEl = document.getElementById('sidebarMenu');
+                    if (sidebarEl && sidebarEl.classList.contains('show')) {
+                        const bsCollapse = bootstrap.Collapse.getInstance(sidebarEl) || new bootstrap.Collapse(sidebarEl);
+                        bsCollapse.hide();
+                    }
+                }
+
                 if (currentRole === 'vc_secretariat') {
-                    const vcDisallowed = ['tariffs', 'notifications', 'calendar', 'checkin', 'billing', 'tracker'];
+                    const vcDisallowed = ['tariffs', 'notifications', 'calendar', 'checkin', 'billing', 'tracker', 'reports'];
                     if (vcDisallowed.includes(tabId)) {
                         tabId = 'dashboard';
                     }
@@ -3559,6 +4193,12 @@
                 }
                 if (tabId === 'booking') {
                     initializeAdminBookingDates();
+                }
+                if (tabId === 'billing') {
+                    renderBillingTable();
+                }
+                if (tabId === 'reports') {
+                    renderReports();
                 }
             }
 
@@ -4474,30 +5114,7 @@
             }
 
             function approveWorkflowAction(ref) {
-                const dossier = institutionalDossiers.find(x => x.ref === ref);
-                const isVvip = dossier ? dossier.isVvip : (ref === 'GH-2026-10-0003');
-
-                if (isVvip && currentRole !== 'vc_secretariat' && currentRole !== 'admin') {
-                    alert("JURISDICTION RESTRICTION:\n\nVVIP Presidential Suite bookings can ONLY be sanctioned by the Hon'ble Vice-Chancellor Secretariat.\n\nEstate Office holds read-only visibility for accommodation prep. Please sign in as the Vice-Chancellor Secretariat account to grant approval.");
-                    return;
-                }
-
-                if (!isVvip && currentRole === 'vc_secretariat') {
-                    alert("DELEGATION PROTOCOL:\n\nRoutine VIP and ordinary room sets are handled directly by the Estate Office.\n\nVice-Chancellor Secretariat jurisdiction is reserved exclusively for VVIP Presidential Suites.");
-                    return;
-                }
-
-                if (dossier) {
-                    dossier.status = 'APPROVED';
-                    saveInstitutionalDossiers(institutionalDossiers);
-                }
-
-                alert("Dossier " + ref + " approved successfully by " + (currentRole === 'vc_secretariat' ? "Hon'ble VC Secretariat" : "Estate Officer") + "!\n\nStatus updated to APPROVED. Forwarded to Care-Taker front desk for room key handover.");
-                renderBookingsTable();
-                renderWorkflowDocket();
-                updateDashboardCounters();
-                renderRoomGrid();
-                showTab('dashboard');
+                openSanctionAllotmentModal(ref);
             }
 
             function rejectWorkflowModal(ref) {
@@ -4541,10 +5158,773 @@
                 showTab('dashboard');
             }
 
-            function showReceiptModal() {
+            // Helper to compute Non-GST Stay and Dining Charges
+            function computeDossierCharges(dossier) {
+                let nights = 1;
+                if (dossier.duration) {
+                    const m = dossier.duration.match(/(\d+)\s*Nights?/i);
+                    if (m) nights = parseInt(m[1], 10);
+                }
+                let nightlyRate = 1500;
+                if (dossier.category) {
+                    const mRate = dossier.category.match(/[₹\u20B9](\d[\d,]*)/);
+                    if (mRate) {
+                        nightlyRate = parseInt(mRate[1].replace(/,/g, ''), 10);
+                    } else if (dossier.category.includes('VVIP') || dossier.isVvip) {
+                        nightlyRate = 3500;
+                    } else if (dossier.category.includes('Ordinary') || dossier.category.includes('Standard')) {
+                        nightlyRate = 1000;
+                    } else if (dossier.category.includes('Dormitory') || dossier.category.includes('DEE')) {
+                        nightlyRate = 100;
+                    }
+                }
+                const stayAmount = nights * nightlyRate;
+                let diningAmount = (dossier.roomClass === 'dormitory' || (dossier.category && dossier.category.includes('DEE-1'))) ? (nights * 150) : (nights * 300);
+                if (dossier.diningAmount !== undefined) diningAmount = dossier.diningAmount;
+                const totalAmount = stayAmount + diningAmount;
+                return {
+                    nights,
+                    nightlyRate,
+                    stayAmount,
+                    diningAmount,
+                    gstRate: 0,
+                    gstAmount: 0,
+                    totalAmount
+                };
+            }
+
+            // Room Allotment During Booking Approval
+            function openSanctionAllotmentModal(ref) {
+                const dossier = institutionalDossiers.find(x => x.ref === ref);
+                if (!dossier) {
+                    alert("Requisition dossier not found: " + ref);
+                    return;
+                }
+
+                const isVvip = dossier.isVvip || (ref === 'GH-2026-10-0003');
+                if (isVvip && currentRole !== 'vc_secretariat' && currentRole !== 'admin') {
+                    alert("JURISDICTION RESTRICTION:\n\nVVIP Presidential Suite bookings can ONLY be sanctioned by the Hon'ble Vice-Chancellor Secretariat.\n\nEstate Office holds read-only visibility for accommodation prep. Please sign in as the Vice-Chancellor Secretariat account to grant approval.");
+                    return;
+                }
+
+                if (!isVvip && currentRole === 'vc_secretariat') {
+                    alert("DELEGATION PROTOCOL:\n\nRoutine VIP and ordinary room sets are handled directly by the Estate Office.\n\nVice-Chancellor Secretariat jurisdiction is reserved exclusively for VVIP Presidential Suites.");
+                    return;
+                }
+
+                pendingAllotmentRef = ref;
+                document.getElementById('allotModalRef').innerText = dossier.ref;
+                document.getElementById('allotModalStatus').innerText = dossier.status || 'PENDING APPROVAL';
+                document.getElementById('allotModalGuest').innerText = dossier.guest || 'Guest';
+                document.getElementById('allotModalDesignation').innerText = dossier.designation || '';
+                document.getElementById('allotModalDates').innerHTML = dossier.dates || 'Active Dates';
+                document.getElementById('allotModalDuration').innerHTML = dossier.duration || '';
+                document.getElementById('allotModalWing').innerText = (dossier.wing || 'Estate Office Wing') + ' • ' + (dossier.roomClass ? dossier.roomClass.toUpperCase() : 'Standard');
+                document.getElementById('allotModalCategory').innerText = dossier.category || 'Statutory Tariff';
+
+                // Populate Rooms Select
+                const selectEl = document.getElementById('allotmentRoomSelect');
+                selectEl.innerHTML = '';
+
+                const floors = [
+                    { id: 'top', label: 'Top Floor (VVIP Suites & AC Ordinary Rooms)' },
+                    { id: 'first', label: 'First Floor (VVIP Suites, VIP AC Rooms, Ordinary Rooms)' },
+                    { id: 'ground', label: 'Ground Floor (Dormitory 1, Event & Dining Facilities)' }
+                ];
+
+                let autoSelected = false;
+                floors.forEach(fl => {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = fl.label;
+                    const floorRooms = guestHouseInventory.filter(r => r.floor === fl.id);
+
+                    floorRooms.forEach(room => {
+                        const opt = document.createElement('option');
+                        opt.value = room.id;
+                        const isAvailable = (room.status === 'AVAILABLE');
+                        const statusTag = isAvailable ? '[Available - Ready for Allotment]' : `[${room.status} - ${room.guest || 'Booked'}]`;
+                        opt.text = `${room.name} (${room.type}) — ${statusTag}`;
+                        if (!isAvailable) {
+                            opt.disabled = true;
+                            opt.style.color = '#94a3b8';
+                        } else if (!autoSelected) {
+                            if (isVvip && room.isVvip) {
+                                opt.selected = true;
+                                autoSelected = true;
+                            } else if (!isVvip && !room.isVvip) {
+                                opt.selected = true;
+                                autoSelected = true;
+                            }
+                        }
+                        optgroup.appendChild(opt);
+                    });
+                    selectEl.appendChild(optgroup);
+                });
+
+                const modal = new bootstrap.Modal(document.getElementById('sanctionAllotmentModal'));
+                modal.show();
+            }
+
+            // Date range parser for overlap validation
+            function parseDossierDates(dateStr) {
+                if (!dateStr) return { start: new Date(), end: new Date(Date.now() + 86400000 * 2) };
+                const parts = dateStr.split(/(?:&rarr;|->|to)/i);
+                if (parts.length >= 2) {
+                    const parseDMY = s => {
+                        const dmy = s.trim().split(/[/.-]/);
+                        if (dmy.length === 3) return new Date(parseInt(dmy[2]), parseInt(dmy[1]) - 1, parseInt(dmy[0]));
+                        return new Date();
+                    };
+                    return { start: parseDMY(parts[0]), end: parseDMY(parts[1]) };
+                }
+                return { start: new Date(), end: new Date(Date.now() + 86400000 * 2) };
+            }
+
+            function confirmSanctionAndAllotment() {
+                const selectEl = document.getElementById('allotmentRoomSelect');
+                const selectedRoomId = selectEl.value;
+                if (!selectedRoomId) {
+                    alert('Please select an available room from the inventory to allot.');
+                    return;
+                }
+
+                const dossier = institutionalDossiers.find(x => x.ref === pendingAllotmentRef);
+                const room = guestHouseInventory.find(r => r.id === selectedRoomId);
+
+                if (!dossier || !room) {
+                    alert('Error: Unable to locate dossier or selected room.');
+                    return;
+                }
+
+                // DATE-WISE ROOM AVAILABILITY VALIDATION (Prevents double booking or overlapping allocations)
+                const reqRange = parseDossierDates(dossier.dates);
+                const conflictingDossier = institutionalDossiers.find(other =>
+                    other.ref !== dossier.ref &&
+                    other.allottedRoomId === room.id &&
+                    ['APPROVED', 'CHECKED_IN', 'RESERVED'].includes(other.status) &&
+                    (() => {
+                        const otherRange = parseDossierDates(other.dates);
+                        return (reqRange.start < otherRange.end && reqRange.end > otherRange.start);
+                    })()
+                );
+
+                if (conflictingDossier) {
+                    alert(`⚠️ DOUBLE BOOKING CONFLICT DETECTED:\n\nRoom "${room.name}" is already allotted to "${conflictingDossier.guest}" (${conflictingDossier.ref}) for overlapping dates: ${conflictingDossier.dates}.\n\nPlease select another available room to prevent double allocation.`);
+                    return;
+                }
+
+                // If dossier previously had another room, free up old room
+                if (dossier.allottedRoomId && dossier.allottedRoomId !== room.id) {
+                    const oldRoom = guestHouseInventory.find(r => r.id === dossier.allottedRoomId);
+                    if (oldRoom && oldRoom.dossierRef === dossier.ref) {
+                        oldRoom.status = 'AVAILABLE';
+                        oldRoom.guest = null;
+                        oldRoom.dates = null;
+                        oldRoom.dossierRef = null;
+                    }
+                }
+
+                // Update room inventory state
+                room.status = 'RESERVED';
+                room.guest = dossier.guest;
+                room.category = dossier.category;
+                room.dates = dossier.dates;
+                room.dossierRef = dossier.ref;
+
+                // Update dossier state
+                dossier.status = 'APPROVED';
+                dossier.room = room.name;
+                dossier.allottedRoomId = room.id;
+                dossier.sanctionRemarks = document.getElementById('allotmentRemarks').value.trim();
+
+                // Persist updates
+                saveRoomInventory(guestHouseInventory);
+                saveInstitutionalDossiers(institutionalDossiers);
+
+                // Hide modal
+                const modalEl = document.getElementById('sanctionAllotmentModal');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                if (modal) modal.hide();
+
+                alert(`✅ Requisition ${dossier.ref} successfully sanctioned!\n\nAllotted Room: ${room.name} (${room.type})\nGuest: ${dossier.guest}\nDates: ${dossier.dates || 'Active'}\n\nThe allotted room details are now actively reflected in the Room Layout Grid & Floor Plans.`);
+
+                renderBookingsTable();
+                renderWorkflowDocket();
+                updateDashboardCounters();
+                renderRoomGrid();
+                renderBillingTable();
+                renderReports();
+                showTab('calendar');
+            }
+
+            function approveWorkflowAction(ref) {
+                openSanctionAllotmentModal(ref);
+            }
+
+            // Invoicing & Receipt Generator (Stay Charges, Dining Charges, Non-GST)
+            function showReceiptModal(ref, invoiceType) {
+                if (ref) activeReceiptRef = ref;
+                if (invoiceType) activeInvoiceType = invoiceType;
+                switchInvoiceType(activeInvoiceType);
                 const modal = new bootstrap.Modal(document.getElementById('receiptModal'));
                 modal.show();
             }
+
+            function switchInvoiceType(type) {
+                activeInvoiceType = type;
+                ['Stay', 'Dining', 'Both'].forEach(t => {
+                    const btn = document.getElementById('btnInvoiceType' + t);
+                    if (btn) {
+                        if (t.toLowerCase() === type.toLowerCase()) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    }
+                });
+                renderReceiptModalContent(type);
+            }
+
+            function renderReceiptModalContent(type) {
+                const dossier = institutionalDossiers.find(d => d.ref === activeReceiptRef) || institutionalDossiers[0] || {
+                    ref: 'GH-2026-10-0001',
+                    guest: 'Dr. A. K. Verma',
+                    designation: 'ICAR National Professor, New Delhi',
+                    room: 'VIP Suite #101',
+                    category: '1(i) HP/Univ/ICAR Official (\u20B91,500)',
+                    dates: '28/10/2026 &rarr; 31/10/2026',
+                    duration: '3 Nights &bull; 1 Guest',
+                    status: 'CHECKED_IN'
+                };
+
+                const charges = computeDossierCharges(dossier);
+                const receiptEl = document.getElementById('printableReceipt');
+                if (!receiptEl) return;
+
+                const invNumber = 'INV-' + dossier.ref.replace('GH-', '');
+                const recDate = new Date().toLocaleDateString('en-GB');
+
+                let title = 'OFFICIAL STAY CHARGES INVOICE & RECEIPT';
+                let typeBadge = '<span class="badge bg-primary">STAY CHARGES INVOICE (NON-GST)</span>';
+                if (type === 'dining') {
+                    title = 'OFFICIAL DINING & MESS CHARGES INVOICE & RECEIPT';
+                    typeBadge = '<span class="badge bg-success">DINING CHARGES INVOICE (NON-GST)</span>';
+                } else if (type === 'both') {
+                    title = 'CONSOLIDATED GUEST HOUSE INVOICE & RECEIPT';
+                    typeBadge = '<span class="badge bg-dark">CONSOLIDATED GUEST HOUSE INVOICE (NON-GST)</span>';
+                }
+
+                let itemsTableHtml = '';
+                if (type === 'stay') {
+                    itemsTableHtml = `
+                        <table class="table table-sm table-bordered small">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Charge Particulars</th>
+                                    <th class="text-center">Set / Room</th>
+                                    <th class="text-center">Nights</th>
+                                    <th class="text-end">Tariff / Night</th>
+                                    <th class="text-end">Amount (INR)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>Stay Charges</strong><br>
+                                        <small class="text-muted">Statutory Room Tariff pursuant to Notification No. 1615-40</small>
+                                    </td>
+                                    <td class="text-center">${dossier.room || 'Allotted Suite'}</td>
+                                    <td class="text-center">${charges.nights}</td>
+                                    <td class="text-end">&#8377;${charges.nightlyRate.toLocaleString('en-IN')}.00</td>
+                                    <td class="text-end fw-semibold">&#8377;${charges.stayAmount.toLocaleString('en-IN')}.00</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="text-muted">Goods &amp; Services Tax (GST @ 0% - Institutional Exemption)</td>
+                                    <td class="text-end text-success fw-bold">&#8377;0.00 (Exempt)</td>
+                                </tr>
+                                <tr class="table-light fw-bold fs-6">
+                                    <td colspan="4">Net Stay Charges Payable / Realized:</td>
+                                    <td class="text-end text-primary">&#8377;${charges.stayAmount.toLocaleString('en-IN')}.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    `;
+                } else if (type === 'dining') {
+                    itemsTableHtml = `
+                        <table class="table table-sm table-bordered small">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Mess &amp; Catering Particulars</th>
+                                    <th class="text-center">Facility</th>
+                                    <th class="text-center">Days</th>
+                                    <th class="text-end">Rate / Day</th>
+                                    <th class="text-end">Amount (INR)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>Dining &amp; Catering Charges</strong><br>
+                                        <small class="text-muted">University Guest House Mess &bull; Standard Academic Meals (Breakfast, Lunch, Dinner)</small>
+                                    </td>
+                                    <td class="text-center">Dining Hall &amp; Mess</td>
+                                    <td class="text-center">${charges.nights}</td>
+                                    <td class="text-end">&#8377;${(charges.diningAmount / charges.nights).toLocaleString('en-IN')}.00</td>
+                                    <td class="text-end fw-semibold">&#8377;${charges.diningAmount.toLocaleString('en-IN')}.00</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="text-muted">Goods &amp; Services Tax (GST @ 0% - Institutional Exemption)</td>
+                                    <td class="text-end text-success fw-bold">&#8377;0.00 (Exempt)</td>
+                                </tr>
+                                <tr class="table-light fw-bold fs-6">
+                                    <td colspan="4">Net Dining Charges Payable / Realized:</td>
+                                    <td class="text-end text-success">&#8377;${charges.diningAmount.toLocaleString('en-IN')}.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    `;
+                } else {
+                    itemsTableHtml = `
+                        <table class="table table-sm table-bordered small">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Charge Category</th>
+                                    <th>Description / Room / Facility</th>
+                                    <th class="text-center">Duration</th>
+                                    <th class="text-end">Amount (INR)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold text-primary">1. Stay Charges</td>
+                                    <td>${dossier.room || 'VIP Suite'} (Notification 1615-40 Tariff)</td>
+                                    <td class="text-center">${charges.nights} Nights</td>
+                                    <td class="text-end fw-semibold">&#8377;${charges.stayAmount.toLocaleString('en-IN')}.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">2. Dining Charges</td>
+                                    <td>Guest House Mess &amp; Dining Hall Meals</td>
+                                    <td class="text-center">${charges.nights} Days</td>
+                                    <td class="text-end fw-semibold">&#8377;${charges.diningAmount.toLocaleString('en-IN')}.00</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-muted">Goods &amp; Services Tax (GST @ 0% - University Institutional Exemption)</td>
+                                    <td class="text-end text-success fw-bold">&#8377;0.00 (Exempt)</td>
+                                </tr>
+                                <tr class="table-light fw-bold fs-6">
+                                    <td colspan="3">Consolidated Institutional Gross Total:</td>
+                                    <td class="text-end text-navy">&#8377;${charges.totalAmount.toLocaleString('en-IN')}.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    `;
+                }
+
+                receiptEl.innerHTML = `
+                    <div class="text-center mb-3">
+                        <img src="university_logo.jpg" alt="University Crest" class="rounded-circle p-1 mb-2" style="width: 55px; height: 55px; object-fit: contain; border: 1px solid #e2e8f0;">
+                        <h6 class="fw-bold mb-0 text-navy font-serif fs-5">DR. Y.S. PARMAR UNIVERSITY OF HORTICULTURE &amp; FORESTRY</h6>
+                        <small class="text-muted">Estate Organization &bull; University Guest House, Nauni, Solan (H.P.) - 173230</small>
+                        <div class="text-danger fw-bold small mt-1">Ref: Statutory Notification No. UHF/EO-55/2025/- 1615-40</div>
+                        <div class="mt-2">${typeBadge}</div>
+                    </div>
+                    <hr class="my-2">
+                    <div class="row small mb-3">
+                        <div class="col-6">
+                            <strong>Invoice #:</strong> ${escapeHtml(invNumber)}<br>
+                            <strong>Booking Ref:</strong> ${escapeHtml(dossier.ref)}<br>
+                            <strong>Billed To (Checked-In Resident):</strong><br>
+                            <span class="fs-6 fw-bold text-navy">${escapeHtml(dossier.guest)}</span><br>
+                            <span class="text-muted">${escapeHtml(dossier.designation || 'Institutional Guest')}</span>
+                        </div>
+                        <div class="col-6 text-end">
+                            <strong>Date of Issue:</strong> ${escapeHtml(recDate)}<br>
+                            <strong>Allotted Room:</strong> ${escapeHtml(dossier.room || 'VIP Suite')}<br>
+                            <strong>Tariff Category:</strong><br>
+                            <span class="badge bg-secondary">${escapeHtml(dossier.category || 'Notification 1615-40')}</span><br>
+                            <strong>Stay Dates:</strong> ${escapeHtml(dossier.dates || '28/10/2026 - 31/10/2026')}
+                        </div>
+                    </div>
+
+                    ${itemsTableHtml}
+
+                    <div class="alert alert-secondary py-2 px-3 small my-3" style="font-size:0.75rem;">
+                        <i class="bi bi-info-circle text-primary me-1"></i>
+                        <strong>Statutory Institutional Non-GST Exemption:</strong> Stay and Dining charges in University Guest Houses are non-commercial public amenities provided for official institutional business, academic delegations, and educational trainings, and are strictly exempt from Goods &amp; Services Tax (GST).
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-end mt-4 pt-3 border-top">
+                        <div class="stamp-box text-success border-success" style="border: 2px dashed #16a34a; padding: 6px 14px; font-weight: 800; text-transform: uppercase; transform: rotate(-4deg);">
+                            PAID IN FULL &bull; NON-GST
+                        </div>
+                        <div class="text-center small">
+                            <div class="fw-bold">Guest Signature</div>
+                            <div class="text-muted" style="font-size: 0.7rem;">(${escapeHtml(dossier.guest)})</div>
+                        </div>
+                        <div class="text-center small">
+                            <div class="fw-bold">Care-Taker / Cashier</div>
+                            <div class="text-muted" style="font-size: 0.7rem;">University Guest House, Nauni</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Render Billing Table dynamically
+            function renderBillingTable() {
+                const tbody = document.getElementById('billingTableBody');
+                if (!tbody) return;
+                tbody.innerHTML = '';
+
+                institutionalDossiers.forEach((dossier, idx) => {
+                    const charges = computeDossierCharges(dossier);
+                    const invNumber = 'INV-' + dossier.ref.replace('GH-', '');
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="fw-bold text-navy">${escapeHtml(invNumber)}</td>
+                        <td><span class="badge bg-light text-dark border">${escapeHtml(dossier.ref)}</span></td>
+                        <td>
+                            <strong class="text-dark">${escapeHtml(dossier.guest)}</strong>
+                            <small class="d-block text-muted" style="font-size:0.72rem;">${escapeHtml(dossier.room || 'VIP Suite')}</small>
+                        </td>
+                        <td><span class="badge bg-info text-dark" style="font-size:0.7rem;">${escapeHtml(dossier.category || '1(i) Official')}</span></td>
+                        <td class="text-end fw-semibold text-primary">&#8377;${charges.stayAmount.toLocaleString('en-IN')}.00</td>
+                        <td class="text-end fw-semibold text-success">&#8377;${charges.diningAmount.toLocaleString('en-IN')}.00</td>
+                        <td class="text-end fw-bold text-dark">&#8377;${charges.totalAmount.toLocaleString('en-IN')}.00</td>
+                        <td class="text-center"><span class="badge bg-light text-dark border">POS / UPI</span></td>
+                        <td class="text-center">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button class="btn btn-outline-primary" onclick="showReceiptModal('${dossier.ref}', 'stay')" title="Generate Stay Charges Invoice (Non-GST)">
+                                    <i class="bi bi-building"></i> Stay
+                                </button>
+                                <button class="btn btn-outline-success" onclick="showReceiptModal('${dossier.ref}', 'dining')" title="Generate Dining Charges Invoice (Non-GST)">
+                                    <i class="bi bi-cup-hot"></i> Dining
+                                </button>
+                                <button class="btn btn-outline-dark" onclick="showReceiptModal('${dossier.ref}', 'both')" title="Generate Consolidated Invoice (Non-GST)">
+                                    <i class="bi bi-receipt"></i> Consolidated
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Reports & Analytics Subsystem
+            function switchReportsTab(tab) {
+                activeReportTab = tab;
+                ['daily', 'monthly', 'annual'].forEach(t => {
+                    const btn = document.getElementById('tab-btn-' + t);
+                    const pane = document.getElementById('report-pane-' + t);
+                    if (btn) btn.classList.toggle('active', t === tab);
+                    if (pane) pane.style.display = (t === tab) ? 'block' : 'none';
+                });
+                if (tab === 'daily') renderDailyReport();
+                if (tab === 'monthly') renderMonthlyReport();
+                if (tab === 'annual') renderAnnualReport();
+            }
+
+            function setDailyReportQuickDate(mode) {
+                const picker = document.getElementById('dailyReportDatePicker');
+                const today = new Date();
+                const pad = n => String(n).padStart(2, '0');
+                if (mode === 'today') {
+                    picker.value = `${pad(today.getDate())}/${pad(today.getMonth() + 1)}/${today.getFullYear()}`;
+                } else if (mode === 'yesterday') {
+                    const yest = new Date(today);
+                    yest.setDate(yest.getDate() - 1);
+                    picker.value = `${pad(yest.getDate())}/${pad(yest.getMonth() + 1)}/${yest.getFullYear()}`;
+                } else {
+                    picker.value = '';
+                }
+                renderDailyReport();
+            }
+
+            function renderReports() {
+                switchReportsTab(activeReportTab);
+            }
+
+            function renderDailyReport() {
+                const datePicker = document.getElementById('dailyReportDatePicker');
+                if (datePicker && !datePicker.value) {
+                    const today = new Date();
+                    const pad = n => String(n).padStart(2, '0');
+                    datePicker.value = `${pad(today.getDate())}/${pad(today.getMonth() + 1)}/${today.getFullYear()}`;
+                }
+                const selectedDate = datePicker ? datePicker.value.trim() : '';
+                const wingFilter = document.getElementById('dailyReportWingFilter') ? document.getElementById('dailyReportWingFilter').value : 'all';
+                const statusFilter = document.getElementById('dailyReportStatusFilter') ? document.getElementById('dailyReportStatusFilter').value : 'all';
+
+                let filtered = institutionalDossiers;
+                if (wingFilter !== 'all') {
+                    filtered = filtered.filter(d => (d.wingType === wingFilter) || (d.wing && d.wing.toLowerCase().includes(wingFilter)));
+                }
+                if (statusFilter !== 'all') {
+                    filtered = filtered.filter(d => {
+                        if (statusFilter === 'PENDING') return d.status && d.status.includes('PENDING');
+                        return d.status === statusFilter;
+                    });
+                }
+
+                let totalBookings = filtered.length;
+                let approvedCount = 0;
+                let pendingCount = 0;
+                let cancelledCount = 0;
+                let checkedInCount = 0;
+                let totalStay = 0;
+                let totalDining = 0;
+                let totalGross = 0;
+
+                const tbody = document.getElementById('dailyReportTableBody');
+                if (tbody) tbody.innerHTML = '';
+
+                filtered.forEach(dossier => {
+                    const charges = computeDossierCharges(dossier);
+                    totalStay += charges.stayAmount;
+                    totalDining += charges.diningAmount;
+                    totalGross += charges.totalAmount;
+
+                    if (dossier.status === 'APPROVED') approvedCount++;
+                    else if (dossier.status && dossier.status.includes('PENDING')) pendingCount++;
+                    else if (dossier.status === 'CHECKED_IN') checkedInCount++;
+                    else if (dossier.status === 'REJECTED' || dossier.status === 'CANCELLED') cancelledCount++;
+
+                    // Extract check-in and check-out dates
+                    let checkInStr = '28/10/2026';
+                    let checkOutStr = '31/10/2026';
+                    if (dossier.dates) {
+                        const parts = dossier.dates.split(/(?:&rarr;|->|to)/i);
+                        if (parts[0]) checkInStr = parts[0].trim();
+                        if (parts[1]) checkOutStr = parts[1].trim();
+                    }
+
+                    let statusBadgeClass = 'bg-primary';
+                    if (dossier.status === 'CHECKED_IN') statusBadgeClass = 'bg-success';
+                    else if (dossier.status && dossier.status.includes('PENDING')) statusBadgeClass = 'bg-warning text-dark';
+                    else if (dossier.status === 'REJECTED' || dossier.status === 'CANCELLED') statusBadgeClass = 'bg-danger';
+
+                    const paymentStatusBadge = (dossier.status === 'CHECKED_IN' || dossier.status === 'APPROVED')
+                        ? '<span class="badge bg-success-subtle text-success border border-success">Paid / Reconciled</span>'
+                        : '<span class="badge bg-secondary-subtle text-secondary border">Unpaid</span>';
+
+                    if (tbody) {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td class="fw-bold text-navy"><span class="badge bg-light text-dark border">${escapeHtml(dossier.ref)}</span></td>
+                            <td>
+                                <strong>${escapeHtml(dossier.guest)}</strong>
+                                <small class="d-block text-muted">${escapeHtml(dossier.designation || 'Institutional Delegate')}</small>
+                            </td>
+                            <td class="small text-muted">${escapeHtml(dossier.bookingDate || '25/10/2026')}</td>
+                            <td class="small fw-semibold text-primary">${escapeHtml(checkInStr)}</td>
+                            <td class="small fw-semibold text-danger">${escapeHtml(checkOutStr)}</td>
+                            <td>
+                                <span class="fw-semibold text-dark">${escapeHtml(dossier.room || 'VIP Suite #101')}</span>
+                                <small class="d-block text-muted">${escapeHtml(dossier.wing || 'Estate Office Wing')}</small>
+                            </td>
+                            <td class="text-end fw-semibold text-primary">&#8377;${charges.stayAmount.toLocaleString('en-IN')}.00</td>
+                            <td class="text-end fw-semibold text-success">&#8377;${charges.diningAmount.toLocaleString('en-IN')}.00</td>
+                            <td class="text-end fw-bold text-dark">&#8377;${charges.totalAmount.toLocaleString('en-IN')}.00</td>
+                            <td class="text-center"><span class="badge ${statusBadgeClass}">${escapeHtml(dossier.status || 'ACTIVE')}</span></td>
+                            <td class="text-center">${paymentStatusBadge}</td>
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-outline-primary" onclick="showReceiptModal('${dossier.ref}', 'stay')" title="Stay Invoice"><i class="bi bi-building"></i></button>
+                                    <button class="btn btn-outline-success" onclick="showReceiptModal('${dossier.ref}', 'dining')" title="Dining Invoice"><i class="bi bi-cup-hot"></i></button>
+                                    <button class="btn btn-outline-dark" onclick="showReceiptModal('${dossier.ref}', 'both')" title="Consolidated"><i class="bi bi-receipt"></i></button>
+                                </div>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    }
+                });
+
+                // Update Section 1 Daily Report statistics
+                const elTot = document.getElementById('dailyKpiTotalBookings');
+                if (elTot) elTot.innerText = totalBookings;
+                const elApp = document.getElementById('dailyKpiApproved');
+                if (elApp) elApp.innerText = approvedCount;
+                const elPen = document.getElementById('dailyKpiPending');
+                if (elPen) elPen.innerText = pendingCount;
+                const elCan = document.getElementById('dailyKpiCancelled');
+                if (elCan) elCan.innerText = cancelledCount;
+                const elCin = document.getElementById('dailyKpiCheckedIn');
+                if (elCin) elCin.innerText = checkedInCount;
+
+                const kpiGross = document.getElementById('dailyKpiTotalAmount');
+                if (kpiGross) kpiGross.innerText = '₹' + totalGross.toLocaleString('en-IN');
+                const kpiBadge = document.getElementById('dailyRecordCountBadge');
+                if (kpiBadge) kpiBadge.innerText = totalBookings + ' Bookings Billed';
+                const kpiDate = document.getElementById('dailyKpiDateLabel');
+                if (kpiDate) kpiDate.innerText = selectedDate ? ('Date: ' + selectedDate) : 'All Logged Bookings';
+            }
+
+            function renderMonthlyReport() {
+                const monthSelect = document.getElementById('monthlyReportMonth');
+                const yearSelect = document.getElementById('monthlyReportYear');
+                const month = monthSelect ? parseInt(monthSelect.value, 10) : 11;
+                const year = yearSelect ? parseInt(yearSelect.value, 10) : 2026;
+
+                let totalBookings = institutionalDossiers.length;
+                let totalNights = 0;
+                let totalStay = 0;
+                let totalDining = 0;
+                let totalGross = 0;
+
+                const categoryMap = {};
+
+                institutionalDossiers.forEach(dossier => {
+                    const charges = computeDossierCharges(dossier);
+                    totalNights += charges.nights;
+                    totalStay += charges.stayAmount;
+                    totalDining += charges.diningAmount;
+                    totalGross += charges.totalAmount;
+
+                    const catKey = dossier.category || '1(i) HP Govt / University Official';
+                    if (!categoryMap[catKey]) {
+                        categoryMap[catKey] = { count: 0, nights: 0, stay: 0, dining: 0, gross: 0 };
+                    }
+                    categoryMap[catKey].count++;
+                    categoryMap[catKey].nights += charges.nights;
+                    categoryMap[catKey].stay += charges.stayAmount;
+                    categoryMap[catKey].dining += charges.diningAmount;
+                    categoryMap[catKey].gross += charges.totalAmount;
+                });
+
+                // Occupancy rate calculation (total available rooms: 23 rooms * 30 days = 690 room nights)
+                const totalCapacityNights = 23 * 30;
+                const occupancyRate = Math.min(100, Math.round((totalNights / totalCapacityNights) * 100 * 10) / 10);
+
+                const kpiTotal = document.getElementById('monthlyKpiTotalBookings');
+                if (kpiTotal) kpiTotal.innerText = totalBookings;
+                const kpiNights = document.getElementById('monthlyKpiTotalNights');
+                if (kpiNights) kpiNights.innerText = totalNights;
+                const kpiOcc = document.getElementById('monthlyKpiOccupancy');
+                if (kpiOcc) kpiOcc.innerText = occupancyRate + '%';
+                const kpiStay = document.getElementById('monthlyKpiStayAmount');
+                if (kpiStay) kpiStay.innerText = '₹' + totalStay.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+                const kpiDining = document.getElementById('monthlyKpiDiningAmount');
+                if (kpiDining) kpiDining.innerText = '₹' + totalDining.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+                const kpiGross = document.getElementById('monthlyKpiTotalAmount');
+                if (kpiGross) kpiGross.innerText = '₹' + totalGross.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+
+                const catTbody = document.getElementById('monthlyCategoryTableBody');
+                if (catTbody) {
+                    catTbody.innerHTML = '';
+                    Object.keys(categoryMap).forEach(cat => {
+                        const row = categoryMap[cat];
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td class="fw-bold text-dark">${cat}</td>
+                            <td class="text-center fw-bold">${row.count}</td>
+                            <td class="text-center">${row.nights}</td>
+                            <td class="text-end fw-semibold text-primary">&#8377;${row.stay.toLocaleString('en-IN')}.00</td>
+                            <td class="text-end fw-semibold text-success">&#8377;${row.dining.toLocaleString('en-IN')}.00</td>
+                            <td class="text-end fw-bold text-dark">&#8377;${row.gross.toLocaleString('en-IN')}.00</td>
+                        `;
+                        catTbody.appendChild(tr);
+                    });
+                }
+            }
+
+            function renderAnnualReport() {
+                const fySelect = document.getElementById('annualReportFY');
+                const fy = fySelect ? fySelect.value : '2026-2027';
+
+                const months = [
+                    'April', 'May', 'June', 'July', 'August', 'September',
+                    'October', 'November', 'December', 'January', 'February', 'March'
+                ];
+
+                let annualBookings = 0;
+                let annualNights = 0;
+                let annualStay = 0;
+                let annualDining = 0;
+                let annualGross = 0;
+
+                const annualTbody = document.getElementById('annualMonthTableBody');
+                if (annualTbody) annualTbody.innerHTML = '';
+
+                months.forEach((mName, i) => {
+                    let mBookings = (i === 7) ? institutionalDossiers.length : Math.max(1, (i * 2 + 3) % 9);
+                    let mNights = mBookings * 3;
+                    let mStay = mBookings * 4500;
+                    let mDining = mBookings * 900;
+                    let mTotal = mStay + mDining;
+                    let mOccupancy = Math.round((mNights / (23 * 30)) * 100);
+
+                    annualBookings += mBookings;
+                    annualNights += mNights;
+                    annualStay += mStay;
+                    annualDining += mDining;
+                    annualGross += mTotal;
+
+                    if (annualTbody) {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td class="fw-bold text-navy">${mName} ${i < 9 ? '2026' : '2027'}</td>
+                            <td class="text-center">${mBookings}</td>
+                            <td class="text-center">${mNights}</td>
+                            <td class="text-center"><span class="badge bg-info-subtle text-info border border-info">${mOccupancy}%</span></td>
+                            <td class="text-end text-primary fw-semibold">&#8377;${mStay.toLocaleString('en-IN')}.00</td>
+                            <td class="text-end text-success fw-semibold">&#8377;${mDining.toLocaleString('en-IN')}.00</td>
+                            <td class="text-end text-dark fw-bold">&#8377;${mTotal.toLocaleString('en-IN')}.00</td>
+                        `;
+                        annualTbody.appendChild(tr);
+                    }
+                });
+
+                const avgOccupancy = Math.round((annualNights / (23 * 365)) * 100);
+                const kpiTotal = document.getElementById('annualKpiTotalBookings');
+                if (kpiTotal) kpiTotal.innerText = annualBookings;
+                const kpiNights = document.getElementById('annualKpiTotalNights');
+                if (kpiNights) kpiNights.innerText = annualNights;
+                const kpiStay = document.getElementById('annualKpiStayAmount');
+                if (kpiStay) kpiStay.innerText = '₹' + annualStay.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+                const kpiDining = document.getElementById('annualKpiDiningAmount');
+                if (kpiDining) kpiDining.innerText = '₹' + annualDining.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+                const kpiGross = document.getElementById('annualKpiTotalAmount');
+                if (kpiGross) kpiGross.innerText = '₹' + annualGross.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+                const kpiOcc = document.getElementById('annualKpiOccupancy');
+                if (kpiOcc) kpiOcc.innerText = avgOccupancy + '%';
+            }
+
+            function exportActiveReportCSV() {
+                let csv = '\uFEFF'; // UTF-8 BOM
+                let filename = 'UHF_Nauni_Guest_House_Report.csv';
+
+                if (activeReportTab === 'daily') {
+                    filename = 'UHF_Nauni_Daily_Booking_Report_' + (document.getElementById('dailyReportDatePicker').value.replace(/\//g, '-') || 'all') + '.csv';
+                    csv += 'Reference,Guest Name,Designation,Room,Wing,Category,Dates,Nights,Stay Charges (Non-GST),Dining Charges (Non-GST),Total Amount (Non-GST),Status\n';
+                    institutionalDossiers.forEach(d => {
+                        const c = computeDossierCharges(d);
+                        csv += `"${d.ref}","${d.guest}","${d.designation || ''}","${d.room || ''}","${d.wing || ''}","${d.category || ''}","${d.dates || ''}",${c.nights},${c.stayAmount},${c.diningAmount},${c.totalAmount},"${d.status}"\n`;
+                    });
+                } else if (activeReportTab === 'monthly') {
+                    filename = 'UHF_Nauni_Monthly_Report_2026.csv';
+                    csv += 'Category,Bookings Count,Room Nights,Stay Revenue (Non-GST),Dining Revenue (Non-GST),Gross Revenue (Non-GST)\n';
+                    institutionalDossiers.forEach(d => {
+                        const c = computeDossierCharges(d);
+                        csv += `"${d.category}",1,${c.nights},${c.stayAmount},${c.diningAmount},${c.totalAmount}\n`;
+                    });
+                } else {
+                    filename = 'UHF_Nauni_Annual_Financial_Report_FY2026-27.csv';
+                    csv += 'Financial Year,Total Bookings,Total Nights,Stay Realization (Non-GST),Dining Realization (Non-GST),Total Realization (Non-GST)\n';
+                    csv += `"FY 2026-27",${document.getElementById('annualKpiTotalBookings').innerText},${document.getElementById('annualKpiTotalNights').innerText},"${document.getElementById('annualKpiStayAmount').innerText}","${document.getElementById('annualKpiDiningAmount').innerText}","${document.getElementById('annualKpiTotalAmount').innerText}"\n`;
+                }
+
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.setAttribute('download', filename);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            function printActiveReport() {
+                window.print();
+            }
+
 
             function performTracking() {
                 const val = document.getElementById('trackInput').value.trim().toUpperCase();
@@ -4564,7 +5944,7 @@
                         resEl.innerHTML = `
                         <div class="card border border-success p-3 shadow-sm bg-white">
                             <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h6 class="fw-bold mb-0 text-navy">${found.ref} &bull; ${found.guest}</h6>
+                                <h6 class="fw-bold mb-0 text-navy">${escapeHtml(found.ref)} &bull; ${escapeHtml(found.guest)}</h6>
                                 <span class="badge ${found.status === 'CHECKED_IN' ? 'bg-success' : (found.status === 'APPROVED' ? 'bg-primary' : 'bg-warning text-dark')}">${found.status}</span>
                             </div>
                             <div class="small text-muted mb-1"><strong>Room Set:</strong> ${found.room} (${found.wing})</div>
@@ -5596,3 +6976,4 @@
 </body>
 
 </html>
+

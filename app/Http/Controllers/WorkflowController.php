@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\WorkflowActionRequest;
 use App\Models\Booking;
+use App\Services\AvailabilityService;
 use App\Services\BookingWorkflowService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,10 +12,14 @@ use Illuminate\Support\Facades\Auth;
 class WorkflowController extends Controller
 {
     protected BookingWorkflowService $workflowService;
+    protected AvailabilityService $availabilityService;
 
-    public function __construct(BookingWorkflowService $workflowService)
-    {
+    public function __construct(
+        BookingWorkflowService $workflowService,
+        AvailabilityService $availabilityService
+    ) {
         $this->workflowService = $workflowService;
+        $this->availabilityService = $availabilityService;
     }
 
     public function pendingQueue(Request $request)
@@ -54,8 +59,30 @@ class WorkflowController extends Controller
                 return back()->with('success', "Booking {$booking->booking_reference} has been verified and forwarded for approval.");
 
             case 'approve':
+                // Check if room allotment is provided during approval
+                if ($request->filled('room_id') || $request->filled('room_ids')) {
+                    $roomIds = $request->filled('room_ids') ? (array)$request->room_ids : [(int)$request->room_id];
+                    $checkIn = $booking->arrival_date->toDateString();
+                    $checkOut = $booking->departure_date->toDateString();
+
+                    // Strict date-wise availability validation to prevent double booking or overlapping allocations
+                    foreach ($roomIds as $rId) {
+                        if (!$this->availabilityService->isRoomAvailable($rId, $checkIn, $checkOut, $booking->id)) {
+                            return back()->with('error', "DOUBLE BOOKING CONFLICT DETECTED: Room ID {$rId} is already occupied or reserved between {$checkIn} and {$checkOut}.");
+                        }
+                    }
+
+                    $allocatedNumbers = $this->availabilityService->allocateRoomsSafely($booking, $roomIds, $user->id);
+                    $booking->allotted_room_id = $roomIds[0];
+                    $booking->room_allotted_at = now();
+                    $booking->allotted_by_id = $user->id;
+                    $booking->save();
+
+                    $remarks = ($remarks ? $remarks . ' - ' : '') . 'Room Allotted: ' . implode(', ', $allocatedNumbers);
+                }
+
                 $this->workflowService->approveBooking($booking, $user, $remarks ?: 'Booking approved by authority');
-                return back()->with('success', "Booking {$booking->booking_reference} has been approved.");
+                return back()->with('success', "Booking {$booking->booking_reference} has been approved" . ($request->filled('room_id') ? " and room allotted successfully." : "."));
 
             case 'reject':
                 $this->workflowService->rejectBooking($booking, $user, $remarks);
@@ -70,4 +97,3 @@ class WorkflowController extends Controller
         }
     }
 }
-

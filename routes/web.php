@@ -65,12 +65,17 @@ Route::middleware(['auth'])->group(function () {
     // Billing & Finance
     Route::get('/billing', [BillingController::class, 'index'])->name('billing.index');
     Route::get('/billing/invoice/{invoice}', [BillingController::class, 'show'])->name('billing.invoice');
+    Route::post('/billing/stay-invoice/{booking}', [BillingController::class, 'generateStayInvoice'])->name('billing.stay_invoice');
+    Route::post('/billing/dining-invoice/{booking}', [BillingController::class, 'generateDiningInvoice'])->name('billing.dining_invoice');
     Route::post('/billing/invoice/{invoice}/payment', [BillingController::class, 'recordPayment'])->name('billing.payment');
     Route::get('/billing/receipt/{payment}', [BillingController::class, 'showReceipt'])->name('billing.receipt');
     Route::post('/billing/invoice/{invoice}/refund', [BillingController::class, 'refund'])->name('billing.refund');
 
     // Reports
     Route::get('/reports/bookings', [ReportController::class, 'bookingsReport'])->name('reports.bookings');
+    Route::get('/reports/daily', [ReportController::class, 'dailyReport'])->name('reports.daily');
+    Route::get('/reports/monthly', [ReportController::class, 'monthlyReport'])->name('reports.monthly');
+    Route::get('/reports/annual', [ReportController::class, 'annualReport'])->name('reports.annual');
     Route::get('/reports/availability', [ReportController::class, 'availabilityReport'])->name('reports.availability');
     Route::get('/reports/financial', [ReportController::class, 'financialReport'])->name('reports.financial');
 

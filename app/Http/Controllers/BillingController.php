@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PaymentRequest;
+use App\Models\Booking;
 use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\RefundOrAdjustment;
@@ -30,6 +31,10 @@ class BillingController extends Controller
             $query->where('status', $request->status);
         }
 
+        if ($request->filled('invoice_type')) {
+            $query->where('invoice_type', $request->invoice_type);
+        }
+
         if ($request->filled('invoice_number')) {
             $query->where('invoice_number', 'like', "%{$request->invoice_number}%");
         }
@@ -43,6 +48,34 @@ class BillingController extends Controller
     {
         $invoice->load(['booking.applicant', 'booking.guestHouse', 'booking.guests', 'booking.bookingRooms.room', 'items', 'payments.collectedBy', 'refunds']);
         return view('billing.invoice', compact('invoice'));
+    }
+
+    public function generateStayInvoice(Booking $booking)
+    {
+        try {
+            $invoice = $this->billingService->generateStayInvoice($booking, Auth::user());
+            return redirect()->route('billing.invoice', $invoice)->with('success', "Non-GST Stay Charges Invoice {$invoice->invoice_number} generated successfully for checked-in guest.");
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Stay invoice generation failed: ' . $e->getMessage());
+        }
+    }
+
+    public function generateDiningInvoice(Request $request, Booking $booking)
+    {
+        $validated = $request->validate([
+            'items' => 'required|array|min:1',
+            'items.*.description' => 'required|string|max:255',
+            'items.*.quantity' => 'required|integer|min:1',
+            'items.*.rate' => 'required|numeric|min:0',
+            'items.*.amount' => 'required|numeric|min:0',
+        ]);
+
+        try {
+            $invoice = $this->billingService->generateDiningInvoice($booking, Auth::user(), $validated['items']);
+            return redirect()->route('billing.invoice', $invoice)->with('success', "Non-GST Dining Charges Invoice {$invoice->invoice_number} generated successfully.");
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Dining invoice generation failed: ' . $e->getMessage());
+        }
     }
 
     public function recordPayment(PaymentRequest $request, Invoice $invoice)
@@ -92,4 +125,3 @@ class BillingController extends Controller
         return back()->with('success', "{$validated['type']} of ₹" . number_format($validated['amount'], 2) . " processed successfully.");
     }
 }
-
