@@ -302,3 +302,4 @@ Write-Output "======================================================="
 Write-Output "SUMMARY OF NEW FEATURES TEST SUITE"
 Write-Output "======================================================="
 $script:testResults | Format-Table -AutoSize
+
