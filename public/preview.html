@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -144,7 +144,7 @@
         #uhfCalendarDropdownPopup {
             z-index: 105000 !important;
         }
-    
+
         /* Mobile Responsiveness Styles */
         @media (max-width: 767.98px) {
             #sidebarMenu.sidebar {
@@ -156,26 +156,38 @@
                 padding: 1rem 0.5rem;
                 overflow-y: auto;
                 width: 280px;
-                box-shadow: 4px 0 16px rgba(0,0,0,0.3);
+                box-shadow: 4px 0 16px rgba(0, 0, 0, 0.3);
             }
+
             .navbar-university {
                 padding: 0.5rem 0.75rem;
             }
+
             .table-responsive {
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
             }
+
             .card-stat {
                 margin-bottom: 0.75rem;
             }
         }
+
         @media print {
-            #sidebarMenu, .navbar-university, .btn, .nav-pills, .modal-footer, .border-bottom {
+
+            #sidebarMenu,
+            .navbar-university,
+            .btn,
+            .nav-pills,
+            .modal-footer,
+            .border-bottom {
                 display: none !important;
             }
+
             .view-panel {
                 display: block !important;
             }
+
             body {
                 background: white !important;
                 color: black !important;
@@ -364,7 +376,9 @@
         <!-- Top University Banner Header -->
         <header class="navbar navbar-expand-lg navbar-dark navbar-university sticky-top px-3 py-2">
             <div class="d-flex align-items-center text-white flex-grow-1 flex-md-grow-0">
-                <button class="btn btn-outline-warning d-md-none me-2" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation" title="Toggle Menu">
+                <button class="btn btn-outline-warning d-md-none me-2" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+                    aria-label="Toggle navigation" title="Toggle Menu">
                     <i class="bi bi-list fs-5"></i>
                 </button>
                 <img src="university_logo.jpg" alt="University Emblem" class="me-3 rounded-circle bg-white p-1"
@@ -473,10 +487,12 @@
                                     <i class="bi bi-receipt me-2 text-success"></i> Invoicing & Cashier
                                 </a>
                             </li>
-                                                        <li class="nav-item" id="nav-item-reports">
+                            <li class="nav-item" id="nav-item-reports">
                                 <a class="nav-link" id="nav-reports" onclick="showTab('reports')">
-                                    <i class="bi bi-file-earmark-bar-graph me-2 text-warning"></i> Reports &amp; Analytics
-                                    <span class="badge bg-warning text-dark ms-1" style="font-size: 0.65rem;">Daily/Mo/Yr</span>
+                                    <i class="bi bi-file-earmark-bar-graph me-2 text-warning"></i> Reports &amp;
+                                    Analytics
+                                    <span class="badge bg-warning text-dark ms-1"
+                                        style="font-size: 0.65rem;">Daily/Mo/Yr</span>
                                 </a>
                             </li>
                             <li class="nav-item" id="nav-item-tracker">
@@ -510,8 +526,10 @@
                                     (Solan)</small>
                             </div>
                             <div class="btn-toolbar mb-2 mb-md-0 gap-2">
-                                <button class="btn btn-sm btn-outline-dark fw-bold" id="dashBtnReports" onclick="showTab('reports')">
-                                    <i class="bi bi-file-earmark-bar-graph me-1 text-warning"></i> Reports &amp; Analytics
+                                <button class="btn btn-sm btn-outline-dark fw-bold" id="dashBtnReports"
+                                    onclick="showTab('reports')">
+                                    <i class="bi bi-file-earmark-bar-graph me-1 text-warning"></i> Reports &amp;
+                                    Analytics
                                 </button>
                                 <button class="btn btn-sm btn-outline-info text-dark fw-bold" id="dashBtnNotifications"
                                     onclick="showTab('notifications')">
@@ -555,16 +573,21 @@
 
                         <!-- Hon'ble Vice-Chancellor Secretariat VVIP Presidential Suites Layout & Allotment Rack -->
                         <div id="vcVvipLayoutSection" class="card border-0 shadow-sm mb-4" style="display:none;">
-                            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-2 flex-wrap gap-2">
+                            <div
+                                class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-2 flex-wrap gap-2">
                                 <div class="d-flex align-items-center gap-2">
                                     <i class="bi bi-crown text-danger fs-5"></i>
-                                    <span class="fw-bold font-serif">Hon'ble Vice-Chancellor Secretariat &bull; VVIP Presidential Suites Allocation &amp; Layout</span>
+                                    <span class="fw-bold font-serif">Hon'ble Vice-Chancellor Secretariat &bull; VVIP
+                                        Presidential Suites Allocation &amp; Layout</span>
                                 </div>
-                                <span class="badge bg-danger"><i class="bi bi-shield-lock-fill me-1"></i>Apex Competent Authority</span>
+                                <span class="badge bg-danger"><i class="bi bi-shield-lock-fill me-1"></i>Apex Competent
+                                    Authority</span>
                             </div>
                             <div class="card-body p-3 bg-light">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <small class="text-muted"><i class="bi bi-info-circle me-1"></i>Live allocation status of Presidential Suites sanctioned exclusively by the VC Secretariat</small>
+                                    <small class="text-muted"><i class="bi bi-info-circle me-1"></i>Live allocation
+                                        status of Presidential Suites sanctioned exclusively by the VC
+                                        Secretariat</small>
                                     <span class="badge bg-dark">4 VVIP Units &bull; Top &amp; First Floor</span>
                                 </div>
                                 <div class="row g-3" id="vcVvipRackCards">
@@ -576,43 +599,57 @@
                         <!-- Institutional Key Operational Metrics (Section 7 Dashboard Statistics) -->
                         <div class="row g-2 mb-3">
                             <div class="col-xl-2 col-md-4 col-6">
-                                <div class="card card-stat p-2 bg-white border-start border-primary border-4 shadow-sm h-100">
-                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Today's Bookings</small>
+                                <div
+                                    class="card card-stat p-2 bg-white border-start border-primary border-4 shadow-sm h-100">
+                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Today's
+                                        Bookings</small>
                                     <h4 class="fw-bold text-navy mb-0 mt-1" id="dashStatTodayBookings">0</h4>
-                                    <small class="text-success" style="font-size:0.68rem;"><i class="bi bi-calendar-check me-1"></i>New Today</small>
+                                    <small class="text-success" style="font-size:0.68rem;"><i
+                                            class="bi bi-calendar-check me-1"></i>New Today</small>
                                 </div>
                             </div>
                             <div class="col-xl-2 col-md-4 col-6">
-                                <div class="card card-stat p-2 bg-white border-start border-info border-4 shadow-sm h-100">
-                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Bookings This Month</small>
+                                <div
+                                    class="card card-stat p-2 bg-white border-start border-info border-4 shadow-sm h-100">
+                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Bookings
+                                        This Month</small>
                                     <h4 class="fw-bold text-info mb-0 mt-1" id="dashStatMonthBookings">0</h4>
                                     <small class="text-muted" style="font-size:0.68rem;">November 2026</small>
                                 </div>
                             </div>
                             <div class="col-xl-2 col-md-4 col-6">
-                                <div class="card card-stat p-2 bg-white border-start border-warning border-4 shadow-sm h-100">
-                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Pending Approvals</small>
+                                <div
+                                    class="card card-stat p-2 bg-white border-start border-warning border-4 shadow-sm h-100">
+                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Pending
+                                        Approvals</small>
                                     <h4 class="fw-bold text-warning text-dark mb-0 mt-1" id="dashPendingCount">2</h4>
-                                    <small class="text-danger fw-semibold" style="font-size:0.68rem;">Action Required</small>
+                                    <small class="text-danger fw-semibold" style="font-size:0.68rem;">Action
+                                        Required</small>
                                 </div>
                             </div>
                             <div class="col-xl-2 col-md-4 col-6">
-                                <div class="card card-stat p-2 bg-white border-start border-success border-4 shadow-sm h-100">
-                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Available Rooms</small>
+                                <div
+                                    class="card card-stat p-2 bg-white border-start border-success border-4 shadow-sm h-100">
+                                    <small class="text-muted text-uppercase fw-bold"
+                                        style="font-size:0.68rem;">Available Rooms</small>
                                     <h4 class="fw-bold text-success mb-0 mt-1" id="dashStatAvailableRooms">21</h4>
                                     <small class="text-muted" style="font-size:0.68rem;">Ready for Allocation</small>
                                 </div>
                             </div>
                             <div class="col-xl-2 col-md-4 col-6">
-                                <div class="card card-stat p-2 bg-white border-start border-danger border-4 shadow-sm h-100">
-                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Occupied Rooms</small>
+                                <div
+                                    class="card card-stat p-2 bg-white border-start border-danger border-4 shadow-sm h-100">
+                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Occupied
+                                        Rooms</small>
                                     <h4 class="fw-bold text-danger mb-0 mt-1" id="dashStatOccupiedRooms">0</h4>
                                     <small class="text-muted" style="font-size:0.68rem;">Currently In-House</small>
                                 </div>
                             </div>
                             <div class="col-xl-2 col-md-4 col-6">
-                                <div class="card card-stat p-2 bg-white border-start border-secondary border-4 shadow-sm h-100">
-                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Under Maintenance</small>
+                                <div
+                                    class="card card-stat p-2 bg-white border-start border-secondary border-4 shadow-sm h-100">
+                                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.68rem;">Under
+                                        Maintenance</small>
                                     <h4 class="fw-bold text-secondary mb-0 mt-1" id="dashStatMaintenanceRooms">0</h4>
                                     <small class="text-muted" style="font-size:0.68rem;">Blocked / Upkeep</small>
                                 </div>
@@ -625,10 +662,17 @@
                                 <div class="card card-stat p-3 bg-white border-0 shadow-sm h-100">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <small class="text-muted text-uppercase fw-bold" style="font-size:0.7rem;">Today's Arrivals &amp; Departures</small>
+                                            <small class="text-muted text-uppercase fw-bold"
+                                                style="font-size:0.7rem;">Today's Arrivals &amp; Departures</small>
                                             <div class="d-flex gap-3 mt-1">
-                                                <div><span class="fs-5 fw-bold text-success" id="dashStatTodayCheckins">0</span> <small class="text-muted d-block" style="font-size:0.68rem;">Check-ins</small></div>
-                                                <div class="border-start ps-3"><span class="fs-5 fw-bold text-primary" id="dashStatTodayCheckouts">0</span> <small class="text-muted d-block" style="font-size:0.68rem;">Check-outs</small></div>
+                                                <div><span class="fs-5 fw-bold text-success"
+                                                        id="dashStatTodayCheckins">0</span> <small
+                                                        class="text-muted d-block"
+                                                        style="font-size:0.68rem;">Check-ins</small></div>
+                                                <div class="border-start ps-3"><span class="fs-5 fw-bold text-primary"
+                                                        id="dashStatTodayCheckouts">0</span> <small
+                                                        class="text-muted d-block"
+                                                        style="font-size:0.68rem;">Check-outs</small></div>
                                             </div>
                                         </div>
                                         <div class="bg-success bg-opacity-10 p-2 rounded text-success fs-4">
@@ -641,9 +685,12 @@
                                 <div class="card card-stat p-3 bg-white border-0 shadow-sm h-100">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <small class="text-muted text-uppercase fw-bold" style="font-size:0.7rem;">Monthly Stay Collection</small>
-                                            <h4 class="fw-bold text-primary mb-0 mt-1" id="dashStatMonthStay">&#8377;0</h4>
-                                            <small class="text-success" style="font-size:0.68rem;"><i class="bi bi-shield-check me-1"></i>Non-GST Room Tariff</small>
+                                            <small class="text-muted text-uppercase fw-bold"
+                                                style="font-size:0.7rem;">Monthly Stay Collection</small>
+                                            <h4 class="fw-bold text-primary mb-0 mt-1" id="dashStatMonthStay">&#8377;0
+                                            </h4>
+                                            <small class="text-success" style="font-size:0.68rem;"><i
+                                                    class="bi bi-shield-check me-1"></i>Non-GST Room Tariff</small>
                                         </div>
                                         <div class="bg-primary bg-opacity-10 p-2 rounded text-primary fs-4">
                                             <i class="bi bi-building"></i>
@@ -655,9 +702,12 @@
                                 <div class="card card-stat p-3 bg-white border-0 shadow-sm h-100">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <small class="text-muted text-uppercase fw-bold" style="font-size:0.7rem;">Monthly Dining Collection</small>
-                                            <h4 class="fw-bold text-success mb-0 mt-1" id="dashStatMonthDining">&#8377;0</h4>
-                                            <small class="text-muted" style="font-size:0.68rem;">Non-GST Mess Receipts</small>
+                                            <small class="text-muted text-uppercase fw-bold"
+                                                style="font-size:0.7rem;">Monthly Dining Collection</small>
+                                            <h4 class="fw-bold text-success mb-0 mt-1" id="dashStatMonthDining">&#8377;0
+                                            </h4>
+                                            <small class="text-muted" style="font-size:0.68rem;">Non-GST Mess
+                                                Receipts</small>
                                         </div>
                                         <div class="bg-warning bg-opacity-10 p-2 rounded text-warning fs-4">
                                             <i class="bi bi-cup-hot"></i>
@@ -669,9 +719,12 @@
                                 <div class="card card-stat p-3 bg-white border-0 shadow-sm h-100">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <small class="text-muted text-uppercase fw-bold" style="font-size:0.7rem;">Total Gross Collection</small>
-                                            <h4 class="fw-bold text-navy mb-0 mt-1" id="dashStatMonthTotal">&#8377;0</h4>
-                                            <small class="text-primary fw-semibold" style="font-size:0.68rem;">100% University Reconciled</small>
+                                            <small class="text-muted text-uppercase fw-bold"
+                                                style="font-size:0.7rem;">Total Gross Collection</small>
+                                            <h4 class="fw-bold text-navy mb-0 mt-1" id="dashStatMonthTotal">&#8377;0
+                                            </h4>
+                                            <small class="text-primary fw-semibold" style="font-size:0.68rem;">100%
+                                                University Reconciled</small>
                                         </div>
                                         <div class="bg-dark bg-opacity-10 p-2 rounded text-dark fs-4">
                                             <i class="bi bi-cash-stack"></i>
@@ -684,45 +737,62 @@
                         <!-- Graphical Charts: Monthly Booking Trends & Revenue Comparison -->
                         <div class="card border-0 shadow-sm mb-4">
                             <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                                <h6 class="fw-bold mb-0 text-navy"><i class="bi bi-bar-chart-line-fill me-2 text-warning"></i>Monthly Booking Trends &amp; Institutional Revenue Distribution</h6>
-                                <span class="badge bg-light text-dark border"><i class="bi bi-graph-up me-1 text-success"></i>FY 2026-27 Active Series</span>
+                                <h6 class="fw-bold mb-0 text-navy"><i
+                                        class="bi bi-bar-chart-line-fill me-2 text-warning"></i>Monthly Booking Trends
+                                    &amp; Institutional Revenue Distribution</h6>
+                                <span class="badge bg-light text-dark border"><i
+                                        class="bi bi-graph-up me-1 text-success"></i>FY 2026-27 Active Series</span>
                             </div>
                             <div class="card-body p-3">
                                 <div class="row g-3">
                                     <div class="col-md-7 col-12">
-                                        <h6 class="small fw-bold text-muted text-uppercase mb-2">Monthly Reservation Volume (Jan - Dec 2026)</h6>
+                                        <h6 class="small fw-bold text-muted text-uppercase mb-2">Monthly Reservation
+                                            Volume (Jan - Dec 2026)</h6>
                                         <div class="p-3 bg-light rounded border">
-                                            <div class="d-flex align-items-end justify-content-between gap-1" style="height: 140px;" id="dashMonthlyTrendChart">
+                                            <div class="d-flex align-items-end justify-content-between gap-1"
+                                                style="height: 140px;" id="dashMonthlyTrendChart">
                                                 <!-- Dynamic SVG bar chart elements rendered in JS -->
                                             </div>
-                                            <div class="d-flex justify-content-between text-muted small mt-2" style="font-size:0.68rem;">
-                                                <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span class="fw-bold text-primary">Nov</span><span>Dec</span>
+                                            <div class="d-flex justify-content-between text-muted small mt-2"
+                                                style="font-size:0.68rem;">
+                                                <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span
+                                                    class="fw-bold text-primary">Nov</span><span>Dec</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-5 col-12">
-                                        <h6 class="small fw-bold text-muted text-uppercase mb-2">Revenue Head Comparison (Non-GST)</h6>
-                                        <div class="p-3 bg-light rounded border h-100 d-flex flex-column justify-content-around">
+                                        <h6 class="small fw-bold text-muted text-uppercase mb-2">Revenue Head Comparison
+                                            (Non-GST)</h6>
+                                        <div
+                                            class="p-3 bg-light rounded border h-100 d-flex flex-column justify-content-around">
                                             <div>
                                                 <div class="d-flex justify-content-between small fw-bold mb-1">
-                                                    <span class="text-primary"><i class="bi bi-building me-1"></i>Stay Charges (Room Tariff)</span>
+                                                    <span class="text-primary"><i class="bi bi-building me-1"></i>Stay
+                                                        Charges (Room Tariff)</span>
                                                     <span id="dashChartStayPct">0% (₹0)</span>
                                                 </div>
                                                 <div class="progress" style="height: 14px;">
-                                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 83.3%" aria-valuenow="83.3" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar bg-primary" role="progressbar"
+                                                        style="width: 83.3%" aria-valuenow="83.3" aria-valuemin="0"
+                                                        aria-valuemax="100"></div>
                                                 </div>
                                             </div>
                                             <div class="mt-2">
                                                 <div class="d-flex justify-content-between small fw-bold mb-1">
-                                                    <span class="text-success"><i class="bi bi-cup-hot me-1"></i>Dining &amp; Mess Charges</span>
+                                                    <span class="text-success"><i class="bi bi-cup-hot me-1"></i>Dining
+                                                        &amp; Mess Charges</span>
                                                     <span id="dashChartDiningPct">0% (₹0)</span>
                                                 </div>
                                                 <div class="progress" style="height: 14px;">
-                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 16.7%" aria-valuenow="16.7" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar bg-success" role="progressbar"
+                                                        style="width: 16.7%" aria-valuenow="16.7" aria-valuemin="0"
+                                                        aria-valuemax="100"></div>
                                                 </div>
                                             </div>
-                                            <div class="alert alert-secondary py-1 px-2 small mb-0 mt-3 text-center" style="font-size:0.72rem;">
-                                                <i class="bi bi-shield-check text-success me-1"></i> Strictly Non-GST pursuant to public university rules
+                                            <div class="alert alert-secondary py-1 px-2 small mb-0 mt-3 text-center"
+                                                style="font-size:0.72rem;">
+                                                <i class="bi bi-shield-check text-success me-1"></i> Strictly Non-GST
+                                                pursuant to public university rules
                                             </div>
                                         </div>
                                     </div>
@@ -961,8 +1031,10 @@
                                         <div class="row g-3 align-items-end mb-4">
                                             <div class="col-md-3">
                                                 <label class="form-label fw-semibold">Select Accommodation Wing</label>
-                                                <select class="form-select border-primary" id="sbWing" onchange="updateSandboxControls()">
-                                                    <option value="estate" selected>Estate Office Wing (Main GH, VIP Suites, FRH)</option>
+                                                <select class="form-select border-primary" id="sbWing"
+                                                    onchange="updateSandboxControls()">
+                                                    <option value="estate" selected>Estate Office Wing (Main GH, VIP
+                                                        Suites, FRH)</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
@@ -1153,7 +1225,8 @@
                                                             Selected</span> <span class="text-danger">*</span></label>
                                                     <select class="form-select border-primary fw-bold" id="bookingWing"
                                                         required onchange="handleAdminBookingWingChange()">
-                                                        <option value="estate" selected>Estate Office Wing (Main GH, VIP Suites, FRH)</option>
+                                                        <option value="estate" selected>Estate Office Wing (Main GH, VIP
+                                                            Suites, FRH)</option>
                                                     </select>
                                                     <small class="text-muted" id="adminBookingWingHint">Governed by:
                                                         Estate
@@ -1287,29 +1360,33 @@
 
                                                 <!-- 3. University/Institution/Firm with complete address -->
                                                 <div class="col-md-6">
-                                                    <label class="form-label fw-semibold">3. Name of University / Institution / Firm &amp; Address</label>
+                                                    <label class="form-label fw-semibold">3. Name of University /
+                                                        Institution / Firm &amp; Address</label>
                                                     <textarea class="form-control" rows="2" id="guestInstitutionAddress"
                                                         placeholder="Full name of University/Firm and complete postal address"></textarea>
                                                 </div>
 
                                                 <!-- 4. Permanent home address -->
                                                 <div class="col-md-6">
-                                                    <label class="form-label fw-semibold">4. Permanent Home Address <small class="text-muted">(If not in Govt/Univ Service)</small></label>
+                                                    <label class="form-label fw-semibold">4. Permanent Home Address
+                                                        <small class="text-muted">(If not in Govt/Univ
+                                                            Service)</small></label>
                                                     <textarea class="form-control" rows="2" id="guestHomeAddress"
                                                         placeholder="Permanent home address for private visitors"></textarea>
                                                 </div>
 
                                                 <!-- 5. Telephone / Mobile No. -->
                                                 <div class="col-md-4">
-                                                    <label class="form-label fw-semibold">5. Telephone / Mobile No. <span
-                                                            class="text-danger">*</span></label>
+                                                    <label class="form-label fw-semibold">5. Telephone / Mobile No.
+                                                        <span class="text-danger">*</span></label>
                                                     <input type="tel" class="form-control" id="guestMobile"
                                                         placeholder="10-digit mobile number" required>
                                                 </div>
 
                                                 <!-- 6. Aadhar No. -->
                                                 <div class="col-md-4">
-                                                    <label class="form-label fw-semibold">6. Aadhar No. <small class="text-muted">(UID Number)</small></label>
+                                                    <label class="form-label fw-semibold">6. Aadhar No. <small
+                                                            class="text-muted">(UID Number)</small></label>
                                                     <input type="text" class="form-control" id="guestAadhar"
                                                         placeholder="12-digit Aadhaar UID" maxlength="14">
                                                 </div>
@@ -1330,8 +1407,11 @@
 
                                                 <!-- 9. No. of suite(s) required -->
                                                 <div class="col-md-6">
-                                                    <label class="form-label fw-semibold text-success"><i class="bi bi-door-open me-1"></i>9. No. of Suite(s) Required *</label>
-                                                    <select class="form-select fw-bold border-success text-success" id="bookingSuitesRequired" onchange="calculateTariffEstimate()">
+                                                    <label class="form-label fw-semibold text-success"><i
+                                                            class="bi bi-door-open me-1"></i>9. No. of Suite(s) Required
+                                                        *</label>
+                                                    <select class="form-select fw-bold border-success text-success"
+                                                        id="bookingSuitesRequired" onchange="calculateTariffEstimate()">
                                                         <option value="1" selected>1 Suite / Room</option>
                                                         <option value="2">2 Suites / Rooms</option>
                                                         <option value="3">3 Suites / Rooms</option>
@@ -1342,28 +1422,48 @@
 
                                                 <!-- 10. Whether independent suite(s) required or can be shared -->
                                                 <div class="col-md-6">
-                                                    <label class="form-label fw-semibold"><i class="bi bi-people me-1"></i>10. Occupancy Preference *</label>
+                                                    <label class="form-label fw-semibold"><i
+                                                            class="bi bi-people me-1"></i>10. Occupancy Preference
+                                                        *</label>
                                                     <select class="form-select" id="bookingSharingPreference">
-                                                        <option value="Independent Suite" selected>Independent Suite Required</option>
-                                                        <option value="Can Be Shared">Can Be Shared (Wherever per-head rates apply)</option>
+                                                        <option value="Independent Suite" selected>Independent Suite
+                                                            Required</option>
+                                                        <option value="Can Be Shared">Can Be Shared (Wherever per-head
+                                                            rates apply)</option>
                                                     </select>
                                                 </div>
                                                 <input type="hidden" id="guestAffiliation" value="">
 
                                                 <!-- Terms and conditions (Exact Paper Form Wording) -->
                                                 <div class="col-12 mt-2">
-                                                    <div class="card border border-warning-subtle bg-light p-3 rounded-3">
-                                                        <h6 class="fw-bold text-dark small mb-1"><i class="bi bi-shield-check text-success me-1"></i>Terms and Conditions (By Order Estate Officer)</h6>
-                                                        <ul class="small text-muted mb-2 ps-3" style="font-size: 0.78rem; line-height: 1.4;">
-                                                            <li>Reservation is subject to availability and eligibility and can be cancelled without assigning any reason in University interest.</li>
-                                                            <li>Reservation would not be made for more than three days at a stretch.</li>
-                                                            <li>Reservation made for more than one day and not occupied by the first day upto 11:30 PM, the reservation for the remaining days would be automatically cancelled.</li>
-                                                            <li>Only permit holders in whose name permit is issued would be allowed to stay. The permit is non-transferable and a person other than the concerned shall be refused entry in the University Guest House.</li>
+                                                    <div
+                                                        class="card border border-warning-subtle bg-light p-3 rounded-3">
+                                                        <h6 class="fw-bold text-dark small mb-1"><i
+                                                                class="bi bi-shield-check text-success me-1"></i>Terms
+                                                            and Conditions (By Order Estate Officer)</h6>
+                                                        <ul class="small text-muted mb-2 ps-3"
+                                                            style="font-size: 0.78rem; line-height: 1.4;">
+                                                            <li>Reservation is subject to availability and eligibility
+                                                                and can be cancelled without assigning any reason in
+                                                                University interest.</li>
+                                                            <li>Reservation would not be made for more than three days
+                                                                at a stretch.</li>
+                                                            <li>Reservation made for more than one day and not occupied
+                                                                by the first day upto 11:30 PM, the reservation for the
+                                                                remaining days would be automatically cancelled.</li>
+                                                            <li>Only permit holders in whose name permit is issued would
+                                                                be allowed to stay. The permit is non-transferable and a
+                                                                person other than the concerned shall be refused entry
+                                                                in the University Guest House.</li>
                                                         </ul>
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" id="adminTermsAgreed" checked required>
-                                                            <label class="form-check-label small fw-semibold text-dark" for="adminTermsAgreed" style="font-size: 0.8rem;">
-                                                                I agree to the terms and conditions and certify that applicant particulars submitted above are authentic (Signatures of Applicant).
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="adminTermsAgreed" checked required>
+                                                            <label class="form-check-label small fw-semibold text-dark"
+                                                                for="adminTermsAgreed" style="font-size: 0.8rem;">
+                                                                I agree to the terms and conditions and certify that
+                                                                applicant particulars submitted above are authentic
+                                                                (Signatures of Applicant).
                                                             </label>
                                                         </div>
                                                     </div>
@@ -1549,66 +1649,35 @@
                             </div>
                         </div>
 
-                        <!-- Filter & Legend Bar -->
-                        <div class="card border-0 shadow-sm mb-3">
-                            <div
-                                class="card-body p-2 d-flex flex-wrap justify-content-between align-items-center gap-2">
-                                <!-- Floor Filter Buttons -->
-                                <div class="btn-group btn-group-sm" role="group" aria-label="Floor Filter">
-                                    <button type="button" class="btn btn-outline-secondary active fw-semibold"
-                                        id="btnFloorAll" onclick="filterGridFloor('all')">
-                                        All Levels (21 Units)
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorTop"
-                                        onclick="filterGridFloor('top')">
-                                        Top Floor (VVIP 1-2 &amp; Std 3-10)
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary fw-semibold"
-                                        id="btnFloorFirst" onclick="filterGridFloor('first')">
-                                        First Floor (VVIP 11-12, VIP 13-16, Std 17-20)
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary fw-semibold"
-                                        id="btnFloorGround" onclick="filterGridFloor('ground')">
-                                        Ground Floor (Dormitory 1 &amp; Halls)
-                                    </button>
+                        <!-- Combined Floor, Status Filter & Legend Bar (Compact & Space-Saving) -->
+                        <div class="card border-0 shadow-sm mb-2">
+                            <div class="card-body p-2 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                                <div class="d-flex flex-wrap align-items-center gap-2">
+                                    <!-- Floor Filter Buttons -->
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="Floor Filter">
+                                        <button type="button" class="btn btn-outline-secondary active fw-semibold" id="btnFloorAll" onclick="filterGridFloor('all')">All Levels (21)</button>
+                                        <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorTop" onclick="filterGridFloor('top')">Top Floor</button>
+                                        <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorFirst" onclick="filterGridFloor('first')">1st Floor</button>
+                                        <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorGround" onclick="filterGridFloor('ground')">Ground</button>
+                                    </div>
+                                    <!-- Status Filter Buttons -->
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="Status Filter">
+                                        <button type="button" class="btn btn-outline-secondary active fw-semibold" id="btnStatusFilterAll" onclick="filterGridStatus('all')">All</button>
+                                        <button type="button" class="btn btn-outline-success fw-semibold" id="btnStatusFilterAvail" onclick="filterGridStatus('AVAILABLE')"><i class="bi bi-circle-fill me-1 text-success"></i>Available</button>
+                                        <button type="button" class="btn btn-outline-warning text-dark fw-semibold" id="btnStatusFilterRes" onclick="filterGridStatus('RESERVED')"><i class="bi bi-circle-fill me-1 text-warning"></i>Booked</button>
+                                        <button type="button" class="btn btn-outline-danger fw-semibold" id="btnStatusFilterOcc" onclick="filterGridStatus('OCCUPIED')"><i class="bi bi-circle-fill me-1 text-danger"></i>Occupied</button>
+                                    </div>
                                 </div>
-
-                                <!-- Legend Badges -->
-                                <div class="d-flex flex-wrap gap-2 small">
-                                    <span class="badge bg-success"><i class="bi bi-circle-fill me-1"
-                                            style="font-size:0.6rem;"></i> Available</span>
-                                    <span class="badge bg-danger"><i class="bi bi-circle-fill me-1"
-                                            style="font-size:0.6rem;"></i> Occupied / In-House</span>
-                                    <span class="badge bg-warning text-dark"><i class="bi bi-circle-fill me-1"
-                                            style="font-size:0.6rem;"></i> Reserved / Sanction Pending</span>
-                                    <span class="badge bg-secondary"><i class="bi bi-circle-fill me-1"
-                                            style="font-size:0.6rem;"></i> Store / Facility</span>
+                                <div class="d-flex align-items-center gap-2 small">
+                                    <span class="badge bg-success-subtle text-success border border-success"><i class="bi bi-check-circle-fill me-1"></i>Available: <strong id="layoutCountAvailable">0</strong></span>
+                                    <span class="badge bg-warning-subtle text-dark border border-warning"><i class="bi bi-bookmark-fill me-1"></i>Booked: <strong id="layoutCountReserved">0</strong></span>
+                                    <span class="badge bg-danger-subtle text-danger border border-danger"><i class="bi bi-person-fill-check me-1"></i>Occupied: <strong id="layoutCountOccupied">0</strong></span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- VIEW MODE 1: VISUAL ROOM LAYOUT GRID (CARDS WITH COLOUR-CODED STATUSES) -->
-                        <div id="gridVisualLayoutContainer" class="mb-4">
-                            <!-- Quick Status Legend & Filter Bar -->
-                            <div class="card border-0 shadow-sm mb-3">
-                                <div class="card-body p-2 d-flex flex-wrap justify-content-between align-items-center gap-2">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <label class="small fw-bold text-muted text-uppercase mb-0"><i class="bi bi-funnel me-1"></i>Status Filter:</label>
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <button type="button" class="btn btn-outline-secondary active fw-semibold" id="btnStatusFilterAll" onclick="filterGridStatus('all')">All Statuses</button>
-                                            <button type="button" class="btn btn-outline-success fw-semibold" id="btnStatusFilterAvail" onclick="filterGridStatus('AVAILABLE')"><i class="bi bi-circle-fill me-1 text-success"></i>Available</button>
-                                            <button type="button" class="btn btn-outline-warning text-dark fw-semibold" id="btnStatusFilterRes" onclick="filterGridStatus('RESERVED')"><i class="bi bi-circle-fill me-1 text-warning"></i>Booked / Allotted</button>
-                                            <button type="button" class="btn btn-outline-danger fw-semibold" id="btnStatusFilterOcc" onclick="filterGridStatus('OCCUPIED')"><i class="bi bi-circle-fill me-1 text-danger"></i>Occupied</button>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-3 small">
-                                        <span class="text-success fw-semibold"><i class="bi bi-check-circle-fill me-1"></i>Available: <strong id="layoutCountAvailable">0</strong></span>
-                                        <span class="text-warning text-dark fw-semibold"><i class="bi bi-bookmark-fill me-1"></i>Booked: <strong id="layoutCountReserved">0</strong></span>
-                                        <span class="text-danger fw-semibold"><i class="bi bi-person-fill-check me-1"></i>Occupied: <strong id="layoutCountOccupied">0</strong></span>
-                                    </div>
-                                </div>
-                            </div>
-
+                        <div id="gridVisualLayoutContainer" class="mb-3">
                             <!-- Dynamic Cards Container rendered by renderRoomLayoutCards() -->
                             <div id="roomLayoutCardsContainer"></div>
                         </div>
@@ -2007,8 +2076,8 @@
                                 <div class="row g-3 align-items-end">
                                     <div class="col-md-5">
                                         <label class="form-label fw-semibold">Scan QR or Enter Booking Reference</label>
-                                        <input type="text" class="form-control form-control-lg"
-                                            id="checkinInputRef" placeholder="Enter Booking Reference (e.g. GH-2026-...)" value="">
+                                        <input type="text" class="form-control form-control-lg" id="checkinInputRef"
+                                            placeholder="Enter Booking Reference (e.g. GH-2026-...)" value="">
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">Verify Government Photo ID</label>
@@ -2031,21 +2100,27 @@
 
                     <!-- 7. INVOICING & CASHIER -->
                     <div id="view-billing" class="view-panel" style="display:none;">
-                        <div class="d-flex flex-wrap justify-content-between align-items-center pb-2 mb-3 border-bottom gap-2">
+                        <div
+                            class="d-flex flex-wrap justify-content-between align-items-center pb-2 mb-3 border-bottom gap-2">
                             <div>
                                 <h3 class="h4 fw-bold text-navy mb-0">
-                                    <i class="bi bi-receipt text-success me-2"></i>Finance, Invoicing &amp; Cashier Settlement
+                                    <i class="bi bi-receipt text-success me-2"></i>Finance, Invoicing &amp; Cashier
+                                    Settlement
                                 </h3>
-                                <small class="text-muted">Separate Stay Charges and Dining Charges categorisation (Strictly Non-GST under University Rules)</small>
+                                <small class="text-muted">Separate Stay Charges and Dining Charges categorisation
+                                    (Strictly Non-GST under University Rules)</small>
                             </div>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-sm btn-outline-primary fw-semibold" onclick="showReceiptModal('GH-2026-10-0001', 'stay')">
+                                <button class="btn btn-sm btn-outline-primary fw-semibold"
+                                    onclick="showReceiptModal('GH-2026-10-0001', 'stay')">
                                     <i class="bi bi-building me-1"></i> Sample Stay Invoice
                                 </button>
-                                <button class="btn btn-sm btn-outline-success fw-semibold" onclick="showReceiptModal('GH-2026-10-0001', 'dining')">
+                                <button class="btn btn-sm btn-outline-success fw-semibold"
+                                    onclick="showReceiptModal('GH-2026-10-0001', 'dining')">
                                     <i class="bi bi-cup-hot me-1"></i> Sample Dining Invoice
                                 </button>
-                                <button class="btn btn-sm btn-outline-dark fw-semibold" onclick="showReceiptModal('GH-2026-10-0001', 'both')">
+                                <button class="btn btn-sm btn-outline-dark fw-semibold"
+                                    onclick="showReceiptModal('GH-2026-10-0001', 'both')">
                                     <i class="bi bi-receipt me-1"></i> Consolidated
                                 </button>
                             </div>
@@ -2053,8 +2128,10 @@
 
                         <div class="card border-0 shadow-sm">
                             <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                                <h6 class="fw-bold text-navy mb-0"><i class="bi bi-journal-check me-2"></i>Official Accounting Invoices</h6>
-                                <span class="badge bg-success-subtle text-success border border-success">All Charges: Non-GST (University Exemption)</span>
+                                <h6 class="fw-bold text-navy mb-0"><i class="bi bi-journal-check me-2"></i>Official
+                                    Accounting Invoices</h6>
+                                <span class="badge bg-success-subtle text-success border border-success">All Charges:
+                                    Non-GST (University Exemption)</span>
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
@@ -2200,12 +2277,15 @@
 
                     <!-- 10. REPORTS & ANALYTICS VIEW -->
                     <div id="view-reports" class="view-panel" style="display:none;">
-                        <div class="d-flex flex-wrap justify-content-between align-items-center pb-2 mb-3 border-bottom gap-2">
+                        <div
+                            class="d-flex flex-wrap justify-content-between align-items-center pb-2 mb-3 border-bottom gap-2">
                             <div>
                                 <h3 class="h4 fw-bold text-navy mb-0">
-                                    <i class="bi bi-file-earmark-bar-graph text-warning me-2"></i>Institutional Reports &amp; Financial Analytics
+                                    <i class="bi bi-file-earmark-bar-graph text-warning me-2"></i>Institutional Reports
+                                    &amp; Financial Analytics
                                 </h3>
-                                <small class="text-muted">Daily booking audits, monthly occupancy registers, and annual non-GST revenue statements</small>
+                                <small class="text-muted">Daily booking audits, monthly occupancy registers, and annual
+                                    non-GST revenue statements</small>
                             </div>
                             <div class="d-flex gap-2">
                                 <button class="btn btn-sm btn-outline-dark fw-semibold" onclick="printActiveReport()">
@@ -2220,17 +2300,20 @@
                         <!-- Report Category Sub-Tabs -->
                         <ul class="nav nav-pills mb-4 gap-2 bg-light p-2 rounded border" id="reportsTabNav">
                             <li class="nav-item">
-                                <button class="nav-link active fw-bold" id="tab-btn-daily" onclick="switchReportsTab('daily')">
+                                <button class="nav-link active fw-bold" id="tab-btn-daily"
+                                    onclick="switchReportsTab('daily')">
                                     <i class="bi bi-calendar-day me-1"></i> 1. Daily Booking Report
                                 </button>
                             </li>
                             <li class="nav-item">
-                                <button class="nav-link fw-bold" id="tab-btn-monthly" onclick="switchReportsTab('monthly')">
+                                <button class="nav-link fw-bold" id="tab-btn-monthly"
+                                    onclick="switchReportsTab('monthly')">
                                     <i class="bi bi-calendar-month me-1"></i> 2. Monthly Occupancy &amp; Revenue
                                 </button>
                             </li>
                             <li class="nav-item">
-                                <button class="nav-link fw-bold" id="tab-btn-annual" onclick="switchReportsTab('annual')">
+                                <button class="nav-link fw-bold" id="tab-btn-annual"
+                                    onclick="switchReportsTab('annual')">
                                     <i class="bi bi-calendar-range me-1"></i> 3. Annual Audited Report (FY)
                                 </button>
                             </li>
@@ -2242,23 +2325,33 @@
                                 <div class="card-body p-3 bg-white">
                                     <div class="row g-2 align-items-center">
                                         <div class="col-md-3 col-sm-6">
-                                            <label class="form-label small fw-bold text-muted mb-1">Select Report Date:</label>
+                                            <label class="form-label small fw-bold text-muted mb-1">Select Report
+                                                Date:</label>
                                             <div class="input-group">
-                                                <span class="input-group-text bg-light"><i class="bi bi-calendar-event text-primary"></i></span>
-                                                <input type="text" class="form-control fw-bold" id="dailyReportDatePicker" placeholder="DD/MM/YYYY" onchange="renderDailyReport()">
+                                                <span class="input-group-text bg-light"><i
+                                                        class="bi bi-calendar-event text-primary"></i></span>
+                                                <input type="text" class="form-control fw-bold"
+                                                    id="dailyReportDatePicker" placeholder="DD/MM/YYYY"
+                                                    onchange="renderDailyReport()">
                                             </div>
                                         </div>
                                         <div class="col-md-3 col-sm-6">
-                                            <label class="form-label small fw-bold text-muted mb-1">Quick Presets:</label>
+                                            <label class="form-label small fw-bold text-muted mb-1">Quick
+                                                Presets:</label>
                                             <div class="btn-group w-100" role="group">
-                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="setDailyReportQuickDate('today')">Today</button>
-                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="setDailyReportQuickDate('yesterday')">Yesterday</button>
-                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="setDailyReportQuickDate('all')">All Dates</button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    onclick="setDailyReportQuickDate('today')">Today</button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    onclick="setDailyReportQuickDate('yesterday')">Yesterday</button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    onclick="setDailyReportQuickDate('all')">All Dates</button>
                                             </div>
                                         </div>
                                         <div class="col-md-3 col-sm-6">
-                                            <label class="form-label small fw-bold text-muted mb-1">Filter Booking Status:</label>
-                                            <select class="form-select form-select-sm" id="dailyReportStatusFilter" onchange="renderDailyReport()">
+                                            <label class="form-label small fw-bold text-muted mb-1">Filter Booking
+                                                Status:</label>
+                                            <select class="form-select form-select-sm" id="dailyReportStatusFilter"
+                                                onchange="renderDailyReport()">
                                                 <option value="all">All Booking Statuses</option>
                                                 <option value="APPROVED">Approved</option>
                                                 <option value="PENDING">Pending Approval</option>
@@ -2268,7 +2361,8 @@
                                         </div>
                                         <div class="col-md-3 col-sm-6">
                                             <label class="form-label small fw-bold text-muted mb-1">Filter Wing:</label>
-                                            <select class="form-select form-select-sm" id="dailyReportWingFilter" onchange="renderDailyReport()">
+                                            <select class="form-select form-select-sm" id="dailyReportWingFilter"
+                                                onchange="renderDailyReport()">
                                                 <option value="all">All Wings (Main &amp; VIP Suites)</option>
                                                 <option value="estate">Estate Office (Main &amp; VIP)</option>
                                             </select>
@@ -2280,43 +2374,56 @@
                             <!-- Daily Booking Statistics Cards (Prompt Section 1) -->
                             <div class="row g-2 mb-3">
                                 <div class="col">
-                                    <div class="card border-0 shadow-sm p-2 bg-white border-start border-primary border-4 text-center">
-                                        <small class="text-muted fw-bold d-block" style="font-size:0.68rem;">TOTAL BOOKINGS</small>
+                                    <div
+                                        class="card border-0 shadow-sm p-2 bg-white border-start border-primary border-4 text-center">
+                                        <small class="text-muted fw-bold d-block" style="font-size:0.68rem;">TOTAL
+                                            BOOKINGS</small>
                                         <h4 class="fw-bold mb-0 text-navy" id="dailyKpiTotalBookings">0</h4>
-                                        <small class="text-muted" style="font-size:0.65rem;" id="dailyKpiDateLabel">Selected Date</small>
+                                        <small class="text-muted" style="font-size:0.65rem;"
+                                            id="dailyKpiDateLabel">Selected Date</small>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="card border-0 shadow-sm p-2 bg-white border-start border-success border-4 text-center">
-                                        <small class="text-muted fw-bold d-block" style="font-size:0.68rem;">APPROVED</small>
+                                    <div
+                                        class="card border-0 shadow-sm p-2 bg-white border-start border-success border-4 text-center">
+                                        <small class="text-muted fw-bold d-block"
+                                            style="font-size:0.68rem;">APPROVED</small>
                                         <h4 class="fw-bold mb-0 text-success" id="dailyKpiApproved">0</h4>
                                         <small class="text-muted" style="font-size:0.65rem;">Sanctioned</small>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="card border-0 shadow-sm p-2 bg-white border-start border-warning border-4 text-center">
-                                        <small class="text-muted fw-bold d-block" style="font-size:0.68rem;">PENDING</small>
+                                    <div
+                                        class="card border-0 shadow-sm p-2 bg-white border-start border-warning border-4 text-center">
+                                        <small class="text-muted fw-bold d-block"
+                                            style="font-size:0.68rem;">PENDING</small>
                                         <h4 class="fw-bold mb-0 text-warning text-dark" id="dailyKpiPending">0</h4>
                                         <small class="text-muted" style="font-size:0.65rem;">In Queue</small>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="card border-0 shadow-sm p-2 bg-white border-start border-danger border-4 text-center">
-                                        <small class="text-muted fw-bold d-block" style="font-size:0.68rem;">CANCELLED</small>
+                                    <div
+                                        class="card border-0 shadow-sm p-2 bg-white border-start border-danger border-4 text-center">
+                                        <small class="text-muted fw-bold d-block"
+                                            style="font-size:0.68rem;">CANCELLED</small>
                                         <h4 class="fw-bold mb-0 text-danger" id="dailyKpiCancelled">0</h4>
                                         <small class="text-muted" style="font-size:0.65rem;">Revoked / Closed</small>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="card border-0 shadow-sm p-2 bg-white border-start border-info border-4 text-center">
-                                        <small class="text-muted fw-bold d-block" style="font-size:0.68rem;">CHECKED-IN</small>
+                                    <div
+                                        class="card border-0 shadow-sm p-2 bg-white border-start border-info border-4 text-center">
+                                        <small class="text-muted fw-bold d-block"
+                                            style="font-size:0.68rem;">CHECKED-IN</small>
                                         <h4 class="fw-bold mb-0 text-info" id="dailyKpiCheckedIn">0</h4>
                                         <small class="text-muted" style="font-size:0.65rem;">In-House</small>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="card border-0 shadow-sm p-2 bg-white border-start border-dark border-4 text-center">
-                                        <small class="text-muted fw-bold d-block" style="font-size:0.68rem;">GROSS (NON-GST)</small>
+                                    <div
+                                        class="card border-0 shadow-sm p-2 bg-white border-start border-dark border-4 text-center">
+                                        <small class="text-muted fw-bold d-block" style="font-size:0.68rem;">GROSS
+                                            (NON-GST)</small>
                                         <h4 class="fw-bold mb-0 text-primary" id="dailyKpiTotalAmount">&#8377;0</h4>
                                         <small class="text-muted" style="font-size:0.65rem;">Stay + Dining</small>
                                     </div>
@@ -2325,8 +2432,10 @@
 
                             <!-- Daily Bookings Table -->
                             <div class="card border-0 shadow-sm">
-                                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                                    <h6 class="fw-bold mb-0 text-navy"><i class="bi bi-list-check me-2"></i>Daily Bookings &amp; Occupancy Ledger</h6>
+                                <div
+                                    class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                                    <h6 class="fw-bold mb-0 text-navy"><i class="bi bi-list-check me-2"></i>Daily
+                                        Bookings &amp; Occupancy Ledger</h6>
                                     <span class="badge bg-secondary" id="dailyRecordCountBadge">0 Records</span>
                                 </div>
                                 <div class="card-body p-0">
@@ -2363,8 +2472,10 @@
                                 <div class="card-body p-3 bg-white">
                                     <div class="row g-2 align-items-center">
                                         <div class="col-md-4 col-6">
-                                            <label class="form-label small fw-bold text-muted mb-1">Select Month:</label>
-                                            <select class="form-select form-select-sm fw-bold" id="monthlyReportMonth" onchange="renderMonthlyReport()">
+                                            <label class="form-label small fw-bold text-muted mb-1">Select
+                                                Month:</label>
+                                            <select class="form-select form-select-sm fw-bold" id="monthlyReportMonth"
+                                                onchange="renderMonthlyReport()">
                                                 <option value="1">January</option>
                                                 <option value="2">February</option>
                                                 <option value="3">March</option>
@@ -2381,7 +2492,8 @@
                                         </div>
                                         <div class="col-md-4 col-6">
                                             <label class="form-label small fw-bold text-muted mb-1">Select Year:</label>
-                                            <select class="form-select form-select-sm fw-bold" id="monthlyReportYear" onchange="renderMonthlyReport()">
+                                            <select class="form-select form-select-sm fw-bold" id="monthlyReportYear"
+                                                onchange="renderMonthlyReport()">
                                                 <option value="2025">2025</option>
                                                 <option value="2026" selected>2026</option>
                                                 <option value="2027">2027</option>
@@ -2399,10 +2511,13 @@
                             <!-- Monthly KPI Summary Cards -->
                             <div class="row g-3 mb-3">
                                 <div class="col-md-3 col-6">
-                                    <div class="card border-0 shadow-sm p-3 bg-white border-start border-primary border-4">
-                                        <small class="text-muted fw-bold d-block text-uppercase">Monthly Reservations</small>
+                                    <div
+                                        class="card border-0 shadow-sm p-3 bg-white border-start border-primary border-4">
+                                        <small class="text-muted fw-bold d-block text-uppercase">Monthly
+                                            Reservations</small>
                                         <h3 class="fw-bold mb-0 text-navy" id="monthlyKpiTotalBookings">0</h3>
-                                        <small class="text-muted">Total Room Nights: <strong id="monthlyKpiTotalNights">0</strong></small>
+                                        <small class="text-muted">Total Room Nights: <strong
+                                                id="monthlyKpiTotalNights">0</strong></small>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-6">
@@ -2413,17 +2528,22 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-6">
-                                    <div class="card border-0 shadow-sm p-3 bg-white border-start border-success border-4">
-                                        <small class="text-muted fw-bold d-block text-uppercase">Monthly Stay Realization</small>
+                                    <div
+                                        class="card border-0 shadow-sm p-3 bg-white border-start border-success border-4">
+                                        <small class="text-muted fw-bold d-block text-uppercase">Monthly Stay
+                                            Realization</small>
                                         <h3 class="fw-bold mb-0 text-success" id="monthlyKpiStayAmount">&#8377;0.00</h3>
                                         <small class="text-muted">Non-GST Stay Revenue</small>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-6">
-                                    <div class="card border-0 shadow-sm p-3 bg-white border-start border-warning border-4">
-                                        <small class="text-muted fw-bold d-block text-uppercase">Monthly Dining Realization</small>
+                                    <div
+                                        class="card border-0 shadow-sm p-3 bg-white border-start border-warning border-4">
+                                        <small class="text-muted fw-bold d-block text-uppercase">Monthly Dining
+                                            Realization</small>
                                         <h3 class="fw-bold mb-0 text-dark" id="monthlyKpiDiningAmount">&#8377;0.00</h3>
-                                        <small class="text-muted">Gross Non-GST: <strong id="monthlyKpiTotalAmount">&#8377;0.00</strong></small>
+                                        <small class="text-muted">Gross Non-GST: <strong
+                                                id="monthlyKpiTotalAmount">&#8377;0.00</strong></small>
                                     </div>
                                 </div>
                             </div>
@@ -2431,7 +2551,9 @@
                             <!-- Category Distribution Breakdown -->
                             <div class="card border-0 shadow-sm mb-3">
                                 <div class="card-header bg-white py-3">
-                                    <h6 class="fw-bold mb-0 text-navy"><i class="bi bi-pie-chart-fill me-2"></i>Statutory Category Breakdown (Notification 1615-40)</h6>
+                                    <h6 class="fw-bold mb-0 text-navy"><i
+                                            class="bi bi-pie-chart-fill me-2"></i>Statutory Category Breakdown
+                                        (Notification 1615-40)</h6>
                                 </div>
                                 <div class="card-body p-0">
                                     <div class="table-responsive">
@@ -2461,15 +2583,19 @@
                                 <div class="card-body p-3 bg-white">
                                     <div class="row g-2 align-items-center">
                                         <div class="col-md-6 col-12">
-                                            <label class="form-label small fw-bold text-muted mb-1">Select Financial Year (April - March):</label>
-                                            <select class="form-select form-select-sm fw-bold" id="annualReportFY" onchange="renderAnnualReport()">
-                                                <option value="2026-2027" selected>FY 2026-27 (01/04/2026 to 31/03/2027)</option>
+                                            <label class="form-label small fw-bold text-muted mb-1">Select Financial
+                                                Year (April - March):</label>
+                                            <select class="form-select form-select-sm fw-bold" id="annualReportFY"
+                                                onchange="renderAnnualReport()">
+                                                <option value="2026-2027" selected>FY 2026-27 (01/04/2026 to 31/03/2027)
+                                                </option>
                                                 <option value="2025-2026">FY 2025-26 (01/04/2025 to 31/03/2026)</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6 col-12">
                                             <div class="alert alert-secondary py-1 px-3 mb-0 small">
-                                                <i class="bi bi-shield-check text-success me-1"></i> Formatted for internal audit and CAG Comptroller compliance.
+                                                <i class="bi bi-shield-check text-success me-1"></i> Formatted for
+                                                internal audit and CAG Comptroller compliance.
                                             </div>
                                         </div>
                                     </div>
@@ -2479,31 +2605,40 @@
                             <!-- Annual KPI Summary Cards -->
                             <div class="row g-3 mb-3">
                                 <div class="col-md-3 col-6">
-                                    <div class="card border-0 shadow-sm p-3 bg-white border-start border-primary border-4">
-                                        <small class="text-muted fw-bold d-block text-uppercase">Annual Reservations</small>
+                                    <div
+                                        class="card border-0 shadow-sm p-3 bg-white border-start border-primary border-4">
+                                        <small class="text-muted fw-bold d-block text-uppercase">Annual
+                                            Reservations</small>
                                         <h3 class="fw-bold mb-0 text-navy" id="annualKpiTotalBookings">0</h3>
-                                        <small class="text-muted">Total Nights: <strong id="annualKpiTotalNights">0</strong></small>
+                                        <small class="text-muted">Total Nights: <strong
+                                                id="annualKpiTotalNights">0</strong></small>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-6">
-                                    <div class="card border-0 shadow-sm p-3 bg-white border-start border-success border-4">
-                                        <small class="text-muted fw-bold d-block text-uppercase">Annual Stay Value (Non-GST)</small>
+                                    <div
+                                        class="card border-0 shadow-sm p-3 bg-white border-start border-success border-4">
+                                        <small class="text-muted fw-bold d-block text-uppercase">Annual Stay Value
+                                            (Non-GST)</small>
                                         <h3 class="fw-bold mb-0 text-success" id="annualKpiStayAmount">&#8377;0.00</h3>
                                         <small class="text-muted">Exempt Room Tariffs</small>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-6">
-                                    <div class="card border-0 shadow-sm p-3 bg-white border-start border-warning border-4">
-                                        <small class="text-muted fw-bold d-block text-uppercase">Annual Dining Value (Non-GST)</small>
+                                    <div
+                                        class="card border-0 shadow-sm p-3 bg-white border-start border-warning border-4">
+                                        <small class="text-muted fw-bold d-block text-uppercase">Annual Dining Value
+                                            (Non-GST)</small>
                                         <h3 class="fw-bold mb-0 text-dark" id="annualKpiDiningAmount">&#8377;0.00</h3>
                                         <small class="text-muted">Hostel &amp; Mess Receipts</small>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-6">
                                     <div class="card border-0 shadow-sm p-3 bg-white border-start border-dark border-4">
-                                        <small class="text-muted fw-bold d-block text-uppercase">Total FY Realization (Non-GST)</small>
+                                        <small class="text-muted fw-bold d-block text-uppercase">Total FY Realization
+                                            (Non-GST)</small>
                                         <h3 class="fw-bold mb-0 text-primary" id="annualKpiTotalAmount">&#8377;0.00</h3>
-                                        <small class="text-muted">Avg Occupancy: <strong id="annualKpiOccupancy">0%</strong></small>
+                                        <small class="text-muted">Avg Occupancy: <strong
+                                                id="annualKpiOccupancy">0%</strong></small>
                                     </div>
                                 </div>
                             </div>
@@ -2511,7 +2646,9 @@
                             <!-- 12-Month Financial Year Ledger Breakdown Table -->
                             <div class="card border-0 shadow-sm mb-4">
                                 <div class="card-header bg-white py-3">
-                                    <h6 class="fw-bold mb-0 text-navy"><i class="bi bi-calendar3-range me-2"></i>12-Month Financial Year Breakdown (April to March)</h6>
+                                    <h6 class="fw-bold mb-0 text-navy"><i
+                                            class="bi bi-calendar3-range me-2"></i>12-Month Financial Year Breakdown
+                                        (April to March)</h6>
                                 </div>
                                 <div class="card-body p-0">
                                     <div class="table-responsive">
@@ -2537,22 +2674,32 @@
 
                             <!-- Institutional Audit Certification Box -->
                             <div class="card border border-secondary shadow-sm p-4 bg-light mb-3">
-                                <h6 class="fw-bold text-navy font-serif mb-2"><i class="bi bi-award me-2"></i>Institutional Financial Audit &amp; Reconciliation Certificate</h6>
+                                <h6 class="fw-bold text-navy font-serif mb-2"><i
+                                        class="bi bi-award me-2"></i>Institutional Financial Audit &amp; Reconciliation
+                                    Certificate</h6>
                                 <p class="small text-muted mb-4">
-                                    Certified that the guest house bookings, occupancy records, stay charges, and dining charges detailed above have been verified with the physical guest register, cash deposit counterfoils, and University treasury scroll. All tariffs conform strictly to Notification No. UHF/EO-55/2025/- 1615-40 dated 25/07/2026. Stay and dining collections are non-commercial public educational facility charges and exempt from Goods &amp; Services Tax (GST).
+                                    Certified that the guest house bookings, occupancy records, stay charges, and dining
+                                    charges detailed above have been verified with the physical guest register, cash
+                                    deposit counterfoils, and University treasury scroll. All tariffs conform strictly
+                                    to Notification No. UHF/EO-55/2025/- 1615-40 dated 25/07/2026. Stay and dining
+                                    collections are non-commercial public educational facility charges and exempt from
+                                    Goods &amp; Services Tax (GST).
                                 </p>
                                 <div class="row text-center mt-3 pt-3 border-top g-3">
                                     <div class="col-4">
                                         <div class="fw-bold small text-dark">Sh. R. S. Sharma</div>
-                                        <div class="text-muted" style="font-size:0.75rem;">Care-Taker / Cashier<br>University Guest House</div>
+                                        <div class="text-muted" style="font-size:0.75rem;">Care-Taker /
+                                            Cashier<br>University Guest House</div>
                                     </div>
                                     <div class="col-4">
                                         <div class="fw-bold small text-dark">Er. V. K. Katoch</div>
-                                        <div class="text-muted" style="font-size:0.75rem;">Estate Officer<br>Estate Organization</div>
+                                        <div class="text-muted" style="font-size:0.75rem;">Estate Officer<br>Estate
+                                            Organization</div>
                                     </div>
                                     <div class="col-4">
                                         <div class="fw-bold small text-dark">Dr. S. P. Gupta</div>
-                                        <div class="text-muted" style="font-size:0.75rem;">Comptroller / Finance Officer<br>Dr. Y.S. Parmar UHF Nauni</div>
+                                        <div class="text-muted" style="font-size:0.75rem;">Comptroller / Finance
+                                            Officer<br>Dr. Y.S. Parmar UHF Nauni</div>
                                     </div>
                                 </div>
                             </div>
@@ -2568,21 +2715,26 @@
                 <div class="modal-content border-0 shadow">
                     <div class="modal-header bg-dark text-white d-flex justify-content-between align-items-center">
                         <h5 class="modal-title font-serif" id="receiptModalLabel">
-                            <i class="bi bi-receipt me-2 text-warning"></i>Official University Cashier Invoice &amp; Receipt
+                            <i class="bi bi-receipt me-2 text-warning"></i>Official University Cashier Invoice &amp;
+                            Receipt
                         </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
 
                     <!-- 3-Way Category Toggle Button Group -->
                     <div class="bg-light p-2 border-bottom text-center">
                         <div class="btn-group" role="group" aria-label="Invoice Categorisation">
-                            <button type="button" class="btn btn-sm btn-outline-primary active fw-bold" id="btnInvoiceTypeStay" onclick="switchInvoiceType('stay')">
+                            <button type="button" class="btn btn-sm btn-outline-primary active fw-bold"
+                                id="btnInvoiceTypeStay" onclick="switchInvoiceType('stay')">
                                 <i class="bi bi-building me-1"></i> 1. Stay Charges Invoice (Non-GST)
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-success fw-bold" id="btnInvoiceTypeDining" onclick="switchInvoiceType('dining')">
+                            <button type="button" class="btn btn-sm btn-outline-success fw-bold"
+                                id="btnInvoiceTypeDining" onclick="switchInvoiceType('dining')">
                                 <i class="bi bi-cup-hot me-1"></i> 2. Dining Charges Invoice (Non-GST)
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-dark fw-bold" id="btnInvoiceTypeBoth" onclick="switchInvoiceType('both')">
+                            <button type="button" class="btn btn-sm btn-outline-dark fw-bold" id="btnInvoiceTypeBoth"
+                                onclick="switchInvoiceType('both')">
                                 <i class="bi bi-receipt-cutoff me-1"></i> 3. Consolidated Invoice
                             </button>
                         </div>
@@ -2594,7 +2746,8 @@
 
                     <div class="modal-footer bg-light">
                         <span class="text-muted small me-auto">
-                            <i class="bi bi-shield-check text-success me-1"></i> Treated as Non-GST pursuant to institutional exemption rules
+                            <i class="bi bi-shield-check text-success me-1"></i> Treated as Non-GST pursuant to
+                            institutional exemption rules
                         </span>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" onclick="window.print()">
@@ -2606,21 +2759,24 @@
         </div>
 
         <!-- Sanction Booking & Allot Room Modal -->
-        <div class="modal fade" id="sanctionAllotmentModal" tabindex="-1" aria-labelledby="sanctionAllotmentModalLabel" aria-hidden="true">
+        <div class="modal fade" id="sanctionAllotmentModal" tabindex="-1" aria-labelledby="sanctionAllotmentModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content border-0 shadow">
                     <div class="modal-header text-white" style="background-color: #0d2b45;">
                         <h5 class="modal-title font-serif" id="sanctionAllotmentModalLabel">
                             <i class="bi bi-check-circle-fill text-warning me-2"></i>Sanction Booking &amp; Allot Room
                         </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-4 bg-light">
                         <div class="card border-0 shadow-sm mb-3">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <span class="badge bg-primary" id="allotModalRef">-</span>
-                                    <span class="badge bg-warning text-dark" id="allotModalStatus">PENDING APPROVAL</span>
+                                    <span class="badge bg-warning text-dark" id="allotModalStatus">PENDING
+                                        APPROVAL</span>
                                 </div>
                                 <div class="row g-2">
                                     <div class="col-md-6">
@@ -2638,35 +2794,43 @@
                                         <span id="allotModalWing" class="fw-semibold text-primary">-</span>
                                     </div>
                                     <div class="col-md-6 mt-2">
-                                        <small class="text-muted d-block">Tariff Category (Notification 1615-40):</small>
+                                        <small class="text-muted d-block">Tariff Category (Notification
+                                            1615-40):</small>
                                         <span id="allotModalCategory" class="badge bg-info text-dark">-</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <form id="sanctionAllotmentForm" onsubmit="event.preventDefault(); confirmSanctionAndAllotment();">
+                        <form id="sanctionAllotmentForm"
+                            onsubmit="event.preventDefault(); confirmSanctionAndAllotment();">
                             <div class="card border-0 shadow-sm p-3 mb-3">
                                 <label for="allotmentRoomSelect" class="form-label fw-bold text-dark">
-                                    <i class="bi bi-door-open-fill text-warning me-1"></i>Select Room to Allot <span class="text-danger">*</span>
+                                    <i class="bi bi-door-open-fill text-warning me-1"></i>Select Room to Allot <span
+                                        class="text-danger">*</span>
                                 </label>
                                 <select class="form-select form-select-lg" id="allotmentRoomSelect" required>
                                     <!-- Dynamically populated from guestHouseInventory with availability status -->
                                 </select>
                                 <div class="form-text mt-1 text-muted">
-                                    <i class="bi bi-info-circle me-1"></i>Rooms marked <strong>[Available]</strong> are unoccupied. Allotment will automatically update the Room Calendar Grid and live layout status.
+                                    <i class="bi bi-info-circle me-1"></i>Rooms marked <strong>[Available]</strong> are
+                                    unoccupied. Allotment will automatically update the Room Calendar Grid and live
+                                    layout status.
                                 </div>
                             </div>
 
                             <div class="card border-0 shadow-sm p-3 mb-3">
                                 <label for="allotmentRemarks" class="form-label fw-bold text-dark">
-                                    <i class="bi bi-pencil-square text-primary me-1"></i>Caretaker Order / Sanction Remarks
+                                    <i class="bi bi-pencil-square text-primary me-1"></i>Caretaker Order / Sanction
+                                    Remarks
                                 </label>
-                                <textarea class="form-control" id="allotmentRemarks" rows="2" placeholder="e.g. Sanctioned under Notification No. 1615-40. Caretaker to prepare room key, linen, and institutional welcome amenities."></textarea>
+                                <textarea class="form-control" id="allotmentRemarks" rows="2"
+                                    placeholder="e.g. Sanctioned under Notification No. 1615-40. Caretaker to prepare room key, linen, and institutional welcome amenities."></textarea>
                             </div>
 
                             <div class="d-flex justify-content-end gap-2">
-                                <button type="button" class="btn btn-secondary px-3" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-secondary px-3"
+                                    data-bs-dismiss="modal">Cancel</button>
                                 <button type="submit" class="btn btn-success px-4 fw-bold shadow-sm">
                                     <i class="bi bi-check2-circle me-1"></i>Confirm Sanction &amp; Allot Room
                                 </button>
@@ -2785,12 +2949,18 @@
                                     Suite #201</span>
                             </div>
                             <div class="row g-3 small mt-1">
-                                <div class="col-md-6"><strong>Primary Guest:</strong> <span id="vvipModalGuest">-</span></div>
-                                <div class="col-md-6"><strong>Official Designation:</strong> <span id="vvipModalDesig">-</span></div>
-                                <div class="col-md-6"><strong>Dates & Stay:</strong> <span id="vvipModalDates">-</span></div>
-                                <div class="col-md-6"><strong>Notification Category:</strong> <span id="vvipModalCat">-</span></div>
-                                <div class="col-md-6"><strong>Sponsoring Department:</strong> <span id="vvipModalSponsor">-</span></div>
-                                <div class="col-md-6"><strong>Estimated Tariff:</strong> <span class="fw-bold text-success" id="vvipModalTariff">-</span></div>
+                                <div class="col-md-6"><strong>Primary Guest:</strong> <span id="vvipModalGuest">-</span>
+                                </div>
+                                <div class="col-md-6"><strong>Official Designation:</strong> <span
+                                        id="vvipModalDesig">-</span></div>
+                                <div class="col-md-6"><strong>Dates & Stay:</strong> <span id="vvipModalDates">-</span>
+                                </div>
+                                <div class="col-md-6"><strong>Notification Category:</strong> <span
+                                        id="vvipModalCat">-</span></div>
+                                <div class="col-md-6"><strong>Sponsoring Department:</strong> <span
+                                        id="vvipModalSponsor">-</span></div>
+                                <div class="col-md-6"><strong>Estimated Tariff:</strong> <span
+                                        class="fw-bold text-success" id="vvipModalTariff">-</span></div>
                             </div>
                         </div>
 
@@ -3129,7 +3299,7 @@
                             return cleaned;
                         }
                     }
-                } catch(e) {
+                } catch (e) {
                     console.error("Error reading uhf_room_inventory", e);
                 }
                 return JSON.parse(JSON.stringify(defaultMasterInventory));
@@ -3138,7 +3308,7 @@
             function saveRoomInventory(inv) {
                 try {
                     localStorage.setItem('uhf_room_inventory', JSON.stringify(inv));
-                } catch(e) {
+                } catch (e) {
                     console.error("Error saving uhf_room_inventory", e);
                 }
             }
@@ -3715,18 +3885,18 @@
                 }
             }
 
-                    function escapeHtml(str) {
-            if (str === null || str === undefined) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
-        }
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
 
-        // Render Active Dossiers Table dynamically based on Account Jurisdiction
-                        function renderBookingsTable() {
+            // Render Active Dossiers Table dynamically based on Account Jurisdiction
+            function renderBookingsTable() {
                 const tbody = document.getElementById('bookingsTableBody');
                 if (!tbody) return;
                 tbody.innerHTML = '';
@@ -4182,7 +4352,7 @@
                 });
             }
 
-            // Visual Card-Based Room Layout Grid (Requirement 3)
+            // Visual Card-Based Room Layout Grid (Requirement 3 - Compact Design for Minimal Scrolling)
             function renderRoomLayoutCards() {
                 const container = document.getElementById('roomLayoutCardsContainer');
                 if (!container) return;
@@ -4209,10 +4379,10 @@
 
                 if (rooms.length === 0) {
                     container.innerHTML = `
-                        <div class="alert alert-light border text-center py-5">
-                            <i class="bi bi-door-closed fs-1 text-muted d-block mb-2"></i>
-                            <h6 class="fw-bold text-muted">No rooms match the selected floor and status criteria.</h6>
-                            <button class="btn btn-sm btn-outline-primary mt-2" onclick="filterGridStatus('all'); filterGridFloor('all');">Reset Filters</button>
+                        <div class="alert alert-light border text-center py-4">
+                            <i class="bi bi-door-closed fs-3 text-muted d-block mb-1"></i>
+                            <h6 class="fw-bold text-muted small mb-1">No rooms match the selected criteria.</h6>
+                            <button class="btn btn-xs btn-outline-primary" onclick="filterGridStatus('all'); filterGridFloor('all');">Reset Filters</button>
                         </div>
                     `;
                     return;
@@ -4230,76 +4400,75 @@
                     if (floorRooms.length === 0) return;
 
                     html += `
-                        <div class="mb-4">
-                            <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
-                                <h6 class="fw-bold text-navy mb-0"><i class="bi bi-layers-fill text-warning me-2"></i>${fl.title}</h6>
-                                <span class="badge bg-secondary">${floorRooms.length} Lodging Units</span>
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center justify-content-between mb-2 border-bottom pb-1">
+                                <h6 class="fw-bold text-navy mb-0" style="font-size:0.85rem;"><i class="bi bi-layers-fill text-warning me-2"></i>${fl.title}</h6>
+                                <span class="badge bg-secondary py-0 px-2" style="font-size:0.68rem;">${floorRooms.length} Units</span>
                             </div>
-                            <div class="row g-3">
+                            <div class="row g-2">
                     `;
 
                     floorRooms.forEach(room => {
                         let statusColor = 'success';
-                        let statusBadge = '<span class="badge bg-success px-2 py-1"><i class="bi bi-check-circle-fill me-1"></i>Available</span>';
+                        let statusBadge = '<span class="badge bg-success px-1 py-0" style="font-size:0.65rem;"><i class="bi bi-check-circle-fill me-1"></i>Avail</span>';
                         let cardBg = 'bg-white';
                         let borderStyle = 'border-success';
 
                         if (room.status === 'RESERVED') {
                             statusColor = 'warning';
-                            statusBadge = '<span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-bookmark-fill me-1"></i>Booked / Allotted</span>';
+                            statusBadge = '<span class="badge bg-warning text-dark px-1 py-0" style="font-size:0.65rem;"><i class="bi bi-bookmark-fill me-1"></i>Booked</span>';
                             cardBg = 'bg-warning bg-opacity-10';
                             borderStyle = 'border-warning';
                         } else if (room.status === 'OCCUPIED') {
                             statusColor = 'danger';
-                            statusBadge = '<span class="badge bg-danger text-white px-2 py-1"><i class="bi bi-person-fill-check me-1"></i>Occupied / In-House</span>';
+                            statusBadge = '<span class="badge bg-danger text-white px-1 py-0" style="font-size:0.65rem;"><i class="bi bi-person-fill-check me-1"></i>In-House</span>';
                             cardBg = 'bg-danger bg-opacity-10';
                             borderStyle = 'border-danger';
                         } else if (room.status === 'MAINTENANCE') {
                             statusColor = 'secondary';
-                            statusBadge = '<span class="badge bg-secondary text-white px-2 py-1"><i class="bi bi-tools me-1"></i>Under Maintenance</span>';
+                            statusBadge = '<span class="badge bg-secondary text-white px-1 py-0" style="font-size:0.65rem;"><i class="bi bi-tools me-1"></i>Maint</span>';
                             cardBg = 'bg-light';
                             borderStyle = 'border-secondary';
                         }
 
                         let authBadge = room.isVvip 
-                            ? `<span class="badge bg-danger-subtle text-danger border border-danger"><i class="bi bi-crown me-1"></i>VC Secretariat Sanction</span>`
-                            : `<span class="badge bg-primary-subtle text-primary border border-primary"><i class="bi bi-building me-1"></i>Estate Office Allotted</span>`;
+                            ? `<span class="badge bg-danger-subtle text-danger border border-danger px-1 py-0" style="font-size:0.62rem;"><i class="bi bi-crown me-1"></i>VC</span>`
+                            : `<span class="badge bg-primary-subtle text-primary border border-primary px-1 py-0" style="font-size:0.62rem;"><i class="bi bi-building me-1"></i>Estate</span>`;
 
                         html += `
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-                                <div class="card h-100 shadow-sm border-2 ${borderStyle} ${cardBg}">
-                                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-2 border-bottom">
-                                        <div>
-                                            <span class="fw-bold text-navy fs-6">${escapeHtml(room.name)}</span>
-                                            <div class="text-muted" style="font-size:0.7rem;">${escapeHtml(room.type)} &bull; ${escapeHtml(room.capacity)}</div>
+                            <div class="col-xxl-2 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6">
+                                <div class="card h-100 shadow-xs border ${borderStyle} ${cardBg}">
+                                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-1 px-2 border-bottom">
+                                        <div class="text-truncate me-1">
+                                            <span class="fw-bold text-navy" style="font-size:0.8rem;">${escapeHtml(room.name)}</span>
+                                            <div class="text-muted text-truncate" style="font-size:0.64rem;">${escapeHtml(room.type)}</div>
                                         </div>
                                         ${statusBadge}
                                     </div>
-                                    <div class="card-body p-3 small d-flex flex-column justify-content-between">
+                                    <div class="card-body p-2 d-flex flex-column justify-content-between">
                                         <div>
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <span class="text-muted" style="font-size:0.72rem;">Authority:</span>
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <span class="text-muted" style="font-size:0.64rem;">Auth:</span>
                                                 ${authBadge}
                                             </div>
                                             ${room.guest ? `
-                                                <div class="p-2 rounded bg-white border mb-2 shadow-xs">
-                                                    <div class="fw-bold text-dark text-truncate" title="${escapeHtml(room.guest)}">
+                                                <div class="p-1 px-2 rounded bg-white border mb-1 shadow-xs">
+                                                    <div class="fw-bold text-dark text-truncate" style="font-size:0.7rem;" title="${escapeHtml(room.guest)}">
                                                         <i class="bi bi-person-fill text-primary me-1"></i>${escapeHtml(room.guest)}
                                                     </div>
-                                                    ${room.dossierRef ? `<div class="text-muted" style="font-size:0.72rem;"><strong>Ref:</strong> <span class="badge bg-light text-dark border">${escapeHtml(room.dossierRef)}</span></div>` : ''}
-                                                    <div class="text-muted mt-1" style="font-size:0.72rem;">
-                                                        <i class="bi bi-calendar3 me-1 text-success"></i><strong>Stay:</strong> ${escapeHtml(room.dates || 'Active')}
+                                                    <div class="d-flex justify-content-between align-items-center text-muted mt-1" style="font-size:0.62rem;">
+                                                        <span class="text-truncate"><i class="bi bi-calendar3 me-1 text-success"></i>${escapeHtml(room.dates || 'Active')}</span>
+                                                        ${room.dossierRef ? `<span class="badge bg-light text-dark border py-0 px-1 ms-1">${escapeHtml(room.dossierRef)}</span>` : ''}
                                                     </div>
-                                                    ${room.category ? `<div class="text-muted text-truncate" style="font-size:0.7rem;" title="${escapeHtml(room.category)}"><i class="bi bi-tag me-1"></i>${escapeHtml(room.category)}</div>` : ''}
                                                 </div>
                                             ` : `
-                                                <div class="p-3 rounded bg-white bg-opacity-75 border text-muted fst-italic mb-2 text-center" style="font-size:0.75rem;">
-                                                    <i class="bi bi-door-open text-success me-1 fs-5 d-block mb-1"></i>Vacant &bull; Ready for allotment
+                                                <div class="py-1 px-2 rounded bg-white bg-opacity-75 border text-muted text-center mb-1" style="font-size:0.68rem;">
+                                                    <i class="bi bi-door-open text-success me-1"></i>Vacant &bull; Ready
                                                 </div>
                                             `}
                                         </div>
-                                        <button class="btn btn-sm btn-outline-primary w-100 mt-2" onclick="openRoomActionModal('${escapeHtml(room.name)}', '${room.isVvip ? 'vvip' : 'room'}', '${room.floor}')">
-                                            <i class="bi bi-info-circle me-1"></i> Room Occupancy &amp; Details
+                                        <button class="btn btn-outline-primary w-100 py-0 mt-1" style="font-size:0.68rem; line-height: 1.5;" onclick="openRoomActionModal('${escapeHtml(room.name)}', '${room.isVvip ? 'vvip' : 'room'}', '${room.floor}')">
+                                            <i class="bi bi-info-circle me-1"></i>Details
                                         </button>
                                     </div>
                                 </div>
@@ -4485,16 +4654,16 @@
                                 </div>
                                 <div class="col-md-2 col-4">
                                     ${(() => {
-                                        const r = guestHouseInventory.find(x => x.name.includes('DORMITORY')) || { status: 'AVAILABLE', guest: null };
-                                        const bColor = r.status === 'OCCUPIED' ? 'danger' : (r.status === 'RESERVED' ? 'warning' : 'success');
-                                        return `
+                        const r = guestHouseInventory.find(x => x.name.includes('DORMITORY')) || { status: 'AVAILABLE', guest: null };
+                        const bColor = r.status === 'OCCUPIED' ? 'danger' : (r.status === 'RESERVED' ? 'warning' : 'success');
+                        return `
                                             <div class="p-2 border border-${bColor} border-2 rounded bg-${bColor}-subtle h-100 cursor-pointer" onclick="openRoomActionModal('DORMITORY 1 (4-BED)', 'room', 'ground')">
                                                 <div class="fw-bold text-success">DORMITORY 1</div>
                                                 <small class="text-muted d-block" style="font-size:0.7rem;">4 Bedded</small>
                                                 <span class="badge bg-${bColor} ${bColor === 'warning' ? 'text-dark' : 'text-white'} mt-1" style="font-size:0.65rem;">${r.status === 'AVAILABLE' ? 'Available' : (r.guest ? r.guest.split(' ')[0] : r.status)}</span>
                                             </div>
                                         `;
-                                    })()}
+                    })()}
                                 </div>
                                 <div class="col-md-3 col-4">
                                     <div class="p-2 border border-primary border-2 rounded bg-primary-subtle h-100 cursor-pointer" onclick="openRoomActionModal('MAIN CONFERENCE HALL', 'hall', 'ground')">
@@ -7094,7 +7263,427 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                 downloadLetterheadDocument();
             }
         </script>
+        # MASTER PROMPT: COMPLETE END-TO-END APPLICATION TESTING, BUG DETECTION, AND AUTOMATIC RECTIFICATION
+
+        Act as a Senior QA Automation Engineer, Full-Stack Developer, Software Tester, Security Auditor, and Application
+        Architect.
+
+        Your task is to perform a COMPLETE end-to-end audit and testing of the entire application, with special emphasis
+        on every possible aspect of sending, receiving, processing, storing, retrieving, and responding to user
+        requests.
+
+        Do not limit testing to the visible user interface. Inspect the entire application, including frontend, backend,
+        APIs, database, authentication, middleware, server-side processing, integrations, and communication mechanisms.
+
+        **IMPORTANT: Do not just identify problems. Fix every reproducible issue, implement the necessary corrections,
+        and retest the application until all critical and major issues are resolved.**
+
+        ## 1. Initial Application Inspection
+
+        Before making changes:
+
+        1. Identify the application architecture, framework, programming languages, and dependencies.
+        2. Inspect the complete project directory and source code.
+        3. Identify all user request submission points.
+        4. Identify all request-receiving endpoints, APIs, controllers, services, and functions.
+        5. Identify database tables, relationships, and data-storage mechanisms.
+        6. Identify authentication and authorization mechanisms.
+        7. Identify external services and integrations.
+        8. Identify background jobs, queues, notifications, and asynchronous processes.
+        9. Understand the complete request lifecycle.
+
+        Do not assume how the application works. Derive the actual workflow from the source code.
+
+        ## 2. Complete User Request Sending Tests
+
+        Test every possible method through which a user can submit a request.
+
+        Test the following:
+
+        - Normal text requests.
+        - Empty requests.
+        - Requests containing only spaces.
+        - Very short requests.
+        - Extremely long requests.
+        - Requests containing special characters.
+        - Requests containing emojis.
+        - Requests containing HTML.
+        - Requests containing JavaScript.
+        - Requests containing SQL-like input.
+        - Requests containing multiple lines.
+        - Requests containing Unicode and multilingual characters.
+        - Requests containing numbers and symbols.
+        - Repeated submissions.
+        - Rapid consecutive submissions.
+        - Double-click submissions.
+        - Requests submitted using Enter.
+        - Requests submitted using the Send button.
+        - Requests submitted through mobile interfaces.
+        - Requests submitted with slow internet.
+        - Requests submitted during network interruptions.
+        - Requests submitted after session expiration.
+
+        Verify that every valid request is properly validated and submitted without data loss.
+
+        ## 3. Request Receiving and Backend Processing Tests
+
+        Verify that the backend correctly receives and processes every submitted request.
+
+        Test:
+
+        - Correct API endpoint.
+        - HTTP GET, POST, PUT, PATCH, and DELETE handling where applicable.
+        - Correct request headers.
+        - Correct content type.
+        - Correct JSON encoding and decoding.
+        - Correct form-data handling.
+        - Request validation.
+        - Parameter validation.
+        - Authentication verification.
+        - Authorization verification.
+        - Middleware execution.
+        - CSRF protection.
+        - Session handling.
+        - Request sanitization.
+        - Backend exception handling.
+        - Database transaction handling.
+        - Timeout handling.
+        - Concurrent request processing.
+
+        Verify that the backend never silently drops a valid request.
+
+        ## 4. User Request and Response Verification
+
+        Test the complete communication lifecycle:
+
+        1. User submits a request.
+        2. Frontend validates the request.
+        3. Request reaches the backend.
+        4. Backend processes the request.
+        5. Required database operations execute.
+        6. Backend generates a response.
+        7. Response reaches the frontend.
+        8. Frontend correctly displays the response.
+        9. User can continue the conversation or submit another request.
+
+        Verify:
+
+        - Correct response is returned.
+        - Responses are not mixed between users.
+        - Responses are not duplicated.
+        - Responses are not truncated.
+        - Responses are displayed in the correct order.
+        - Error responses are meaningful.
+        - Loading indicators work correctly.
+        - Success indicators work correctly.
+        - Failed requests can be retried.
+        - Previous requests and responses are preserved where expected.
+        - Conversation history is retrieved correctly.
+
+        ## 5. Database Testing
+
+        Inspect all database operations associated with user requests.
+
+        Test:
+
+        - Record insertion.
+        - Record updating.
+        - Record deletion where authorized.
+        - Record retrieval.
+        - Duplicate records.
+        - Missing records.
+        - Invalid foreign keys.
+        - Null values.
+        - Empty values.
+        - Database connection failures.
+        - Database timeout.
+        - Concurrent writes.
+        - Transaction rollback.
+        - Data consistency.
+        - Character encoding.
+        - Database constraints.
+        - Data persistence after logout and login.
+
+        Ensure that data belonging to one user is never exposed to another user.
+
+        Never delete existing production data during testing.
+
+        ## 6. Authentication and User Management Testing
+
+        Test:
+
+        - User registration.
+        - Login.
+        - Logout.
+        - Invalid credentials.
+        - Password validation.
+        - Session expiration.
+        - Session renewal.
+        - Password reset.
+        - Unauthorized requests.
+        - User role restrictions.
+        - Admin permissions.
+        - Access to protected endpoints.
+        - Direct URL access.
+        - Multiple simultaneous sessions.
+
+        Ensure that users can access only their authorized information.
+
+        ## 7. API and Communication Testing
+
+        Test all available APIs and communication channels.
+
+        For every endpoint, verify:
+
+        - Correct URL.
+        - Correct HTTP method.
+        - Valid parameters.
+        - Invalid parameters.
+        - Missing parameters.
+        - Correct response status codes.
+        - Correct response structure.
+        - Response time.
+        - Error handling.
+        - Authentication requirements.
+        - Rate limiting.
+        - Request size limits.
+        - Concurrent requests.
+
+        Test API behavior using automated test scripts and appropriate tools.
+
+        ## 8. Frontend and User Interface Testing
+
+        Test the entire application interface.
+
+        Check:
+
+        - All buttons.
+        - All forms.
+        - All input fields.
+        - All dropdown menus.
+        - All links.
+        - All navigation menus.
+        - All modals and popups.
+        - All submission controls.
+        - All response displays.
+        - All validation messages.
+        - All loading indicators.
+        - All error messages.
+
+        Verify responsive behavior on:
+
+        - Desktop computers.
+        - Laptops.
+        - Tablets.
+        - Android devices.
+        - iPhones.
+
+        Check different screen resolutions and browser compatibility.
+
+        ## 9. Security Testing
+
+        Perform a comprehensive security assessment.
+
+        Test for:
+
+        - SQL injection.
+        - Cross-site scripting (XSS).
+        - Cross-site request forgery (CSRF).
+        - Broken authentication.
+        - Broken access control.
+        - Insecure direct object references.
+        - Session hijacking risks.
+        - Sensitive information exposure.
+        - Improper input validation.
+        - File upload vulnerabilities, if applicable.
+        - API abuse.
+        - Brute-force attempts.
+        - Rate-limit bypass.
+        - Insecure error messages.
+        - CORS misconfiguration.
+
+        Follow secure development practices and OWASP recommendations.
+
+        Do not perform destructive attacks or test against external systems without authorization.
+
+        ## 10. Performance and Stress Testing
+
+        Test application performance under different workloads.
+
+        Run controlled tests with:
+
+        - 1 concurrent user.
+        - 5 concurrent users.
+        - 10 concurrent users.
+        - 25 concurrent users.
+        - 50 concurrent users.
+        - 100 concurrent users, if the test environment supports it.
+
+        Measure:
+
+        - Request response time.
+        - Average processing time.
+        - Maximum response time.
+        - Failed request percentage.
+        - Database response time.
+        - Memory consumption.
+        - CPU utilization.
+        - Server resource consumption.
+
+        Identify bottlenecks and optimize inefficient code and database queries.
+
+        Do not overload production servers.
+
+        ## 11. Error and Failure Scenario Testing
+
+        Intentionally simulate failures in a safe test environment.
+
+        Examples:
+
+        - Internet disconnected during submission.
+        - Backend server temporarily unavailable.
+        - Database unavailable.
+        - API returns HTTP 400.
+        - API returns HTTP 401.
+        - API returns HTTP 403.
+        - API returns HTTP 404.
+        - API returns HTTP 422.
+        - API returns HTTP 429.
+        - API returns HTTP 500.
+        - API returns HTTP 502.
+        - API returns HTTP 503.
+        - Request timeout.
+        - Invalid JSON response.
+        - Empty API response.
+        - Unexpected server response.
+        - Expired authentication token.
+
+        Verify that the application recovers gracefully and provides useful error messages.
+
+        ## 12. Automated Testing Implementation
+
+        Create or improve automated tests using the framework and testing tools already appropriate for the project.
+
+        Include:
+
+        - Unit tests.
+        - Integration tests.
+        - API tests.
+        - Backend tests.
+        - Frontend tests.
+        - End-to-end tests.
+        - Database tests.
+        - Authentication tests.
+        - Security tests.
+        - Regression tests.
+
+        Automate repetitive test scenarios wherever practical.
+
+        Ensure that tests are repeatable and can be executed again after future code changes.
+
+        ## 13. Automatic Bug Detection and Rectification
+
+        Whenever an issue is identified:
+
+        1. Record the issue.
+        2. Identify the root cause.
+        3. Locate the responsible source file and function.
+        4. Understand the impact.
+        5. Implement the appropriate correction.
+        6. Check for related issues.
+        7. Execute the relevant test again.
+        8. Execute regression tests.
+        9. Confirm that the correction has not introduced new problems.
+
+        Do not apply temporary workarounds when a permanent code-level solution is appropriate.
+
+        Do not remove existing functionality to make a test pass.
+
+        Do not disable validation, authentication, security checks, or error handling to hide failures.
+
+        ## 14. Strict Data and Project Protection Rules
+
+        IMPORTANT:
+
+        - Take a complete backup before modifying existing code.
+        - Do not delete existing user data.
+        - Do not modify production database records.
+        - Do not overwrite production configuration.
+        - Do not expose passwords, API keys, or secret credentials.
+        - Do not remove existing application features.
+        - Do not make unnecessary architectural changes.
+        - Do not modify unrelated projects or directories.
+        - Do not change production server settings.
+        - Use a dedicated test database and test accounts.
+        - Use mock services for external integrations wherever possible.
+        - Never run destructive migrations against production.
+
+        If the environment cannot safely support a test, document it instead of risking data or service availability.
+
+        ## 15. Final Verification
+
+        After implementing corrections:
+
+        1. Run the complete automated test suite.
+        2. Repeat all failed test cases.
+        3. Execute regression testing.
+        4. Verify sending and receiving from beginning to end.
+        5. Verify database persistence.
+        6. Verify authentication and authorization.
+        7. Verify frontend and backend communication.
+        8. Verify that no critical errors remain in application logs.
+        9. Verify that existing application features still work.
+
+        Continue fixing and retesting until all critical and major reproducible issues are resolved.
+
+        ## 16. Final Testing Report
+
+        Generate a detailed report containing:
+
+        - Application architecture inspected.
+        - Total test cases executed.
+        - Passed test cases.
+        - Failed test cases.
+        - Fixed issues.
+        - Unresolved issues.
+        - Security vulnerabilities identified.
+        - Performance bottlenecks.
+        - Database problems.
+        - API problems.
+        - Frontend problems.
+        - Backend problems.
+        - Files modified.
+        - New test files created.
+        - Performance measurements.
+        - Regression test results.
+
+        Provide a final summary in this format:
+
+        | Category | Total | Passed | Failed |
+        |---|---:|---:|---:|
+        | Request Submission | | | |
+        | Request Receiving | | | |
+        | Backend Processing | | | |
+        | Response Delivery | | | |
+        | Database | | | |
+        | Authentication | | | |
+        | API | | | |
+        | Frontend | | | |
+        | Security | | | |
+        | Performance | | | |
+        | Regression | | | |
+
+        Finally, provide an overall application health assessment.
+
+        **IMPORTANT FINAL INSTRUCTION:**
+
+        Do not stop after inspecting the code or generating a report. You are responsible for actually executing tests,
+        identifying the root causes of problems, implementing fixes, and verifying those fixes.
+
+        Do not claim that a test passed unless it was actually executed and its result verified.
+
+        Start with a complete application inspection, create a safe backup, establish a test environment, and then
+        execute the testing process systematically.
 </body>
 
 </html>
-

@@ -1649,83 +1649,35 @@
                             </div>
                         </div>
 
-                        <!-- Filter & Legend Bar -->
-                        <div class="card border-0 shadow-sm mb-3">
-                            <div
-                                class="card-body p-2 d-flex flex-wrap justify-content-between align-items-center gap-2">
-                                <!-- Floor Filter Buttons -->
-                                <div class="btn-group btn-group-sm" role="group" aria-label="Floor Filter">
-                                    <button type="button" class="btn btn-outline-secondary active fw-semibold"
-                                        id="btnFloorAll" onclick="filterGridFloor('all')">
-                                        All Levels (21 Units)
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorTop"
-                                        onclick="filterGridFloor('top')">
-                                        Top Floor (VVIP 1-2 &amp; Std 3-10)
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary fw-semibold"
-                                        id="btnFloorFirst" onclick="filterGridFloor('first')">
-                                        First Floor (VVIP 11-12, VIP 13-16, Std 17-20)
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary fw-semibold"
-                                        id="btnFloorGround" onclick="filterGridFloor('ground')">
-                                        Ground Floor (Dormitory 1 &amp; Halls)
-                                    </button>
+                        <!-- Combined Floor, Status Filter & Legend Bar (Compact & Space-Saving) -->
+                        <div class="card border-0 shadow-sm mb-2">
+                            <div class="card-body p-2 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                                <div class="d-flex flex-wrap align-items-center gap-2">
+                                    <!-- Floor Filter Buttons -->
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="Floor Filter">
+                                        <button type="button" class="btn btn-outline-secondary active fw-semibold" id="btnFloorAll" onclick="filterGridFloor('all')">All Levels (21)</button>
+                                        <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorTop" onclick="filterGridFloor('top')">Top Floor</button>
+                                        <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorFirst" onclick="filterGridFloor('first')">1st Floor</button>
+                                        <button type="button" class="btn btn-outline-secondary fw-semibold" id="btnFloorGround" onclick="filterGridFloor('ground')">Ground</button>
+                                    </div>
+                                    <!-- Status Filter Buttons -->
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="Status Filter">
+                                        <button type="button" class="btn btn-outline-secondary active fw-semibold" id="btnStatusFilterAll" onclick="filterGridStatus('all')">All</button>
+                                        <button type="button" class="btn btn-outline-success fw-semibold" id="btnStatusFilterAvail" onclick="filterGridStatus('AVAILABLE')"><i class="bi bi-circle-fill me-1 text-success"></i>Available</button>
+                                        <button type="button" class="btn btn-outline-warning text-dark fw-semibold" id="btnStatusFilterRes" onclick="filterGridStatus('RESERVED')"><i class="bi bi-circle-fill me-1 text-warning"></i>Booked</button>
+                                        <button type="button" class="btn btn-outline-danger fw-semibold" id="btnStatusFilterOcc" onclick="filterGridStatus('OCCUPIED')"><i class="bi bi-circle-fill me-1 text-danger"></i>Occupied</button>
+                                    </div>
                                 </div>
-
-                                <!-- Legend Badges -->
-                                <div class="d-flex flex-wrap gap-2 small">
-                                    <span class="badge bg-success"><i class="bi bi-circle-fill me-1"
-                                            style="font-size:0.6rem;"></i> Available</span>
-                                    <span class="badge bg-danger"><i class="bi bi-circle-fill me-1"
-                                            style="font-size:0.6rem;"></i> Occupied / In-House</span>
-                                    <span class="badge bg-warning text-dark"><i class="bi bi-circle-fill me-1"
-                                            style="font-size:0.6rem;"></i> Reserved / Sanction Pending</span>
-                                    <span class="badge bg-secondary"><i class="bi bi-circle-fill me-1"
-                                            style="font-size:0.6rem;"></i> Store / Facility</span>
+                                <div class="d-flex align-items-center gap-2 small">
+                                    <span class="badge bg-success-subtle text-success border border-success"><i class="bi bi-check-circle-fill me-1"></i>Available: <strong id="layoutCountAvailable">0</strong></span>
+                                    <span class="badge bg-warning-subtle text-dark border border-warning"><i class="bi bi-bookmark-fill me-1"></i>Booked: <strong id="layoutCountReserved">0</strong></span>
+                                    <span class="badge bg-danger-subtle text-danger border border-danger"><i class="bi bi-person-fill-check me-1"></i>Occupied: <strong id="layoutCountOccupied">0</strong></span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- VIEW MODE 1: VISUAL ROOM LAYOUT GRID (CARDS WITH COLOUR-CODED STATUSES) -->
-                        <div id="gridVisualLayoutContainer" class="mb-4">
-                            <!-- Quick Status Legend & Filter Bar -->
-                            <div class="card border-0 shadow-sm mb-3">
-                                <div
-                                    class="card-body p-2 d-flex flex-wrap justify-content-between align-items-center gap-2">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <label class="small fw-bold text-muted text-uppercase mb-0"><i
-                                                class="bi bi-funnel me-1"></i>Status Filter:</label>
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <button type="button" class="btn btn-outline-secondary active fw-semibold"
-                                                id="btnStatusFilterAll" onclick="filterGridStatus('all')">All
-                                                Statuses</button>
-                                            <button type="button" class="btn btn-outline-success fw-semibold"
-                                                id="btnStatusFilterAvail" onclick="filterGridStatus('AVAILABLE')"><i
-                                                    class="bi bi-circle-fill me-1 text-success"></i>Available</button>
-                                            <button type="button" class="btn btn-outline-warning text-dark fw-semibold"
-                                                id="btnStatusFilterRes" onclick="filterGridStatus('RESERVED')"><i
-                                                    class="bi bi-circle-fill me-1 text-warning"></i>Booked /
-                                                Allotted</button>
-                                            <button type="button" class="btn btn-outline-danger fw-semibold"
-                                                id="btnStatusFilterOcc" onclick="filterGridStatus('OCCUPIED')"><i
-                                                    class="bi bi-circle-fill me-1 text-danger"></i>Occupied</button>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-3 small">
-                                        <span class="text-success fw-semibold"><i
-                                                class="bi bi-check-circle-fill me-1"></i>Available: <strong
-                                                id="layoutCountAvailable">0</strong></span>
-                                        <span class="text-warning text-dark fw-semibold"><i
-                                                class="bi bi-bookmark-fill me-1"></i>Booked: <strong
-                                                id="layoutCountReserved">0</strong></span>
-                                        <span class="text-danger fw-semibold"><i
-                                                class="bi bi-person-fill-check me-1"></i>Occupied: <strong
-                                                id="layoutCountOccupied">0</strong></span>
-                                    </div>
-                                </div>
-                            </div>
-
+                        <div id="gridVisualLayoutContainer" class="mb-3">
                             <!-- Dynamic Cards Container rendered by renderRoomLayoutCards() -->
                             <div id="roomLayoutCardsContainer"></div>
                         </div>
@@ -4400,7 +4352,7 @@
                 });
             }
 
-            // Visual Card-Based Room Layout Grid (Requirement 3)
+            // Visual Card-Based Room Layout Grid (Requirement 3 - Compact Design for Minimal Scrolling)
             function renderRoomLayoutCards() {
                 const container = document.getElementById('roomLayoutCardsContainer');
                 if (!container) return;
@@ -4427,10 +4379,10 @@
 
                 if (rooms.length === 0) {
                     container.innerHTML = `
-                        <div class="alert alert-light border text-center py-5">
-                            <i class="bi bi-door-closed fs-1 text-muted d-block mb-2"></i>
-                            <h6 class="fw-bold text-muted">No rooms match the selected floor and status criteria.</h6>
-                            <button class="btn btn-sm btn-outline-primary mt-2" onclick="filterGridStatus('all'); filterGridFloor('all');">Reset Filters</button>
+                        <div class="alert alert-light border text-center py-4">
+                            <i class="bi bi-door-closed fs-3 text-muted d-block mb-1"></i>
+                            <h6 class="fw-bold text-muted small mb-1">No rooms match the selected criteria.</h6>
+                            <button class="btn btn-xs btn-outline-primary" onclick="filterGridStatus('all'); filterGridFloor('all');">Reset Filters</button>
                         </div>
                     `;
                     return;
@@ -4448,76 +4400,75 @@
                     if (floorRooms.length === 0) return;
 
                     html += `
-                        <div class="mb-4">
-                            <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
-                                <h6 class="fw-bold text-navy mb-0"><i class="bi bi-layers-fill text-warning me-2"></i>${fl.title}</h6>
-                                <span class="badge bg-secondary">${floorRooms.length} Lodging Units</span>
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center justify-content-between mb-2 border-bottom pb-1">
+                                <h6 class="fw-bold text-navy mb-0" style="font-size:0.85rem;"><i class="bi bi-layers-fill text-warning me-2"></i>${fl.title}</h6>
+                                <span class="badge bg-secondary py-0 px-2" style="font-size:0.68rem;">${floorRooms.length} Units</span>
                             </div>
-                            <div class="row g-3">
+                            <div class="row g-2">
                     `;
 
                     floorRooms.forEach(room => {
                         let statusColor = 'success';
-                        let statusBadge = '<span class="badge bg-success px-2 py-1"><i class="bi bi-check-circle-fill me-1"></i>Available</span>';
+                        let statusBadge = '<span class="badge bg-success px-1 py-0" style="font-size:0.65rem;"><i class="bi bi-check-circle-fill me-1"></i>Avail</span>';
                         let cardBg = 'bg-white';
                         let borderStyle = 'border-success';
 
                         if (room.status === 'RESERVED') {
                             statusColor = 'warning';
-                            statusBadge = '<span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-bookmark-fill me-1"></i>Booked / Allotted</span>';
+                            statusBadge = '<span class="badge bg-warning text-dark px-1 py-0" style="font-size:0.65rem;"><i class="bi bi-bookmark-fill me-1"></i>Booked</span>';
                             cardBg = 'bg-warning bg-opacity-10';
                             borderStyle = 'border-warning';
                         } else if (room.status === 'OCCUPIED') {
                             statusColor = 'danger';
-                            statusBadge = '<span class="badge bg-danger text-white px-2 py-1"><i class="bi bi-person-fill-check me-1"></i>Occupied / In-House</span>';
+                            statusBadge = '<span class="badge bg-danger text-white px-1 py-0" style="font-size:0.65rem;"><i class="bi bi-person-fill-check me-1"></i>In-House</span>';
                             cardBg = 'bg-danger bg-opacity-10';
                             borderStyle = 'border-danger';
                         } else if (room.status === 'MAINTENANCE') {
                             statusColor = 'secondary';
-                            statusBadge = '<span class="badge bg-secondary text-white px-2 py-1"><i class="bi bi-tools me-1"></i>Under Maintenance</span>';
+                            statusBadge = '<span class="badge bg-secondary text-white px-1 py-0" style="font-size:0.65rem;"><i class="bi bi-tools me-1"></i>Maint</span>';
                             cardBg = 'bg-light';
                             borderStyle = 'border-secondary';
                         }
 
-                        let authBadge = room.isVvip
-                            ? `<span class="badge bg-danger-subtle text-danger border border-danger"><i class="bi bi-crown me-1"></i>VC Secretariat Sanction</span>`
-                            : `<span class="badge bg-primary-subtle text-primary border border-primary"><i class="bi bi-building me-1"></i>Estate Office Allotted</span>`;
+                        let authBadge = room.isVvip 
+                            ? `<span class="badge bg-danger-subtle text-danger border border-danger px-1 py-0" style="font-size:0.62rem;"><i class="bi bi-crown me-1"></i>VC</span>`
+                            : `<span class="badge bg-primary-subtle text-primary border border-primary px-1 py-0" style="font-size:0.62rem;"><i class="bi bi-building me-1"></i>Estate</span>`;
 
                         html += `
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-                                <div class="card h-100 shadow-sm border-2 ${borderStyle} ${cardBg}">
-                                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-2 border-bottom">
-                                        <div>
-                                            <span class="fw-bold text-navy fs-6">${escapeHtml(room.name)}</span>
-                                            <div class="text-muted" style="font-size:0.7rem;">${escapeHtml(room.type)} &bull; ${escapeHtml(room.capacity)}</div>
+                            <div class="col-xxl-2 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6">
+                                <div class="card h-100 shadow-xs border ${borderStyle} ${cardBg}">
+                                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-1 px-2 border-bottom">
+                                        <div class="text-truncate me-1">
+                                            <span class="fw-bold text-navy" style="font-size:0.8rem;">${escapeHtml(room.name)}</span>
+                                            <div class="text-muted text-truncate" style="font-size:0.64rem;">${escapeHtml(room.type)}</div>
                                         </div>
                                         ${statusBadge}
                                     </div>
-                                    <div class="card-body p-3 small d-flex flex-column justify-content-between">
+                                    <div class="card-body p-2 d-flex flex-column justify-content-between">
                                         <div>
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <span class="text-muted" style="font-size:0.72rem;">Authority:</span>
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <span class="text-muted" style="font-size:0.64rem;">Auth:</span>
                                                 ${authBadge}
                                             </div>
                                             ${room.guest ? `
-                                                <div class="p-2 rounded bg-white border mb-2 shadow-xs">
-                                                    <div class="fw-bold text-dark text-truncate" title="${escapeHtml(room.guest)}">
+                                                <div class="p-1 px-2 rounded bg-white border mb-1 shadow-xs">
+                                                    <div class="fw-bold text-dark text-truncate" style="font-size:0.7rem;" title="${escapeHtml(room.guest)}">
                                                         <i class="bi bi-person-fill text-primary me-1"></i>${escapeHtml(room.guest)}
                                                     </div>
-                                                    ${room.dossierRef ? `<div class="text-muted" style="font-size:0.72rem;"><strong>Ref:</strong> <span class="badge bg-light text-dark border">${escapeHtml(room.dossierRef)}</span></div>` : ''}
-                                                    <div class="text-muted mt-1" style="font-size:0.72rem;">
-                                                        <i class="bi bi-calendar3 me-1 text-success"></i><strong>Stay:</strong> ${escapeHtml(room.dates || 'Active')}
+                                                    <div class="d-flex justify-content-between align-items-center text-muted mt-1" style="font-size:0.62rem;">
+                                                        <span class="text-truncate"><i class="bi bi-calendar3 me-1 text-success"></i>${escapeHtml(room.dates || 'Active')}</span>
+                                                        ${room.dossierRef ? `<span class="badge bg-light text-dark border py-0 px-1 ms-1">${escapeHtml(room.dossierRef)}</span>` : ''}
                                                     </div>
-                                                    ${room.category ? `<div class="text-muted text-truncate" style="font-size:0.7rem;" title="${escapeHtml(room.category)}"><i class="bi bi-tag me-1"></i>${escapeHtml(room.category)}</div>` : ''}
                                                 </div>
                                             ` : `
-                                                <div class="p-3 rounded bg-white bg-opacity-75 border text-muted fst-italic mb-2 text-center" style="font-size:0.75rem;">
-                                                    <i class="bi bi-door-open text-success me-1 fs-5 d-block mb-1"></i>Vacant &bull; Ready for allotment
+                                                <div class="py-1 px-2 rounded bg-white bg-opacity-75 border text-muted text-center mb-1" style="font-size:0.68rem;">
+                                                    <i class="bi bi-door-open text-success me-1"></i>Vacant &bull; Ready
                                                 </div>
                                             `}
                                         </div>
-                                        <button class="btn btn-sm btn-outline-primary w-100 mt-2" onclick="openRoomActionModal('${escapeHtml(room.name)}', '${room.isVvip ? 'vvip' : 'room'}', '${room.floor}')">
-                                            <i class="bi bi-info-circle me-1"></i> Room Occupancy &amp; Details
+                                        <button class="btn btn-outline-primary w-100 py-0 mt-1" style="font-size:0.68rem; line-height: 1.5;" onclick="openRoomActionModal('${escapeHtml(room.name)}', '${room.isVvip ? 'vvip' : 'room'}', '${room.floor}')">
+                                            <i class="bi bi-info-circle me-1"></i>Details
                                         </button>
                                     </div>
                                 </div>
