@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
                 'id' => 2,
                 'organization_unit_id' => 5,
                 'employee_id' => 'EMP-002',
-                'name' => 'Dr. Dev Raj',
+                'name' => 'Estate Office',
                 'email' => 'estate.officer@yspuniversity.ac.in',
                 'password' => Hash::make('password123'),
                 'designation' => 'Estate Officer (Handles All Sets except VVIP)',

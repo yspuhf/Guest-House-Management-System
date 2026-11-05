@@ -399,7 +399,7 @@
                     class="d-flex align-items-center text-white bg-dark bg-opacity-25 px-3 py-1 rounded border border-warning border-opacity-75">
                     <i class="bi bi-building fs-5 text-warning me-2" id="currentUserIcon"></i>
                     <div class="text-start">
-                        <div class="fw-semibold text-white small lh-1" id="currentUserName">Dr. Dev Raj (Estate Officer)
+                        <div class="fw-semibold text-white small lh-1" id="currentUserName">Estate Office
                         </div>
                         <small class="text-white-50" style="font-size: 0.68rem;"
                             id="currentUserEmail">estate.officer@yspuniversity.ac.in</small>
@@ -3056,7 +3056,7 @@
                                             class="text-danger">*</span></label>
                                     <select class="form-select fw-bold" id="notifFormAuthority" required
                                         onchange="onNotifAuthorityChange()">
-                                        <option value="estate">Estate Office (Dr. Dev Raj, Estate Officer)</option>
+                                        <option value="estate">Estate Office</option>
                                         <option value="vc">Hon'ble Vice-Chancellor Secretariat (Apex Authority)</option>
                                     </select>
                                     <small class="text-muted" id="notifAuthorityHint">Enforced under competent
@@ -3117,7 +3117,7 @@
                                     <label class="form-label fw-bold small text-navy">Signatory Official <span
                                             class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="notifFormSignatory"
-                                        placeholder="e.g. Dr. Dev Raj (Estate Officer)" required>
+                                        placeholder="e.g. Estate Office" required>
                                 </div>
                             </div>
 
@@ -3800,11 +3800,11 @@
                 const emailEl = document.getElementById('currentUserEmail');
                 if (emailEl) emailEl.innerText = email;
 
-                let name = 'Dr. Dev Raj (Estate Officer)';
+                let name = 'Estate Office';
                 let iconClass = 'bi bi-building fs-5 text-warning me-2';
 
                 if (roleKey === 'estate_admin') {
-                    name = 'Dr. Dev Raj (Estate Officer)';
+                    name = 'Estate Office';
                     iconClass = 'bi bi-building fs-5 text-warning me-2';
                 } else if (roleKey === 'vc_secretariat') {
                     name = 'Secretary to Vice-Chancellor (VC Secretariat)';
@@ -4809,7 +4809,7 @@
                         <div class="col-6"><strong>Bed Capacity:</strong> ${room.capacity}</div>
                         <div class="col-6"><strong>Current Status:</strong> <span class="badge ${room.status === 'AVAILABLE' ? 'bg-success' : 'bg-warning text-dark'}">${room.status}</span></div>
                         <div class="col-12 mt-2"><strong>Occupant / Dossier:</strong> ${escapeHtml(room.guest || 'None (Room currently vacant & ready for allocation)')}</div>
-                        <div class="col-12"><strong>Sanction Body:</strong> ${isVvip ? 'Vice-Chancellor Secretariat' : 'Estate Officer (Dr. Dev Raj)'}</div>
+                        <div class="col-12"><strong>Sanction Body:</strong> ${isVvip ? 'Vice-Chancellor Secretariat' : 'Estate Office'}</div>
                     </div>
                 </div>
 
@@ -6677,7 +6677,7 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                     category: "Tariffs & Stay Charges",
                     authority: "estate",
                     authorityLabel: "Estate Office",
-                    signatory: "Dr. Dev Raj, Estate Officer",
+                    signatory: "Estate Office",
                     issueDate: "25/07/2026",
                     effectiveDate: "01/08/2026",
                     fileName: "Notification_1615-40_Signed.pdf",
@@ -6713,7 +6713,7 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                     category: "Operational Guidelines",
                     authority: "estate",
                     authorityLabel: "Estate Office",
-                    signatory: "Dr. Dev Raj, Estate Officer",
+                    signatory: "Estate Office",
                     issueDate: "10/09/2026",
                     effectiveDate: "15/09/2026",
                     fileName: "SOP_CheckIn_Verification_2026.pdf",
@@ -6818,7 +6818,7 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                     if (hint) hint.innerHTML = '<span class="text-danger fw-bold"><i class="bi bi-crown me-1"></i>Apex Executive Jurisdiction (VC Secretariat)</span>';
                     if (cat && cat.value === 'Tariffs & Stay Charges') cat.value = 'Presidential VVIP Directives';
                 } else {
-                    if (signInput && signInput.value.includes('Vice-Chancellor')) signInput.value = 'Dr. Dev Raj, Estate Officer';
+                    if (signInput && signInput.value.includes('Vice-Chancellor')) signInput.value = 'Estate Office';
                     if (hint) hint.innerHTML = '<span class="text-warning fw-bold"><i class="bi bi-building me-1"></i>Estate Office Jurisdiction</span>';
                 }
             }
@@ -6948,7 +6948,7 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                     document.getElementById('notifFormCategory').value = 'Presidential VVIP Directives';
                 } else {
                     if (authSelect) authSelect.value = 'estate';
-                    if (signInput) signInput.value = 'Dr. Dev Raj, Estate Officer';
+                    if (signInput) signInput.value = 'Estate Office';
                     document.getElementById('notifFormOrderNum').value = 'UHF/EO-GH/2026/' + Math.floor(100 + Math.random() * 900);
                     document.getElementById('notifFormCategory').value = 'Tariffs & Stay Charges';
                 }
