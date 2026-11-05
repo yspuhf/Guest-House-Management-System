@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             SystemSettingSeeder::class,
             ApprovalWorkflowSeeder::class,
             EmailTemplateSeeder::class,
-            DemoBookingSeeder::class,
         ]);
     }
 }

@@ -552,13 +552,12 @@
                                 Number:</label>
                             <div class="input-group">
                                 <input type="text" id="trackInputCode" class="form-control"
-                                    placeholder="e.g. GH-2026-10-0001" value="GH-2026-10-0001">
+                                    placeholder="Enter Booking Reference (e.g. GH-2026-...) or Mobile" value="">
                                 <button class="btn btn-gold" onclick="executeTracking()">
                                     <i class="bi bi-search me-1"></i> Search
                                 </button>
                             </div>
-                            <small class="text-muted mt-2 d-block">Sample Demo Dossiers: <code>GH-2026-10-0001</code>
-                                (Estate Office)</small>
+                            
                         </div>
                     </div>
                 </div>
@@ -568,7 +567,7 @@
                     <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
                         <div>
                             <span class="badge bg-success" id="trackBadge">CHECKED_IN</span>
-                            <h5 class="fw-bold mt-1 mb-0" id="trackTitle">Booking #GH-2026-10-0001</h5>
+                            <h5 class="fw-bold mt-1 mb-0" id="trackTitle">Booking #GH-2026-XXXXXX</h5>
                         </div>
                         <div class="text-end">
                             <small class="text-muted d-block">Managing Wing &amp; Set</small>
@@ -751,7 +750,7 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold small">1. Name of the Applicant *</label>
                                 <input type="text" id="modalGuestName" class="form-control"
-                                    placeholder="e.g. Dr. A. K. Verma" required>
+                                    placeholder="Enter Applicant Full Name" required>
                             </div>
 
                             <!-- 2. Designation -->
@@ -1692,87 +1691,7 @@
             });
         }
 
-        const defaultInitialDossiers = [
-            {
-                ref: 'GH-2026-10-0001',
-                guest: 'Dr. A. K. Verma',
-                designation: 'ICAR National Professor, New Delhi',
-                wing: 'Estate Office Wing',
-                wingType: 'estate',
-                room: 'VIP Suite #101',
-                roomClass: 'vip',
-                isVvip: false,
-                dates: '28/10/2026 &rarr; 31/10/2026',
-                duration: '3 Nights &bull; 1 Guest',
-                category: '1(i) HP/Univ/ICAR Official (\u20B91,500)',
-                status: 'CHECKED_IN',
-                handledBy: 'estate'
-            },
-            {
-                ref: 'GH-2026-10-0002',
-                guest: 'Sh. Suresh Kumar, IAS',
-                designation: 'Joint Secretary, Agriculture (H.P.)',
-                wing: 'Estate Office Wing',
-                wingType: 'estate',
-                room: 'VIP Suites Annexe #02',
-                roomClass: 'vip',
-                isVvip: false,
-                dates: '29/10/2026 &rarr; 01/11/2026',
-                duration: '3 Nights &bull; 2 Guests',
-                category: '1(i) HP Govt/State Official (\u20B91,500)',
-                status: 'APPROVED',
-                handledBy: 'estate'
-            },
-            {
-                ref: 'GH-2026-10-0003',
-                guest: 'Sh. Tenzin Norbu & Delegation',
-                designation: 'Agricultural Officer, Thimphu, Bhutan',
-                wing: 'Estate Office Wing',
-                wingType: 'estate',
-                room: 'Main GH &bull; VVIP Suite #201 (Presidential)',
-                roomClass: 'vvip',
-                isVvip: true,
-                dates: '01/11/2026 &rarr; 04/11/2026',
-                duration: '3 Nights &bull; 2 Guests',
-                category: '5. Nepal & Bhutan Delegates (\u20B93,500)',
-                status: 'PENDING_VC_APPROVAL',
-                handledBy: 'vc',
-                sponsor: 'Prof. S. K. Bhardwaj, Dept of Silviculture',
-                tariff: '\u20B93,500 / night (Total: \u20B910,500 + GST)'
-            },
-            {
-                ref: 'GH-2026-10-0005',
-                guest: 'Prof. V. K. Rao & ICAR Team',
-                designation: 'Assistant Director General, ICAR New Delhi',
-                wing: 'Estate Office Wing',
-                wingType: 'estate',
-                room: 'Main GH &bull; VIP Suite #102',
-                roomClass: 'vip',
-                isVvip: false,
-                dates: '02/11/2026 &rarr; 05/11/2026',
-                duration: '3 Nights &bull; 1 Guest',
-                category: '1(i) HP/Univ/ICAR Official (\u20B91,500)',
-                status: 'PENDING_ESTATE_APPROVAL',
-                handledBy: 'estate',
-                sponsor: 'Dean, College of Horticulture',
-                tariff: '\u20B91,500 / night (Total: \u20B94,500 + GST)'
-            },
-            {
-                ref: 'GH-2026-10-0004',
-                guest: 'Sh. Ramesh Sharma & 15 Farmers',
-                designation: 'Apple Growers Association, Rohru',
-                wing: 'Estate Office Wing',
-                wingType: 'estate',
-                room: 'Main GH &bull; Dormitory Bed #01',
-                roomClass: 'dormitory',
-                isVvip: false,
-                dates: '05/11/2026 &rarr; 07/11/2026',
-                duration: '2 Nights &bull; 15 Beds',
-                category: 'Farmers & Trainees Group (\u20B9100)',
-                status: 'SUBMITTED',
-                handledBy: 'estate'
-            }
-        ];
+        const defaultInitialDossiers = [];
 
         function escapeHtml(str) {
             if (str === null || str === undefined) return '';
@@ -1789,14 +1708,19 @@
                 const stored = localStorage.getItem('uhf_institutional_dossiers');
                 if (stored) {
                     const parsed = JSON.parse(stored);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        return parsed;
+                    if (Array.isArray(parsed)) {
+                        // Purge legacy demo dossiers
+                        const cleaned = parsed.filter(d => !d.ref || !d.ref.startsWith('GH-2026-10-000'));
+                        if (cleaned.length !== parsed.length) {
+                            localStorage.setItem('uhf_institutional_dossiers', JSON.stringify(cleaned));
+                        }
+                        return cleaned;
                     }
                 }
             } catch (e) {
                 console.error("Error reading uhf_institutional_dossiers", e);
             }
-            return [...defaultInitialDossiers];
+            return [];
         }
 
         function saveInstitutionalDossiers(dossiers) {

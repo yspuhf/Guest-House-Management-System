@@ -594,8 +594,10 @@ try {
     $allotRes = Invoke-Evaluate $prevConn @'
 (() => {
     window.alert = () => {};
-    // Find pending dossier GH-2026-10-0005
-    openSanctionAllotmentModal('GH-2026-10-0005');
+    // Find active pending dossier
+    const pendingDossier = institutionalDossiers.find(d => d.status && d.status.includes('PENDING') && d.guest && !d.guest.includes('<')) || institutionalDossiers.find(d => d.status && d.status.includes('PENDING')) || institutionalDossiers[0];
+    const targetRef = pendingDossier ? pendingDossier.ref : '';
+    openSanctionAllotmentModal(targetRef);
     const selectEl = document.getElementById('allotmentRoomSelect');
     const optCount = selectEl.options.length;
 
@@ -607,7 +609,7 @@ try {
     if (availableOpt) selectEl.value = availableOpt;
     confirmSanctionAndAllotment();
 
-    const dossier = institutionalDossiers.find(d => d.ref === 'GH-2026-10-0005');
+    const dossier = institutionalDossiers.find(d => d.ref === targetRef);
     const allottedRoom = guestHouseInventory.find(r => r.id === dossier.allottedRoomId);
 
     // Test conflict prevention: attempt to allot the exact same room to another dossier
@@ -659,10 +661,13 @@ try {
     const rows = document.getElementById('billingTableBody').children.length;
 
     // Check Stay Invoice Modal content
-    showReceiptModal('GH-2026-10-0001', 'stay');
+    const residentDossier = institutionalDossiers.find(d => (d.status === 'CHECKED_IN' || d.status === 'APPROVED') && d.guest && !d.guest.includes('<')) || institutionalDossiers.find(d => d.guest && !d.guest.includes('<')) || institutionalDossiers[0];
+    const residentRef = residentDossier ? residentDossier.ref : '';
+    showReceiptModal(residentRef, 'stay');
     const stayHtml = document.getElementById('printableReceipt').innerHTML;
     const hasStayHeader = stayHtml.includes('STAY CHARGES INVOICE (NON-GST)');
-    const hasCheckedInGuest = stayHtml.includes('Dr. A. K. Verma');
+    const guestName = residentDossier ? residentDossier.guest : '';
+    const hasCheckedInGuest = stayHtml.includes(guestName) || (typeof escapeHtml === 'function' && stayHtml.includes(escapeHtml(guestName)));
     const hasStayZeroGst = stayHtml.includes('GST @ 0%');
 
     // Check Dining Invoice Modal content
