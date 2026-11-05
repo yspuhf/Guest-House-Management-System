@@ -1308,17 +1308,8 @@
                                                         placeholder="Academic conference / External viva examination / Official university inspection..."></textarea>
                                                 </div>
 
-                                                <!-- 8. Whether Official / Private visit -->
-                                                <div class="col-md-4">
-                                                    <label class="form-label fw-semibold text-primary"><i class="bi bi-briefcase me-1"></i>8. Visit Type *</label>
-                                                    <select class="form-select fw-semibold border-primary" id="bookingVisitType" onchange="onAdminVisitTypeChange()">
-                                                        <option value="Official" selected>Official Visit (Govt / University)</option>
-                                                        <option value="Private">Private Visit</option>
-                                                    </select>
-                                                </div>
-
                                                 <!-- 9. No. of suite(s) required -->
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <label class="form-label fw-semibold text-success"><i class="bi bi-door-open me-1"></i>9. No. of Suite(s) Required *</label>
                                                     <select class="form-select fw-bold border-success text-success" id="bookingSuitesRequired" onchange="calculateTariffEstimate()">
                                                         <option value="1" selected>1 Suite / Room</option>
@@ -1330,7 +1321,7 @@
                                                 </div>
 
                                                 <!-- 10. Whether independent suite(s) required or can be shared -->
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <label class="form-label fw-semibold"><i class="bi bi-people me-1"></i>10. Occupancy Preference *</label>
                                                     <select class="form-select" id="bookingSharingPreference">
                                                         <option value="Independent Suite" selected>Independent Suite Required</option>
@@ -3919,7 +3910,7 @@
                             <p class="mb-1"><strong>Designation:</strong> ${escapeHtml(dossier.designation || 'Visiting Delegate')}</p>
                             <p class="mb-1"><strong>Institution / Firm:</strong> ${escapeHtml(dossier.institutionAddress || dossier.sponsor || 'On Record')}</p>
                             ${dossier.homeAddress ? `<p class="mb-1"><strong>Home Address:</strong> ${escapeHtml(dossier.homeAddress)}</p>` : ''}
-                            <p class="mb-1"><strong>Aadhar No.:</strong> ${escapeHtml(dossier.aadharNo || 'On Record')} &bull; <strong>Visit:</strong> <span class="badge ${dossier.visitType === 'Private' ? 'bg-secondary' : 'bg-success'}">${escapeHtml(dossier.visitType || 'Official')}</span></p>
+                            <p class="mb-1"><strong>Aadhar No.:</strong> ${escapeHtml(dossier.aadharNo || 'On Record')}</p>
                             <p class="mb-1"><strong>Category:</strong> ${escapeHtml(dossier.category)}</p>
                             <p class="mb-1"><strong>Suites:</strong> ${dossier.suitesRequired || 1} Suite(s) &bull; <strong>Sharing:</strong> ${escapeHtml(dossier.sharingPreference || 'Independent Suite')}</p>
                         </div>
@@ -5097,7 +5088,6 @@
                 const guestEmail = document.getElementById('guestEmail') ? document.getElementById('guestEmail').value.trim() : '';
                 const affiliation = document.getElementById('guestAffiliation') ? document.getElementById('guestAffiliation').value.trim() : '';
                 const purpose = document.getElementById('guestPurpose') ? document.getElementById('guestPurpose').value.trim() : '';
-                const visitType = document.getElementById('bookingVisitType') ? document.getElementById('bookingVisitType').value : 'Official';
                 const suitesRequired = parseInt(document.getElementById('bookingSuitesRequired') ? document.getElementById('bookingSuitesRequired').value : 1) || 1;
                 const sharingPreference = document.getElementById('bookingSharingPreference') ? document.getElementById('bookingSharingPreference').value : 'Independent Suite';
 
@@ -5136,7 +5126,6 @@
                     mobile: guestMobile,
                     email: guestEmail,
                     aadharNo: guestAadhar,
-                    visitType: visitType,
                     suitesRequired: suitesRequired,
                     sharingPreference: sharingPreference,
                     wing: wingLabel,

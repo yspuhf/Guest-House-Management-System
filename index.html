@@ -777,24 +777,15 @@
                             </div>
 
                             <!-- 5. Telephone/Mobile No., if any -->
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label class="form-label fw-semibold small">5. Telephone / Mobile No. *</label>
                                 <input type="tel" id="modalMobile" class="form-control" placeholder="10-digit mobile" required>
                             </div>
 
                             <!-- 6. Aadhar No. -->
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label class="form-label fw-semibold small">6. Aadhar No. <small class="text-muted">(UID Number)</small></label>
                                 <input type="text" id="modalAadhar" class="form-control" placeholder="12-digit Aadhaar UID" maxlength="14">
-                            </div>
-
-                            <!-- 8. Whether Official / Private visit -->
-                            <div class="col-md-4">
-                                <label class="form-label fw-semibold small text-primary"><i class="bi bi-briefcase me-1"></i>8. Visit Type *</label>
-                                <select class="form-select fw-semibold border-primary" id="modalVisitType" onchange="onModalVisitTypeChange()">
-                                    <option value="Official" selected>Official Visit</option>
-                                    <option value="Private">Private Visit</option>
-                                </select>
                             </div>
 
                             <!-- 7. Purpose of visit -->
@@ -1690,23 +1681,6 @@
             document.getElementById('modalTotal').innerText = `₹${total.toFixed(2)}`;
         }
 
-        function onModalVisitTypeChange() {
-            const vType = document.getElementById('modalVisitType') ? document.getElementById('modalVisitType').value : 'Official';
-            const catSelect = document.getElementById('modalCategory');
-            if (!catSelect) return;
-            for (let i = 0; i < catSelect.options.length; i++) {
-                const opt = catSelect.options[i];
-                if (vType === 'Official' && (opt.value.includes('official') || opt.text.toLowerCase().includes('official'))) {
-                    catSelect.selectedIndex = i;
-                    break;
-                } else if (vType === 'Private' && (opt.value.includes('private') || opt.text.toLowerCase().includes('private'))) {
-                    catSelect.selectedIndex = i;
-                    break;
-                }
-            }
-            calcModalTariff();
-        }
-
         function filterRoomsByWing(wing, btn) {
             document.querySelectorAll('.room-card-col').forEach(card => {
                 const cardWing = card.getAttribute('data-wing');
@@ -1905,9 +1879,6 @@
                 const aadharEl = document.getElementById('modalAadhar');
                 const aadharNo = aadharEl ? aadharEl.value.trim() : '';
 
-                const visitTypeEl = document.getElementById('modalVisitType');
-                const visitType = visitTypeEl ? visitTypeEl.value : 'Official';
-
                 const suitesReqEl = document.getElementById('modalSuitesRequired');
                 const suitesRequired = suitesReqEl ? (parseInt(suitesReqEl.value, 10) || 1) : 1;
 
@@ -1958,7 +1929,6 @@
                     homeAddress: homeAddress,
                     mobile: mobile,
                     aadharNo: aadharNo,
-                    visitType: visitType,
                     suitesRequired: suitesRequired,
                     sharingPreference: sharingPreference,
                     wing: wingName,
