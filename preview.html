@@ -553,6 +553,26 @@
                             </div>
                         </div>
 
+                        <!-- Hon'ble Vice-Chancellor Secretariat VVIP Presidential Suites Layout & Allotment Rack -->
+                        <div id="vcVvipLayoutSection" class="card border-0 shadow-sm mb-4" style="display:none;">
+                            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-2 flex-wrap gap-2">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-crown text-danger fs-5"></i>
+                                    <span class="fw-bold font-serif">Hon'ble Vice-Chancellor Secretariat &bull; VVIP Presidential Suites Allocation &amp; Layout</span>
+                                </div>
+                                <span class="badge bg-danger"><i class="bi bi-shield-lock-fill me-1"></i>Apex Competent Authority</span>
+                            </div>
+                            <div class="card-body p-3 bg-light">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <small class="text-muted"><i class="bi bi-info-circle me-1"></i>Live allocation status of Presidential Suites sanctioned exclusively by the VC Secretariat</small>
+                                    <span class="badge bg-dark">4 VVIP Units &bull; Top &amp; First Floor</span>
+                                </div>
+                                <div class="row g-3" id="vcVvipRackCards">
+                                    <!-- Dynamic VVIP cards rendered by renderVcVvipRack() -->
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Institutional Key Operational Metrics (Section 7 Dashboard Statistics) -->
                         <div class="row g-2 mb-3">
                             <div class="col-xl-2 col-md-4 col-6">
@@ -1425,13 +1445,17 @@
                             </div>
                             <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <button type="button" class="btn btn-primary active fw-bold" id="btnViewMatrix"
-                                        onclick="setGridViewMode('matrix')">
-                                        <i class="bi bi-calendar3 me-1"></i> 7-Day Matrix Grid
+                                    <button type="button" class="btn btn-primary active fw-bold" id="btnViewLayoutGrid"
+                                        onclick="setGridViewMode('layoutgrid')">
+                                        <i class="bi bi-grid-3x3-gap-fill me-1"></i> Room Layout Grid
                                     </button>
                                     <button type="button" class="btn btn-outline-primary fw-bold" id="btnViewBlueprint"
                                         onclick="setGridViewMode('blueprint')">
                                         <i class="bi bi-diagram-3 me-1"></i> Floor Plan Blueprint
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary fw-bold" id="btnViewMatrix"
+                                        onclick="setGridViewMode('matrix')">
+                                        <i class="bi bi-calendar3 me-1"></i> 7-Day Matrix Grid
                                     </button>
                                 </div>
                             </div>
@@ -1563,8 +1587,34 @@
                             </div>
                         </div>
 
-                        <!-- VIEW MODE 1: 7-DAY MATRIX TABLE -->
-                        <div id="gridMatrixContainer" class="card border-0 shadow-sm mb-4">
+                        <!-- VIEW MODE 1: VISUAL ROOM LAYOUT GRID (CARDS WITH COLOUR-CODED STATUSES) -->
+                        <div id="gridVisualLayoutContainer" class="mb-4">
+                            <!-- Quick Status Legend & Filter Bar -->
+                            <div class="card border-0 shadow-sm mb-3">
+                                <div class="card-body p-2 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <label class="small fw-bold text-muted text-uppercase mb-0"><i class="bi bi-funnel me-1"></i>Status Filter:</label>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button type="button" class="btn btn-outline-secondary active fw-semibold" id="btnStatusFilterAll" onclick="filterGridStatus('all')">All Statuses</button>
+                                            <button type="button" class="btn btn-outline-success fw-semibold" id="btnStatusFilterAvail" onclick="filterGridStatus('AVAILABLE')"><i class="bi bi-circle-fill me-1 text-success"></i>Available</button>
+                                            <button type="button" class="btn btn-outline-warning text-dark fw-semibold" id="btnStatusFilterRes" onclick="filterGridStatus('RESERVED')"><i class="bi bi-circle-fill me-1 text-warning"></i>Booked / Allotted</button>
+                                            <button type="button" class="btn btn-outline-danger fw-semibold" id="btnStatusFilterOcc" onclick="filterGridStatus('OCCUPIED')"><i class="bi bi-circle-fill me-1 text-danger"></i>Occupied</button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-3 small">
+                                        <span class="text-success fw-semibold"><i class="bi bi-check-circle-fill me-1"></i>Available: <strong id="layoutCountAvailable">0</strong></span>
+                                        <span class="text-warning text-dark fw-semibold"><i class="bi bi-bookmark-fill me-1"></i>Booked: <strong id="layoutCountReserved">0</strong></span>
+                                        <span class="text-danger fw-semibold"><i class="bi bi-person-fill-check me-1"></i>Occupied: <strong id="layoutCountOccupied">0</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dynamic Cards Container rendered by renderRoomLayoutCards() -->
+                            <div id="roomLayoutCardsContainer"></div>
+                        </div>
+
+                        <!-- VIEW MODE 2: 7-DAY MATRIX TABLE -->
+                        <div id="gridMatrixContainer" class="card border-0 shadow-sm mb-4" style="display:none;">
                             <div class="card-body p-0">
                                 <div class="table-responsive">
                                     <table class="table table-bordered mb-0 align-middle small table-hover"
@@ -1591,7 +1641,7 @@
                                     allocation
                                     authority</small>
                             </div>
-                            <div class="card-body p-4 bg-light">
+                            <div class="card-body p-4 bg-light" id="blueprintSchematicBody">
                                 <!-- TOP FLOOR BLUEPRINT ROW -->
                                 <div class="mb-4">
                                     <div class="d-flex align-items-center mb-2">
@@ -3006,7 +3056,8 @@
 
             // Master Live Dossiers with Strict Institutional Jurisdiction
             let currentGridFloor = 'all';
-            let currentGridViewMode = 'matrix';
+            let currentGridViewMode = 'layoutgrid';
+            let currentGridStatus = 'all';
 
             // Master University Main Guest House Room Rack (Strictly mapped to Images 1 & 2)
             const defaultMasterInventory = [
@@ -3169,6 +3220,63 @@
             }
 
             let guestHouseInventory = getRoomInventory();
+
+            // Synchronize guestHouseInventory with institutionalDossiers
+            function syncRoomInventoryWithDossiers() {
+                if (!Array.isArray(guestHouseInventory) || !Array.isArray(institutionalDossiers)) return;
+
+                institutionalDossiers.forEach(dossier => {
+                    if (['APPROVED', 'CHECKED_IN', 'RESERVED'].includes(dossier.status)) {
+                        let room = null;
+                        if (dossier.allottedRoomId) {
+                            room = guestHouseInventory.find(r => r.id === dossier.allottedRoomId);
+                        }
+                        if (!room && dossier.room) {
+                            room = guestHouseInventory.find(r => dossier.room.includes(r.name) || r.name === dossier.room);
+                        }
+                        if (room) {
+                            room.status = (dossier.status === 'CHECKED_IN') ? 'OCCUPIED' : 'RESERVED';
+                            room.guest = dossier.guest;
+                            room.dates = dossier.dates;
+                            room.category = dossier.category;
+                            room.dossierRef = dossier.ref;
+                            room.handledBy = dossier.isVvip ? 'vc' : 'estate';
+                            dossier.allottedRoomId = room.id;
+                        }
+                    }
+                });
+
+                // Clear rooms tied to rejected or cancelled dossiers
+                guestHouseInventory.forEach(room => {
+                    if (room.dossierRef) {
+                        const d = institutionalDossiers.find(x => x.ref === room.dossierRef);
+                        if (d && (d.status === 'REJECTED' || d.status === 'CANCELLED')) {
+                            room.status = 'AVAILABLE';
+                            room.guest = null;
+                            room.dates = null;
+                            room.category = null;
+                            room.dossierRef = null;
+                        }
+                    }
+                });
+
+                saveRoomInventory(guestHouseInventory);
+            }
+
+            // Status filter handler for Room Layout Grid
+            function filterGridStatus(status) {
+                currentGridStatus = status;
+                ['All', 'Avail', 'Res', 'Occ'].forEach(s => {
+                    const btn = document.getElementById('btnStatusFilter' + s);
+                    if (btn) btn.classList.remove('active');
+                });
+                if (status === 'all') document.getElementById('btnStatusFilterAll')?.classList.add('active');
+                if (status === 'AVAILABLE') document.getElementById('btnStatusFilterAvail')?.classList.add('active');
+                if (status === 'RESERVED') document.getElementById('btnStatusFilterRes')?.classList.add('active');
+                if (status === 'OCCUPIED') document.getElementById('btnStatusFilterOcc')?.classList.add('active');
+
+                renderRoomLayoutCards();
+            }
             let activeReceiptRef = 'GH-2026-10-0001';
             let activeInvoiceType = 'stay';
             let activeReportTab = 'daily';
@@ -3641,7 +3749,9 @@
                 const banner = document.getElementById('accountJurisdictionBanner');
                 if (!banner) return;
 
+                const vcRackSec = document.getElementById('vcVvipLayoutSection');
                 if (currentRole === 'estate_admin') {
+                    if (vcRackSec) vcRackSec.style.display = 'none';
                     banner.className = 'alert d-flex align-items-center mb-4 py-2 px-3 shadow-sm border border-warning alert-warning';
                     banner.innerHTML = `
                     <i class="bi bi-building fs-3 text-warning me-3"></i>
@@ -3651,6 +3761,10 @@
                     </div>
                 `;
                 } else if (currentRole === 'vc_secretariat') {
+                    if (vcRackSec) {
+                        vcRackSec.style.display = 'block';
+                        renderVcVvipRack();
+                    }
                     banner.className = 'alert d-flex align-items-center mb-4 py-2 px-3 shadow-sm border border-danger alert-danger';
                     banner.innerHTML = `
                     <i class="bi bi-crown fs-3 text-danger me-3"></i>
@@ -3976,22 +4090,25 @@
 
             function setGridViewMode(mode) {
                 currentGridViewMode = mode;
-                const matrixEl = document.getElementById('gridMatrixContainer');
+                const layoutEl = document.getElementById('gridVisualLayoutContainer');
                 const blueprintEl = document.getElementById('gridBlueprintContainer');
-                const btnMatrix = document.getElementById('btnViewMatrix');
-                const btnBlueprint = document.getElementById('btnViewBlueprint');
+                const matrixEl = document.getElementById('gridMatrixContainer');
 
-                if (mode === 'matrix') {
-                    if (matrixEl) matrixEl.style.display = 'block';
-                    if (blueprintEl) blueprintEl.style.display = 'none';
-                    if (btnMatrix) btnMatrix.className = 'btn btn-primary active fw-bold';
-                    if (btnBlueprint) btnBlueprint.className = 'btn btn-outline-primary fw-bold';
-                } else {
-                    if (matrixEl) matrixEl.style.display = 'none';
-                    if (blueprintEl) blueprintEl.style.display = 'block';
-                    if (btnMatrix) btnMatrix.className = 'btn btn-outline-primary fw-bold';
-                    if (btnBlueprint) btnBlueprint.className = 'btn btn-primary active fw-bold';
-                }
+                const btnLayout = document.getElementById('btnViewLayoutGrid');
+                const btnBlueprint = document.getElementById('btnViewBlueprint');
+                const btnMatrix = document.getElementById('btnViewMatrix');
+
+                if (layoutEl) layoutEl.style.display = (mode === 'layoutgrid' ? 'block' : 'none');
+                if (blueprintEl) blueprintEl.style.display = (mode === 'blueprint' ? 'block' : 'none');
+                if (matrixEl) matrixEl.style.display = (mode === 'matrix' ? 'block' : 'none');
+
+                if (btnLayout) btnLayout.className = (mode === 'layoutgrid' ? 'btn btn-primary active fw-bold' : 'btn btn-outline-primary fw-bold');
+                if (btnBlueprint) btnBlueprint.className = (mode === 'blueprint' ? 'btn btn-primary active fw-bold' : 'btn btn-outline-primary fw-bold');
+                if (btnMatrix) btnMatrix.className = (mode === 'matrix' ? 'btn btn-primary active fw-bold' : 'btn btn-outline-primary fw-bold');
+
+                if (mode === 'layoutgrid') renderRoomLayoutCards();
+                else if (mode === 'blueprint') renderRoomBlueprint();
+                else if (mode === 'matrix') renderRoomGrid();
             }
 
             function filterGridFloor(floor) {
@@ -4003,10 +4120,40 @@
                         else btn.className = 'btn btn-outline-secondary fw-semibold';
                     }
                 });
+                renderRoomLayoutCards();
                 renderRoomGrid();
             }
 
+            // Check if a specific target date falls within dossier/room date range
+            function isDateInStayRange(targetDate, dateStr) {
+                if (!dateStr) return false;
+                const parts = dateStr.split(/(?:&rarr;|->|to)/i);
+                if (parts.length >= 2) {
+                    const parseDMY = s => {
+                        const dmy = s.trim().split(/[/.-]/);
+                        if (dmy.length === 3) return new Date(parseInt(dmy[2], 10), parseInt(dmy[1], 10) - 1, parseInt(dmy[0], 10));
+                        return null;
+                    };
+                    const s = parseDMY(parts[0]);
+                    const e = parseDMY(parts[1]);
+                    if (s && e) {
+                        const t = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()).getTime();
+                        const st = new Date(s.getFullYear(), s.getMonth(), s.getDate()).getTime();
+                        const et = new Date(e.getFullYear(), e.getMonth(), e.getDate()).getTime();
+                        return (t >= st && t <= et);
+                    }
+                }
+                return false;
+            }
+
             function renderRoomGrid() {
+                syncRoomInventoryWithDossiers();
+
+                // Also update other layout modes
+                renderRoomLayoutCards();
+                renderRoomBlueprint();
+                renderVcVvipRack();
+
                 const thead = document.getElementById('calendarMatrixHead');
                 const tbody = document.getElementById('calendarMatrixBody');
                 if (!thead || !tbody) return;
@@ -4027,7 +4174,7 @@
                     const mmStr = String(d.getMonth() + 1).padStart(2, '0');
                     const yyyyStr = d.getFullYear();
                     const dmy = `${ddStr}/${mmStr}/${yyyyStr}`;
-                    dateList.push({ dayName, dateNum, mon, dmy, isToday: i === 0 });
+                    dateList.push({ dayName, dateNum, mon, dmy, dateObj: d, isToday: i === 0 });
                     headHtml += `<th class="cal-day-cell text-center ${i === 0 ? 'bg-primary text-white' : ''}">${dayName}<br><small>${dmy}${i === 0 ? ' (Today)' : ''}</small></th>`;
                 }
                 headHtml += '</tr>';
@@ -4071,42 +4218,41 @@
                     let roomCellHtml = `
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <span class="fw-bold text-dark">${room.name}</span>
+                            <span class="fw-bold text-dark">${escapeHtml(room.name)}</span>
                             ${authBadge}
-                            <div class="text-muted small" style="font-size:0.7rem;">${room.type} ${capacityPill}</div>
+                            <div class="text-muted small" style="font-size:0.7rem;">${escapeHtml(room.type)} ${capacityPill}</div>
                         </div>
-                        <button class="btn btn-sm btn-link p-0 text-secondary" onclick="openRoomActionModal('${room.name}', '${room.isVvip ? 'vvip' : 'room'}', '${room.floor}')" title="Inspect dossier"><i class="bi bi-info-circle"></i></button>
+                        <button class="btn btn-sm btn-link p-0 text-secondary" onclick="openRoomActionModal('${escapeHtml(room.name)}', '${room.isVvip ? 'vvip' : 'room'}', '${room.floor}')" title="Inspect dossier"><i class="bi bi-info-circle"></i></button>
                     </div>
                 `;
 
                     let rowHtml = `<td class="ps-3 bg-white">${roomCellHtml}</td>`;
 
-                    // 7 Days Simulation cells
+                    // 7 Days actual date-matching cells
                     for (let d = 0; d < 7; d++) {
                         let cellStatusClass = 'bg-success text-white';
                         let cellLabel = 'Available';
+                        const colDateObj = dateList[d].dateObj;
+                        const inStay = isDateInStayRange(colDateObj, room.dates);
 
                         if (room.status === 'OCCUPIED') {
-                            if (d <= 3) {
+                            if (inStay || (d <= 3 && !room.dates)) {
                                 cellStatusClass = 'bg-danger text-white';
                                 cellLabel = room.guest ? room.guest.split(' ')[0] : 'Occupied';
-                            } else {
-                                cellStatusClass = 'bg-success text-white';
-                                cellLabel = 'Available';
                             }
                         } else if (room.status === 'RESERVED') {
-                            if (d >= 2 && d <= 5) {
+                            if (inStay || (d <= 2 && !room.dates)) {
                                 cellStatusClass = 'bg-warning text-dark';
-                                cellLabel = room.isVvip ? 'VC Sanction' : 'Reserved';
-                            } else {
-                                cellStatusClass = 'bg-success text-white';
-                                cellLabel = 'Available';
+                                cellLabel = room.guest ? room.guest.split(' ')[0] : (room.isVvip ? 'VC Sanction' : 'Reserved');
                             }
+                        } else if (room.status === 'MAINTENANCE') {
+                            cellStatusClass = 'bg-secondary text-white';
+                            cellLabel = 'Maintenance';
                         }
 
                         rowHtml += `
-                        <td class="cal-cell ${cellStatusClass} cursor-pointer" onclick="handleGridCellClick('${room.name}', ${d}, '${cellLabel}')" title="Click for details / allocation">
-                            <small class="fw-semibold d-block text-truncate" style="max-width: 85px;">${cellLabel}</small>
+                        <td class="cal-cell ${cellStatusClass} cursor-pointer text-center" onclick="handleGridCellClick('${escapeHtml(room.name)}', ${d}, '${escapeHtml(cellLabel)}')" title="Click for particulars & allocation">
+                            <small class="fw-semibold d-block text-truncate" style="max-width: 90px; margin: 0 auto;">${escapeHtml(cellLabel)}</small>
                         </td>
                     `;
                     }
@@ -4114,6 +4260,399 @@
                     tr.innerHTML = rowHtml;
                     tbody.appendChild(tr);
                 });
+            }
+
+            // Visual Card-Based Room Layout Grid (Requirement 3)
+            function renderRoomLayoutCards() {
+                const container = document.getElementById('roomLayoutCardsContainer');
+                if (!container) return;
+
+                // Sync counts
+                const countAvail = guestHouseInventory.filter(r => r.status === 'AVAILABLE').length;
+                const countRes = guestHouseInventory.filter(r => r.status === 'RESERVED').length;
+                const countOcc = guestHouseInventory.filter(r => r.status === 'OCCUPIED').length;
+
+                const elAvail = document.getElementById('layoutCountAvailable');
+                if (elAvail) elAvail.innerText = countAvail;
+                const elRes = document.getElementById('layoutCountReserved');
+                if (elRes) elRes.innerText = countRes;
+                const elOcc = document.getElementById('layoutCountOccupied');
+                if (elOcc) elOcc.innerText = countOcc;
+
+                let rooms = guestHouseInventory;
+                if (currentGridFloor !== 'all') {
+                    rooms = rooms.filter(r => r.floor === currentGridFloor);
+                }
+                if (currentGridStatus !== 'all') {
+                    rooms = rooms.filter(r => r.status === currentGridStatus);
+                }
+
+                if (rooms.length === 0) {
+                    container.innerHTML = `
+                        <div class="alert alert-light border text-center py-5">
+                            <i class="bi bi-door-closed fs-1 text-muted d-block mb-2"></i>
+                            <h6 class="fw-bold text-muted">No rooms match the selected floor and status criteria.</h6>
+                            <button class="btn btn-sm btn-outline-primary mt-2" onclick="filterGridStatus('all'); filterGridFloor('all');">Reset Filters</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const floors = [
+                    { id: 'top', title: 'Top Floor (2 VVIP Presidential Suites &bull; 8 Ordinary Double Rooms)' },
+                    { id: 'first', title: 'First Floor (2 VVIP Suites &bull; 4 VIP AC Rooms &bull; 4 Ordinary AC Rooms &bull; Club Lounge)' },
+                    { id: 'ground', title: 'Ground Floor (Dormitory 1 [4-Bed] &bull; Main Event Hall &bull; Dining & Mess)' }
+                ];
+
+                let html = '';
+                floors.forEach(fl => {
+                    const floorRooms = rooms.filter(r => r.floor === fl.id);
+                    if (floorRooms.length === 0) return;
+
+                    html += `
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+                                <h6 class="fw-bold text-navy mb-0"><i class="bi bi-layers-fill text-warning me-2"></i>${fl.title}</h6>
+                                <span class="badge bg-secondary">${floorRooms.length} Lodging Units</span>
+                            </div>
+                            <div class="row g-3">
+                    `;
+
+                    floorRooms.forEach(room => {
+                        let statusColor = 'success';
+                        let statusBadge = '<span class="badge bg-success px-2 py-1"><i class="bi bi-check-circle-fill me-1"></i>Available</span>';
+                        let cardBg = 'bg-white';
+                        let borderStyle = 'border-success';
+
+                        if (room.status === 'RESERVED') {
+                            statusColor = 'warning';
+                            statusBadge = '<span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-bookmark-fill me-1"></i>Booked / Allotted</span>';
+                            cardBg = 'bg-warning bg-opacity-10';
+                            borderStyle = 'border-warning';
+                        } else if (room.status === 'OCCUPIED') {
+                            statusColor = 'danger';
+                            statusBadge = '<span class="badge bg-danger text-white px-2 py-1"><i class="bi bi-person-fill-check me-1"></i>Occupied / In-House</span>';
+                            cardBg = 'bg-danger bg-opacity-10';
+                            borderStyle = 'border-danger';
+                        } else if (room.status === 'MAINTENANCE') {
+                            statusColor = 'secondary';
+                            statusBadge = '<span class="badge bg-secondary text-white px-2 py-1"><i class="bi bi-tools me-1"></i>Under Maintenance</span>';
+                            cardBg = 'bg-light';
+                            borderStyle = 'border-secondary';
+                        }
+
+                        let authBadge = room.isVvip 
+                            ? `<span class="badge bg-danger-subtle text-danger border border-danger"><i class="bi bi-crown me-1"></i>VC Secretariat Sanction</span>`
+                            : `<span class="badge bg-primary-subtle text-primary border border-primary"><i class="bi bi-building me-1"></i>Estate Office Allotted</span>`;
+
+                        html += `
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+                                <div class="card h-100 shadow-sm border-2 ${borderStyle} ${cardBg}">
+                                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-2 border-bottom">
+                                        <div>
+                                            <span class="fw-bold text-navy fs-6">${escapeHtml(room.name)}</span>
+                                            <div class="text-muted" style="font-size:0.7rem;">${escapeHtml(room.type)} &bull; ${escapeHtml(room.capacity)}</div>
+                                        </div>
+                                        ${statusBadge}
+                                    </div>
+                                    <div class="card-body p-3 small d-flex flex-column justify-content-between">
+                                        <div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span class="text-muted" style="font-size:0.72rem;">Authority:</span>
+                                                ${authBadge}
+                                            </div>
+                                            ${room.guest ? `
+                                                <div class="p-2 rounded bg-white border mb-2 shadow-xs">
+                                                    <div class="fw-bold text-dark text-truncate" title="${escapeHtml(room.guest)}">
+                                                        <i class="bi bi-person-fill text-primary me-1"></i>${escapeHtml(room.guest)}
+                                                    </div>
+                                                    ${room.dossierRef ? `<div class="text-muted" style="font-size:0.72rem;"><strong>Ref:</strong> <span class="badge bg-light text-dark border">${escapeHtml(room.dossierRef)}</span></div>` : ''}
+                                                    <div class="text-muted mt-1" style="font-size:0.72rem;">
+                                                        <i class="bi bi-calendar3 me-1 text-success"></i><strong>Stay:</strong> ${escapeHtml(room.dates || 'Active')}
+                                                    </div>
+                                                    ${room.category ? `<div class="text-muted text-truncate" style="font-size:0.7rem;" title="${escapeHtml(room.category)}"><i class="bi bi-tag me-1"></i>${escapeHtml(room.category)}</div>` : ''}
+                                                </div>
+                                            ` : `
+                                                <div class="p-3 rounded bg-white bg-opacity-75 border text-muted fst-italic mb-2 text-center" style="font-size:0.75rem;">
+                                                    <i class="bi bi-door-open text-success me-1 fs-5 d-block mb-1"></i>Vacant &bull; Ready for allotment
+                                                </div>
+                                            `}
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary w-100 mt-2" onclick="openRoomActionModal('${escapeHtml(room.name)}', '${room.isVvip ? 'vvip' : 'room'}', '${room.floor}')">
+                                            <i class="bi bi-info-circle me-1"></i> Room Occupancy &amp; Details
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    html += `
+                            </div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+            }
+
+            // Architectural Floor Plan Blueprint Schematic (Dynamic Layout)
+            function renderRoomBlueprint() {
+                const body = document.getElementById('blueprintSchematicBody');
+                if (!body) return;
+
+                const getRoomBox = (roomName, type, floor, label, isStoreOrClub = false) => {
+                    if (isStoreOrClub) {
+                        return `
+                            <div class="col-md-1 col-4">
+                                <div class="blueprint-room p-2 border rounded bg-secondary-subtle">
+                                    <div class="fw-bold text-secondary">${escapeHtml(roomName)}</div>
+                                    <small class="d-block text-muted" style="font-size:0.7rem;">${escapeHtml(label)}</small>
+                                    <span class="badge bg-secondary text-white mt-1" style="font-size:0.65rem;">Facility</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    const room = guestHouseInventory.find(r => r.name.toLowerCase() === roomName.toLowerCase()) || {
+                        name: roomName,
+                        type: type,
+                        floor: floor,
+                        status: 'AVAILABLE',
+                        guest: null
+                    };
+
+                    let borderClass = 'border-success';
+                    let bgClass = 'bg-success-subtle';
+                    let badgeClass = 'bg-success text-white';
+                    let badgeLabel = 'Available';
+
+                    if (room.status === 'RESERVED') {
+                        borderClass = 'border-warning';
+                        bgClass = 'bg-warning-subtle';
+                        badgeClass = 'bg-warning text-dark';
+                        badgeLabel = 'Reserved' + (room.guest ? ` (${room.guest.split(' ')[0]})` : '');
+                    } else if (room.status === 'OCCUPIED') {
+                        borderClass = 'border-danger';
+                        bgClass = 'bg-danger-subtle';
+                        badgeClass = 'bg-danger text-white';
+                        badgeLabel = 'Occupied' + (room.guest ? ` (${room.guest.split(' ')[0]})` : '');
+                    }
+
+                    const isVvip = room.isVvip || (type === 'vvip');
+
+                    return `
+                        <div class="col-md-2 col-4">
+                            <div class="blueprint-room p-2 border ${borderClass} border-2 rounded ${bgClass} cursor-pointer" onclick="openRoomActionModal('${escapeHtml(room.name)}', '${isVvip ? 'vvip' : 'room'}', '${floor}')">
+                                <div class="fw-bold ${isVvip ? 'text-danger' : 'text-primary'}">
+                                    ${isVvip ? '<i class="bi bi-crown me-1"></i>' : ''}${escapeHtml(room.name)}
+                                </div>
+                                <small class="d-block text-muted" style="font-size:0.7rem;">${escapeHtml(label || room.capacity || 'Double Bedded')}</small>
+                                <span class="badge ${badgeClass} mt-1 text-truncate d-block" style="font-size:0.65rem;">${escapeHtml(badgeLabel)}</span>
+                            </div>
+                        </div>
+                    `;
+                };
+
+                const getStdCorridorBox = (roomName, floor) => {
+                    const room = guestHouseInventory.find(r => r.name.toLowerCase() === roomName.toLowerCase()) || {
+                        name: roomName,
+                        status: 'AVAILABLE',
+                        guest: null
+                    };
+
+                    let borderClass = '';
+                    let bgClass = 'bg-success-subtle';
+                    let badgeClass = 'bg-success';
+                    let badgeLabel = 'Free';
+
+                    if (room.status === 'RESERVED') {
+                        borderClass = 'border-warning';
+                        bgClass = 'bg-warning-subtle';
+                        badgeClass = 'bg-warning text-dark';
+                        badgeLabel = room.guest ? room.guest.split(' ')[0] : 'Reserved';
+                    } else if (room.status === 'OCCUPIED') {
+                        borderClass = 'border-danger';
+                        bgClass = 'bg-danger-subtle';
+                        badgeClass = 'bg-danger';
+                        badgeLabel = room.guest ? room.guest.split(' ')[0] : 'Occupied';
+                    }
+
+                    return `
+                        <div class="col">
+                            <div class="p-1 border rounded ${borderClass} ${bgClass} cursor-pointer" onclick="openRoomActionModal('${escapeHtml(room.name)}', 'standard', '${floor}')">
+                                <strong style="font-size:0.75rem;">${escapeHtml(room.name.replace('STANDARD', 'STD').replace(', AC', ''))}</strong><br>
+                                <span class="badge ${badgeClass} text-truncate d-block" style="font-size:0.6rem;">${escapeHtml(badgeLabel)}</span>
+                            </div>
+                        </div>
+                    `;
+                };
+
+                body.innerHTML = `
+                    <!-- TOP FLOOR BLUEPRINT ROW -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="badge bg-dark me-2">TOP FLOOR</span>
+                            <span class="text-muted small">2 VVIP Rooms &bull; 8 Standard Rooms &bull; Top Floor Store</span>
+                        </div>
+                        <div class="blueprint-corridor-box p-3 bg-white border rounded shadow-sm">
+                            <div class="row g-2 text-center align-items-center">
+                                ${getRoomBox('VVIP 1', 'vvip', 'top', 'Double Bedded')}
+                                ${getRoomBox('VVIP 2', 'vvip', 'top', 'Double Bedded')}
+                                ${getRoomBox('STORE', 'store', 'top', 'Linen', true)}
+                                <div class="col-md-7 col-12">
+                                    <div class="p-1 bg-light border border-secondary border-dashed rounded text-muted mb-1 small fw-semibold">
+                                        &larr; TOP FLOOR CENTRAL CORRIDOR &rarr;
+                                    </div>
+                                    <div class="row g-1">
+                                        ${getStdCorridorBox('STANDARD 10', 'top')}
+                                        ${getStdCorridorBox('STANDARD 9', 'top')}
+                                        ${getStdCorridorBox('STANDARD 8', 'top')}
+                                        ${getStdCorridorBox('STANDARD 7', 'top')}
+                                        ${getStdCorridorBox('STANDARD 6', 'top')}
+                                        ${getStdCorridorBox('STANDARD 5', 'top')}
+                                        ${getStdCorridorBox('STANDARD 4', 'top')}
+                                        ${getStdCorridorBox('STANDARD 3', 'top')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FIRST FLOOR BLUEPRINT ROW -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="badge bg-dark me-2">FIRST FLOOR</span>
+                            <span class="text-muted small">2 VVIP Rooms &bull; 4 VIP (AC) Rooms &bull; 4 Standard (AC) Rooms &bull; Club Room</span>
+                        </div>
+                        <div class="blueprint-corridor-box p-3 bg-white border rounded shadow-sm">
+                            <div class="row g-2 text-center align-items-center">
+                                ${getRoomBox('VVIP 12', 'vvip', 'first', 'Double Bedded')}
+                                ${getRoomBox('VVIP 11', 'vvip', 'first', 'Double Bedded')}
+                                ${getRoomBox('CLUB', 'club', 'first', 'Lounge', true)}
+                                <div class="col-md-7 col-12">
+                                    <div class="p-1 bg-light border border-secondary border-dashed rounded text-muted mb-1 small fw-semibold">
+                                        &larr; FIRST FLOOR CENTRAL CORRIDOR &rarr;
+                                    </div>
+                                    <div class="row g-1">
+                                        ${getStdCorridorBox('VIP 13, AC', 'first')}
+                                        ${getStdCorridorBox('VIP 14, AC', 'first')}
+                                        ${getStdCorridorBox('VIP 15, AC', 'first')}
+                                        ${getStdCorridorBox('VIP 16, AC', 'first')}
+                                        ${getStdCorridorBox('STANDARD 20, AC', 'first')}
+                                        ${getStdCorridorBox('STANDARD 19, AC', 'first')}
+                                        ${getStdCorridorBox('STANDARD 18', 'first')}
+                                        ${getStdCorridorBox('STANDARD 17', 'first')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GROUND FLOOR BLUEPRINT ROW -->
+                    <div>
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="badge bg-dark me-2">GROUND FLOOR</span>
+                            <span class="text-muted small">Entry Porch &bull; Main Event Hall &bull; Office &bull; Dining & Mess &bull; Dormitory 1 (4-Bed)</span>
+                        </div>
+                        <div class="blueprint-corridor-box p-3 bg-white border rounded shadow-sm">
+                            <div class="row g-2 text-center align-items-stretch">
+                                <div class="col-md-2 col-4">
+                                    <div class="p-2 border rounded bg-secondary-subtle h-100">
+                                        <div class="fw-bold text-secondary">ENTRY PORCH</div>
+                                        <small class="text-muted" style="font-size:0.7rem;">Main Portico</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-4">
+                                    ${(() => {
+                                        const r = guestHouseInventory.find(x => x.name.includes('DORMITORY')) || { status: 'AVAILABLE', guest: null };
+                                        const bColor = r.status === 'OCCUPIED' ? 'danger' : (r.status === 'RESERVED' ? 'warning' : 'success');
+                                        return `
+                                            <div class="p-2 border border-${bColor} border-2 rounded bg-${bColor}-subtle h-100 cursor-pointer" onclick="openRoomActionModal('DORMITORY 1 (4-BED)', 'room', 'ground')">
+                                                <div class="fw-bold text-success">DORMITORY 1</div>
+                                                <small class="text-muted d-block" style="font-size:0.7rem;">4 Bedded</small>
+                                                <span class="badge bg-${bColor} ${bColor === 'warning' ? 'text-dark' : 'text-white'} mt-1" style="font-size:0.65rem;">${r.status === 'AVAILABLE' ? 'Available' : (r.guest ? r.guest.split(' ')[0] : r.status)}</span>
+                                            </div>
+                                        `;
+                                    })()}
+                                </div>
+                                <div class="col-md-3 col-4">
+                                    <div class="p-2 border border-primary border-2 rounded bg-primary-subtle h-100 cursor-pointer" onclick="openRoomActionModal('MAIN CONFERENCE HALL', 'hall', 'ground')">
+                                        <div class="fw-bold text-primary">CONFERENCE HALL</div>
+                                        <small class="text-muted d-block" style="font-size:0.7rem;">100 Capacity</small>
+                                        <span class="badge bg-primary text-white mt-1" style="font-size:0.65rem;">Event Facility</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="p-2 border border-warning border-2 rounded bg-warning-subtle h-100 cursor-pointer" onclick="openRoomActionModal('DINING HALL & MESS', 'dining', 'ground')">
+                                        <div class="fw-bold text-warning text-dark">DINING &amp; MESS</div>
+                                        <small class="text-muted d-block" style="font-size:0.7rem;">60 Seats</small>
+                                        <span class="badge bg-success text-white mt-1" style="font-size:0.65rem;">Operational</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-6">
+                                    <div class="p-2 border rounded bg-secondary-subtle h-100">
+                                        <div class="fw-bold text-secondary">OFFICE</div>
+                                        <small class="text-muted" style="font-size:0.7rem;">Front Desk</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Hon'ble VC Secretariat VVIP Suites Dedicated Rack
+            function renderVcVvipRack() {
+                const container = document.getElementById('vcVvipRackCards');
+                if (!container) return;
+
+                const vvipRooms = guestHouseInventory.filter(r => r.isVvip);
+                let html = '';
+
+                vvipRooms.forEach(room => {
+                    let borderClass = 'border-success';
+                    let badgeClass = 'bg-success';
+                    let badgeText = 'Available (Vacant)';
+                    let cardBg = 'bg-white';
+
+                    if (room.status === 'RESERVED') {
+                        borderClass = 'border-warning';
+                        badgeClass = 'bg-warning text-dark';
+                        badgeText = 'Sanctioned & Allotted by Hon\'ble VC';
+                        cardBg = 'bg-warning bg-opacity-10';
+                    } else if (room.status === 'OCCUPIED') {
+                        borderClass = 'border-danger';
+                        badgeClass = 'bg-danger text-white';
+                        badgeText = 'In-House Occupied';
+                        cardBg = 'bg-danger bg-opacity-10';
+                    }
+
+                    html += `
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <div class="card h-100 shadow-sm border-2 ${borderClass} ${cardBg} p-3 cursor-pointer" onclick="openRoomActionModal('${escapeHtml(room.name)}', 'vvip', '${room.floor}')">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-crown text-danger me-1"></i>${escapeHtml(room.name)}</h6>
+                                    <span class="badge ${badgeClass}" style="font-size:0.65rem;">${badgeText}</span>
+                                </div>
+                                <small class="text-muted d-block mb-2" style="font-size:0.72rem;">${room.floor === 'top' ? 'Top Floor' : 'First Floor'} &bull; Presidential Double Suite</small>
+                                ${room.guest ? `
+                                    <div class="p-2 rounded bg-white border small">
+                                        <div class="fw-bold text-dark text-truncate"><i class="bi bi-person-fill text-danger me-1"></i>${escapeHtml(room.guest)}</div>
+                                        <div class="text-muted" style="font-size:0.7rem;"><i class="bi bi-calendar3 me-1"></i>${escapeHtml(room.dates || 'Active')}</div>
+                                        ${room.dossierRef ? `<span class="badge bg-light text-dark border" style="font-size:0.65rem;">Ref: ${escapeHtml(room.dossierRef)}</span>` : ''}
+                                    </div>
+                                ` : `
+                                    <div class="p-2 rounded bg-light border text-muted fst-italic text-center small" style="font-size:0.72rem;">
+                                        <i class="bi bi-check-circle text-success me-1"></i>Ready for VC Sanction
+                                    </div>
+                                `}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
             }
 
             function handleGridCellClick(roomName, dayOffset, statusLabel) {
@@ -5194,13 +5733,25 @@
                 const dossier = institutionalDossiers.find(x => x.ref === ref);
                 if (dossier) {
                     dossier.status = 'CHECKED_IN';
+                    if (dossier.allottedRoomId) {
+                        const r = guestHouseInventory.find(x => x.id === dossier.allottedRoomId);
+                        if (r) r.status = 'OCCUPIED';
+                    } else if (dossier.room) {
+                        const r = guestHouseInventory.find(x => dossier.room.includes(x.name) || x.name === dossier.room);
+                        if (r) r.status = 'OCCUPIED';
+                    }
+                    saveRoomInventory(guestHouseInventory);
                     saveInstitutionalDossiers(institutionalDossiers);
+                    syncRoomInventoryWithDossiers();
                 }
-                alert("Guest for " + ref + " verified with Photo ID and checked in!\nRoom Key issued by Care-Taker.\nStatus updated to: CHECKED_IN");
+                alert("Guest for " + ref + " verified with Photo ID and checked in!\nRoom Key issued by Care-Taker.\nStatus updated to: CHECKED_IN\nRoom marked as OCCUPIED in Room Layout Grid.");
                 renderBookingsTable();
                 renderWorkflowDocket();
                 updateDashboardCounters();
                 renderRoomGrid();
+                renderRoomLayoutCards();
+                renderRoomBlueprint();
+                renderVcVvipRack();
                 showTab('dashboard');
             }
 
@@ -5386,21 +5937,38 @@
                 // Persist updates
                 saveRoomInventory(guestHouseInventory);
                 saveInstitutionalDossiers(institutionalDossiers);
+                syncRoomInventoryWithDossiers();
 
                 // Hide modal
                 const modalEl = document.getElementById('sanctionAllotmentModal');
                 const modal = bootstrap.Modal.getInstance(modalEl);
                 if (modal) modal.hide();
 
-                alert(`✅ Requisition ${dossier.ref} successfully sanctioned!\n\nAllotted Room: ${room.name} (${room.type})\nGuest: ${dossier.guest}\nDates: ${dossier.dates || 'Active'}\n\nThe allotted room details are now actively reflected in the Room Layout Grid & Floor Plans.`);
+                const isVvip = !!(dossier && (dossier.isVvip || (room && room.isVvip)));
+                const authorityTitle = isVvip ? "Hon'ble Vice-Chancellor Secretariat" : "Estate Office";
+                alert(`✅ Requisition ${dossier.ref} successfully sanctioned and allocated by ${authorityTitle}!
+
+Allotted Room: ${room.name} (${room.type})
+Guest: ${dossier.guest}
+Dates: ${dossier.dates || 'Active'}
+
+The room has been actively allocated in the Room Layout Grid, Floor Plan Blueprint, and Rolling Schedule.`);
 
                 renderBookingsTable();
                 renderWorkflowDocket();
                 updateDashboardCounters();
                 renderRoomGrid();
+                renderRoomLayoutCards();
+                renderRoomBlueprint();
+                renderVcVvipRack();
                 renderBillingTable();
                 renderReports();
-                showTab('calendar');
+
+                if (currentRole === 'vc_secretariat') {
+                    showTab('dashboard');
+                } else {
+                    showTab('calendar');
+                }
             }
 
             function approveWorkflowAction(ref) {
