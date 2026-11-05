@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -1961,7 +1961,7 @@
                     <div id="view-workflow" class="view-panel" style="display:none;">
                         <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
                             <div>
-                                <h3 class="h4 fw-bold text-navy mb-0">Multi-Tier Institutional Approvals Queue</h3>
+                                <h3 class="h4 fw-bold text-navy mb-0">Institutional Approvals Queue</h3>
                                 <small class="text-muted">Digital routing docket governed by University Guest House
                                     Regulations &amp; Jurisdiction Rules</small>
                             </div>
@@ -2785,23 +2785,12 @@
                                     Suite #201</span>
                             </div>
                             <div class="row g-3 small mt-1">
-                                <div class="col-md-6"><strong>Primary Guest:</strong> <span id="vvipModalGuest">Sh.
-                                        Tenzin
-                                        Norbu & Delegation</span></div>
-                                <div class="col-md-6"><strong>Official Designation:</strong> <span
-                                        id="vvipModalDesig">Agricultural Officer, Thimphu, Bhutan</span></div>
-                                <div class="col-md-6"><strong>Dates & Stay:</strong> <span
-                                        id="vvipModalDates">01/11/2026 to
-                                        04/11/2026 (3 Nights)</span></div>
-                                <div class="col-md-6"><strong>Notification Category:</strong> <span id="vvipModalCat">5.
-                                        Educational Tour & Training from Nepal & Bhutan</span></div>
-                                <div class="col-md-6"><strong>Sponsoring Department:</strong> <span>Prof. S. K.
-                                        Bhardwaj,
-                                        Dept of Silviculture</span></div>
-                                <div class="col-md-6"><strong>Estimated Tariff:</strong> <span
-                                        class="fw-bold text-success">&#8377;3,500/night (Total: &#8377;10,500 +
-                                        GST)</span>
-                                </div>
+                                <div class="col-md-6"><strong>Primary Guest:</strong> <span id="vvipModalGuest">-</span></div>
+                                <div class="col-md-6"><strong>Official Designation:</strong> <span id="vvipModalDesig">-</span></div>
+                                <div class="col-md-6"><strong>Dates & Stay:</strong> <span id="vvipModalDates">-</span></div>
+                                <div class="col-md-6"><strong>Notification Category:</strong> <span id="vvipModalCat">-</span></div>
+                                <div class="col-md-6"><strong>Sponsoring Department:</strong> <span id="vvipModalSponsor">-</span></div>
+                                <div class="col-md-6"><strong>Estimated Tariff:</strong> <span class="fw-bold text-success" id="vvipModalTariff">-</span></div>
                             </div>
                         </div>
 
@@ -3992,34 +3981,6 @@
                         </div>
                     </div>
 
-                    <h6 class="fw-bold text-navy mb-3">Multi-Tier Endorsement Chain:</h6>
-                    <div class="list-group mb-4">
-                        <div class="list-group-item d-flex justify-content-between align-items-center bg-light">
-                            <div>
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                <strong>Tier 1: Sponsoring Faculty / Requisitioner</strong> &bull; Prof. S. K. Bhardwaj
-                                <div class="text-muted small ps-4">Requisition submitted online with official letter</div>
-                            </div>
-                            <span class="badge bg-success">SUBMITTED</span>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center bg-light">
-                            <div>
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                <strong>Tier 2: Dean / Controlling Officer</strong> &bull; Dr. H. P. Sankhyan
-                                <div class="text-muted small ps-4">Recommended for official University academic collaboration</div>
-                            </div>
-                            <span class="badge bg-success">RECOMMENDED</span>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center bg-white ${isVvip ? 'border-danger' : 'border-warning'}">
-                            <div>
-                                <i class="bi ${isVvip ? 'bi-crown text-danger' : 'bi-hourglass-top text-warning'} me-2"></i>
-                                <strong>Tier 3: ${isVvip ? "Hon'ble Vice-Chancellor Secretariat (Apex VVIP Authority)" : 'Estate Officer (Final Competent Authority)'}</strong>
-                                <div class="text-dark small ps-4 fw-semibold">${isVvip ? 'Requires exclusive sanction of Vice-Chancellor Secretariat' : 'Pending formal sanction under Notification 1615-40'}</div>
-                            </div>
-                            <span class="badge ${isVvip ? 'bg-danger' : 'bg-warning text-dark'}">ACTION REQUIRED</span>
-                        </div>
-                    </div>
-
                     <div class="d-flex justify-content-end align-items-center gap-2">
                         ${actionButtons}
                     </div>
@@ -4037,6 +3998,10 @@
                 document.getElementById('vvipModalDesig').innerText = dossier.designation;
                 document.getElementById('vvipModalDates').innerText = `${dossier.dates} (${dossier.duration})`;
                 document.getElementById('vvipModalCat').innerText = dossier.category;
+                const sponsorEl = document.getElementById('vvipModalSponsor');
+                if (sponsorEl) sponsorEl.innerText = dossier.institutionAddress || dossier.sponsor || 'On Record';
+                const tariffEl = document.getElementById('vvipModalTariff');
+                if (tariffEl) tariffEl.innerText = dossier.tariff || '₹3,500/night';
 
                 const modal = new bootstrap.Modal(document.getElementById('vvipEstateViewModal'));
                 modal.show();
