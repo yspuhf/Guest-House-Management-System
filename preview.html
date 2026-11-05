@@ -941,11 +941,8 @@
                                         <div class="row g-3 align-items-end mb-4">
                                             <div class="col-md-3">
                                                 <label class="form-label fw-semibold">Select Accommodation Wing</label>
-                                                <select class="form-select border-primary" id="sbWing"
-                                                    onchange="updateSandboxControls()">
-                                                    <option value="estate" selected>Estate Office Wing</option>
-                                                    <option value="dee">Directorate of Extension Education (DEE)
-                                                    </option>
+                                                <select class="form-select border-primary" id="sbWing" onchange="updateSandboxControls()">
+                                                    <option value="estate" selected>Estate Office Wing (Main GH, VIP Suites, FRH)</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
@@ -1136,11 +1133,7 @@
                                                             Selected</span> <span class="text-danger">*</span></label>
                                                     <select class="form-select border-primary fw-bold" id="bookingWing"
                                                         required onchange="handleAdminBookingWingChange()">
-                                                        <option value="estate" selected>Estate Office Wing (Main GH, VIP
-                                                            Suites, FRH)</option>
-                                                        <option value="dee">Directorate of Extension Education (DEE -
-                                                            Kisan
-                                                            Bhawan)</option>
+                                                        <option value="estate" selected>Estate Office Wing (Main GH, VIP Suites, FRH)</option>
                                                     </select>
                                                     <small class="text-muted" id="adminBookingWingHint">Governed by:
                                                         Estate
@@ -2155,9 +2148,8 @@
                                         <div class="col-md-3 col-sm-6">
                                             <label class="form-label small fw-bold text-muted mb-1">Filter Wing:</label>
                                             <select class="form-select form-select-sm" id="dailyReportWingFilter" onchange="renderDailyReport()">
-                                                <option value="all">All Wings (Main, VIP, DEE)</option>
+                                                <option value="all">All Wings (Main &amp; VIP Suites)</option>
                                                 <option value="estate">Estate Office (Main &amp; VIP)</option>
-                                                <option value="dee">DEE Wing (Kisan Bhawan)</option>
                                             </select>
                                         </div>
                                     </div>
@@ -2972,7 +2964,7 @@
                 { id: 'std_17', name: 'STANDARD 17', type: 'AC - Ordinary ROOM', floor: 'first', capacity: 'Double Bedded', isVvip: false, status: 'AVAILABLE', guest: null, category: null, dates: null, handledBy: 'estate' },
 
                 // GROUND FLOOR (Dormitory & Common Facilities)
-                { id: 'dorm_1', name: 'DORMITORY 1 (4-BED)', type: 'Dormitory - 4 bedded', floor: 'ground', capacity: '4 Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Apple Growers Association (4 Farmers)', category: 'DEE-1 Farmers Training', dates: '28 Oct to 02 Nov', handledBy: 'estate' },
+                { id: 'dorm_1', name: 'DORMITORY 1 (4-BED)', type: 'Dormitory - 4 bedded', floor: 'ground', capacity: '4 Bedded', isVvip: false, status: 'OCCUPIED', guest: 'Apple Growers Association (4 Farmers)', category: 'Farmers & Trainees Group', dates: '28 Oct to 02 Nov', handledBy: 'estate' },
                 { id: 'hall_main', name: 'MAIN CONFERENCE HALL', type: 'Event Facility', floor: 'ground', capacity: '100 Persons', isVvip: false, status: 'RESERVED', guest: 'University Academic Council Meet', category: 'Official University Event', dates: '02 Nov (Full Day)', handledBy: 'estate' },
                 { id: 'dining_mess', name: 'DINING HALL & MESS', type: 'Dining Facility', floor: 'ground', capacity: '60 Seats', isVvip: false, status: 'OCCUPIED', guest: 'Regular Catering / Academic Dinner', category: 'Hostel & Guest Catering', dates: 'Daily Active', handledBy: 'estate' }
             ];
@@ -3046,16 +3038,16 @@
                     ref: 'GH-2026-10-0004',
                     guest: 'Sh. Ramesh Sharma & 15 Farmers',
                     designation: 'Apple Growers Association, Rohru',
-                    wing: 'DEE Wing (Kisan Bhawan)',
-                    wingType: 'dee',
-                    room: 'Farmers Dormitory Hall',
+                    wing: 'Estate Office Wing',
+                    wingType: 'estate',
+                    room: 'Main GH &bull; Dormitory Bed #01',
                     roomClass: 'dormitory',
                     isVvip: false,
                     dates: '05/11/2026 &rarr; 07/11/2026',
                     duration: '2 Nights &bull; 15 Beds',
-                    category: 'DEE-1 Farmers Training (\u20B9100)',
+                    category: 'Farmers & Trainees Group (\u20B9100)',
                     status: 'SUBMITTED',
-                    handledBy: 'dee'
+                    handledBy: 'estate'
                 }
             ];
 
@@ -3539,8 +3531,6 @@
                     iconClass = 'bi bi-crown fs-5 text-danger me-2';
                 } else if (roleKey === 'admin') {
                     name = 'Er. Ramesh Chander (Admin)';
-                } else if (roleKey === 'dee_incharge') {
-                    name = 'Dr. Inder Sharma (DEE Incharge)';
                 } else if (roleKey === 'caretaker') {
                     name = 'Sh. Mast Ram (Care-Taker)';
                 } else if (roleKey === 'finance') {
@@ -3630,7 +3620,6 @@
 
                     // Wing & Room column
                     let wingBadge = `<span class="badge bg-primary">Estate Office Wing</span><br>`;
-                    if (d.wingType === 'dee') wingBadge = `<span class="badge bg-success">DEE Wing (Kisan Bhawan)</span><br>`;
 
                     let roomBadge = `<small class="fw-bold text-dark">${escapeHtml(d.room)}</small>`;
                     if (d.isVvip) {
@@ -4446,14 +4435,13 @@
                 setSelect.innerHTML = '';
                 catSelect.innerHTML = '';
 
-                if (wing === 'estate') {
-                    hint.innerHTML = 'Governed by: <strong>Estate Officer &amp; Registrar</strong> (Notification No. UHF/EO-55/2025/- 1615-40)';
-                    ghSelect.innerHTML = `
+                hint.innerHTML = 'Governed by: <strong>Estate Officer &amp; Registrar</strong> (Notification No. UHF/EO-55/2025/- 1615-40)';
+                ghSelect.innerHTML = `
                     <option value="1">Main Guest House (VIP & Deluxe)</option>
                     <option value="2">VIP Suites Annexe</option>
                     <option value="4">Forest Rest House (FRH)</option>
                 `;
-                    setSelect.innerHTML = `
+                setSelect.innerHTML = `
                     <option value="vip" selected>VIP Set (Annexe / Main GH)</option>
                     <option value="vvip">VVIP Set (Presidential Suite)</option>
                     <option value="ordinary">Ordinary Set (Double Room)</option>
@@ -4461,32 +4449,13 @@
                     <option value="wash_change">Wash/Change (50% Rent - Short Stay)</option>
                 `;
 
-                    const estateCats = EstateTariffManager.getEstateCategories();
-                    estateCats.forEach(cat => {
-                        const opt = document.createElement('option');
-                        opt.value = cat.id;
-                        opt.innerText = `${cat.srNo}. ${cat.shortName}`;
-                        catSelect.appendChild(opt);
-                    });
-                } else {
-                    hint.innerHTML = 'Governed by: <strong>Directorate of Extension Education (DEE)</strong> &bull; Kisan Bhawan Incharge';
-                    ghSelect.innerHTML = `
-                    <option value="3">Farmers Hostel (Kisan Bhawan)</option>
-                    <option value="5">Extension Trainees Wing</option>
-                `;
-                    setSelect.innerHTML = `
-                    <option value="double" selected>Double Room (Farmers & Trainees)</option>
-                    <option value="dormitory">Trainees Dormitory Hall</option>
-                `;
-
-                    const deeCats = EstateTariffManager.getDeeCategories();
-                    deeCats.forEach(cat => {
-                        const opt = document.createElement('option');
-                        opt.value = cat.id;
-                        opt.innerText = `${cat.srNo}. ${cat.shortName}`;
-                        catSelect.appendChild(opt);
-                    });
-                }
+                const estateCats = EstateTariffManager.getEstateCategories();
+                estateCats.forEach(cat => {
+                    const opt = document.createElement('option');
+                    opt.value = cat.id;
+                    opt.innerText = `${cat.srNo}. ${cat.shortName}`;
+                    catSelect.appendChild(opt);
+                });
 
                 calculateTariffEstimate();
             }
@@ -4981,34 +4950,20 @@
                 setSelect.innerHTML = '';
                 catSelect.innerHTML = '';
 
-                if (wing === 'estate') {
-                    setSelect.innerHTML = `
+                setSelect.innerHTML = `
                     <option value="vip" selected>VIP Set</option>
                     <option value="vvip">VVIP Set</option>
                     <option value="ordinary">Ordinary Set</option>
                     <option value="dormitory">Dormitory Bed</option>
                     <option value="wash_change">Wash/Change (50%)</option>
                 `;
-                    const estateCats = EstateTariffManager.getEstateCategories();
-                    estateCats.forEach(cat => {
-                        const opt = document.createElement('option');
-                        opt.value = cat.id;
-                        opt.innerText = `${cat.srNo}. ${cat.shortName}`;
-                        catSelect.appendChild(opt);
-                    });
-                } else {
-                    setSelect.innerHTML = `
-                    <option value="double" selected>Double Room</option>
-                    <option value="dormitory">Dormitory Bed</option>
-                `;
-                    const deeCats = EstateTariffManager.getDeeCategories();
-                    deeCats.forEach(cat => {
-                        const opt = document.createElement('option');
-                        opt.value = cat.id;
-                        opt.innerText = `${cat.srNo}. ${cat.shortName}`;
-                        catSelect.appendChild(opt);
-                    });
-                }
+                const estateCats = EstateTariffManager.getEstateCategories();
+                estateCats.forEach(cat => {
+                    const opt = document.createElement('option');
+                    opt.value = cat.id;
+                    opt.innerText = `${cat.srNo}. ${cat.shortName}`;
+                    catSelect.appendChild(opt);
+                });
                 runSandboxCalculation();
             }
 
@@ -5058,7 +5013,7 @@
                 const purpose = document.getElementById('guestPurpose') ? document.getElementById('guestPurpose').value.trim() : '';
 
                 const wing = document.getElementById('bookingWing').value;
-                const wingLabel = wing === 'estate' ? 'Estate Office Wing' : 'DEE Wing (Kisan Bhawan)';
+                const wingLabel = 'Estate Office Wing';
 
                 const setTypeSelect = document.getElementById('bookingSetType');
                 const setType = setTypeSelect ? setTypeSelect.value : 'vip';
@@ -5092,7 +5047,7 @@
                     duration: `${diffDays} Night${diffDays > 1 ? 's' : ''} &bull; 1 Guest`,
                     category: catLabel,
                     status: isVvip ? 'PENDING_VC_APPROVAL' : 'PENDING_ESTATE_APPROVAL',
-                    handledBy: isVvip ? 'vc' : (wing === 'dee' ? 'dee' : 'estate'),
+                    handledBy: isVvip ? 'vc' : 'estate',
                     sponsor: affiliation || 'Estate Office Booking',
                     tariff: estTotal,
                     createdAt: new Date().toISOString()
@@ -5174,12 +5129,12 @@
                         nightlyRate = 3500;
                     } else if (dossier.category.includes('Ordinary') || dossier.category.includes('Standard')) {
                         nightlyRate = 1000;
-                    } else if (dossier.category.includes('Dormitory') || dossier.category.includes('DEE')) {
+                    } else if (dossier.category.includes('Dormitory') || dossier.category.includes('Farmers')) {
                         nightlyRate = 100;
                     }
                 }
                 const stayAmount = nights * nightlyRate;
-                let diningAmount = (dossier.roomClass === 'dormitory' || (dossier.category && dossier.category.includes('DEE-1'))) ? (nights * 150) : (nights * 300);
+                let diningAmount = (dossier.roomClass === 'dormitory' || (dossier.category && dossier.category.includes('Farmers'))) ? (nights * 150) : (nights * 300);
                 if (dossier.diningAmount !== undefined) diningAmount = dossier.diningAmount;
                 const totalAmount = stayAmount + diningAmount;
                 return {
@@ -6482,7 +6437,7 @@
                             <li>The Secretary to the Hon'ble Vice-Chancellor, UHF Nauni.</li>
                             <li>The Registrar &amp; Comptroller, Dr. YSP UHF Nauni.</li>
                             <li>All Deans / Directors / Heads of Departments / Section In-charges.</li>
-                            <li>Care-Taker, University Main Guest House / Kisan Bhawan.</li>
+                            <li>Care-Taker, University Main Guest House.</li>
                             <li>Official Institutional Portal &amp; Notice Board.</li>
                         </ol>
                     </div>

@@ -212,54 +212,8 @@ const DEFAULT_DINING_HALL_RATES = [
     }
 ];
 
-// DEE (Directorate of Extension Education) Categories
-const DEFAULT_DEE_CATEGORIES = [
-    {
-        id: "dee_farmers_training",
-        srNo: "DEE-1",
-        title: "Farmers & Orchardists on Official University Training / Exposure Visit",
-        description: "Progressive farmers, orchardists, and women groups participating in UHF Krishi Vigyan Kendra (KVK) or DEE training programmes.",
-        shortName: "Farmers on Official Training (Kisan Bhawan)",
-        rate: 100,
-        dormRate: 50
-    },
-    {
-        id: "dee_kvk_personnel",
-        srNo: "DEE-2",
-        title: "KVK Scientists & Agricultural Extension Personnel",
-        description: "Scientists and staff attending extension conferences, annual zonal reviews, or farmer fair duties.",
-        shortName: "KVK Scientists & Extension Staff",
-        rate: 150,
-        dormRate: 75
-    },
-    {
-        id: "dee_dept_officers",
-        srNo: "DEE-3",
-        title: "State Department of Horticulture / Agriculture Officers on Training",
-        description: "In-service officers sponsored for refresher courses, post-harvest training, or plant protection modules.",
-        shortName: "State Dept. Officers on Training",
-        rate: 200,
-        dormRate: 100
-    },
-    {
-        id: "dee_general_visitor",
-        srNo: "DEE-4",
-        title: "General Public / Private Agricultural Visitors (Kisan Bhawan)",
-        description: "Private agriculturalists, nursery buyers, and general visitors staying at Kisan Bhawan.",
-        shortName: "General Agricultural Visitors",
-        rate: 400,
-        dormRate: 200
-    },
-    {
-        id: "dee_dorm_group",
-        srNo: "DEE-5",
-        title: "Kisan Bhawan Farmers Dormitory (Group Delegations)",
-        description: "Group dormitory accommodation per bed per day for agricultural delegations.",
-        shortName: "Farmers Dormitory Hall (Per Bed)",
-        rate: 100,
-        dormRate: 100
-    }
-];
+// Legacy stub for backward compatibility
+const DEFAULT_DEE_CATEGORIES = [];
 
 // Helper functions to get/set with localStorage persistence
 class EstateTariffManager {
@@ -319,32 +273,23 @@ class EstateTariffManager {
     }
 
     static calculateStayRate(wing, categoryId, setType) {
-        if (wing === 'estate') {
-            const categories = this.getEstateCategories();
-            const cat = categories.find(c => c.id === categoryId) || categories[0];
-            if (!cat) return 1000;
+        const categories = this.getEstateCategories();
+        const cat = categories.find(c => c.id === categoryId) || categories[0];
+        if (!cat) return 1000;
 
-            if (cat.id.startsWith('cat_10_dorm')) {
-                return cat.ordinary;
-            }
-
-            if (cat.isPercentage) {
-                // 50% of the room rent
-                if (setType === 'vvip') return Math.round(2500 * (cat.percentage / 100));
-                if (setType === 'vip') return Math.round(1500 * (cat.percentage / 100));
-                return Math.round(1000 * (cat.percentage / 100));
-            }
-
-            if (setType === 'vvip') return cat.vvip;
-            if (setType === 'vip') return cat.vip;
+        if (cat.id.startsWith('cat_10_dorm')) {
             return cat.ordinary;
-        } else {
-            const categories = this.getDeeCategories();
-            const cat = categories.find(c => c.id === categoryId) || categories[0];
-            if (!cat) return 100;
-            if (setType === 'dormitory') return cat.dormRate || 100;
-            return cat.rate || 150;
         }
+
+        if (cat.isPercentage) {
+            if (setType === 'vvip') return Math.round(2500 * (cat.percentage / 100));
+            if (setType === 'vip') return Math.round(1500 * (cat.percentage / 100));
+            return Math.round(1000 * (cat.percentage / 100));
+        }
+
+        if (setType === 'vvip') return cat.vvip;
+        if (setType === 'vip') return cat.vip;
+        return cat.ordinary;
     }
 
     static getCategoryById(id) {
@@ -354,13 +299,6 @@ class EstateTariffManager {
                 vipRate: estate.vip,
                 vvipRate: estate.vvip,
                 ordinaryRate: estate.ordinary
-            });
-        }
-        const dee = this.getDeeCategories().find(c => c.id === id);
-        if (dee) {
-            return Object.assign({}, dee, {
-                vipRate: dee.rate || 150,
-                dormRate: dee.dormRate || 100
             });
         }
         return null;

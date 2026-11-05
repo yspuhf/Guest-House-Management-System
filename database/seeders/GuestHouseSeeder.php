@@ -51,8 +51,8 @@ class GuestHouseSeeder extends Seeder
                 'contact_person' => 'Sh. Anil Kumar',
                 'contact_phone' => '01792-252303',
                 'contact_email' => 'kisan.bhawan@yspuniversity.ac.in',
-                'status' => 'published',
-                'is_active' => true,
+                'status' => 'draft',
+                'is_active' => false,
                 'published_at' => now(),
             ],
             [
