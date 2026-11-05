@@ -747,26 +747,101 @@
                                 </div>
                             </div>
 
+                            <!-- 1. Name of the applicant -->
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold small">Primary Guest Name *</label>
+                                <label class="form-label fw-semibold small">1. Name of the Applicant *</label>
                                 <input type="text" id="modalGuestName" class="form-control"
                                     placeholder="e.g. Dr. A. K. Verma" required>
                             </div>
 
+                            <!-- 2. Designation -->
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold small">Contact Mobile *</label>
+                                <label class="form-label fw-semibold small">2. Designation</label>
+                                <input type="text" id="modalDesignation" class="form-control"
+                                    placeholder="e.g. Principal Scientist / Professor / Executive">
+                            </div>
+
+                            <!-- 3. Name of University/Institution/Firm with complete address -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small">3. University / Institution / Firm &amp; Complete Address</label>
+                                <textarea class="form-control" id="modalInstitutionAddress" rows="2"
+                                    placeholder="Name of University/Institution/Firm with complete postal address"></textarea>
+                                <input type="hidden" id="modalSponsoringDept" value="">
+                            </div>
+
+                            <!-- 4. Permanent home address in case of visitor not in Govt. / University service -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small">4. Permanent Home Address <small class="text-muted">(If not in Govt/Univ service)</small></label>
+                                <textarea class="form-control" id="modalHomeAddress" rows="2"
+                                    placeholder="Permanent residential address for private visitors"></textarea>
+                            </div>
+
+                            <!-- 5. Telephone/Mobile No., if any -->
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold small">5. Telephone / Mobile No. *</label>
                                 <input type="tel" id="modalMobile" class="form-control" placeholder="10-digit mobile" required>
                             </div>
 
-                            <div class="col-12">
-                                <label class="form-label fw-semibold small">Sponsoring Department / Institutional Affiliation <small class="text-muted fw-normal">(Optional)</small></label>
-                                <input type="text" id="modalSponsoringDept" class="form-control" placeholder="e.g. Department of Tree Improvement &amp; Genetic Resources (Optional)">
+                            <!-- 6. Aadhar No. -->
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold small">6. Aadhar No. <small class="text-muted">(UID Number)</small></label>
+                                <input type="text" id="modalAadhar" class="form-control" placeholder="12-digit Aadhaar UID" maxlength="14">
                             </div>
 
+                            <!-- 8. Whether Official / Private visit -->
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold small text-primary"><i class="bi bi-briefcase me-1"></i>8. Visit Type *</label>
+                                <select class="form-select fw-semibold border-primary" id="modalVisitType" onchange="onModalVisitTypeChange()">
+                                    <option value="Official" selected>Official Visit</option>
+                                    <option value="Private">Private Visit</option>
+                                </select>
+                            </div>
+
+                            <!-- 7. Purpose of visit -->
                             <div class="col-12">
-                                <label class="form-label fw-semibold small">Purpose of Visit</label>
+                                <label class="form-label fw-semibold small">7. Purpose of Visit</label>
                                 <textarea class="form-control" id="modalPurpose" rows="2"
-                                    placeholder="Official academic viva / External expert for Board of Studies / Farmers field workshop"></textarea>
+                                    placeholder="Official academic viva / External expert for Board of Studies / Research collaboration / Personal stay"></textarea>
+                            </div>
+
+                            <!-- 9. No. of suite(s) required -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small text-success"><i class="bi bi-door-open me-1"></i>9. No. of Suite(s) Required *</label>
+                                <select class="form-select fw-bold border-success text-success" id="modalSuitesRequired" onchange="calcModalTariff()">
+                                    <option value="1" selected>1 Suite / Room</option>
+                                    <option value="2">2 Suites / Rooms</option>
+                                    <option value="3">3 Suites / Rooms</option>
+                                    <option value="4">4 Suites / Rooms</option>
+                                    <option value="5">5 Suites / Rooms</option>
+                                </select>
+                            </div>
+
+                            <!-- 10. Whether independent suite(s) required or can be shared -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small"><i class="bi bi-people me-1"></i>10. Occupancy Preference *</label>
+                                <select class="form-select" id="modalSharingPreference">
+                                    <option value="Independent Suite" selected>Independent Suite Required</option>
+                                    <option value="Can Be Shared">Can Be Shared (Wherever per-head rates apply)</option>
+                                </select>
+                            </div>
+
+                            <!-- Terms and conditions (Exact Paper Form Wording) -->
+                            <div class="col-12 mt-2">
+                                <div class="card border border-warning-subtle bg-light p-3 rounded-3">
+                                    <h6 class="fw-bold text-dark small mb-1"><i class="bi bi-shield-check text-success me-1"></i>Terms and Conditions (By Order Estate Officer)</h6>
+                                    <ul class="small text-muted mb-2 ps-3" style="font-size: 0.78rem; line-height: 1.45;">
+                                        <li>Reservation is subject to availability and eligibility and can be cancelled without assigning any reason in University interest.</li>
+                                        <li>Reservation would not be made for more than three days at a stretch.</li>
+                                        <li>Reservation made for more than one day and not occupied by the first day upto 11:30 PM, the reservation for the remaining days would be automatically cancelled.</li>
+                                        <li>Only permit holders in whose name permit is issued would be allowed to stay. The permit is non-transferable and a person other than the concerned shall be refused entry in the University Guest House.</li>
+                                    </ul>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="modalTermsAgreed" checked required>
+                                        <label class="form-check-label small fw-semibold text-dark" for="modalTermsAgreed" style="font-size: 0.8rem;">
+                                            I agree to the terms and conditions and certify that applicant particulars submitted above are authentic (Signatures of Applicant).
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -1596,9 +1671,10 @@
         }
 
         function calcModalTariff() {
-            const wing = document.getElementById('modalWing').value;
+            const wing = document.getElementById('modalWing') ? document.getElementById('modalWing').value : 'estate';
             const setType = document.getElementById('modalSetType').value;
             const catId = document.getElementById('modalCategory').value;
+            const suitesRequired = parseInt(document.getElementById('modalSuitesRequired') ? document.getElementById('modalSuitesRequired').value : 1) || 1;
 
             const d1 = parseDateDMY(document.getElementById('modalCheckIn').value);
             const d2 = parseDateDMY(document.getElementById('modalCheckOut').value);
@@ -1607,11 +1683,28 @@
             if (isNaN(nights) || nights < 1) nights = 1;
 
             const rate = EstateTariffManager.calculateStayRate(wing, catId, setType);
-            const total = rate * nights;
+            const total = rate * nights * suitesRequired;
 
             document.getElementById('modalNights').innerText = nights;
-            document.getElementById('modalRateUnit').innerText = `₹${rate}/day`;
+            document.getElementById('modalRateUnit').innerText = `₹${rate}/day` + (suitesRequired > 1 ? ` × ${suitesRequired} suites` : '');
             document.getElementById('modalTotal').innerText = `₹${total.toFixed(2)}`;
+        }
+
+        function onModalVisitTypeChange() {
+            const vType = document.getElementById('modalVisitType') ? document.getElementById('modalVisitType').value : 'Official';
+            const catSelect = document.getElementById('modalCategory');
+            if (!catSelect) return;
+            for (let i = 0; i < catSelect.options.length; i++) {
+                const opt = catSelect.options[i];
+                if (vType === 'Official' && (opt.value.includes('official') || opt.text.toLowerCase().includes('official'))) {
+                    catSelect.selectedIndex = i;
+                    break;
+                } else if (vType === 'Private' && (opt.value.includes('private') || opt.text.toLowerCase().includes('private'))) {
+                    catSelect.selectedIndex = i;
+                    break;
+                }
+            }
+            calcModalTariff();
         }
 
         function filterRoomsByWing(wing, btn) {
@@ -1799,6 +1892,34 @@
                 const wingName = 'Estate Office Wing';
                 const sponsoringDept = document.getElementById('modalSponsoringDept') ? document.getElementById('modalSponsoringDept').value.trim() : '';
                 const purpose = document.getElementById('modalPurpose') ? document.getElementById('modalPurpose').value.trim() : '';
+
+                const desigEl = document.getElementById('modalDesignation');
+                const designation = desigEl && desigEl.value.trim() ? desigEl.value.trim() : (sponsoringDept || 'Visiting Delegate');
+
+                const instAddrEl = document.getElementById('modalInstitutionAddress');
+                const institutionAddress = instAddrEl && instAddrEl.value.trim() ? instAddrEl.value.trim() : sponsoringDept;
+
+                const homeAddrEl = document.getElementById('modalHomeAddress');
+                const homeAddress = homeAddrEl ? homeAddrEl.value.trim() : '';
+
+                const aadharEl = document.getElementById('modalAadhar');
+                const aadharNo = aadharEl ? aadharEl.value.trim() : '';
+
+                const visitTypeEl = document.getElementById('modalVisitType');
+                const visitType = visitTypeEl ? visitTypeEl.value : 'Official';
+
+                const suitesReqEl = document.getElementById('modalSuitesRequired');
+                const suitesRequired = suitesReqEl ? (parseInt(suitesReqEl.value, 10) || 1) : 1;
+
+                const sharePrefEl = document.getElementById('modalSharingPreference');
+                const sharingPreference = sharePrefEl ? sharePrefEl.value : 'Independent Suite';
+
+                const termsCheckEl = document.getElementById('modalTermsAgreed');
+                if (termsCheckEl && !termsCheckEl.checked) {
+                    alert("Booking Error: Please agree to the terms and conditions before submitting your reservation request.");
+                    window.__isModalSubmitting = false;
+                    return;
+                }
                 
                 const setTypeSelect = document.getElementById('modalSetType');
                 const setType = setTypeSelect ? setTypeSelect.value : 'vip';
@@ -1832,19 +1953,25 @@
                 const newDossier = {
                     ref: ref,
                     guest: guest,
-                    designation: sponsoringDept ? `${sponsoringDept}` : 'Visiting Guest / Official Delegate',
+                    designation: designation,
+                    institutionAddress: institutionAddress,
+                    homeAddress: homeAddress,
                     mobile: mobile,
+                    aadharNo: aadharNo,
+                    visitType: visitType,
+                    suitesRequired: suitesRequired,
+                    sharingPreference: sharingPreference,
                     wing: wingName,
                     wingType: wing,
                     room: roomDisplay,
                     roomClass: roomClass,
                     isVvip: isVvip,
                     dates: `${formatDMY(inDate)} &rarr; ${formatDMY(outDate)}`,
-                    duration: `${diffDays} Night${diffDays > 1 ? 's' : ''} &bull; 1 Guest`,
+                    duration: `${diffDays} Night${diffDays > 1 ? 's' : ''} &bull; ${suitesRequired} Suite${suitesRequired > 1 ? 's' : ''}`,
                     category: catLabel,
                     status: isVvip ? 'PENDING_VC_APPROVAL' : 'PENDING_ESTATE_APPROVAL',
                     handledBy: isVvip ? 'vc' : 'estate',
-                    sponsor: sponsoringDept || 'Self / Institutional Booking',
+                    sponsor: institutionAddress || 'Self / Institutional Booking',
                     tariff: totalEst,
                     purpose: purpose,
                     createdAt: new Date().toISOString()

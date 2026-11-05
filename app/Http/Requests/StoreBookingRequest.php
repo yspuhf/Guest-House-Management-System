@@ -27,6 +27,13 @@ class StoreBookingRequest extends FormRequest
             'special_requests' => 'nullable|string|max:500',
             'accepted_terms' => 'accepted',
 
+            // Official Application Form Fields (Image & Notification 1615-40)
+            'visit_type' => 'nullable|in:Official,Private',
+            'institution_address' => 'nullable|string|max:500',
+            'home_address' => 'nullable|string|max:500',
+            'aadhar_number' => 'nullable|string|max:20',
+            'sharing_preference' => 'nullable|in:Independent Suite,Can Be Shared',
+
             // Primary Guest
             'primary_guest_name' => 'required|string|min:3|max:150',
             'primary_guest_designation' => 'nullable|string|max:100',

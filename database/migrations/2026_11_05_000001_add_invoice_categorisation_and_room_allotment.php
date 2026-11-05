@@ -25,11 +25,18 @@ return new class extends Migration
             $table->decimal('dining_charges_subtotal', 10, 2)->default(0.00)->after('stay_charges_subtotal');
         });
 
-        // Add Room Allotment Approval tracking to Bookings and Booking Rooms
+        // Add Room Allotment Approval tracking & Official Paper Requisition Fields to Bookings
         Schema::table('bookings', function (Blueprint $table) {
             $table->foreignId('allotted_room_id')->nullable()->after('room_type_id')->constrained('rooms')->nullOnDelete();
             $table->timestamp('room_allotted_at')->nullable()->after('allotted_room_id');
             $table->foreignId('allotted_by_id')->nullable()->after('room_allotted_at')->constrained('users')->nullOnDelete();
+
+            // Official Form Fields (Notification & Estate Application)
+            $table->enum('visit_type', ['Official', 'Private'])->default('Official')->after('purpose');
+            $table->string('institution_address', 500)->nullable()->after('visit_type');
+            $table->string('home_address', 500)->nullable()->after('institution_address');
+            $table->string('aadhar_number', 20)->nullable()->after('home_address');
+            $table->enum('sharing_preference', ['Independent Suite', 'Can Be Shared'])->default('Independent Suite')->after('rooms_requested');
         });
 
         Schema::table('booking_rooms', function (Blueprint $table) {

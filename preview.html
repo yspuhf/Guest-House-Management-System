@@ -1247,35 +1247,115 @@
 
                                             <h5 class="fw-bold text-primary mb-3"><i
                                                     class="bi bi-person-badge me-2"></i>3.
-                                                Primary Guest Particulars</h5>
+                                                Applicant Particulars (Official Application Format)</h5>
                                             <div class="row g-3 mb-4">
+                                                <!-- 1. Name of applicant -->
                                                 <div class="col-md-6">
-                                                    <label class="form-label fw-semibold">Full Name <span
+                                                    <label class="form-label fw-semibold">1. Name of the Applicant <span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" id="guestName"
                                                         placeholder="e.g. Dr. Ramesh Gupta" required>
                                                 </div>
+
+                                                <!-- 2. Designation -->
                                                 <div class="col-md-6">
-                                                    <label class="form-label fw-semibold">Designation / Affiliation
-                                                        <span class="text-danger">*</span></label>
+                                                    <label class="form-label fw-semibold">2. Designation <span
+                                                            class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" id="guestDesignation"
                                                         placeholder="e.g. Principal Scientist, ICAR" required>
                                                 </div>
+
+                                                <!-- 3. University/Institution/Firm with complete address -->
                                                 <div class="col-md-6">
-                                                    <label class="form-label fw-semibold">Mobile Number <span
+                                                    <label class="form-label fw-semibold">3. Name of University / Institution / Firm &amp; Address</label>
+                                                    <textarea class="form-control" rows="2" id="guestInstitutionAddress"
+                                                        placeholder="Full name of University/Firm and complete postal address"></textarea>
+                                                </div>
+
+                                                <!-- 4. Permanent home address -->
+                                                <div class="col-md-6">
+                                                    <label class="form-label fw-semibold">4. Permanent Home Address <small class="text-muted">(If not in Govt/Univ Service)</small></label>
+                                                    <textarea class="form-control" rows="2" id="guestHomeAddress"
+                                                        placeholder="Permanent home address for private visitors"></textarea>
+                                                </div>
+
+                                                <!-- 5. Telephone / Mobile No. -->
+                                                <div class="col-md-4">
+                                                    <label class="form-label fw-semibold">5. Telephone / Mobile No. <span
                                                             class="text-danger">*</span></label>
                                                     <input type="tel" class="form-control" id="guestMobile"
                                                         placeholder="10-digit mobile number" required>
                                                 </div>
-                                                <div class="col-md-6">
+
+                                                <!-- 6. Aadhar No. -->
+                                                <div class="col-md-4">
+                                                    <label class="form-label fw-semibold">6. Aadhar No. <small class="text-muted">(UID Number)</small></label>
+                                                    <input type="text" class="form-control" id="guestAadhar"
+                                                        placeholder="12-digit Aadhaar UID" maxlength="14">
+                                                </div>
+
+                                                <!-- Official Email -->
+                                                <div class="col-md-4">
                                                     <label class="form-label fw-semibold">Official Email</label>
                                                     <input type="email" class="form-control" id="guestEmail"
                                                         placeholder="guest@organization.gov.in">
                                                 </div>
+
+                                                <!-- 7. Purpose of visit -->
                                                 <div class="col-12">
-                                                    <label class="form-label fw-semibold">Purpose of Visit</label>
+                                                    <label class="form-label fw-semibold">7. Purpose of Visit</label>
                                                     <textarea class="form-control" rows="2" id="guestPurpose"
                                                         placeholder="Academic conference / External viva examination / Official university inspection..."></textarea>
+                                                </div>
+
+                                                <!-- 8. Whether Official / Private visit -->
+                                                <div class="col-md-4">
+                                                    <label class="form-label fw-semibold text-primary"><i class="bi bi-briefcase me-1"></i>8. Visit Type *</label>
+                                                    <select class="form-select fw-semibold border-primary" id="bookingVisitType" onchange="onAdminVisitTypeChange()">
+                                                        <option value="Official" selected>Official Visit (Govt / University)</option>
+                                                        <option value="Private">Private Visit</option>
+                                                    </select>
+                                                </div>
+
+                                                <!-- 9. No. of suite(s) required -->
+                                                <div class="col-md-4">
+                                                    <label class="form-label fw-semibold text-success"><i class="bi bi-door-open me-1"></i>9. No. of Suite(s) Required *</label>
+                                                    <select class="form-select fw-bold border-success text-success" id="bookingSuitesRequired" onchange="calculateTariffEstimate()">
+                                                        <option value="1" selected>1 Suite / Room</option>
+                                                        <option value="2">2 Suites / Rooms</option>
+                                                        <option value="3">3 Suites / Rooms</option>
+                                                        <option value="4">4 Suites / Rooms</option>
+                                                        <option value="5">5 Suites / Rooms</option>
+                                                    </select>
+                                                </div>
+
+                                                <!-- 10. Whether independent suite(s) required or can be shared -->
+                                                <div class="col-md-4">
+                                                    <label class="form-label fw-semibold"><i class="bi bi-people me-1"></i>10. Occupancy Preference *</label>
+                                                    <select class="form-select" id="bookingSharingPreference">
+                                                        <option value="Independent Suite" selected>Independent Suite Required</option>
+                                                        <option value="Can Be Shared">Can Be Shared (Wherever per-head rates apply)</option>
+                                                    </select>
+                                                </div>
+                                                <input type="hidden" id="guestAffiliation" value="">
+
+                                                <!-- Terms and conditions (Exact Paper Form Wording) -->
+                                                <div class="col-12 mt-2">
+                                                    <div class="card border border-warning-subtle bg-light p-3 rounded-3">
+                                                        <h6 class="fw-bold text-dark small mb-1"><i class="bi bi-shield-check text-success me-1"></i>Terms and Conditions (By Order Estate Officer)</h6>
+                                                        <ul class="small text-muted mb-2 ps-3" style="font-size: 0.78rem; line-height: 1.4;">
+                                                            <li>Reservation is subject to availability and eligibility and can be cancelled without assigning any reason in University interest.</li>
+                                                            <li>Reservation would not be made for more than three days at a stretch.</li>
+                                                            <li>Reservation made for more than one day and not occupied by the first day upto 11:30 PM, the reservation for the remaining days would be automatically cancelled.</li>
+                                                            <li>Only permit holders in whose name permit is issued would be allowed to stay. The permit is non-transferable and a person other than the concerned shall be refused entry in the University Guest House.</li>
+                                                        </ul>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" id="adminTermsAgreed" checked required>
+                                                            <label class="form-check-label small fw-semibold text-dark" for="adminTermsAgreed" style="font-size: 0.8rem;">
+                                                                I agree to the terms and conditions and certify that applicant particulars submitted above are authentic (Signatures of Applicant).
+                                                            </label>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -3834,11 +3914,14 @@
                     ${jurisdictionAlert}
                     <div class="row mb-4">
                         <div class="col-md-6">
-                            <h6 class="fw-bold text-navy">Guest Particulars &amp; Category</h6>
-                            <p class="mb-1"><strong>Guest:</strong> ${escapeHtml(dossier.guest)}</p>
-                            <p class="mb-1"><strong>Designation:</strong> ${escapeHtml(dossier.designation)}</p>
+                            <h6 class="fw-bold text-navy">Applicant Particulars &amp; Classification</h6>
+                            <p class="mb-1"><strong>Applicant:</strong> ${escapeHtml(dossier.guest)}</p>
+                            <p class="mb-1"><strong>Designation:</strong> ${escapeHtml(dossier.designation || 'Visiting Delegate')}</p>
+                            <p class="mb-1"><strong>Institution / Firm:</strong> ${escapeHtml(dossier.institutionAddress || dossier.sponsor || 'On Record')}</p>
+                            ${dossier.homeAddress ? `<p class="mb-1"><strong>Home Address:</strong> ${escapeHtml(dossier.homeAddress)}</p>` : ''}
+                            <p class="mb-1"><strong>Aadhar No.:</strong> ${escapeHtml(dossier.aadharNo || 'On Record')} &bull; <strong>Visit:</strong> <span class="badge ${dossier.visitType === 'Private' ? 'bg-secondary' : 'bg-success'}">${escapeHtml(dossier.visitType || 'Official')}</span></p>
                             <p class="mb-1"><strong>Category:</strong> ${escapeHtml(dossier.category)}</p>
-                            <p class="mb-1"><strong>Accommodation Wing:</strong> ${escapeHtml(dossier.wing)}</p>
+                            <p class="mb-1"><strong>Suites:</strong> ${dossier.suitesRequired || 1} Suite(s) &bull; <strong>Sharing:</strong> ${escapeHtml(dossier.sharingPreference || 'Independent Suite')}</p>
                         </div>
                         <div class="col-md-6">
                             <h6 class="fw-bold text-navy">Stay Schedule &amp; Sponsoring Body</h6>
@@ -5007,10 +5090,22 @@
 
                 const guestName = document.getElementById('guestName').value.trim();
                 const guestDesig = document.getElementById('guestDesignation') ? document.getElementById('guestDesignation').value.trim() : 'Visiting University Delegate';
+                const guestInstAddress = document.getElementById('guestInstitutionAddress') ? document.getElementById('guestInstitutionAddress').value.trim() : '';
+                const guestHomeAddress = document.getElementById('guestHomeAddress') ? document.getElementById('guestHomeAddress').value.trim() : '';
                 const guestMobile = document.getElementById('guestMobile') ? document.getElementById('guestMobile').value.trim() : '';
+                const guestAadhar = document.getElementById('guestAadhar') ? document.getElementById('guestAadhar').value.trim() : '';
                 const guestEmail = document.getElementById('guestEmail') ? document.getElementById('guestEmail').value.trim() : '';
                 const affiliation = document.getElementById('guestAffiliation') ? document.getElementById('guestAffiliation').value.trim() : '';
                 const purpose = document.getElementById('guestPurpose') ? document.getElementById('guestPurpose').value.trim() : '';
+                const visitType = document.getElementById('bookingVisitType') ? document.getElementById('bookingVisitType').value : 'Official';
+                const suitesRequired = parseInt(document.getElementById('bookingSuitesRequired') ? document.getElementById('bookingSuitesRequired').value : 1) || 1;
+                const sharingPreference = document.getElementById('bookingSharingPreference') ? document.getElementById('bookingSharingPreference').value : 'Independent Suite';
+
+                const termsCheck = document.getElementById('adminTermsAgreed');
+                if (termsCheck && !termsCheck.checked) {
+                    alert("Booking Error: Please agree to the terms and conditions before submitting.");
+                    return;
+                }
 
                 const wing = document.getElementById('bookingWing').value;
                 const wingLabel = 'Estate Office Wing';
@@ -5035,21 +5130,28 @@
                 const newDossier = {
                     ref: refNum,
                     guest: guestName,
-                    designation: affiliation ? `${guestDesig} (${affiliation})` : guestDesig,
+                    designation: guestDesig,
+                    institutionAddress: guestInstAddress || affiliation,
+                    homeAddress: guestHomeAddress,
                     mobile: guestMobile,
                     email: guestEmail,
+                    aadharNo: guestAadhar,
+                    visitType: visitType,
+                    suitesRequired: suitesRequired,
+                    sharingPreference: sharingPreference,
                     wing: wingLabel,
                     wingType: wing,
                     room: `${ghLabel} &bull; ${setTypeLabel}`,
                     roomClass: isVvip ? 'vvip' : (setType || 'ordinary'),
                     isVvip: isVvip,
                     dates: `${formatDMY(inDate)} &rarr; ${formatDMY(outDate)}`,
-                    duration: `${diffDays} Night${diffDays > 1 ? 's' : ''} &bull; 1 Guest`,
+                    duration: `${diffDays} Night${diffDays > 1 ? 's' : ''} &bull; ${suitesRequired} Suite${suitesRequired > 1 ? 's' : ''}`,
                     category: catLabel,
                     status: isVvip ? 'PENDING_VC_APPROVAL' : 'PENDING_ESTATE_APPROVAL',
                     handledBy: isVvip ? 'vc' : 'estate',
-                    sponsor: affiliation || 'Estate Office Booking',
+                    sponsor: guestInstAddress || affiliation || 'Estate Office Booking',
                     tariff: estTotal,
+                    purpose: purpose,
                     createdAt: new Date().toISOString()
                 };
 
