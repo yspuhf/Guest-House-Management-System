@@ -668,7 +668,8 @@ try {
     const hasStayHeader = stayHtml.includes('STAY CHARGES INVOICE (NON-GST)');
     const guestName = residentDossier ? residentDossier.guest : '';
     const hasCheckedInGuest = stayHtml.includes(guestName) || (typeof escapeHtml === 'function' && stayHtml.includes(escapeHtml(guestName)));
-    const hasStayZeroGst = stayHtml.includes('GST @ 0%');
+    const hasStayNonGst = stayHtml.includes('NON-GST');
+    const gstLineRemoved = !stayHtml.includes('GST @ 0%');
 
     // Check Dining Invoice Modal content
     switchInvoiceType('dining');
@@ -684,14 +685,15 @@ try {
         billingRows: rows,
         hasStayHeader: hasStayHeader,
         hasCheckedInGuest: hasCheckedInGuest,
-        hasStayZeroGst: hasStayZeroGst,
+        hasStayNonGst: hasStayNonGst,
+        gstLineRemoved: gstLineRemoved,
         hasDiningHeader: hasDiningHeader,
         hasBothHeader: hasBothHeader
     };
 })()
 '@
-    if ($invRes.billingRows -gt 0 -and $invRes.hasStayHeader -and $invRes.hasCheckedInGuest -and $invRes.hasStayZeroGst -and $invRes.hasDiningHeader -and $invRes.hasBothHeader) {
-        Add-TestResult "Invoicing" "INV-01" "Separate Stay Charges & Dining Charges Non-GST Invoice Generation" "PASS" "Verified Stay Invoice (Billed to Checked-in Resident, GST 0%), Dining Invoice (Mess Charges, Non-GST), Consolidated Invoice, and Billing Ledger ($($invRes.billingRows) invoices)"
+    if ($invRes.billingRows -gt 0 -and $invRes.hasStayHeader -and $invRes.hasCheckedInGuest -and $invRes.hasStayNonGst -and $invRes.gstLineRemoved -and $invRes.hasDiningHeader -and $invRes.hasBothHeader) {
+        Add-TestResult "Invoicing" "INV-01" "Separate Stay Charges & Dining Charges Non-GST Invoice Generation" "PASS" "Verified Stay Invoice (Billed to Checked-in Resident, Non-GST, GST 0% lines removed), Dining Invoice (Mess Charges, Non-GST), Consolidated Invoice, and Billing Ledger ($($invRes.billingRows) invoices)"
     } else {
         Add-TestResult "Invoicing" "INV-01" "Separate Stay Charges & Dining Charges Non-GST Invoice Generation" "FAIL" "Invoice validation failed: $($invRes | ConvertTo-Json)"
     }
