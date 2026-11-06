@@ -843,6 +843,68 @@ try {
         Add-TestResult "Permit" "PERM-02" "Official Reservations Permit Print (VC Secretariat)" "FAIL" "VC permit validation failed: $($vcPermRes | ConvertTo-Json)"
     }
 
+    # Test 2.13: Dining Bill Management (Add / Delete / Change Amounts)
+    $dinRes = Invoke-Evaluate $prevConn @'
+(() => {
+    // 1. Get first active dossier
+    const d = institutionalDossiers[0];
+    if (!d) return { success: false, reason: 'no dossier found' };
+    
+    // 2. Open dining editor
+    openDiningBillEditorModal(d.ref);
+    const modal = document.getElementById('diningBillEditorModal');
+    if (!modal) return { success: false, reason: 'diningBillEditorModal not in DOM' };
+    
+    const initialItemCount = editingDiningItems.length;
+    
+    // 3. Add an item
+    document.getElementById('diningNewDesc').value = 'Extra Academic Lunch';
+    document.getElementById('diningNewQty').value = '2';
+    document.getElementById('diningNewRate').value = '120';
+    addDiningItemFromForm();
+    
+    const countAfterAdd = editingDiningItems.length;
+    const addedItem = editingDiningItems[editingDiningItems.length - 1];
+    const hasAdded = (countAfterAdd === initialItemCount + 1 && addedItem.amount === 240);
+    
+    // 4. Delete the first item
+    deleteDiningItem(0);
+    const countAfterDel = editingDiningItems.length;
+    const hasDeleted = (countAfterDel === countAfterAdd - 1);
+    
+    // 5. Apply direct amount override
+    document.getElementById('directDiningAmountOverride').value = '550';
+    applyDirectDiningOverride();
+    const hasOverride = (editingDiningItems.length === 1 && editingDiningItems[0].amount === 550);
+    
+    // 6. Save changes
+    saveDiningBillChanges();
+    const updatedDossier = institutionalDossiers.find(x => x.ref === d.ref);
+    const hasSaved = (updatedDossier.diningAmount === 550 && updatedDossier.diningItems.length === 1);
+    
+    // 7. Test clear / waive to 0
+    openDiningBillEditorModal(d.ref);
+    editingDiningItems = [];
+    renderDiningEditorItems();
+    saveDiningBillChanges();
+    const hasZeroed = (updatedDossier.diningAmount === 0 && updatedDossier.diningItems.length === 0);
+
+    return {
+        success: hasAdded && hasDeleted && hasOverride && hasSaved && hasZeroed,
+        hasAdded,
+        hasDeleted,
+        hasOverride,
+        hasSaved,
+        hasZeroed
+    };
+})()
+'@
+    if ($dinRes.success) {
+        Add-TestResult "Billing" "DIN-01" "Dynamic Dining Bill Management (Add/Delete/Change Amounts)" "PASS" "Verified dining bill line items can be added, deleted, manually adjusted, cleared to 0, and saved with live reactive ledger updates"
+    } else {
+        Add-TestResult "Billing" "DIN-01" "Dynamic Dining Bill Management (Add/Delete/Change Amounts)" "FAIL" "Dining management test failed: $($dinRes | ConvertTo-Json)"
+    }
+
     # Test 2.12: Universal Printing Engine Verification
     $printRes = Invoke-Evaluate $prevConn @'
 (() => {
