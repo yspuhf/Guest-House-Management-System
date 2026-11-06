@@ -339,6 +339,52 @@ try {
         Add-TestResult "Request Submission" "SUB-07" "Multilingual Unicode Hindi Input" "FAIL" "Failed: $($res | ConvertTo-Json)"
     }
 
+    # Test 1.9B: 8-Digit Restricted Aadhar Validation
+    $res = Invoke-Evaluate $indexConn @'
+(() => {
+    const aadharInput = document.getElementById('modalAadhar');
+    if (!aadharInput) return { success: false, reason: "No modalAadhar input" };
+
+    const maxLen = aadharInput.getAttribute('maxlength');
+    const inputMode = aadharInput.getAttribute('inputmode');
+
+    // 1. Simulate invalid 5-digit Aadhar
+    aadharInput.value = '12345';
+    let alertMsg = '';
+    window.alert = msg => { alertMsg = msg; };
+    const countBefore = (JSON.parse(localStorage.getItem('uhf_institutional_dossiers') || '[]')).length;
+    handleModalSubmit({ preventDefault: () => {} });
+    const countAfterBad = (JSON.parse(localStorage.getItem('uhf_institutional_dossiers') || '[]')).length;
+    const blockedInvalid = (countAfterBad === countBefore) && alertMsg.includes('8-digit');
+
+    // 2. Simulate typing with non-digits & extra characters
+    aadharInput.value = '9876abcd5432-111';
+    aadharInput.dispatchEvent(new Event('input', { bubbles: true }));
+    const filteredVal = aadharInput.value;
+
+    // 3. Submit valid 8-digit
+    aadharInput.value = '87654321';
+    window.alert = () => {};
+    handleModalSubmit({ preventDefault: () => {} });
+    const dossiers = JSON.parse(localStorage.getItem('uhf_institutional_dossiers') || '[]');
+    const latest = dossiers[0];
+    const savedCorrectly = latest && latest.aadharNo === '87654321';
+
+    return {
+        success: maxLen === '8' && inputMode === 'numeric' && blockedInvalid && filteredVal === '98765432' && savedCorrectly,
+        maxLen: maxLen,
+        blockedInvalid: blockedInvalid,
+        filteredVal: filteredVal,
+        savedAadhar: latest ? latest.aadharNo : null
+    };
+})()
+'@
+    if ($res.success) {
+        Add-TestResult "Request Submission" "SUB-08" "Aadhar 8-Digit Restriction Validation" "PASS" "Enforced 8-digit numeric limit, filtered non-digits to '$($res.filteredVal)', and stored '$($res.savedAadhar)'"
+    } else {
+        Add-TestResult "Request Submission" "SUB-08" "Aadhar 8-Digit Restriction Validation" "FAIL" "Failed: $($res | ConvertTo-Json)"
+    }
+
     # Test 1.10: SQL-like Input Defense
     $res = Invoke-Evaluate $indexConn @'
 (() => {

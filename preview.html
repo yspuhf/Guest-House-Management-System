@@ -1432,9 +1432,10 @@
                                                 <!-- 6. Aadhar No. -->
                                                 <div class="col-md-4">
                                                     <label class="form-label fw-semibold">6. Aadhar No. <small
-                                                            class="text-muted">(UID Number)</small></label>
+                                                            class="text-muted">(8-Digit UID Restricted)</small></label>
                                                     <input type="text" class="form-control" id="guestAadhar"
-                                                        placeholder="12-digit Aadhaar UID" maxlength="14">
+                                                        placeholder="8-digit Aadhar UID" maxlength="8" pattern="\d{8}" inputmode="numeric" oninput="this.value = this.value.replace(/\D/g, '').slice(0, 8);">
+                                                    <div class="form-text text-muted" style="font-size:0.72rem;">Restricted to 8-digit numeric UID</div>
                                                 </div>
 
                                                 <!-- Official Email -->
@@ -4376,7 +4377,7 @@
                             <p class="mb-1"><strong>Designation:</strong> ${escapeHtml(dossier.designation || 'Visiting Delegate')}</p>
                             <p class="mb-1"><strong>Institution / Firm:</strong> ${escapeHtml(dossier.institutionAddress || dossier.sponsor || 'On Record')}</p>
                             ${dossier.homeAddress ? `<p class="mb-1"><strong>Home Address:</strong> ${escapeHtml(dossier.homeAddress)}</p>` : ''}
-                            <p class="mb-1"><strong>Aadhar No.:</strong> ${escapeHtml(dossier.aadharNo || 'On Record')}</p>
+                            <p class="mb-1"><strong>Aadhar No. (8-Digit):</strong> ${escapeHtml(dossier.aadharNo || 'On Record')}</p>
                             <p class="mb-1"><strong>Category:</strong> ${escapeHtml(dossier.category)}</p>
                             <p class="mb-1"><strong>Suites:</strong> ${dossier.suitesRequired || 1} Suite(s) &bull; <strong>Sharing:</strong> ${escapeHtml(dossier.sharingPreference || 'Independent Suite')}</p>
                         </div>
@@ -5957,7 +5958,14 @@
                 const guestInstAddress = document.getElementById('guestInstitutionAddress') ? document.getElementById('guestInstitutionAddress').value.trim() : '';
                 const guestHomeAddress = document.getElementById('guestHomeAddress') ? document.getElementById('guestHomeAddress').value.trim() : '';
                 const guestMobile = document.getElementById('guestMobile') ? document.getElementById('guestMobile').value.trim() : '';
-                const guestAadhar = document.getElementById('guestAadhar') ? document.getElementById('guestAadhar').value.trim() : '';
+                const guestAadharEl = document.getElementById('guestAadhar');
+                const rawGuestAadhar = guestAadharEl ? guestAadharEl.value.trim() : '';
+                const guestAadhar = rawGuestAadhar.replace(/\D/g, '').slice(0, 8);
+                if (rawGuestAadhar && guestAadhar.length !== 8) {
+                    alert("Booking Error: Aadhar number must be restricted to an 8-digit numeric UID (or left blank).");
+                    if (guestAadharEl) guestAadharEl.focus();
+                    return;
+                }
                 const guestEmail = document.getElementById('guestEmail') ? document.getElementById('guestEmail').value.trim() : '';
                 const affiliation = document.getElementById('guestAffiliation') ? document.getElementById('guestAffiliation').value.trim() : '';
                 const purpose = document.getElementById('guestPurpose') ? document.getElementById('guestPurpose').value.trim() : '';

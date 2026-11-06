@@ -106,6 +106,7 @@ class BookingController extends Controller
                 'special_requests' => $request->special_requests,
                 'accepted_terms' => true,
                 'status' => 'Draft',
+                'aadhar_number' => $request->aadhar_number ? substr(preg_replace('/\D/', '', $request->aadhar_number), 0, 8) : null,
             ]);
 
             // Create Primary Guest

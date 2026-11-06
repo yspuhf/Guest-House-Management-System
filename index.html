@@ -795,8 +795,9 @@
 
                             <!-- 6. Aadhar No. -->
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold small">6. Aadhar No. <small class="text-muted">(UID Number)</small></label>
-                                <input type="text" id="modalAadhar" class="form-control" placeholder="12-digit Aadhaar UID" maxlength="14">
+                                <label class="form-label fw-semibold small">6. Aadhar No. <small class="text-muted">(8-Digit UID Restricted)</small></label>
+                                <input type="text" id="modalAadhar" class="form-control" placeholder="8-digit Aadhar UID" maxlength="8" pattern="\d{8}" inputmode="numeric" oninput="this.value = this.value.replace(/\D/g, '').slice(0, 8);">
+                                <div class="form-text text-muted" style="font-size:0.72rem;">Restricted to 8-digit numeric UID</div>
                             </div>
 
                             <!-- 7. Purpose of visit -->
@@ -1639,6 +1640,14 @@
                 else document.getElementById('modalCheckOut').value = searchOut.value;
             }
 
+            const aadharInput = document.getElementById('modalAadhar');
+            if (aadharInput && !aadharInput.__hasAadharFilter) {
+                aadharInput.__hasAadharFilter = true;
+                aadharInput.addEventListener('input', function() {
+                    this.value = this.value.replace(/\D/g, '').slice(0, 8);
+                });
+            }
+
             calcModalTariff();
             const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
             modal.show();
@@ -1813,7 +1822,14 @@
                 const homeAddress = homeAddrEl ? homeAddrEl.value.trim() : '';
 
                 const aadharEl = document.getElementById('modalAadhar');
-                const aadharNo = aadharEl ? aadharEl.value.trim() : '';
+                const rawAadhar = aadharEl ? aadharEl.value.trim() : '';
+                const aadharNo = rawAadhar.replace(/\D/g, '').slice(0, 8);
+                if (rawAadhar && aadharNo.length !== 8) {
+                    alert("Booking Error: Aadhar number must be restricted to an 8-digit numeric UID (or left blank).");
+                    if (aadharEl) aadharEl.focus();
+                    window.__isModalSubmitting = false;
+                    return;
+                }
 
                 const suitesReqEl = document.getElementById('modalSuitesRequired');
                 const suitesRequired = suitesReqEl ? (parseInt(suitesReqEl.value, 10) || 1) : 1;

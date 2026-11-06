@@ -31,7 +31,7 @@ class StoreBookingRequest extends FormRequest
             'visit_type' => 'nullable|in:Official,Private',
             'institution_address' => 'nullable|string|max:500',
             'home_address' => 'nullable|string|max:500',
-            'aadhar_number' => 'nullable|string|max:20',
+            'aadhar_number' => 'nullable|digits:8',
             'sharing_preference' => 'nullable|in:Independent Suite,Can Be Shared',
 
             // Primary Guest
@@ -62,6 +62,7 @@ class StoreBookingRequest extends FormRequest
             'primary_guest_name.min' => 'Primary guest name must be at least 3 characters.',
             'primary_guest_phone.required' => 'Primary guest contact number is required.',
             'primary_guest_phone.min' => 'Contact phone number must be at least 7 digits.',
+            'aadhar_number.digits' => 'Aadhar number must be restricted to exactly 8 digits.',
         ];
     }
 }
