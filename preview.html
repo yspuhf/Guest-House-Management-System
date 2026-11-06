@@ -2811,7 +2811,7 @@
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-4 bg-light">
-                        <div class="card border-0 shadow-sm mb-3">
+                        <div class="card border-0 shadow-sm mb-3 overflow-hidden">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <span class="badge bg-primary" id="allotModalRef">-</span>
@@ -2821,22 +2821,22 @@
                                 <div class="row g-2">
                                     <div class="col-md-6">
                                         <small class="text-muted d-block">Guest / Requisitioner:</small>
-                                        <strong id="allotModalGuest" class="fs-6 text-dark">-</strong>
-                                        <div id="allotModalDesignation" class="small text-muted">-</div>
+                                        <strong id="allotModalGuest" class="fs-6 text-dark text-break">-</strong>
+                                        <div id="allotModalDesignation" class="small text-muted text-break">-</div>
                                     </div>
                                     <div class="col-md-6">
                                         <small class="text-muted d-block">Requested Dates &amp; Duration:</small>
-                                        <strong id="allotModalDates" class="text-dark">-</strong>
-                                        <div id="allotModalDuration" class="small text-muted">-</div>
+                                        <strong id="allotModalDates" class="text-dark text-break">-</strong>
+                                        <div id="allotModalDuration" class="small text-muted text-break">-</div>
                                     </div>
-                                    <div class="col-md-6 mt-2">
+                                    <div class="col-md-5 mt-2">
                                         <small class="text-muted d-block">Requested Wing &amp; Set:</small>
-                                        <span id="allotModalWing" class="fw-semibold text-primary">-</span>
+                                        <span id="allotModalWing" class="fw-semibold text-primary text-break">-</span>
                                     </div>
-                                    <div class="col-md-6 mt-2">
-                                        <small class="text-muted d-block">Tariff Category (Notification
+                                    <div class="col-md-7 mt-2">
+                                        <small class="text-muted d-block mb-1">Tariff Category (Notification
                                             1615-40):</small>
-                                        <span id="allotModalCategory" class="badge bg-info text-dark">-</span>
+                                        <span id="allotModalCategory" class="badge bg-info text-dark text-wrap text-start lh-sm d-inline-block py-1 px-2" style="max-width: 100%; white-space: normal !important; word-break: break-word; font-size: 0.78rem;">-</span>
                                     </div>
                                 </div>
                             </div>
@@ -6296,7 +6296,7 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                             <strong>Date of Issue:</strong> ${escapeHtml(recDate)}<br>
                             <strong>Allotted Room:</strong> ${escapeHtml(dossier.room || 'VIP Suite')}<br>
                             <strong>Tariff Category:</strong><br>
-                            <span class="badge bg-secondary">${escapeHtml(dossier.category || 'Notification 1615-40')}</span><br>
+                            <span class="badge bg-secondary text-wrap text-end d-inline-block" style="max-width: 100%; white-space: normal !important; word-break: break-word;">${escapeHtml(dossier.category || 'Notification 1615-40')}</span><br>
                             <strong>Stay Dates:</strong> ${escapeHtml(dossier.dates || '28/10/2026 - 31/10/2026')}
                         </div>
                     </div>
@@ -6341,7 +6341,7 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                             <strong class="text-dark">${escapeHtml(dossier.guest)}</strong>
                             <small class="d-block text-muted" style="font-size:0.72rem;">${escapeHtml(dossier.room || 'VIP Suite')}</small>
                         </td>
-                        <td><span class="badge bg-info text-dark" style="font-size:0.7rem;">${escapeHtml(dossier.category || '1(i) Official')}</span></td>
+                        <td><span class="badge bg-info text-dark text-wrap text-start lh-sm d-inline-block" style="font-size:0.7rem; max-width: 240px; white-space: normal !important; word-break: break-word;">${escapeHtml(dossier.category || '1(i) Official')}</span></td>
                         <td class="text-end fw-semibold text-primary">&#8377;${charges.stayAmount.toLocaleString('en-IN')}.00</td>
                         <td class="text-end fw-semibold text-success">&#8377;${charges.diningAmount.toLocaleString('en-IN')}.00</td>
                         <td class="text-end fw-bold text-dark">&#8377;${charges.totalAmount.toLocaleString('en-IN')}.00</td>
