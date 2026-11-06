@@ -843,6 +843,41 @@ try {
         Add-TestResult "Permit" "PERM-02" "Official Reservations Permit Print (VC Secretariat)" "FAIL" "VC permit validation failed: $($vcPermRes | ConvertTo-Json)"
     }
 
+    # Test 2.12: Universal Printing Engine Verification
+    $printRes = Invoke-Evaluate $prevConn @'
+(() => {
+    // 1. Permit Print
+    showReservationsPermitModal('ALL');
+    printReservationsPermit();
+    const frame = document.getElementById('universalPrintFrame');
+    if (!frame) return { success: false, reason: 'universalPrintFrame not found' };
+    const fDoc = frame.contentWindow.document;
+    const hasPermit = fDoc.body.innerText.includes('RESERVATIONS PERMIT') && fDoc.querySelectorAll('table').length > 0;
+    
+    // 2. Receipt Print
+    showReceiptModal('ALL', 'stay');
+    printInvoice();
+    const hasInvoice = fDoc.body.innerText.includes('NON-GST') || fDoc.body.innerText.includes('Stay Charges');
+
+    // 3. Reports Print
+    showTab('reports');
+    printActiveReport();
+    const hasReport = fDoc.body.innerText.includes('Audit & Revenue Report');
+
+    return {
+        success: hasPermit && hasInvoice && hasReport,
+        hasPermit,
+        hasInvoice,
+        hasReport
+    };
+})()
+'@
+    if ($printRes.success) {
+        Add-TestResult "Printing" "PRINT-01" "Universal In-Page Printing Engine" "PASS" "Verified Reservations Permit, Cashier Invoice, and Audit Reports successfully dispatched to universal print engine without popup blocking or window aborts"
+    } else {
+        Add-TestResult "Printing" "PRINT-01" "Universal In-Page Printing Engine" "FAIL" "Print verification failed: $($printRes | ConvertTo-Json)"
+    }
+
     # =========================================================================
     # SUITE 3: Performance & Load Testing
     # =========================================================================

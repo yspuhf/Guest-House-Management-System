@@ -174,23 +174,69 @@
         }
 
         @media print {
+            html, body {
+                background: #fff !important;
+                color: #000 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
 
             #sidebarMenu,
             .navbar-university,
             .btn,
+            .btn-close,
             .nav-pills,
             .modal-footer,
-            .border-bottom {
+            .modal-backdrop,
+            #universalPrintFrame {
                 display: none !important;
             }
 
-            .view-panel {
-                display: block !important;
+            body.modal-open {
+                overflow: visible !important;
             }
 
-            body {
-                background: white !important;
-                color: black !important;
+            body.modal-open #mainContent,
+            body.modal-open #sidebarMenu,
+            body.modal-open .navbar-university {
+                display: none !important;
+            }
+
+            body.modal-open .modal.show {
+                display: block !important;
+                position: static !important;
+                width: 100% !important;
+                height: auto !important;
+                overflow: visible !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            body.modal-open .modal.show .modal-dialog {
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                transform: none !important;
+            }
+
+            body.modal-open .modal.show .modal-content {
+                border: none !important;
+                box-shadow: none !important;
+                background: #fff !important;
+            }
+
+            body.modal-open .modal.show .modal-body {
+                padding: 0 !important;
+                overflow: visible !important;
+            }
+
+            body:not(.modal-open) .view-panel:not(.active) {
+                display: none !important;
+            }
+
+            body:not(.modal-open) .view-panel.active {
+                display: block !important;
             }
         }
     </style>
@@ -2756,7 +2802,7 @@
                             institutional exemption rules
                         </span>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="window.print()">
+                        <button type="button" class="btn btn-primary" onclick="printInvoice()">
                             <i class="bi bi-printer me-1"></i> Print Invoice
                         </button>
                     </div>
@@ -6677,7 +6723,32 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
             }
 
             function printActiveReport() {
-                window.print();
+                const reportAnalytics = document.getElementById('reportAnalyticsContent');
+                const reportLedger = document.getElementById('reportBookingsLedger');
+                const currentPeriod = document.getElementById('reportPeriodSelect') ? document.getElementById('reportPeriodSelect').value : 'Current';
+                const html = `
+                    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 15px;">
+                        <div class="text-center mb-4">
+                            <h3 class="fw-bold mb-1">DR. Y.S. PARMAR UNIVERSITY OF HORTICULTURE &amp; FORESTRY</h3>
+                            <h5 class="text-navy mb-1">Estate Organization &bull; University Guest House Operational Audit &amp; Revenue Report</h5>
+                            <p class="text-muted small">Reporting Filter: <strong>${escapeHtml(currentPeriod.toUpperCase())}</strong> &bull; Generated on: ${new Date().toLocaleDateString('en-GB')} at ${new Date().toLocaleTimeString('en-GB')}</p>
+                        </div>
+                        ${reportAnalytics ? reportAnalytics.innerHTML : ''}
+                        <div class="mt-4">
+                            <h5 class="fw-bold border-bottom pb-2">Active Booking Ledgers &amp; Non-GST Statutory Billing Audit</h5>
+                            ${reportLedger ? reportLedger.innerHTML : ''}
+                        </div>
+                    </div>
+                `;
+                printHtmlDocument(html, {
+                    title: 'Guest House Operational Audit Report - Dr YSP UHF Nauni',
+                    orientation: 'landscape',
+                    css: `
+                        .btn, .btn-group, select { display: none !important; }
+                        table { width: 100% !important; border-collapse: collapse !important; font-size: 0.8rem; }
+                        th, td { border: 1px solid #cbd5e1 !important; padding: 6px !important; }
+                    `
+                });
             }
 
 
@@ -7280,23 +7351,18 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
             }
 
             function printLetterhead() {
-                const printWin = window.open('', '', 'width=900,height=750');
-                const content = document.getElementById('letterheadContent').innerHTML;
-                printWin.document.write(`
-                <html>
-                <head>
-                    <title>Print Order - Dr. YSP UHF Nauni</title>
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-                    <style>
-                        body { padding: 20px; font-family: 'Times New Roman', serif; }
-                    </style>
-                </head>
-                <body onload="window.print(); window.close();">
-                    ${content}
-                </body>
-                </html>
-            `);
-                printWin.document.close();
+                const el = document.getElementById('letterheadContent');
+                if (!el) {
+                    alert("Letterhead content not available for printing.");
+                    return;
+                }
+                printHtmlDocument(el.innerHTML, {
+                    title: 'Print Order - Dr. YSP UHF Nauni',
+                    orientation: 'portrait',
+                    css: `
+                        body { padding: 20px; font-family: 'Times New Roman', serif !important; }
+                    `
+                });
             }
 
             function downloadNotificationDoc(id) {
@@ -7532,46 +7598,154 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                 modal.show();
             }
 
-            function printReservationsPermit() {
-                const content = document.getElementById('printableReservationsPermit').innerHTML;
-                const printWin = window.open('', '_blank', 'width=1000,height=750');
+            // =========================================================================
+            // Universal In-Page Printing Utility (Bypasses popup blockers and prevents premature closure)
+            // =========================================================================
+            function printHtmlDocument(html, options = {}) {
+                const title = options.title || 'Document - Dr YSP UHF Nauni';
+                const orientation = options.orientation || 'portrait';
+                const customCss = options.css || '';
+
+                try {
+                    let iframe = document.getElementById('universalPrintFrame');
+                    if (!iframe) {
+                        iframe = document.createElement('iframe');
+                        iframe.id = 'universalPrintFrame';
+                        iframe.style.position = 'fixed';
+                        iframe.style.right = '0';
+                        iframe.style.bottom = '0';
+                        iframe.style.width = '0';
+                        iframe.style.height = '0';
+                        iframe.style.border = '0';
+                        iframe.style.visibility = 'hidden';
+                        document.body.appendChild(iframe);
+                    }
+
+                    const doc = iframe.contentWindow.document;
+                    doc.open();
+                    doc.write(`
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <meta charset="utf-8">
+                            <title>${title}</title>
+                            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+                            <style>
+                                @page {
+                                    size: A4 ${orientation};
+                                    margin: 10mm 12mm;
+                                }
+                                body {
+                                    padding: 10px;
+                                    font-family: 'Times New Roman', Times, serif;
+                                    background: #fff !important;
+                                    color: #000 !important;
+                                    line-height: 1.35;
+                                    -webkit-print-color-adjust: exact !important;
+                                    print-color-adjust: exact !important;
+                                }
+                                table {
+                                    border-collapse: collapse !important;
+                                    width: 100% !important;
+                                }
+                                th, td {
+                                    border: 1.5px solid #000 !important;
+                                }
+                                ${customCss}
+                            </style>
+                        </head>
+                        <body>
+                            ${html}
+                        </body>
+                        </html>
+                    `);
+                    doc.close();
+
+                    setTimeout(() => {
+                        try {
+                            iframe.contentWindow.focus();
+                            iframe.contentWindow.print();
+                        } catch (err) {
+                            console.warn("Iframe print invocation failed, fallback window:", err);
+                            fallbackPrintWindow(html, title, orientation, customCss);
+                        }
+                    }, 350);
+                } catch (e) {
+                    console.warn("Print execution error, trying fallback window:", e);
+                    fallbackPrintWindow(html, title, orientation, customCss);
+                }
+            }
+
+            function fallbackPrintWindow(html, title, orientation, customCss) {
+                const printWin = window.open('', '_blank', 'width=1000,height=800');
                 if (!printWin) {
                     window.print();
                     return;
                 }
+                printWin.document.open();
                 printWin.document.write(`
                     <!DOCTYPE html>
                     <html>
                     <head>
-                        <title>RESERVATIONS PERMIT - Dr YS Parmar UHF Nauni</title>
+                        <meta charset="utf-8">
+                        <title>${title}</title>
                         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
                         <style>
-                            @page {
-                                size: A4 landscape;
-                                margin: 10mm 12mm;
-                            }
-                            body {
-                                padding: 8px;
-                                font-family: 'Times New Roman', Times, serif;
-                                background: #fff;
-                                color: #000;
-                                line-height: 1.35;
-                            }
-                            table {
-                                border-collapse: collapse !important;
-                                width: 100% !important;
-                            }
-                            th, td {
-                                border: 1.5px solid #000 !important;
-                            }
+                            @page { size: A4 ${orientation}; margin: 10mm 12mm; }
+                            body { padding: 10px; font-family: 'Times New Roman', Times, serif; background: #fff !important; color: #000 !important; }
+                            table { border-collapse: collapse !important; width: 100% !important; }
+                            th, td { border: 1.5px solid #000 !important; }
+                            ${customCss}
                         </style>
                     </head>
-                    <body onload="window.print(); window.close();">
-                        ${content}
+                    <body>
+                        ${html}
+                        <script>
+                            window.onafterprint = function() { window.close(); };
+                            setTimeout(function() {
+                                window.focus();
+                                window.print();
+                            }, 400);
+                        <\/script>
                     </body>
                     </html>
                 `);
                 printWin.document.close();
+            }
+
+            function printReservationsPermit() {
+                const el = document.getElementById('printableReservationsPermit');
+                if (!el) {
+                    alert("Reservations Permit content not available for printing.");
+                    return;
+                }
+                printHtmlDocument(el.innerHTML, {
+                    title: 'RESERVATIONS PERMIT - Dr YS Parmar UHF Nauni',
+                    orientation: 'landscape',
+                    css: `
+                        table { width: 100% !important; border-collapse: collapse !important; font-size: 0.8rem; }
+                        th, td { border: 1.5px solid #000 !important; padding: 4px 6px !important; text-align: center; }
+                        .badge { border: 1px solid #000 !important; color: #000 !important; background: transparent !important; }
+                    `
+                });
+            }
+
+            function printInvoice() {
+                const el = document.getElementById('printableReceipt');
+                if (!el) {
+                    alert("Receipt content not available for printing.");
+                    return;
+                }
+                printHtmlDocument(el.innerHTML, {
+                    title: 'University Guest House Receipt - Dr YS Parmar UHF Nauni',
+                    orientation: 'portrait',
+                    css: `
+                        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; }
+                        .card { border: none !important; box-shadow: none !important; }
+                        .table-bordered th, .table-bordered td { border: 1px solid #dee2e6 !important; }
+                        .stamp-box { border: 2px dashed #16a34a !important; color: #16a34a !important; }
+                    `
+                });
             }
 
         </script>
