@@ -1673,6 +1673,9 @@
                                     <span class="badge bg-warning-subtle text-dark border border-warning"><i class="bi bi-bookmark-fill me-1"></i>Booked: <strong id="layoutCountReserved">0</strong></span>
                                     <span class="badge bg-danger-subtle text-danger border border-danger"><i class="bi bi-person-fill-check me-1"></i>Occupied: <strong id="layoutCountOccupied">0</strong></span>
                                 </div>
+                                <button type="button" class="btn btn-sm btn-dark fw-bold ms-auto" onclick="showReservationsPermitModal('ALL')" title="Generate & Print Official Reservations Permit Sheet">
+                                    <i class="bi bi-printer me-1"></i>Reservations Permit Sheet
+                                </button>
                             </div>
                         </div>
 
@@ -2288,6 +2291,9 @@
                                     non-GST revenue statements</small>
                             </div>
                             <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-dark fw-semibold" onclick="showReservationsPermitModal('ALL')">
+                                    <i class="bi bi-file-earmark-text me-1"></i> Reservations Permit Sheet
+                                </button>
                                 <button class="btn btn-sm btn-outline-dark fw-semibold" onclick="printActiveReport()">
                                     <i class="bi bi-printer me-1"></i> Print Active Report
                                 </button>
@@ -2753,6 +2759,40 @@
                         <button type="button" class="btn btn-primary" onclick="window.print()">
                             <i class="bi bi-printer me-1"></i> Print Invoice
                         </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Official University Reservations Permit Modal (Requirement: Exact Letter Template) -->
+        <div class="modal fade" id="reservationsPermitModal" tabindex="-1" aria-labelledby="reservationsPermitModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header bg-dark text-white py-2">
+                        <h5 class="modal-title font-serif fs-6" id="reservationsPermitModalLabel">
+                            <i class="bi bi-file-earmark-check-fill text-warning me-2"></i>Official University Reservations Permit (Estate Organization)
+                        </h5>
+                        <div class="d-flex align-items-center gap-2">
+                            <button type="button" class="btn btn-sm btn-light fw-bold" onclick="printReservationsPermit()">
+                                <i class="bi bi-printer-fill text-dark me-1"></i> Print Permit Letter
+                            </button>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    <div class="modal-body p-3 p-md-4 bg-light">
+                        <div id="printableReservationsPermit" class="bg-white p-4 p-md-5 border shadow-sm mx-auto" style="max-width: 960px; font-family: 'Times New Roman', Times, serif; color: #000; line-height: 1.35;">
+                            <!-- Rendered dynamically by showReservationsPermitModal() -->
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-white py-2 justify-content-between">
+                        <small class="text-muted"><i class="bi bi-shield-check text-success me-1"></i>Official Guest House Allocation Sanction &bull; Authorized under University Guest House Regulations</small>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary btn-sm fw-bold" onclick="printReservationsPermit()">
+                                <i class="bi bi-printer me-1"></i> Print Permit Letter
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3934,12 +3974,18 @@
                     let actionHtml = '';
                     const safeRef = escapeHtml(d.ref);
                     if (d.status === 'CHECKED_IN') {
-                        actionHtml = `<button class="btn btn-sm btn-outline-secondary" onclick="showReceiptModal()"><i class="bi bi-receipt"></i> Bill</button>`;
+                        actionHtml = `
+                            <button class="btn btn-sm btn-outline-dark me-1" onclick="showReservationsPermitModal('${safeRef}')" title="Print Official Reservations Permit Letter"><i class="bi bi-file-earmark-text me-1"></i>Permit</button>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="showReceiptModal('${safeRef}', 'both')"><i class="bi bi-receipt"></i> Bill</button>
+                        `;
                     } else if (d.status === 'APPROVED') {
+                        actionHtml = `
+                            <button class="btn btn-sm btn-outline-dark me-1" onclick="showReservationsPermitModal('${safeRef}')" title="Print Official Reservations Permit Letter"><i class="bi bi-file-earmark-text me-1"></i>Permit</button>
+                        `;
                         if (currentRole === 'estate_admin' || currentRole === 'caretaker') {
-                            actionHtml = `<button class="btn btn-sm btn-outline-success" onclick="quickCheckIn('${safeRef}')"><i class="bi bi-box-arrow-in-right"></i> Check In</button>`;
+                            actionHtml += `<button class="btn btn-sm btn-outline-success" onclick="quickCheckIn('${safeRef}')"><i class="bi bi-box-arrow-in-right"></i> Check In</button>`;
                         } else {
-                            actionHtml = `<button class="btn btn-sm btn-outline-secondary" onclick="showReceiptModal()"><i class="bi bi-eye"></i> View</button>`;
+                            actionHtml += `<button class="btn btn-sm btn-outline-secondary" onclick="showReceiptModal('${safeRef}', 'both')"><i class="bi bi-eye"></i> View</button>`;
                         }
                     } else if (d.isVvip) {
                         if (currentRole === 'vc_secretariat') {
@@ -4152,6 +4198,7 @@
                     </div>
 
                     <div class="d-flex justify-content-end align-items-center gap-2">
+                        ${(dossier.status === 'APPROVED' || dossier.status === 'CHECKED_IN' || dossier.status === 'RESERVED') ? `<button class="btn btn-dark fw-semibold" onclick="showReservationsPermitModal('${dossier.ref}')"><i class="bi bi-file-earmark-text me-1"></i>Official Permit Letter</button>` : ''}
                         ${actionButtons}
                     </div>
                 </div>
@@ -4730,6 +4777,9 @@
                                         <div class="fw-bold text-dark text-truncate"><i class="bi bi-person-fill text-danger me-1"></i>${escapeHtml(room.guest)}</div>
                                         <div class="text-muted" style="font-size:0.7rem;"><i class="bi bi-calendar3 me-1"></i>${escapeHtml(room.dates || 'Active')}</div>
                                         ${room.dossierRef ? `<span class="badge bg-light text-dark border" style="font-size:0.65rem;">Ref: ${escapeHtml(room.dossierRef)}</span>` : ''}
+                                        <button class="btn btn-sm btn-outline-dark w-100 mt-2 py-0" style="font-size:0.7rem;" onclick="event.stopPropagation(); showReservationsPermitModal('${room.dossierRef || ''}')">
+                                            <i class="bi bi-file-earmark-text me-1"></i>Permit Letter
+                                        </button>
                                     </div>
                                 ` : `
                                     <div class="p-2 rounded bg-light border text-muted fst-italic text-center small" style="font-size:0.72rem;">
@@ -4824,6 +4874,9 @@
             `;
 
                 let actionButtons = '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>';
+                if (room.dossierRef) {
+                    actionButtons += `<button type="button" class="btn btn-dark fw-bold ms-2" onclick="bootstrap.Modal.getInstance(document.getElementById('roomActionModal')).hide(); showReservationsPermitModal('${room.dossierRef}');"><i class="bi bi-file-earmark-text me-1"></i>Print Permit Letter</button>`;
+                }
 
                 if (isVvip) {
                     if (currentRole === 'vc_secretariat') {
@@ -6053,6 +6106,9 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                 renderBillingTable();
                 renderReports();
 
+                // Automatically display official reservations permit letter
+                showReservationsPermitModal(dossier.ref);
+
                 if (currentRole === 'vc_secretariat') {
                     showTab('dashboard');
                 } else {
@@ -7250,428 +7306,275 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                 openViewNotificationModal(id);
                 downloadLetterheadDocument();
             }
+
+            // =========================================================================
+            // OFFICIAL RESERVATIONS PERMIT LETTER ENGINE (EXACT PHOTO TEMPLATE REPLICA)
+            // =========================================================================
+            function showReservationsPermitModal(ref) {
+                const permitContainer = document.getElementById('printableReservationsPermit');
+                if (!permitContainer) return;
+
+                let targetDossier = null;
+                if (ref && ref !== 'ALL') {
+                    targetDossier = institutionalDossiers.find(d => d.ref === ref);
+                }
+
+                const today = new Date();
+                const dd = String(today.getDate()).padStart(2, '0');
+                const mm = String(today.getMonth() + 1).padStart(2, '0');
+                const yyyy = today.getFullYear();
+                const todayFormatted = `${dd}.${mm}.${yyyy}`;
+                const todaySlash = `${dd}/${mm}/${yyyy}`;
+
+                const permitDate = (targetDossier && targetDossier.approvedDate) ? targetDossier.approvedDate : todayFormatted;
+
+                // Signatory Authority
+                const isVvip = !!(targetDossier && (targetDossier.isVvip || (targetDossier.room && targetDossier.room.toLowerCase().includes('vvip'))));
+                const isVcRole = (currentRole === 'vc_secretariat');
+
+                let signatoryTitle = 'PS to Estate Officer';
+                let signatoryOffice = 'Estate Organization';
+
+                if (isVvip || (isVcRole && (!targetDossier || targetDossier.isVvip))) {
+                    signatoryTitle = 'PS to Vice-Chancellor';
+                    signatoryOffice = 'Vice-Chancellor Secretariat';
+                }
+
+                const individualConcernedText = targetDossier ? ` (${escapeHtml(targetDossier.guest)})` : '';
+
+                // Helper function to render each room cell in the official grid
+                function getRoomCell(roomId, roomName, typeLabel) {
+                    let guestHtml = '';
+                    let matchedDossier = null;
+
+                    if (targetDossier && (targetDossier.allottedRoomId === roomId || (targetDossier.room && targetDossier.room.toLowerCase().includes(roomName.toLowerCase())))) {
+                        matchedDossier = targetDossier;
+                    } else {
+                        const room = guestHouseInventory.find(r => r.id === roomId || r.name.toLowerCase() === roomName.toLowerCase());
+                        if (room && (room.status === 'RESERVED' || room.status === 'OCCUPIED') && room.guest) {
+                            matchedDossier = institutionalDossiers.find(d => d.ref === room.dossierRef) || {
+                                guest: room.guest,
+                                dates: room.dates,
+                                room: room.name,
+                                category: room.category
+                            };
+                        }
+                    }
+
+                    if (matchedDossier) {
+                        const guestName = escapeHtml(matchedDossier.guest || '');
+                        let rateText = '@Rs.1,500/-';
+                        if (matchedDossier.nightlyRate) {
+                            rateText = `@Rs.${matchedDossier.nightlyRate.toLocaleString('en-IN')}/-`;
+                        } else if (matchedDossier.tariff) {
+                            const m = matchedDossier.tariff.match(/[₹\u20B9]?(\d[\d,]*)/);
+                            if (m) rateText = `@Rs.${m[1]}/-`;
+                        } else if (roomId.includes('vvip')) {
+                            rateText = '@Rs.3,500/-';
+                        } else if (roomId.includes('vip')) {
+                            rateText = '@Rs.1,500/-';
+                        } else {
+                            rateText = '@Rs.1,000/-';
+                        }
+
+                        // Compact dates: e.g. 03-05.11.2026
+                        let dateStr = escapeHtml(matchedDossier.dates || '');
+                        const dateParts = dateStr.split(/(?:&rarr;|->|to)/i);
+                        if (dateParts.length >= 2) {
+                            const p1 = dateParts[0].trim();
+                            const p2 = dateParts[1].trim();
+                            const d1 = p1.split(/[/.-]/);
+                            const d2 = p2.split(/[/.-]/);
+                            if (d1.length === 3 && d2.length === 3) {
+                                if (d1[1] === d2[1] && d1[2] === d2[2]) {
+                                    dateStr = `${d1[0]}-${d2[0]}.${d1[1]}.${d1[2]}`;
+                                } else {
+                                    dateStr = `${d1[0]}.${d1[1]}-${d2[0]}.${d2[1]}.${d2[2]}`;
+                                }
+                            }
+                        }
+
+                        const isTargetHighlight = (targetDossier && matchedDossier.ref === targetDossier.ref) ? 'background-color: #fef08a;' : '';
+
+                        guestHtml = `
+                            <div style="font-size: 0.72rem; line-height: 1.25; ${isTargetHighlight} padding: 2px;">
+                                <div style="font-weight: 700; color: #000;">${guestName}</div>
+                                <div style="font-weight: 600; color: #111;">${rateText}</div>
+                                <div style="font-size: 0.68rem; color: #222; margin-top: 2px;">${dateStr}</div>
+                            </div>
+                        `;
+                    }
+
+                    return guestHtml;
+                }
+
+                const html = `
+                    <div class="reservations-permit-document" style="color: #000; font-family: 'Times New Roman', Times, serif;">
+                        <!-- Header -->
+                        <div class="text-center mb-2">
+                            <img src="university_logo.jpg" alt="University Logo" style="width: 52px; height: 52px; object-fit: contain;" class="mb-1">
+                            <div style="font-size: 1.05rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
+                                Dr YS Parmar University of Horticulture and Forestry, Nauni, Solan (HP)
+                            </div>
+                            <div style="font-size: 0.95rem; font-weight: 700; text-transform: uppercase;">
+                                Estate Organization
+                            </div>
+                            <div style="font-size: 0.95rem; font-weight: 800; text-decoration: underline; margin-top: 6px;">
+                                RESERVATIONS PERMIT (${permitDate})
+                            </div>
+                        </div>
+
+                        <!-- Preamble Notice -->
+                        <p style="font-size: 0.82rem; text-align: justify; line-height: 1.38; margin-bottom: 12px;">
+                            Accommodation as given below is/are reserved in the University Guest House at Nauni on cash payment for official / private use on approved rates/ charges per set per day. <em>The permit is subject to cancellation without any notice in case the suite(s) is/are required for University use.</em> Use of alcoholic drinks and smoking are strictly prohibited in the Guest House. Person(s) found violating these instructions will have to vacate the accommodation reserved in their favour immediately.
+                        </p>
+
+                        <!-- Table 1: VVIP Suites (4 sets) -->
+                        <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #000; text-align: center; margin-bottom: 8px;">
+                            <thead>
+                                <tr style="background-color: #f1f3f5;">
+                                    <th style="width: 25%; border: 1.5px solid #000; padding: 4px; font-size: 0.8rem; font-weight: 700;">Set No. 1 (VVIP)</th>
+                                    <th style="width: 25%; border: 1.5px solid #000; padding: 4px; font-size: 0.8rem; font-weight: 700;">Set No. 2 (VVIP)</th>
+                                    <th style="width: 25%; border: 1.5px solid #000; padding: 4px; font-size: 0.8rem; font-weight: 700;">Set No. 11 (VVIP)</th>
+                                    <th style="width: 25%; border: 1.5px solid #000; padding: 4px; font-size: 0.8rem; font-weight: 700;">Set No. 12 (VVIP)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="height: 65px;">
+                                    <td style="border: 1.5px solid #000; padding: 4px; vertical-align: top;">${getRoomCell('vvip_1', 'VVIP 1', 'VVIP')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 4px; vertical-align: top;">${getRoomCell('vvip_2', 'VVIP 2', 'VVIP')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 4px; vertical-align: top;">${getRoomCell('vvip_11', 'VVIP 11', 'VVIP')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 4px; vertical-align: top;">${getRoomCell('vvip_12', 'VVIP 12', 'VVIP')}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Table 2: Standard Double Rooms (8 sets: 3 to 10) -->
+                        <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #000; text-align: center; margin-bottom: 8px;">
+                            <thead>
+                                <tr style="background-color: #f1f3f5;">
+                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 3<br>(Standard)</th>
+                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 4<br>(Standard)</th>
+                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 5<br>(Standard)</th>
+                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 6<br>(Standard)</th>
+                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 7<br>(Standard)</th>
+                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 8<br>(Standard)</th>
+                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 9<br>(Standard)</th>
+                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 10<br>(Standard)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="height: 65px;">
+                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_3', 'STANDARD 3', 'Standard')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_4', 'STANDARD 4', 'Standard')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_5', 'STANDARD 5', 'Standard')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_6', 'STANDARD 6', 'Standard')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_7', 'STANDARD 7', 'Standard')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_8', 'STANDARD 8', 'Standard')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_9', 'STANDARD 9', 'Standard')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_10', 'STANDARD 10', 'Standard')}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Table 3: VIP & Ordinary Sets (8 sets: 13 to 20) -->
+                        <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #000; text-align: center; margin-bottom: 12px;">
+                            <thead>
+                                <tr style="background-color: #f1f3f5;">
+                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 13<br>(VIP)</th>
+                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 14<br>(VIP)</th>
+                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 15<br>(VIP)</th>
+                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 16<br>(VIP)</th>
+                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 17<br>(Ordinary-Non-AC)</th>
+                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 18<br>(Ordinary-Non-AC)</th>
+                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 19<br>(Ordinary-Non-AC)</th>
+                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 20<br>(Standard)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="height: 65px;">
+                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('vip_13', 'VIP 13, AC', 'VIP')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('vip_14', 'VIP 14, AC', 'VIP')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('vip_15', 'VIP 15, AC', 'VIP')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('vip_16', 'VIP 16, AC', 'VIP')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_17', 'STANDARD 17', 'Ordinary-Non-AC')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_18', 'STANDARD 18', 'Ordinary-Non-AC')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_19', 'STANDARD 19', 'Ordinary-Non-AC')}</td>
+                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_20', 'STANDARD 20, AC', 'Standard')}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Footer: Forwarding Copy & Signatures -->
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 15px; font-size: 0.8rem; line-height: 1.4;">
+                            <div style="max-width: 60%;">
+                                <strong>Copy for information and necessary action is forwarded to:</strong>
+                                <ol style="margin: 4px 0 0 18px; padding: 0;">
+                                    <li>The Assistant Engineer (PH), Dr Y.S. Parmar UHF, Solan.</li>
+                                    <li>Sh. Lekh Raj Thakur, Cook, UGH, Estate Organization, UHF, Nauni.</li>
+                                    <li>Individual concerned${individualConcernedText}</li>
+                                </ol>
+                            </div>
+                            <div style="text-align: right; min-width: 220px;">
+                                <div style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 1.25rem; color: #1e3a8a; margin-bottom: 2px;">
+                                    ${signatoryTitle.includes('Vice-Chancellor') ? 'VC Secretariat' : 'Estate Officer'}
+                                </div>
+                                <div style="font-weight: 700; font-size: 0.88rem;">${signatoryTitle}</div>
+                                <div style="font-size: 0.78rem; color: #333;">${signatoryOffice}</div>
+                                <div style="font-size: 0.75rem; color: #555; margin-top: 2px;">Date: ${todaySlash}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                permitContainer.innerHTML = html;
+                const modal = new bootstrap.Modal(document.getElementById('reservationsPermitModal'));
+                modal.show();
+            }
+
+            function printReservationsPermit() {
+                const content = document.getElementById('printableReservationsPermit').innerHTML;
+                const printWin = window.open('', '_blank', 'width=1000,height=750');
+                if (!printWin) {
+                    window.print();
+                    return;
+                }
+                printWin.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>RESERVATIONS PERMIT - Dr YS Parmar UHF Nauni</title>
+                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+                        <style>
+                            @page {
+                                size: A4 landscape;
+                                margin: 10mm 12mm;
+                            }
+                            body {
+                                padding: 8px;
+                                font-family: 'Times New Roman', Times, serif;
+                                background: #fff;
+                                color: #000;
+                                line-height: 1.35;
+                            }
+                            table {
+                                border-collapse: collapse !important;
+                                width: 100% !important;
+                            }
+                            th, td {
+                                border: 1.5px solid #000 !important;
+                            }
+                        </style>
+                    </head>
+                    <body onload="window.print(); window.close();">
+                        ${content}
+                    </body>
+                    </html>
+                `);
+                printWin.document.close();
+            }
+
         </script>
-        # MASTER PROMPT: COMPLETE END-TO-END APPLICATION TESTING, BUG DETECTION, AND AUTOMATIC RECTIFICATION
-
-        Act as a Senior QA Automation Engineer, Full-Stack Developer, Software Tester, Security Auditor, and Application
-        Architect.
-
-        Your task is to perform a COMPLETE end-to-end audit and testing of the entire application, with special emphasis
-        on every possible aspect of sending, receiving, processing, storing, retrieving, and responding to user
-        requests.
-
-        Do not limit testing to the visible user interface. Inspect the entire application, including frontend, backend,
-        APIs, database, authentication, middleware, server-side processing, integrations, and communication mechanisms.
-
-        **IMPORTANT: Do not just identify problems. Fix every reproducible issue, implement the necessary corrections,
-        and retest the application until all critical and major issues are resolved.**
-
-        ## 1. Initial Application Inspection
-
-        Before making changes:
-
-        1. Identify the application architecture, framework, programming languages, and dependencies.
-        2. Inspect the complete project directory and source code.
-        3. Identify all user request submission points.
-        4. Identify all request-receiving endpoints, APIs, controllers, services, and functions.
-        5. Identify database tables, relationships, and data-storage mechanisms.
-        6. Identify authentication and authorization mechanisms.
-        7. Identify external services and integrations.
-        8. Identify background jobs, queues, notifications, and asynchronous processes.
-        9. Understand the complete request lifecycle.
-
-        Do not assume how the application works. Derive the actual workflow from the source code.
-
-        ## 2. Complete User Request Sending Tests
-
-        Test every possible method through which a user can submit a request.
-
-        Test the following:
-
-        - Normal text requests.
-        - Empty requests.
-        - Requests containing only spaces.
-        - Very short requests.
-        - Extremely long requests.
-        - Requests containing special characters.
-        - Requests containing emojis.
-        - Requests containing HTML.
-        - Requests containing JavaScript.
-        - Requests containing SQL-like input.
-        - Requests containing multiple lines.
-        - Requests containing Unicode and multilingual characters.
-        - Requests containing numbers and symbols.
-        - Repeated submissions.
-        - Rapid consecutive submissions.
-        - Double-click submissions.
-        - Requests submitted using Enter.
-        - Requests submitted using the Send button.
-        - Requests submitted through mobile interfaces.
-        - Requests submitted with slow internet.
-        - Requests submitted during network interruptions.
-        - Requests submitted after session expiration.
-
-        Verify that every valid request is properly validated and submitted without data loss.
-
-        ## 3. Request Receiving and Backend Processing Tests
-
-        Verify that the backend correctly receives and processes every submitted request.
-
-        Test:
-
-        - Correct API endpoint.
-        - HTTP GET, POST, PUT, PATCH, and DELETE handling where applicable.
-        - Correct request headers.
-        - Correct content type.
-        - Correct JSON encoding and decoding.
-        - Correct form-data handling.
-        - Request validation.
-        - Parameter validation.
-        - Authentication verification.
-        - Authorization verification.
-        - Middleware execution.
-        - CSRF protection.
-        - Session handling.
-        - Request sanitization.
-        - Backend exception handling.
-        - Database transaction handling.
-        - Timeout handling.
-        - Concurrent request processing.
-
-        Verify that the backend never silently drops a valid request.
-
-        ## 4. User Request and Response Verification
-
-        Test the complete communication lifecycle:
-
-        1. User submits a request.
-        2. Frontend validates the request.
-        3. Request reaches the backend.
-        4. Backend processes the request.
-        5. Required database operations execute.
-        6. Backend generates a response.
-        7. Response reaches the frontend.
-        8. Frontend correctly displays the response.
-        9. User can continue the conversation or submit another request.
-
-        Verify:
-
-        - Correct response is returned.
-        - Responses are not mixed between users.
-        - Responses are not duplicated.
-        - Responses are not truncated.
-        - Responses are displayed in the correct order.
-        - Error responses are meaningful.
-        - Loading indicators work correctly.
-        - Success indicators work correctly.
-        - Failed requests can be retried.
-        - Previous requests and responses are preserved where expected.
-        - Conversation history is retrieved correctly.
-
-        ## 5. Database Testing
-
-        Inspect all database operations associated with user requests.
-
-        Test:
-
-        - Record insertion.
-        - Record updating.
-        - Record deletion where authorized.
-        - Record retrieval.
-        - Duplicate records.
-        - Missing records.
-        - Invalid foreign keys.
-        - Null values.
-        - Empty values.
-        - Database connection failures.
-        - Database timeout.
-        - Concurrent writes.
-        - Transaction rollback.
-        - Data consistency.
-        - Character encoding.
-        - Database constraints.
-        - Data persistence after logout and login.
-
-        Ensure that data belonging to one user is never exposed to another user.
-
-        Never delete existing production data during testing.
-
-        ## 6. Authentication and User Management Testing
-
-        Test:
-
-        - User registration.
-        - Login.
-        - Logout.
-        - Invalid credentials.
-        - Password validation.
-        - Session expiration.
-        - Session renewal.
-        - Password reset.
-        - Unauthorized requests.
-        - User role restrictions.
-        - Admin permissions.
-        - Access to protected endpoints.
-        - Direct URL access.
-        - Multiple simultaneous sessions.
-
-        Ensure that users can access only their authorized information.
-
-        ## 7. API and Communication Testing
-
-        Test all available APIs and communication channels.
-
-        For every endpoint, verify:
-
-        - Correct URL.
-        - Correct HTTP method.
-        - Valid parameters.
-        - Invalid parameters.
-        - Missing parameters.
-        - Correct response status codes.
-        - Correct response structure.
-        - Response time.
-        - Error handling.
-        - Authentication requirements.
-        - Rate limiting.
-        - Request size limits.
-        - Concurrent requests.
-
-        Test API behavior using automated test scripts and appropriate tools.
-
-        ## 8. Frontend and User Interface Testing
-
-        Test the entire application interface.
-
-        Check:
-
-        - All buttons.
-        - All forms.
-        - All input fields.
-        - All dropdown menus.
-        - All links.
-        - All navigation menus.
-        - All modals and popups.
-        - All submission controls.
-        - All response displays.
-        - All validation messages.
-        - All loading indicators.
-        - All error messages.
-
-        Verify responsive behavior on:
-
-        - Desktop computers.
-        - Laptops.
-        - Tablets.
-        - Android devices.
-        - iPhones.
-
-        Check different screen resolutions and browser compatibility.
-
-        ## 9. Security Testing
-
-        Perform a comprehensive security assessment.
-
-        Test for:
-
-        - SQL injection.
-        - Cross-site scripting (XSS).
-        - Cross-site request forgery (CSRF).
-        - Broken authentication.
-        - Broken access control.
-        - Insecure direct object references.
-        - Session hijacking risks.
-        - Sensitive information exposure.
-        - Improper input validation.
-        - File upload vulnerabilities, if applicable.
-        - API abuse.
-        - Brute-force attempts.
-        - Rate-limit bypass.
-        - Insecure error messages.
-        - CORS misconfiguration.
-
-        Follow secure development practices and OWASP recommendations.
-
-        Do not perform destructive attacks or test against external systems without authorization.
-
-        ## 10. Performance and Stress Testing
-
-        Test application performance under different workloads.
-
-        Run controlled tests with:
-
-        - 1 concurrent user.
-        - 5 concurrent users.
-        - 10 concurrent users.
-        - 25 concurrent users.
-        - 50 concurrent users.
-        - 100 concurrent users, if the test environment supports it.
-
-        Measure:
-
-        - Request response time.
-        - Average processing time.
-        - Maximum response time.
-        - Failed request percentage.
-        - Database response time.
-        - Memory consumption.
-        - CPU utilization.
-        - Server resource consumption.
-
-        Identify bottlenecks and optimize inefficient code and database queries.
-
-        Do not overload production servers.
-
-        ## 11. Error and Failure Scenario Testing
-
-        Intentionally simulate failures in a safe test environment.
-
-        Examples:
-
-        - Internet disconnected during submission.
-        - Backend server temporarily unavailable.
-        - Database unavailable.
-        - API returns HTTP 400.
-        - API returns HTTP 401.
-        - API returns HTTP 403.
-        - API returns HTTP 404.
-        - API returns HTTP 422.
-        - API returns HTTP 429.
-        - API returns HTTP 500.
-        - API returns HTTP 502.
-        - API returns HTTP 503.
-        - Request timeout.
-        - Invalid JSON response.
-        - Empty API response.
-        - Unexpected server response.
-        - Expired authentication token.
-
-        Verify that the application recovers gracefully and provides useful error messages.
-
-        ## 12. Automated Testing Implementation
-
-        Create or improve automated tests using the framework and testing tools already appropriate for the project.
-
-        Include:
-
-        - Unit tests.
-        - Integration tests.
-        - API tests.
-        - Backend tests.
-        - Frontend tests.
-        - End-to-end tests.
-        - Database tests.
-        - Authentication tests.
-        - Security tests.
-        - Regression tests.
-
-        Automate repetitive test scenarios wherever practical.
-
-        Ensure that tests are repeatable and can be executed again after future code changes.
-
-        ## 13. Automatic Bug Detection and Rectification
-
-        Whenever an issue is identified:
-
-        1. Record the issue.
-        2. Identify the root cause.
-        3. Locate the responsible source file and function.
-        4. Understand the impact.
-        5. Implement the appropriate correction.
-        6. Check for related issues.
-        7. Execute the relevant test again.
-        8. Execute regression tests.
-        9. Confirm that the correction has not introduced new problems.
-
-        Do not apply temporary workarounds when a permanent code-level solution is appropriate.
-
-        Do not remove existing functionality to make a test pass.
-
-        Do not disable validation, authentication, security checks, or error handling to hide failures.
-
-        ## 14. Strict Data and Project Protection Rules
-
-        IMPORTANT:
-
-        - Take a complete backup before modifying existing code.
-        - Do not delete existing user data.
-        - Do not modify production database records.
-        - Do not overwrite production configuration.
-        - Do not expose passwords, API keys, or secret credentials.
-        - Do not remove existing application features.
-        - Do not make unnecessary architectural changes.
-        - Do not modify unrelated projects or directories.
-        - Do not change production server settings.
-        - Use a dedicated test database and test accounts.
-        - Use mock services for external integrations wherever possible.
-        - Never run destructive migrations against production.
-
-        If the environment cannot safely support a test, document it instead of risking data or service availability.
-
-        ## 15. Final Verification
-
-        After implementing corrections:
-
-        1. Run the complete automated test suite.
-        2. Repeat all failed test cases.
-        3. Execute regression testing.
-        4. Verify sending and receiving from beginning to end.
-        5. Verify database persistence.
-        6. Verify authentication and authorization.
-        7. Verify frontend and backend communication.
-        8. Verify that no critical errors remain in application logs.
-        9. Verify that existing application features still work.
-
-        Continue fixing and retesting until all critical and major reproducible issues are resolved.
-
-        ## 16. Final Testing Report
-
-        Generate a detailed report containing:
-
-        - Application architecture inspected.
-        - Total test cases executed.
-        - Passed test cases.
-        - Failed test cases.
-        - Fixed issues.
-        - Unresolved issues.
-        - Security vulnerabilities identified.
-        - Performance bottlenecks.
-        - Database problems.
-        - API problems.
-        - Frontend problems.
-        - Backend problems.
-        - Files modified.
-        - New test files created.
-        - Performance measurements.
-        - Regression test results.
-
-        Provide a final summary in this format:
-
-        | Category | Total | Passed | Failed |
-        |---|---:|---:|---:|
-        | Request Submission | | | |
-        | Request Receiving | | | |
-        | Backend Processing | | | |
-        | Response Delivery | | | |
-        | Database | | | |
-        | Authentication | | | |
-        | API | | | |
-        | Frontend | | | |
-        | Security | | | |
-        | Performance | | | |
-        | Regression | | | |
-
-        Finally, provide an overall application health assessment.
-
-        **IMPORTANT FINAL INSTRUCTION:**
-
-        Do not stop after inspecting the code or generating a report. You are responsible for actually executing tests,
-        identifying the root causes of problems, implementing fixes, and verifying those fixes.
-
-        Do not claim that a test passed unless it was actually executed and its result verified.
-
-        Start with a complete application inspection, create a safe backup, establish a test environment, and then
-        execute the testing process systematically.
 </body>
 
 </html>

@@ -698,6 +698,34 @@ try {
         Add-TestResult "Invoicing" "INV-01" "Separate Stay Charges & Dining Charges Non-GST Invoice Generation" "FAIL" "Invoice validation failed: $($invRes | ConvertTo-Json)"
     }
 
+    # Test 2.7B: Official Reservations Permit Letter (Exact Format per Official Document)
+    $permRes = Invoke-Evaluate $prevConn @'
+(() => {
+    const residentDossier = institutionalDossiers.find(d => (d.status === 'CHECKED_IN' || d.status === 'APPROVED') && d.guest && !d.guest.includes('<')) || institutionalDossiers[0];
+    const residentRef = residentDossier ? residentDossier.ref : '';
+    showReservationsPermitModal(residentRef);
+    const permitHtml = document.getElementById('printableReservationsPermit').innerHTML;
+
+    return {
+        hasPermitTitle: permitHtml.includes('RESERVATIONS PERMIT'),
+        hasUnivHeader: permitHtml.includes('Dr YS Parmar University of Horticulture and Forestry'),
+        hasEstateOrg: permitHtml.includes('Estate Organization'),
+        hasPreamble: permitHtml.includes('Accommodation as given below is/are reserved in the University Guest House'),
+        hasVvipTable: permitHtml.includes('Set No. 1 (VVIP)') && permitHtml.includes('Set No. 12 (VVIP)'),
+        hasStdTable: permitHtml.includes('Set No. 3') && permitHtml.includes('Set No. 10'),
+        hasVipTable: permitHtml.includes('Set No. 13') && permitHtml.includes('Set No. 20'),
+        hasCopyTo: permitHtml.includes('Copy for information and necessary action is forwarded to:'),
+        hasSignatory: permitHtml.includes('PS to Estate Officer') || permitHtml.includes('PS to Vice-Chancellor') || permitHtml.includes('Estate Organization'),
+        hasModal: !!document.getElementById('reservationsPermitModal')
+    };
+})()
+'@
+    if ($permRes.hasPermitTitle -and $permRes.hasUnivHeader -and $permRes.hasEstateOrg -and $permRes.hasPreamble -and $permRes.hasVvipTable -and $permRes.hasStdTable -and $permRes.hasVipTable -and $permRes.hasCopyTo -and $permRes.hasSignatory) {
+        Add-TestResult "Permit" "PERM-01" "Official Reservations Permit Letter (Estate Office)" "PASS" "Rendered exact Reservations Permit matching official document (3-tier table, preamble, copy-to, signatory authority)"
+    } else {
+        Add-TestResult "Permit" "PERM-01" "Official Reservations Permit Letter (Estate Office)" "FAIL" "Permit validation failed: $($permRes | ConvertTo-Json)"
+    }
+
     # Test 2.8: Mobile Responsiveness, Viewport & Drawer Auto-Close
     $mobRes = Invoke-Evaluate $prevConn @'
 (() => {
@@ -792,6 +820,27 @@ try {
         Add-TestResult "Security" "SEC-03" "VC Role Navigation Enforcement Guard" "PASS" "Direct navigation to restricted tariffs/calendar blocked and redirected to dashboard"
     } else {
         Add-TestResult "Security" "SEC-03" "VC Role Navigation Enforcement Guard" "FAIL" "Bypassed navigation barrier: $($res | ConvertTo-Json)"
+    }
+
+    # Test 2.12: Reservations Permit Accessible and Printable from VC Secretariat Account
+    $vcPermRes = Invoke-Evaluate $prevConn @'
+(() => {
+    // Generate permit in VC session
+    showReservationsPermitModal('ALL');
+    const permitHtml = document.getElementById('printableReservationsPermit').innerHTML;
+    return {
+        hasPermitTitle: permitHtml.includes('RESERVATIONS PERMIT'),
+        hasUnivHeader: permitHtml.includes('Dr YS Parmar University of Horticulture and Forestry'),
+        hasVvipTable: permitHtml.includes('Set No. 1 (VVIP)'),
+        hasVcSignatory: permitHtml.includes('PS to Vice-Chancellor') || permitHtml.includes('Vice-Chancellor'),
+        hasPrintBtn: !!document.querySelector('#reservationsPermitModal button[onclick="printReservationsPermit()"]')
+    };
+})()
+'@
+    if ($vcPermRes.hasPermitTitle -and $vcPermRes.hasUnivHeader -and $vcPermRes.hasVvipTable -and $vcPermRes.hasVcSignatory -and $vcPermRes.hasPrintBtn) {
+        Add-TestResult "Permit" "PERM-02" "Official Reservations Permit Print (VC Secretariat)" "PASS" "Verified Reservations Permit accessible, rendered with VC authority, and printable in VC Secretariat account"
+    } else {
+        Add-TestResult "Permit" "PERM-02" "Official Reservations Permit Print (VC Secretariat)" "FAIL" "VC permit validation failed: $($vcPermRes | ConvertTo-Json)"
     }
 
     # =========================================================================
