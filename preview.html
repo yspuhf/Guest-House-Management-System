@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -2974,7 +2974,47 @@
                         </div>
                     </div>
                     <div class="modal-body p-3 p-md-4 bg-light">
-                        <div id="printableReservationsPermit" class="bg-white p-4 p-md-5 border shadow-sm mx-auto" style="max-width: 960px; font-family: 'Times New Roman', Times, serif; color: #000; line-height: 1.35;">
+                        <!-- Controls Bar: Requested Person Selector & Copy-To Editor Toggle -->
+                        <div class="card border-0 shadow-sm mb-3">
+                            <div class="card-body p-2 d-flex flex-wrap align-items-center justify-content-between gap-2 bg-white rounded">
+                                <div class="d-flex align-items-center gap-2 flex-grow-1" style="max-width: 550px;">
+                                    <label class="small fw-bold text-muted text-nowrap mb-0"><i class="bi bi-person-badge text-success me-1"></i>Requested Person / Permit Dossier:</label>
+                                    <select id="permitRequisitionSelect" class="form-select form-select-sm" onchange="showReservationsPermitModal(this.value)">
+                                        <!-- Dynamically populated with dossiers -->
+                                    </select>
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <button type="button" class="btn btn-sm btn-outline-success fw-semibold" id="toggleCopyToEditorBtn" onclick="toggleCopyToEditor()">
+                                        <i class="bi bi-pencil-square me-1"></i> Edit "Copy to:" Recipients
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-dark fw-bold" onclick="printReservationsPermit()">
+                                        <i class="bi bi-printer-fill me-1"></i> Print Permit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interactive "Copy to:" Recipients Editor for VC / Estate Office Accounts -->
+                        <div id="permitCopyToEditorPanel" class="card border-success-subtle bg-white shadow-sm mb-3" style="display: none;">
+                            <div class="card-header bg-success-subtle py-2 d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-success small">
+                                    <i class="bi bi-send-check me-1"></i> "Copy to:" Section Management (VC Secretariat &amp; Estate Office)
+                                </span>
+                                <div class="d-flex gap-1">
+                                    <button type="button" class="btn btn-xs btn-success py-1 px-2 fw-semibold" style="font-size: 0.78rem;" onclick="addPermitRecipient()">
+                                        <i class="bi bi-plus-circle me-1"></i> Add Recipient
+                                    </button>
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-1 px-2" style="font-size: 0.78rem;" onclick="resetPermitRecipients()">
+                                        <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Standard List
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body p-2" id="permitRecipientsEditorList">
+                                <!-- Recipient input rows dynamically rendered -->
+                            </div>
+                        </div>
+
+                        <div id="printableReservationsPermit" class="bg-white p-3 p-md-4 shadow-sm mx-auto" style="max-width: 900px;">
                             <!-- Rendered dynamically by showReservationsPermitModal() -->
                         </div>
                     </div>
@@ -7813,8 +7853,101 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
             }
 
             // =========================================================================
-            // OFFICIAL RESERVATIONS PERMIT LETTER ENGINE (EXACT PHOTO TEMPLATE REPLICA)
+            // OFFICIAL RESERVATIONS PERMIT LETTER ENGINE (INDIVIDUAL REQUESTED PERSON PERMIT)
             // =========================================================================
+            window.activePermitDossierRef = null;
+            window.currentPermitRecipients = [];
+
+            function formatStayPeriodForPermit(datesStr) {
+                if (!datesStr) return '03.11.2026 (Check-in) to 04.11.2026 (Check-out)';
+                const parts = datesStr.split(/(?:&rarr;|->|to|—|–)/i);
+                if (parts.length >= 2) {
+                    const inClean = parts[0].trim().replace(/\//g, '.');
+                    const outClean = parts[1].trim().replace(/\//g, '.');
+                    return `${inClean} (Check-in) to ${outClean} (Check-out)`;
+                }
+                return `${datesStr} (Check-in to Check-out)`;
+            }
+
+            function toggleCopyToEditor() {
+                const p = document.getElementById('permitCopyToEditorPanel');
+                if (!p) return;
+                p.style.display = (p.style.display === 'none' || !p.style.display) ? 'block' : 'none';
+            }
+
+            function renderPermitRecipientsEditor() {
+                const listEl = document.getElementById('permitRecipientsEditorList');
+                if (!listEl) return;
+                if (!window.currentPermitRecipients || window.currentPermitRecipients.length === 0) {
+                    listEl.innerHTML = '<div class="text-muted small p-2 fst-italic">No recipients added. Click "Add Recipient" above.</div>';
+                    return;
+                }
+                listEl.innerHTML = window.currentPermitRecipients.map((rec, idx) => `
+                    <div class="input-group input-group-sm mb-2">
+                        <span class="input-group-text bg-light fw-bold" style="min-width: 32px;">${idx + 1}.</span>
+                        <input type="text" class="form-control" value="${escapeHtml(rec)}" placeholder="Recipient description" oninput="updatePermitRecipient(${idx}, this.value)">
+                        <button class="btn btn-outline-danger" type="button" title="Remove" onclick="removePermitRecipient(${idx})">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            function updatePermitRecipient(idx, val) {
+                if (!window.currentPermitRecipients) return;
+                window.currentPermitRecipients[idx] = val;
+                syncPermitRecipientsToDossier();
+                updatePermitDocRecipientsList();
+            }
+
+            function addPermitRecipient() {
+                if (!window.currentPermitRecipients) window.currentPermitRecipients = [];
+                window.currentPermitRecipients.push("Concerned Officer / Branch, UHF Nauni.");
+                syncPermitRecipientsToDossier();
+                renderPermitRecipientsEditor();
+                updatePermitDocRecipientsList();
+            }
+
+            function removePermitRecipient(idx) {
+                if (!window.currentPermitRecipients) return;
+                window.currentPermitRecipients.splice(idx, 1);
+                syncPermitRecipientsToDossier();
+                renderPermitRecipientsEditor();
+                updatePermitDocRecipientsList();
+            }
+
+            function resetPermitRecipients() {
+                const d = institutionalDossiers.find(x => x.ref === window.activePermitDossierRef);
+                window.currentPermitRecipients = [
+                    "Assistant Engineer (PH), Dr. Y.S. Parmar UHF, Solan.",
+                    "Sh. Lekh Raj Thakur, Cook, UGH, Estate Organization, UHF, Nauni.",
+                    `Individual concerned${d && d.guest ? ` (${d.guest})` : ''}.`
+                ];
+                syncPermitRecipientsToDossier();
+                renderPermitRecipientsEditor();
+                updatePermitDocRecipientsList();
+            }
+
+            function syncPermitRecipientsToDossier() {
+                if (window.activePermitDossierRef) {
+                    const d = institutionalDossiers.find(x => x.ref === window.activePermitDossierRef);
+                    if (d) {
+                        d.copyToRecipients = [...window.currentPermitRecipients];
+                        saveInstitutionalDossiers(institutionalDossiers);
+                    }
+                }
+            }
+
+            function updatePermitDocRecipientsList() {
+                const docList = document.getElementById('permitDocRecipientsList');
+                if (!docList) return;
+                if (!window.currentPermitRecipients || window.currentPermitRecipients.length === 0) {
+                    docList.innerHTML = '<li>None</li>';
+                    return;
+                }
+                docList.innerHTML = window.currentPermitRecipients.map(r => `<li>${escapeHtml(r)}</li>`).join('');
+            }
+
             function showReservationsPermitModal(ref) {
                 const permitContainer = document.getElementById('printableReservationsPermit');
                 if (!permitContainer) return;
@@ -7823,210 +7956,174 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                 if (ref && ref !== 'ALL') {
                     targetDossier = institutionalDossiers.find(d => d.ref === ref);
                 }
+                if (!targetDossier) {
+                    targetDossier = institutionalDossiers.find(d => (d.status === 'APPROVED' || d.status === 'CHECKED_IN') && d.guest) || institutionalDossiers[0];
+                }
+                if (!targetDossier) {
+                    targetDossier = {
+                        ref: 'GH-2026-000101',
+                        guest: 'Dr. Rabinder Bhardwaj / Dr. Satish Bhardwaj',
+                        category: 'Standard',
+                        purpose: 'Official',
+                        dates: '03.11.2026 (Check-in) to 04.11.2026 (Check-out)',
+                        tariff: 'As per approved rates',
+                        approvedDate: '03.11.2026'
+                    };
+                }
 
+                window.activePermitDossierRef = targetDossier.ref;
+
+                // Populate Requested Person selector dropdown
+                const selectEl = document.getElementById('permitRequisitionSelect');
+                if (selectEl) {
+                    const validDossiers = institutionalDossiers.filter(d => d && d.ref);
+                    selectEl.innerHTML = validDossiers.map(d => {
+                        const isSel = (d.ref === targetDossier.ref) ? 'selected' : '';
+                        const roomShort = d.allottedRoomName || d.room || 'Room';
+                        return `<option value="${escapeHtml(d.ref)}" ${isSel}>${escapeHtml(d.guest)} (${escapeHtml(d.ref)}) — ${escapeHtml(roomShort)}</option>`;
+                    }).join('');
+                }
+
+                // Date logic
                 const today = new Date();
                 const dd = String(today.getDate()).padStart(2, '0');
                 const mm = String(today.getMonth() + 1).padStart(2, '0');
                 const yyyy = today.getFullYear();
                 const todayFormatted = `${dd}.${mm}.${yyyy}`;
-                const todaySlash = `${dd}/${mm}/${yyyy}`;
+                const permitDate = targetDossier.approvedDate ? targetDossier.approvedDate.replace(/\//g, '.') : todayFormatted;
 
-                const permitDate = (targetDossier && targetDossier.approvedDate) ? targetDossier.approvedDate : todayFormatted;
-
-                // Signatory Authority
+                // Authorities & Signatories
                 const isVvip = !!(targetDossier && (targetDossier.isVvip || (targetDossier.room && targetDossier.room.toLowerCase().includes('vvip'))));
                 const isVcRole = (currentRole === 'vc_secretariat');
 
-                let signatoryTitle = 'PS to Estate Officer';
-                let signatoryOffice = 'Estate Organization';
+                let authorityHeader = 'Estate Organization';
+                let signatoryTitle = 'Estate Officer';
+                let signatureScript = 'Ral.';
 
-                if (isVvip || (isVcRole && (!targetDossier || targetDossier.isVvip))) {
+                if (isVvip || isVcRole) {
+                    authorityHeader = 'Vice-Chancellor Secretariat';
                     signatoryTitle = 'PS to Vice-Chancellor';
-                    signatoryOffice = 'Vice-Chancellor Secretariat';
+                    signatureScript = 'Sd/-';
                 }
 
-                const individualConcernedText = targetDossier ? ` (${escapeHtml(targetDossier.guest)})` : '';
-
-                // Helper function to render each room cell in the official grid
-                function getRoomCell(roomId, roomName, typeLabel) {
-                    let guestHtml = '';
-                    let matchedDossier = null;
-
-                    if (targetDossier && (targetDossier.allottedRoomId === roomId || (targetDossier.room && targetDossier.room.toLowerCase().includes(roomName.toLowerCase())))) {
-                        matchedDossier = targetDossier;
-                    } else {
-                        const room = guestHouseInventory.find(r => r.id === roomId || r.name.toLowerCase() === roomName.toLowerCase());
-                        if (room && (room.status === 'RESERVED' || room.status === 'OCCUPIED') && room.guest) {
-                            matchedDossier = institutionalDossiers.find(d => d.ref === room.dossierRef) || {
-                                guest: room.guest,
-                                dates: room.dates,
-                                room: room.name,
-                                category: room.category
-                            };
-                        }
-                    }
-
-                    if (matchedDossier) {
-                        const guestName = escapeHtml(matchedDossier.guest || '');
-                        let rateText = '@Rs.1,500/-';
-                        if (matchedDossier.nightlyRate) {
-                            rateText = `@Rs.${matchedDossier.nightlyRate.toLocaleString('en-IN')}/-`;
-                        } else if (matchedDossier.tariff) {
-                            const m = matchedDossier.tariff.match(/[₹\u20B9]?(\d[\d,]*)/);
-                            if (m) rateText = `@Rs.${m[1]}/-`;
-                        } else if (roomId.includes('vvip')) {
-                            rateText = '@Rs.3,500/-';
-                        } else if (roomId.includes('vip')) {
-                            rateText = '@Rs.1,500/-';
-                        } else {
-                            rateText = '@Rs.1,000/-';
-                        }
-
-                        // Compact dates: e.g. 03-05.11.2026
-                        let dateStr = escapeHtml(matchedDossier.dates || '');
-                        const dateParts = dateStr.split(/(?:&rarr;|->|to)/i);
-                        if (dateParts.length >= 2) {
-                            const p1 = dateParts[0].trim();
-                            const p2 = dateParts[1].trim();
-                            const d1 = p1.split(/[/.-]/);
-                            const d2 = p2.split(/[/.-]/);
-                            if (d1.length === 3 && d2.length === 3) {
-                                if (d1[1] === d2[1] && d1[2] === d2[2]) {
-                                    dateStr = `${d1[0]}-${d2[0]}.${d1[1]}.${d1[2]}`;
-                                } else {
-                                    dateStr = `${d1[0]}.${d1[1]}-${d2[0]}.${d2[1]}.${d2[2]}`;
-                                }
-                            }
-                        }
-
-                        const isTargetHighlight = (targetDossier && matchedDossier.ref === targetDossier.ref) ? 'background-color: #fef08a;' : '';
-
-                        guestHtml = `
-                            <div style="font-size: 0.72rem; line-height: 1.25; ${isTargetHighlight} padding: 2px;">
-                                <div style="font-weight: 700; color: #000;">${guestName}</div>
-                                <div style="font-weight: 600; color: #111;">${rateText}</div>
-                                <div style="font-size: 0.68rem; color: #222; margin-top: 2px;">${dateStr}</div>
-                            </div>
-                        `;
-                    }
-
-                    return guestHtml;
+                // Format fields per individual template
+                const guestName = escapeHtml(targetDossier.guest || 'Dr. Rabinder Bhardwaj / Dr. Satish Bhardwaj');
+                let catLabel = 'Standard';
+                if (targetDossier.isVvip || (targetDossier.room && targetDossier.room.toLowerCase().includes('vvip'))) {
+                    catLabel = 'VVIP';
+                } else if (targetDossier.room && targetDossier.room.toLowerCase().includes('vip')) {
+                    catLabel = 'VIP';
+                } else if (targetDossier.room && targetDossier.room.toLowerCase().includes('dorm')) {
+                    catLabel = 'Dormitory';
+                } else if (targetDossier.category) {
+                    catLabel = targetDossier.category;
                 }
+
+                const purposeText = escapeHtml(targetDossier.purpose || 'Official');
+                const stayPeriodText = formatStayPeriodForPermit(targetDossier.dates);
+                const chargesText = targetDossier.tariff ? `As per approved rates (${escapeHtml(targetDossier.tariff)})` : 'As per approved rates';
+
+                const permitSeq = targetDossier.ref ? targetDossier.ref.replace(/^GH-2026-/, '') : '____';
+
+                // Copy to recipients setup
+                if (targetDossier.copyToRecipients && Array.isArray(targetDossier.copyToRecipients) && targetDossier.copyToRecipients.length > 0) {
+                    window.currentPermitRecipients = [...targetDossier.copyToRecipients];
+                } else {
+                    window.currentPermitRecipients = [
+                        "Assistant Engineer (PH), Dr. Y.S. Parmar UHF, Solan.",
+                        "Sh. Lekh Raj Thakur, Cook, UGH, Estate Organization, UHF, Nauni.",
+                        `Individual concerned (${guestName}).`
+                    ];
+                }
+
+                renderPermitRecipientsEditor();
+
+                const recipientsHtml = window.currentPermitRecipients.map(r => `<li>${escapeHtml(r)}</li>`).join('');
 
                 const html = `
-                    <div class="reservations-permit-document" style="color: #000; font-family: 'Times New Roman', Times, serif;">
-                        <!-- Header -->
-                        <div class="text-center mb-2">
-                            <img src="university_logo.jpg" alt="University Logo" style="width: 52px; height: 52px; object-fit: contain;" class="mb-1">
-                            <div style="font-size: 1.05rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
-                                Dr YS Parmar University of Horticulture and Forestry, Nauni, Solan (HP)
-                            </div>
-                            <div style="font-size: 0.95rem; font-weight: 700; text-transform: uppercase;">
-                                Estate Organization
-                            </div>
-                            <div style="font-size: 0.95rem; font-weight: 800; text-decoration: underline; margin-top: 6px;">
-                                RESERVATIONS PERMIT (${permitDate})
+                    <div class="reservation-permit-card" style="border: 2px solid #1e5631; outline: 1px solid #1e5631; outline-offset: -5px; padding: 24px 28px; background-color: #ffffff; color: #000; font-family: 'Times New Roman', Times, serif; max-width: 860px; margin: 0 auto; box-sizing: border-box;">
+                        <!-- Header with University Crest Logo -->
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <img src="university_logo.jpg" alt="University Logo" style="width: 72px; height: 72px; object-fit: contain; margin-right: 18px;">
+                            <div style="border-left: 1.5px solid #000; height: 62px; margin-right: 18px;"></div>
+                            <div>
+                                <div style="font-size: 1.25rem; font-weight: bold; color: #000; line-height: 1.2;">Dr. YS Parmar University of Horticulture and Forestry</div>
+                                <div style="font-size: 0.95rem; color: #222; margin-top: 3px;">Nauni, Solan – 173 230 (Himachal Pradesh)</div>
+                                <div style="font-size: 1.15rem; font-weight: bold; color: #1e5631; margin-top: 3px;">${authorityHeader}</div>
                             </div>
                         </div>
 
+                        <!-- Green Horizontal Rule -->
+                        <hr style="border: none; border-top: 2px solid #1e5631; margin: 0 0 14px 0; opacity: 1;">
+
+                        <!-- Centered Pill: RESERVATION PERMIT -->
+                        <div style="text-align: center; margin-bottom: 14px;">
+                            <span style="background-color: #d2e7d6; color: #1e5631; font-size: 1.15rem; font-weight: bold; letter-spacing: 1.5px; padding: 4px 42px; border-radius: 20px; display: inline-block;">
+                                RESERVATION PERMIT
+                            </span>
+                        </div>
+
+                        <!-- Reference & Date -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; font-weight: bold; margin-bottom: 14px; color: #000;">
+                            <div>Permit No.: EO/GH/2026/<span id="permitDocSeq">${permitSeq}</span></div>
+                            <div>Date: <span id="permitDocDate">${permitDate}</span></div>
+                        </div>
+
                         <!-- Preamble Notice -->
-                        <p style="font-size: 0.82rem; text-align: justify; line-height: 1.38; margin-bottom: 12px;">
-                            Accommodation as given below is/are reserved in the University Guest House at Nauni on cash payment for official / private use on approved rates/ charges per set per day. <em>The permit is subject to cancellation without any notice in case the suite(s) is/are required for University use.</em> Use of alcoholic drinks and smoking are strictly prohibited in the Guest House. Person(s) found violating these instructions will have to vacate the accommodation reserved in their favour immediately.
+                        <p style="font-size: 0.88rem; text-align: justify; line-height: 1.45; margin-bottom: 14px; color: #000;">
+                            Accommodation as given below is/are reserved in the University Guest House at Nauni on cash payment for official / private use on approved rates/ charges per set per day. <strong><em>*The permit is subject to cancellation without any notice in case the suite(s) is/are required for University use.*</em></strong> Use of alcoholic drinks and smoking are strictly prohibited in the Guest House. Person(s) found violating these instructions will have to vacate the accommodation reserved in their favour immediately.
                         </p>
 
-                        <!-- Table 1: VVIP Suites (4 sets) -->
-                        <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #000; text-align: center; margin-bottom: 8px;">
-                            <thead>
-                                <tr style="background-color: #f1f3f5;">
-                                    <th style="width: 25%; border: 1.5px solid #000; padding: 4px; font-size: 0.8rem; font-weight: 700;">Set No. 1 (VVIP)</th>
-                                    <th style="width: 25%; border: 1.5px solid #000; padding: 4px; font-size: 0.8rem; font-weight: 700;">Set No. 2 (VVIP)</th>
-                                    <th style="width: 25%; border: 1.5px solid #000; padding: 4px; font-size: 0.8rem; font-weight: 700;">Set No. 11 (VVIP)</th>
-                                    <th style="width: 25%; border: 1.5px solid #000; padding: 4px; font-size: 0.8rem; font-weight: 700;">Set No. 12 (VVIP)</th>
-                                </tr>
-                            </thead>
+                        <!-- Individual Guest Table (5 rows per user image) -->
+                        <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #1e5631; margin-bottom: 12px; font-size: 0.92rem;">
                             <tbody>
-                                <tr style="height: 65px;">
-                                    <td style="border: 1.5px solid #000; padding: 4px; vertical-align: top;">${getRoomCell('vvip_1', 'VVIP 1', 'VVIP')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 4px; vertical-align: top;">${getRoomCell('vvip_2', 'VVIP 2', 'VVIP')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 4px; vertical-align: top;">${getRoomCell('vvip_11', 'VVIP 11', 'VVIP')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 4px; vertical-align: top;">${getRoomCell('vvip_12', 'VVIP 12', 'VVIP')}</td>
+                                <tr style="border-bottom: 1px solid #1e5631;">
+                                    <td style="width: 28%; background-color: #d2e7d6; font-weight: bold; padding: 8px 14px; border-right: 1px solid #1e5631; color: #000;">Name of the Guest</td>
+                                    <td style="width: 3%; text-align: center; font-weight: bold; padding: 8px 4px; border-right: 1px solid #1e5631; color: #000;">:</td>
+                                    <td style="padding: 8px 14px; font-weight: 600; color: #000;">${guestName}</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #1e5631;">
+                                    <td style="background-color: #d2e7d6; font-weight: bold; padding: 8px 14px; border-right: 1px solid #1e5631; color: #000;">Category</td>
+                                    <td style="text-align: center; font-weight: bold; padding: 8px 4px; border-right: 1px solid #1e5631; color: #000;">:</td>
+                                    <td style="padding: 8px 14px; color: #000;">${catLabel}</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #1e5631;">
+                                    <td style="background-color: #d2e7d6; font-weight: bold; padding: 8px 14px; border-right: 1px solid #1e5631; color: #000;">Purpose of Visit</td>
+                                    <td style="text-align: center; font-weight: bold; padding: 8px 4px; border-right: 1px solid #1e5631; color: #000;">:</td>
+                                    <td style="padding: 8px 14px; color: #000;">${purposeText}</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #1e5631;">
+                                    <td style="background-color: #d2e7d6; font-weight: bold; padding: 8px 14px; border-right: 1px solid #1e5631; color: #000;">Period of Stay</td>
+                                    <td style="text-align: center; font-weight: bold; padding: 8px 4px; border-right: 1px solid #1e5631; color: #000;">:</td>
+                                    <td style="padding: 8px 14px; font-weight: 600; color: #000;">${stayPeriodText}</td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: #d2e7d6; font-weight: bold; padding: 8px 14px; border-right: 1px solid #1e5631; color: #000;">Charges (if any)</td>
+                                    <td style="text-align: center; font-weight: bold; padding: 8px 4px; border-right: 1px solid #1e5631; color: #000;">:</td>
+                                    <td style="padding: 8px 14px; color: #000;">${chargesText}</td>
                                 </tr>
                             </tbody>
                         </table>
 
-                        <!-- Table 2: Standard Double Rooms (8 sets: 3 to 10) -->
-                        <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #000; text-align: center; margin-bottom: 8px;">
-                            <thead>
-                                <tr style="background-color: #f1f3f5;">
-                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 3<br>(Standard)</th>
-                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 4<br>(Standard)</th>
-                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 5<br>(Standard)</th>
-                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 6<br>(Standard)</th>
-                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 7<br>(Standard)</th>
-                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 8<br>(Standard)</th>
-                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 9<br>(Standard)</th>
-                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 10<br>(Standard)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr style="height: 65px;">
-                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_3', 'STANDARD 3', 'Standard')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_4', 'STANDARD 4', 'Standard')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_5', 'STANDARD 5', 'Standard')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_6', 'STANDARD 6', 'Standard')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_7', 'STANDARD 7', 'Standard')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_8', 'STANDARD 8', 'Standard')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_9', 'STANDARD 9', 'Standard')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_10', 'STANDARD 10', 'Standard')}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <!-- Notice -->
+                        <p style="font-size: 0.88rem; margin: 10px 0 22px 0; color: #000;">
+                            The Guest is requested to comply with the Guest House rules and instructions during the stay.
+                        </p>
 
-                        <!-- Table 3: VIP & Ordinary Sets (8 sets: 13 to 20) -->
-                        <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #000; text-align: center; margin-bottom: 12px;">
-                            <thead>
-                                <tr style="background-color: #f1f3f5;">
-                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 13<br>(VIP)</th>
-                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 14<br>(VIP)</th>
-                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 15<br>(VIP)</th>
-                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 16<br>(VIP)</th>
-                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 17<br>(Ordinary-Non-AC)</th>
-                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 18<br>(Ordinary-Non-AC)</th>
-                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 19<br>(Ordinary-Non-AC)</th>
-                                    <th style="width: 12.5%; border: 1.5px solid #000; padding: 4px; font-size: 0.74rem; font-weight: 700;">Set No. 20<br>(Standard)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr style="height: 65px;">
-                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('vip_13', 'VIP 13, AC', 'VIP')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('vip_14', 'VIP 14, AC', 'VIP')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('vip_15', 'VIP 15, AC', 'VIP')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('vip_16', 'VIP 16, AC', 'VIP')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_17', 'STANDARD 17', 'Ordinary-Non-AC')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_18', 'STANDARD 18', 'Ordinary-Non-AC')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_19', 'STANDARD 19', 'Ordinary-Non-AC')}</td>
-                                    <td style="border: 1.5px solid #000; padding: 3px; vertical-align: top;">${getRoomCell('std_20', 'STANDARD 20, AC', 'Standard')}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <!-- Footer: Forwarding Copy & Signatures -->
-                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 15px; font-size: 0.8rem; line-height: 1.4;">
-                            <div style="max-width: 60%;">
-                                <strong>Copy for information and necessary action is forwarded to:</strong>
-                                <ol style="margin: 4px 0 0 18px; padding: 0;">
-                                    <li>The Assistant Engineer (PH), Dr Y.S. Parmar UHF, Solan.</li>
-                                    <li>Sh. Lekh Raj Thakur, Cook, UGH, Estate Organization, UHF, Nauni.</li>
-                                    <li>Individual concerned${individualConcernedText}</li>
+                        <!-- Forwarding Copy-to & Signature -->
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 15px; font-size: 0.88rem; line-height: 1.45;">
+                            <div style="max-width: 62%;">
+                                <strong>Copy to:</strong>
+                                <ol id="permitDocRecipientsList" style="margin: 4px 0 0 20px; padding: 0;">
+                                    ${recipientsHtml}
                                 </ol>
                             </div>
                             <div style="text-align: right; min-width: 220px;">
-                                <div style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 1.25rem; color: #1e3a8a; margin-bottom: 2px;">
-                                    ${signatoryTitle.includes('Vice-Chancellor') ? 'VC Secretariat' : 'Estate Officer'}
+                                <div style="font-family: 'Brush Script MT', 'Segoe Script', cursive; font-size: 1.6rem; color: #1e3a8a; line-height: 1; margin-bottom: 2px;">
+                                    ${signatureScript}
                                 </div>
-                                <div style="font-weight: 700; font-size: 0.88rem;">${signatoryTitle}</div>
-                                <div style="font-size: 0.78rem; color: #333;">${signatoryOffice}</div>
-                                <div style="font-size: 0.75rem; color: #555; margin-top: 2px;">Date: ${todaySlash}</div>
+                                <div style="font-weight: bold; font-size: 0.95rem; color: #000;">${signatoryTitle}</div>
+                                <div style="font-size: 0.85rem; color: #222;">Dr. YS Parmar UHF, Nauni, Solan</div>
                             </div>
                         </div>
                     </div>
@@ -8059,7 +8156,6 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                         iframe.style.visibility = 'hidden';
                         document.body.appendChild(iframe);
                     }
-
                     const doc = iframe.contentWindow.document;
                     doc.open();
                     doc.write(`
@@ -8070,26 +8166,8 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                             <title>${title}</title>
                             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
                             <style>
-                                @page {
-                                    size: A4 ${orientation};
-                                    margin: 10mm 12mm;
-                                }
-                                body {
-                                    padding: 10px;
-                                    font-family: 'Times New Roman', Times, serif;
-                                    background: #fff !important;
-                                    color: #000 !important;
-                                    line-height: 1.35;
-                                    -webkit-print-color-adjust: exact !important;
-                                    print-color-adjust: exact !important;
-                                }
-                                table {
-                                    border-collapse: collapse !important;
-                                    width: 100% !important;
-                                }
-                                th, td {
-                                    border: 1.5px solid #000 !important;
-                                }
+                                @page { size: A4 ${orientation}; margin: 10mm; }
+                                body { font-family: 'Times New Roman', serif; background: #fff !important; margin: 0; padding: 15px; }
                                 ${customCss}
                             </style>
                         </head>
@@ -8099,57 +8177,13 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                         </html>
                     `);
                     doc.close();
-
                     setTimeout(() => {
-                        try {
-                            iframe.contentWindow.focus();
-                            iframe.contentWindow.print();
-                        } catch (err) {
-                            console.warn("Iframe print invocation failed, fallback window:", err);
-                            fallbackPrintWindow(html, title, orientation, customCss);
-                        }
-                    }, 350);
-                } catch (e) {
-                    console.warn("Print execution error, trying fallback window:", e);
-                    fallbackPrintWindow(html, title, orientation, customCss);
-                }
-            }
-
-            function fallbackPrintWindow(html, title, orientation, customCss) {
-                const printWin = window.open('', '_blank', 'width=1000,height=800');
-                if (!printWin) {
+                        iframe.contentWindow.focus();
+                        iframe.contentWindow.print();
+                    }, 400);
+                } catch (err) {
                     window.print();
-                    return;
                 }
-                printWin.document.open();
-                printWin.document.write(`
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <meta charset="utf-8">
-                        <title>${title}</title>
-                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-                        <style>
-                            @page { size: A4 ${orientation}; margin: 10mm 12mm; }
-                            body { padding: 10px; font-family: 'Times New Roman', Times, serif; background: #fff !important; color: #000 !important; }
-                            table { border-collapse: collapse !important; width: 100% !important; }
-                            th, td { border: 1.5px solid #000 !important; }
-                            ${customCss}
-                        </style>
-                    </head>
-                    <body>
-                        ${html}
-                        <script>
-                            window.onafterprint = function() { window.close(); };
-                            setTimeout(function() {
-                                window.focus();
-                                window.print();
-                            }, 400);
-                        <\/script>
-                    </body>
-                    </html>
-                `);
-                printWin.document.close();
             }
 
             function printReservationsPermit() {
@@ -8159,12 +8193,14 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                     return;
                 }
                 printHtmlDocument(el.innerHTML, {
-                    title: 'RESERVATIONS PERMIT - Dr YS Parmar UHF Nauni',
-                    orientation: 'landscape',
+                    title: 'RESERVATION PERMIT - Dr YS Parmar UHF Nauni',
+                    orientation: 'portrait',
                     css: `
-                        table { width: 100% !important; border-collapse: collapse !important; font-size: 0.8rem; }
-                        th, td { border: 1.5px solid #000 !important; padding: 4px 6px !important; text-align: center; }
-                        .badge { border: 1px solid #000 !important; color: #000 !important; background: transparent !important; }
+                        @page { size: A4 portrait; margin: 12mm 15mm; }
+                        body { padding: 0; background: #fff !important; font-family: 'Times New Roman', Times, serif !important; }
+                        .reservation-permit-card { border: 2px solid #1e5631 !important; outline: 1px solid #1e5631 !important; outline-offset: -5px !important; padding: 22px 26px !important; }
+                        table { width: 100% !important; border-collapse: collapse !important; border: 1.5px solid #1e5631 !important; }
+                        td { border: 1px solid #1e5631 !important; }
                     `
                 });
             }

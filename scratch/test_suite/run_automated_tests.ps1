@@ -753,21 +753,22 @@ try {
     const permitHtml = document.getElementById('printableReservationsPermit').innerHTML;
 
     return {
-        hasPermitTitle: permitHtml.includes('RESERVATIONS PERMIT'),
-        hasUnivHeader: permitHtml.includes('Dr YS Parmar University of Horticulture and Forestry'),
+        hasPermitTitle: permitHtml.includes('RESERVATION PERMIT'),
+        hasUnivHeader: permitHtml.includes('Dr. YS Parmar University of Horticulture and Forestry'),
         hasEstateOrg: permitHtml.includes('Estate Organization'),
         hasPreamble: permitHtml.includes('Accommodation as given below is/are reserved in the University Guest House'),
-        hasVvipTable: permitHtml.includes('Set No. 1 (VVIP)') && permitHtml.includes('Set No. 12 (VVIP)'),
-        hasStdTable: permitHtml.includes('Set No. 3') && permitHtml.includes('Set No. 10'),
-        hasVipTable: permitHtml.includes('Set No. 13') && permitHtml.includes('Set No. 20'),
-        hasCopyTo: permitHtml.includes('Copy for information and necessary action is forwarded to:'),
-        hasSignatory: permitHtml.includes('PS to Estate Officer') || permitHtml.includes('PS to Vice-Chancellor') || permitHtml.includes('Estate Organization'),
+        hasGuestTable: permitHtml.includes('Name of the Guest') && permitHtml.includes('Period of Stay') && permitHtml.includes('Charges (if any)'),
+        hasGuestName: permitHtml.includes(residentDossier.guest),
+        hasCopyTo: permitHtml.includes('Copy to:'),
+        hasSignatory: permitHtml.includes('Estate Officer') || permitHtml.includes('PS to Vice-Chancellor'),
+        hasActualLogo: permitHtml.includes('university_logo.jpg'),
+        hasEditor: !!document.getElementById('permitRecipientsEditorList'),
         hasModal: !!document.getElementById('reservationsPermitModal')
     };
 })()
 '@
-    if ($permRes.hasPermitTitle -and $permRes.hasUnivHeader -and $permRes.hasEstateOrg -and $permRes.hasPreamble -and $permRes.hasVvipTable -and $permRes.hasStdTable -and $permRes.hasVipTable -and $permRes.hasCopyTo -and $permRes.hasSignatory) {
-        Add-TestResult "Permit" "PERM-01" "Official Reservations Permit Letter (Estate Office)" "PASS" "Rendered exact Reservations Permit matching official document (3-tier table, preamble, copy-to, signatory authority)"
+    if ($permRes.hasPermitTitle -and $permRes.hasUnivHeader -and $permRes.hasEstateOrg -and $permRes.hasPreamble -and $permRes.hasGuestTable -and $permRes.hasGuestName -and $permRes.hasCopyTo -and $permRes.hasSignatory -and $permRes.hasActualLogo -and $permRes.hasEditor) {
+        Add-TestResult "Permit" "PERM-01" "Official Reservations Permit Letter (Estate Office)" "PASS" "Rendered individual Reservation Permit for requested person matching official document (actual logo, 5-row table, custom copy-to, signatory authority)"
     } else {
         Add-TestResult "Permit" "PERM-01" "Official Reservations Permit Letter (Estate Office)" "FAIL" "Permit validation failed: $($permRes | ConvertTo-Json)"
     }
@@ -875,18 +876,37 @@ try {
     showReservationsPermitModal('ALL');
     const permitHtml = document.getElementById('printableReservationsPermit').innerHTML;
     return {
-        hasPermitTitle: permitHtml.includes('RESERVATIONS PERMIT'),
-        hasUnivHeader: permitHtml.includes('Dr YS Parmar University of Horticulture and Forestry'),
-        hasVvipTable: permitHtml.includes('Set No. 1 (VVIP)'),
-        hasVcSignatory: permitHtml.includes('PS to Vice-Chancellor') || permitHtml.includes('Vice-Chancellor'),
+        hasPermitTitle: permitHtml.includes('RESERVATION PERMIT'),
+        hasUnivHeader: permitHtml.includes('Dr. YS Parmar University of Horticulture and Forestry'),
+        hasVcSignatory: permitHtml.includes('PS to Vice-Chancellor') || permitHtml.includes('Vice-Chancellor Secretariat'),
+        hasActualLogo: permitHtml.includes('university_logo.jpg'),
         hasPrintBtn: !!document.querySelector('#reservationsPermitModal button[onclick="printReservationsPermit()"]')
     };
 })()
 '@
-    if ($vcPermRes.hasPermitTitle -and $vcPermRes.hasUnivHeader -and $vcPermRes.hasVvipTable -and $vcPermRes.hasVcSignatory -and $vcPermRes.hasPrintBtn) {
+    if ($vcPermRes.hasPermitTitle -and $vcPermRes.hasUnivHeader -and $vcPermRes.hasVcSignatory -and $vcPermRes.hasActualLogo -and $vcPermRes.hasPrintBtn) {
         Add-TestResult "Permit" "PERM-02" "Official Reservations Permit Print (VC Secretariat)" "PASS" "Verified Reservations Permit accessible, rendered with VC authority, and printable in VC Secretariat account"
     } else {
         Add-TestResult "Permit" "PERM-02" "Official Reservations Permit Print (VC Secretariat)" "FAIL" "VC permit validation failed: $($vcPermRes | ConvertTo-Json)"
+    }
+
+    # Test 2.12B: Dynamic "Copy to:" Recipient Editing (VC & Estate Accounts)
+    $editPermRes = Invoke-Evaluate $prevConn @'
+(() => {
+    addPermitRecipient();
+    const countAfterAdd = window.currentPermitRecipients.length;
+    updatePermitRecipient(countAfterAdd - 1, 'Chief Security Officer, UHF Nauni Campus');
+    const permitHtml = document.getElementById('printableReservationsPermit').innerHTML;
+    return {
+        added: countAfterAdd > 3,
+        reflectedInDoc: permitHtml.includes('Chief Security Officer, UHF Nauni Campus')
+    };
+})()
+'@
+    if ($editPermRes.added -and $editPermRes.reflectedInDoc) {
+        Add-TestResult "Permit" "PERM-03" "Dynamic Copy-to Recipients Editing" "PASS" "Added and edited recipient dynamically; changes immediately reflected in printable permit document"
+    } else {
+        Add-TestResult "Permit" "PERM-03" "Dynamic Copy-to Recipients Editing" "FAIL" "Failed to update recipients: $($editPermRes | ConvertTo-Json)"
     }
 
     # Test 2.13: Dining Bill Management (Add / Delete / Change Amounts)
@@ -960,7 +980,7 @@ try {
     const frame = document.getElementById('universalPrintFrame');
     if (!frame) return { success: false, reason: 'universalPrintFrame not found' };
     const fDoc = frame.contentWindow.document;
-    const hasPermit = fDoc.body.innerText.includes('RESERVATIONS PERMIT') && fDoc.querySelectorAll('table').length > 0;
+    const hasPermit = fDoc.body.innerText.includes('RESERVATION PERMIT') && fDoc.querySelectorAll('table').length > 0;
     
     // 2. Receipt Print
     showReceiptModal('ALL', 'stay');
