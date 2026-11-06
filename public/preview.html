@@ -283,7 +283,7 @@
                         <div class="card-body p-4 d-flex flex-column">
                             <div class="alert alert-success border-success py-2 px-3 small mb-3">
                                 <strong><i class="bi bi-check-circle-fill me-1"></i> Account Jurisdiction:</strong><br>
-                                Primary operational control over VIP Suites (13â€“16), Ordinary Rooms (3â€“10, 17â€“20),
+                                Primary operational control over VIP Suites (13-16), Ordinary Rooms (3-10, 17-20),
                                 Dormitories, and Notification 1615-40 Tariffs. Transparent view-only access to VVIP
                                 suites.
                             </div>
@@ -4386,7 +4386,7 @@
                             <p class="mb-1"><strong>Dates:</strong> ${escapeHtml(dossier.dates)} (${escapeHtml(dossier.duration)})</p>
                             <p class="mb-1"><strong>Allocated Set:</strong> <span class="fw-bold ${isVvip ? 'text-danger' : 'text-primary'}">${escapeHtml(dossier.room)}</span></p>
                             <p class="mb-1"><strong>Sponsoring Authority:</strong> ${escapeHtml(dossier.sponsor || 'Dean, College of Horticulture')}</p>
-                            <p class="mb-1"><strong>Estimated Tariff:</strong> ${dossier.tariff || 'â‚¹1,500 / night'}</p>
+                            <p class="mb-1"><strong>Estimated Tariff:</strong> ${dossier.tariff || '₹1,500 / night'}</p>
                         </div>
                     </div>
 
@@ -6011,7 +6011,7 @@
                     sharingPreference: sharingPreference,
                     wing: wingLabel,
                     wingType: wing,
-                    room: `${ghLabel} &bull; ${setTypeLabel}`,
+                    room: `${ghLabel} - ${setTypeLabel}`,
                     roomClass: isVvip ? 'vvip' : (setType || 'ordinary'),
                     isVvip: isVvip,
                     dates: `${formatDMY(inDate)} &rarr; ${formatDMY(outDate)}`,
@@ -6036,7 +6036,7 @@
                 updateDashboardCounters();
                 renderRoomGrid();
 
-                alert(`✅ Booking request successfully submitted and registered!\n\nReference Number: ${refNum}\nGuest: ${guestName}\nRoom Set: ${ghLabel} - ${setTypeLabel}\nStatus: ${isVvip ? 'PENDING_VC_APPROVAL (VC Secretariat Apex Sanction Required)' : 'PENDING_ESTATE_APPROVAL'}\n\nThis dossier is now actively reflecting in the Institutional Queue and Dashboard Table.`);
+                alert(`Booking request successfully submitted and registered!\n\nReference Number: ${refNum}\nGuest: ${guestName}\nRoom Set: ${ghLabel} - ${setTypeLabel}\nStatus: ${isVvip ? 'PENDING_VC_APPROVAL (VC Secretariat Apex Sanction Required)' : 'PENDING_ESTATE_APPROVAL'}\n\nThis dossier is now actively reflecting in the Institutional Queue and Dashboard Table.`);
                 showTab('dashboard');
             }
 
@@ -6255,7 +6255,7 @@
                 );
 
                 if (conflictingDossier) {
-                    alert(`⚠️ DOUBLE BOOKING CONFLICT DETECTED:\n\nRoom "${room.name}" is already allotted to "${conflictingDossier.guest}" (${conflictingDossier.ref}) for overlapping dates: ${conflictingDossier.dates}.\n\nPlease select another available room to prevent double allocation.`);
+                    alert(`DOUBLE BOOKING CONFLICT DETECTED:\n\nRoom "${room.name}" is already allotted to "${conflictingDossier.guest}" (${conflictingDossier.ref}) for overlapping dates: ${conflictingDossier.dates}.\n\nPlease select another available room to prevent double allocation.`);
                     return;
                 }
 
@@ -6295,7 +6295,7 @@
 
                 const isVvip = !!(dossier && (dossier.isVvip || (room && room.isVvip)));
                 const authorityTitle = isVvip ? "Hon'ble Vice-Chancellor Secretariat" : "Estate Office";
-                alert(`✅ Requisition ${dossier.ref} successfully sanctioned and allocated by ${authorityTitle}!
+                alert(`Requisition ${dossier.ref} successfully sanctioned and allocated by ${authorityTitle}!
 
 Allotted Room: ${room.name} (${room.type})
 Guest: ${dossier.guest}
@@ -7542,7 +7542,7 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
 
                 // Jurisdiction check
                 if (item.authority === 'vc' && currentRole === 'estate_admin') {
-                    alert("⚠️ Jurisdiction Restriction:\n\nEstate Office does not possess authority to modify Vice-Chancellor Secretariat apex directives.\n\nPlease switch to the Vice-Chancellor Secretariat account to edit this notification.");
+                    alert("Jurisdiction Restriction:\n\nEstate Office does not possess authority to modify Vice-Chancellor Secretariat apex directives.\n\nPlease switch to the Vice-Chancellor Secretariat account to edit this notification.");
                     return;
                 }
 
@@ -7586,7 +7586,7 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
 
                 // Enforce authority matching role
                 if (authority === 'vc' && currentRole === 'estate_admin') {
-                    alert("⚠️ Jurisdiction Warning:\n\nEstate Office cannot issue orders under Vice-Chancellor Secretariat authority.\nAuthority changed to Estate Office.");
+                    alert("Jurisdiction Warning:\n\nEstate Office cannot issue orders under Vice-Chancellor Secretariat authority.\nAuthority changed to Estate Office.");
                     return;
                 }
 
@@ -7619,7 +7619,7 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                             list[index].fileSize = fileSize;
                         }
                         saveOfficialNotifications(list);
-                        alert(`✅ Notification "${list[index].orderNumber}" updated successfully!`);
+                        alert(`Notification "${list[index].orderNumber}" updated successfully!`);
                     }
                 } else {
                     const newId = 'notif_' + Date.now();
@@ -7643,7 +7643,7 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                     };
                     list.unshift(newNotification);
                     saveOfficialNotifications(list);
-                    alert(`✅ Statutory Notification "${newNotification.orderNumber}" successfully uploaded & enacted!`);
+                    alert(`Statutory Notification "${newNotification.orderNumber}" successfully uploaded & enacted!`);
                 }
 
                 bootstrap.Modal.getInstance(document.getElementById('notificationModal')).hide();
@@ -7658,7 +7658,7 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
 
                 // Jurisdiction check
                 if (item.authority === 'vc' && currentRole === 'estate_admin') {
-                    alert("⚠️ Jurisdiction Restriction:\n\nEstate Office cannot revoke or delete Vice-Chancellor Secretariat statutory directives.");
+                    alert("Jurisdiction Restriction:\n\nEstate Office cannot revoke or delete Vice-Chancellor Secretariat statutory directives.");
                     return;
                 }
 
@@ -7667,7 +7667,7 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                     saveOfficialNotifications(updated);
                     renderNotificationsTable();
                     updateNotificationBadge();
-                    alert(`🗑️ Notification "${item.orderNumber}" has been revoked and removed.`);
+                    alert(`Notification "${item.orderNumber}" has been revoked and removed.`);
                 }
             }
 

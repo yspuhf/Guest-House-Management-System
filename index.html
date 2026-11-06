@@ -1850,7 +1850,7 @@
                 
                 const catSelect = document.getElementById('modalCategory');
                 const catLabel = catSelect && catSelect.selectedOptions[0] ? catSelect.selectedOptions[0].text : 'Official Delegate';
-                const totalEst = document.getElementById('modalTotal') ? document.getElementById('modalTotal').innerText : 'â‚¹1,500.00';
+                const totalEst = document.getElementById('modalTotal') ? document.getElementById('modalTotal').innerText : '₹1,500.00';
 
                 const isVvip = setType.toLowerCase().includes('vvip') || setTypeLabel.toLowerCase().includes('vvip');
                 const ref = 'GH-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
@@ -1860,16 +1860,16 @@
                 let roomDisplay = '';
                 let roomClass = 'ordinary';
                 if (isVvip) {
-                    roomDisplay = 'Main GH â€¢ VVIP Suite #202 (Presidential)';
+                    roomDisplay = 'Main GH - VVIP Suite #202 (Presidential)';
                     roomClass = 'vvip';
                 } else if (setType.toLowerCase().includes('vip')) {
-                    roomDisplay = 'Main GH â€¢ VIP Suite #103';
+                    roomDisplay = 'Main GH - VIP Suite #103';
                     roomClass = 'vip';
                 } else if (setType.toLowerCase().includes('dorm')) {
-                    roomDisplay = 'Main GH &bull; Dormitory Bed';
+                    roomDisplay = 'Main GH - Dormitory Bed';
                     roomClass = 'dormitory';
                 } else {
-                    roomDisplay = 'Main GH â€¢ Standard AC Room #104';
+                    roomDisplay = 'Main GH - Standard AC Room #104';
                     roomClass = 'ordinary';
                 }
 
