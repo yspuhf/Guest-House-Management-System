@@ -145,6 +145,56 @@
             z-index: 105000 !important;
         }
 
+        /* Workflow Approvals Workboard Styles */
+        .wf-queue-card {
+            border: 1px solid #e2e8f0;
+            border-left-width: 4px !important;
+            border-radius: 8px;
+            padding: 0.85rem;
+            margin-bottom: 0.65rem;
+            background: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            position: relative;
+        }
+        .wf-queue-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-color: #cbd5e1;
+        }
+        .wf-queue-card.active {
+            background: #f8fafc;
+            box-shadow: 0 4px 14px rgba(13, 110, 253, 0.16);
+            border-color: #0d6efd;
+            border-width: 2px;
+            border-left-width: 5px !important;
+        }
+        .wf-queue-card.active.is-vvip {
+            border-color: #dc3545;
+            box-shadow: 0 4px 14px rgba(220, 53, 69, 0.2);
+            background: #fff8f8;
+        }
+        .wf-docket-tile {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            height: 100%;
+        }
+        .wf-detail-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: #64748b;
+            margin-bottom: 0.2rem;
+        }
+        .wf-detail-value {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
         /* Mobile Responsiveness Styles */
         @media (max-width: 767.98px) {
             #sidebarMenu.sidebar {
@@ -2075,32 +2125,104 @@
 
                     <!-- 5. WORKFLOW APPROVALS QUEUE -->
                     <div id="view-workflow" class="view-panel" style="display:none;">
-                        <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
+                        <!-- Top Header & Workboard Summary -->
+                        <div class="d-flex flex-wrap justify-content-between align-items-center pb-2 mb-3 border-bottom gap-2">
                             <div>
-                                <h3 class="h4 fw-bold text-navy mb-0">Institutional Approvals Queue</h3>
-                                <small class="text-muted">Digital routing docket governed by University Guest House
-                                    Regulations &amp; Jurisdiction Rules</small>
-                            </div>
-                        </div>
-
-                        <!-- Docket Switcher Strip -->
-                        <div class="card border-0 shadow-sm mb-3 bg-light">
-                            <div
-                                class="card-body p-2 d-flex flex-wrap justify-content-between align-items-center gap-2">
-                                <div class="d-flex flex-wrap gap-1" role="group" aria-label="Docket Selector"
-                                    id="docketSelectorGroup">
-                                    <!-- Rendered dynamically by renderWorkflowDocket() -->
+                                <div class="d-flex align-items-center gap-2">
+                                    <h3 class="h4 fw-bold text-navy mb-0">Institutional Approvals Workboard</h3>
+                                    <span class="badge bg-navy text-white px-2 py-1 small" id="workflowQueueLiveCount">Queue Active</span>
                                 </div>
+                                <small class="text-muted">Two-tier digital routing docket governed by University Guest House Regulations &amp; Competent Jurisdiction Rules</small>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
                                 <div id="workflowDocketAuthorityBadge">
-                                    <span class="badge bg-danger px-3 py-2"><i class="bi bi-crown me-1"></i>Authority:
-                                        Vice-Chancellor Secretariat Only</span>
+                                    <span class="badge bg-danger px-3 py-2"><i class="bi bi-crown me-1"></i>Jurisdiction: Vice-Chancellor Secretariat</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Workflow Docket Card -->
-                        <div class="card border-0 shadow-sm mb-4" id="workflowDocketContainer">
-                            <!-- Populated dynamically by renderWorkflowDocket() -->
+                        <!-- Executive KPI Metric Tiles -->
+                        <div class="row g-2 mb-3" id="workflowMetricsRow">
+                            <div class="col-6 col-md-3">
+                                <div class="card border-0 shadow-sm p-2 bg-light text-center h-100">
+                                    <small class="text-muted text-uppercase fw-semibold" style="font-size:0.72rem;">Total in Queue</small>
+                                    <div class="fs-4 fw-bold text-navy" id="wfMetricTotal">0</div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="card border-0 shadow-sm p-2 bg-danger-subtle text-center h-100 border-start border-danger border-3">
+                                    <small class="text-danger text-uppercase fw-bold" style="font-size:0.72rem;"><i class="bi bi-crown me-1"></i>VC Sanction Req</small>
+                                    <div class="fs-4 fw-bold text-danger" id="wfMetricVcReq">0</div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="card border-0 shadow-sm p-2 bg-primary-subtle text-center h-100 border-start border-primary border-3">
+                                    <small class="text-primary text-uppercase fw-bold" style="font-size:0.72rem;"><i class="bi bi-building me-1"></i>Estate Sanction Req</small>
+                                    <div class="fs-4 fw-bold text-primary" id="wfMetricEstateReq">0</div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="card border-0 shadow-sm p-2 bg-success-subtle text-center h-100 border-start border-success border-3">
+                                    <small class="text-success text-uppercase fw-bold" style="font-size:0.72rem;"><i class="bi bi-check2-circle me-1"></i>Sanctioned &amp; Ready</small>
+                                    <div class="fs-4 fw-bold text-success" id="wfMetricSanctioned">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Filter Toolbar & Search Bar -->
+                        <div class="card border-0 shadow-sm mb-3">
+                            <div class="card-body p-2 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                                <div class="btn-group btn-group-sm flex-wrap" role="group" id="workflowFilterButtonGroup">
+                                    <button type="button" class="btn btn-outline-dark active fw-semibold" onclick="filterWorkflowQueue('ALL', this)" id="wfFilterBtnAll">
+                                        <i class="bi bi-list-ul me-1"></i>All Requisitions
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger fw-semibold" onclick="filterWorkflowQueue('VC_ONLY', this)" id="wfFilterBtnVc">
+                                        <i class="bi bi-crown me-1"></i>VVIP (Hon'ble VC)
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary fw-semibold" onclick="filterWorkflowQueue('ESTATE_ONLY', this)" id="wfFilterBtnEstate">
+                                        <i class="bi bi-building me-1"></i>Estate Sets
+                                    </button>
+                                    <button type="button" class="btn btn-outline-warning fw-semibold text-dark" onclick="filterWorkflowQueue('PENDING_ONLY', this)" id="wfFilterBtnPending">
+                                        <i class="bi bi-hourglass-split me-1"></i>Awaiting Action
+                                    </button>
+                                    <button type="button" class="btn btn-outline-success fw-semibold" onclick="filterWorkflowQueue('APPROVED_ONLY', this)" id="wfFilterBtnApproved">
+                                        <i class="bi bi-check-circle me-1"></i>Sanctioned
+                                    </button>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 ms-auto" style="min-width: 240px; max-width: 360px;">
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                                        <input type="text" class="form-control border-start-0" id="workflowSearchInput" placeholder="Filter queue by guest, ref, org..." oninput="handleWorkflowSearch(this.value)">
+                                    </div>
+                                </div>
+                                <!-- Hidden legacy docketSelectorGroup container for backward compatibility -->
+                                <div id="docketSelectorGroup" class="d-none"></div>
+                            </div>
+                        </div>
+
+                        <!-- 2-Pane Master-Detail Workboard -->
+                        <div class="row g-3">
+                            <!-- Left Pane: Requisitions Queue Stream (5 cols) -->
+                            <div class="col-lg-5 col-md-12">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-header bg-white py-2 px-3 border-bottom d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold text-navy small text-uppercase">
+                                            <i class="bi bi-inbox-fill me-1 text-primary"></i>Requisitions Stream
+                                        </span>
+                                        <span class="badge bg-light text-dark border small" id="workflowStreamCounter">0 items</span>
+                                    </div>
+                                    <div class="card-body p-2" id="workflowQueueStream" style="max-height: 720px; overflow-y: auto;">
+                                        <!-- Rendered dynamically by renderWorkflowDocket() -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Pane: Executive Review & Sanction Docket (7 cols) -->
+                            <div class="col-lg-7 col-md-12">
+                                <div class="card border-0 shadow-sm sticky-top" style="top: 15px; z-index: 10;" id="workflowDocketContainer">
+                                    <!-- Populated dynamically by renderWorkflowDocket() -->
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -4280,13 +4402,74 @@
                 renderWorkflowDocket();
             }
 
+            // Filter and search state for Institutional Approvals Workboard
+            window.workflowFilterMode = 'ALL';
+            window.workflowSearchQuery = '';
+
+            function filterWorkflowQueue(mode, btn) {
+                window.workflowFilterMode = mode;
+                const group = document.getElementById('workflowFilterButtonGroup');
+                if (group) {
+                    group.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                }
+                if (btn) btn.classList.add('active');
+                renderWorkflowDocket();
+            }
+
+            function handleWorkflowSearch(query) {
+                window.workflowSearchQuery = (query || '').toLowerCase().trim();
+                renderWorkflowDocket();
+            }
+
             // Render dynamic workflow docket according to jurisdiction
             function renderWorkflowDocket() {
                 const container = document.getElementById('workflowDocketContainer');
                 const authBadge = document.getElementById('workflowDocketAuthorityBadge');
                 const docketGroup = document.getElementById('docketSelectorGroup');
+                const queueStream = document.getElementById('workflowQueueStream');
+                const streamCounter = document.getElementById('workflowStreamCounter');
+                const liveCount = document.getElementById('workflowQueueLiveCount');
 
-                // Render dynamic Docket Selector Buttons from actual live dossiers
+                // Metric KPI Elements
+                const elTotal = document.getElementById('wfMetricTotal');
+                const elVc = document.getElementById('wfMetricVcReq');
+                const elEstate = document.getElementById('wfMetricEstateReq');
+                const elSanctioned = document.getElementById('wfMetricSanctioned');
+
+                // Compute real-time KPIs across all institutional dossiers
+                const totalCount = institutionalDossiers.length;
+                const vcPendingCount = institutionalDossiers.filter(d => d.isVvip && d.status !== 'APPROVED' && d.status !== 'CHECKED_IN' && d.status !== 'RESERVED' && d.status !== 'COMPLETED' && d.status !== 'REJECTED').length;
+                const estatePendingCount = institutionalDossiers.filter(d => !d.isVvip && d.status !== 'APPROVED' && d.status !== 'CHECKED_IN' && d.status !== 'RESERVED' && d.status !== 'COMPLETED' && d.status !== 'REJECTED').length;
+                const sanctionedCount = institutionalDossiers.filter(d => d.status === 'APPROVED' || d.status === 'CHECKED_IN' || d.status === 'RESERVED' || d.status === 'COMPLETED').length;
+
+                if (elTotal) elTotal.innerText = totalCount;
+                if (elVc) elVc.innerText = vcPendingCount;
+                if (elEstate) elEstate.innerText = estatePendingCount;
+                if (elSanctioned) elSanctioned.innerText = sanctionedCount;
+                if (liveCount) liveCount.innerText = `${totalCount} Requisitions In System`;
+
+                // Filter dossiers according to active filter and search query
+                const filterMode = window.workflowFilterMode || 'ALL';
+                const searchQ = window.workflowSearchQuery || '';
+
+                let filtered = institutionalDossiers.filter(d => {
+                    // Filter Mode
+                    if (filterMode === 'VC_ONLY' && !d.isVvip) return false;
+                    if (filterMode === 'ESTATE_ONLY' && d.isVvip) return false;
+                    if (filterMode === 'PENDING_ONLY' && (d.status === 'APPROVED' || d.status === 'CHECKED_IN' || d.status === 'RESERVED' || d.status === 'COMPLETED' || d.status === 'REJECTED')) return false;
+                    if (filterMode === 'APPROVED_ONLY' && (d.status !== 'APPROVED' && d.status !== 'CHECKED_IN' && d.status !== 'RESERVED' && d.status !== 'COMPLETED')) return false;
+
+                    // Search Query
+                    if (searchQ) {
+                        const hay = `${d.ref || ''} ${d.guest || ''} ${d.designation || ''} ${d.sponsor || ''} ${d.room || ''} ${d.category || ''}`.toLowerCase();
+                        if (!hay.includes(searchQ)) return false;
+                    }
+                    return true;
+                });
+
+                if (streamCounter) streamCounter.innerText = `${filtered.length} of ${totalCount}`;
+
+                // Render dynamic Docket Selector Buttons (kept for backward compatibility and test hooks)
                 if (docketGroup) {
                     let btnsHtml = '';
                     institutionalDossiers.forEach((d) => {
@@ -4298,17 +4481,25 @@
                         const badge = d.isVvip ? '<span class="badge bg-danger ms-1">VVIP</span>' : '<span class="badge bg-primary ms-1">Estate</span>';
                         const guestShort = d.guest && d.guest.length > 20 ? d.guest.substring(0, 18) + '...' : (d.guest || 'Guest');
                         btnsHtml += `
-                        <button type="button" class="${btnClass}" onclick="switchWorkflowDocket('${escapeHtml(d.ref)}')">
-                            <i class="${icon} me-1"></i> ${escapeHtml(d.ref)}: ${escapeHtml(guestShort)} ${badge}
-                        </button>
-                    `;
+                            <button type="button" class="${btnClass}" onclick="switchWorkflowDocket('${escapeHtml(d.ref)}')">
+                                <i class="${icon} me-1"></i> ${escapeHtml(d.ref)}: ${escapeHtml(guestShort)} ${badge}
+                            </button>
+                        `;
                     });
                     docketGroup.innerHTML = btnsHtml;
                 }
 
-                if (!container) return;
-
+                // Empty queue check
                 if (institutionalDossiers.length === 0) {
+                    if (queueStream) {
+                        queueStream.innerHTML = `
+                            <div class="p-4 text-center text-muted">
+                                <i class="bi bi-inbox fs-2 d-block mb-2 text-secondary"></i>
+                                <span class="fw-semibold">Queue Clear</span>
+                                <p class="small text-muted mb-0">No booking requisitions in queue.</p>
+                            </div>
+                        `;
+                    }
                     if (container) {
                         container.innerHTML = `
                             <div class="card border-0 shadow-sm p-5 text-center">
@@ -4321,15 +4512,96 @@
                     if (authBadge) authBadge.innerHTML = '<span class="badge bg-secondary">Queue Empty</span>';
                     return;
                 }
-                const dossier = institutionalDossiers.find(x => x.ref === activeWorkflowRef) || institutionalDossiers[0];
-                if (!dossier) return;
-                const isVvip = dossier.isVvip;
+
+                // Ensure an active dossier is selected
+                if (!activeWorkflowRef || !institutionalDossiers.some(x => x.ref === activeWorkflowRef)) {
+                    if (filtered.length > 0) {
+                        activeWorkflowRef = filtered[0].ref;
+                    } else if (institutionalDossiers.length > 0) {
+                        activeWorkflowRef = institutionalDossiers[0].ref;
+                    }
+                }
+
+                // Render Left Stream of Queue Cards
+                if (queueStream) {
+                    if (filtered.length === 0) {
+                        queueStream.innerHTML = `
+                            <div class="p-4 text-center text-muted">
+                                <i class="bi bi-funnel fs-2 d-block mb-2 text-secondary"></i>
+                                <span class="fw-semibold">No Matching Requisitions</span>
+                                <p class="small text-muted mb-0">Try clearing filters or search terms.</p>
+                            </div>
+                        `;
+                    } else {
+                        let streamHtml = '';
+                        filtered.forEach(d => {
+                            const isActive = (d.ref === activeWorkflowRef);
+                            const isVvip = !!d.isVvip;
+                            const isApproved = (d.status === 'APPROVED' || d.status === 'CHECKED_IN' || d.status === 'RESERVED');
+                            const isRejected = (d.status === 'REJECTED');
+
+                            let statusBadgeClass = 'bg-primary';
+                            let statusText = d.status || 'PENDING';
+                            if (isVvip && !isApproved && !isRejected) {
+                                statusBadgeClass = 'bg-danger';
+                                statusText = 'Awaiting VC';
+                            } else if (!isVvip && !isApproved && !isRejected) {
+                                statusBadgeClass = 'bg-primary';
+                                statusText = 'Awaiting Estate';
+                            } else if (isApproved) {
+                                statusBadgeClass = 'bg-success';
+                                statusText = 'Sanctioned';
+                            } else if (isRejected) {
+                                statusBadgeClass = 'bg-secondary';
+                                statusText = 'Returned';
+                            }
+
+                            // Determine Action Required Badge for the current role
+                            let actionReqBadge = '';
+                            if (currentRole === 'vc_secretariat' && isVvip && !isApproved && !isRejected) {
+                                actionReqBadge = `<div class="mt-2 text-end"><span class="badge bg-danger text-white"><i class="bi bi-crown me-1"></i>Action Required (VC)</span></div>`;
+                            } else if (currentRole === 'estate_admin' && !isVvip && !isApproved && !isRejected) {
+                                actionReqBadge = `<div class="mt-2 text-end"><span class="badge bg-warning text-dark fw-bold"><i class="bi bi-exclamation-circle-fill me-1"></i>Action Required (Estate)</span></div>`;
+                            } else if (isApproved) {
+                                actionReqBadge = `<div class="mt-2 text-end"><span class="badge bg-success-subtle text-success border border-success"><i class="bi bi-check2-circle me-1"></i>Sanctioned &amp; Allocated</span></div>`;
+                            }
+
+                            streamHtml += `
+                                <div class="wf-queue-card ${isActive ? 'active' : ''} ${isVvip ? 'is-vvip' : ''} ${isVvip ? 'border-danger' : (isApproved ? 'border-success' : 'border-primary')}" onclick="switchWorkflowDocket('${escapeHtml(d.ref)}')">
+                                    <div class="d-flex justify-content-between align-items-start mb-1">
+                                        <span class="fw-bold text-navy small font-monospace"><i class="bi bi-receipt me-1"></i>${escapeHtml(d.ref)}</span>
+                                        <span class="badge ${statusBadgeClass} small">${statusText}</span>
+                                    </div>
+                                    <div class="fw-bold text-dark mb-1" style="font-size:0.95rem;">${escapeHtml(d.guest || 'Visiting Guest')}</div>
+                                    <div class="text-muted small mb-2 text-truncate" style="max-width: 280px;">
+                                        <i class="bi bi-briefcase me-1"></i>${escapeHtml(d.designation || d.sponsor || 'Official Visitor')}
+                                    </div>
+                                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-1 pt-1 border-top">
+                                        <span class="badge ${isVvip ? 'bg-danger-subtle text-danger border border-danger' : 'bg-primary-subtle text-primary border border-primary'} small">
+                                            <i class="${isVvip ? 'bi bi-crown' : 'bi bi-building'} me-1"></i>${escapeHtml(d.room || 'Suite')}
+                                        </span>
+                                        <span class="small text-muted"><i class="bi bi-calendar3 me-1"></i>${escapeHtml(d.duration || '1 Night')}</span>
+                                    </div>
+                                    ${actionReqBadge}
+                                </div>
+                            `;
+                        });
+                        queueStream.innerHTML = streamHtml;
+                    }
+                }
+
+                // Active Dossier for Right Inspector Pane
+                const dossier = institutionalDossiers.find(x => x.ref === activeWorkflowRef) || filtered[0] || institutionalDossiers[0];
+                if (!dossier || !container) return;
+                const isVvip = !!dossier.isVvip;
+                const isApproved = (dossier.status === 'APPROVED' || dossier.status === 'CHECKED_IN' || dossier.status === 'RESERVED');
+                const isRejected = (dossier.status === 'REJECTED');
 
                 if (authBadge) {
                     if (isVvip) {
-                        authBadge.innerHTML = `<span class="badge bg-danger px-3 py-2"><i class="bi bi-crown me-1"></i>Jurisdiction: Vice-Chancellor Secretariat Only</span>`;
+                        authBadge.innerHTML = `<span class="badge bg-danger px-3 py-2"><i class="bi bi-crown me-1"></i>Competent Authority: Vice-Chancellor Secretariat Only</span>`;
                     } else {
-                        authBadge.innerHTML = `<span class="badge bg-primary px-3 py-2"><i class="bi bi-building me-1"></i>Jurisdiction: Estate Office</span>`;
+                        authBadge.innerHTML = `<span class="badge bg-primary px-3 py-2"><i class="bi bi-building me-1"></i>Competent Authority: Estate Office</span>`;
                     }
                 }
 
@@ -4340,34 +4612,34 @@
                     // VVIP CASE
                     if (currentRole === 'vc_secretariat') {
                         jurisdictionAlert = `
-                        <div class="alert alert-danger border-danger d-flex align-items-center py-2 px-3 mb-4">
-                            <i class="bi bi-crown fs-2 text-danger me-3"></i>
-                            <div>
-                                <strong>Vice-Chancellor Secretariat Apex Authority:</strong> This is a <strong>VVIP Presidential Suite</strong> reservation. You hold exclusive competent authority to grant formal sanction.
+                            <div class="alert alert-danger border-danger d-flex align-items-center py-2 px-3 mb-4">
+                                <i class="bi bi-crown fs-2 text-danger me-3 flex-shrink-0"></i>
+                                <div>
+                                    <strong>Vice-Chancellor Secretariat Apex Authority:</strong> This is a <strong>VVIP Presidential Suite</strong> reservation. You hold exclusive competent authority to grant formal sanction.
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
                         actionButtons = `
-                        <button class="btn btn-outline-danger" onclick="rejectWorkflowModal('${dossier.ref}')">
-                            <i class="bi bi-x-octagon me-1"></i> Return with VC Remarks
-                        </button>
-                        <button class="btn btn-success px-4 fw-bold" onclick="approveWorkflowAction('${dossier.ref}')">
-                            <i class="bi bi-check-circle-fill me-1"></i> Grant VC Sanction &amp; Approve
-                        </button>
-                    `;
+                            <button class="btn btn-outline-danger" onclick="rejectWorkflowModal('${dossier.ref}')">
+                                <i class="bi bi-x-octagon me-1"></i> Return with VC Remarks
+                            </button>
+                            <button class="btn btn-success px-4 fw-bold" onclick="approveWorkflowAction('${dossier.ref}')">
+                                <i class="bi bi-check-circle-fill me-1"></i> Grant VC Sanction &amp; Allot Room
+                            </button>
+                        `;
                     } else if (currentRole === 'estate_admin') {
                         jurisdictionAlert = `
-                        <div class="alert alert-warning border-warning d-flex align-items-center py-2 px-3 mb-4">
-                            <i class="bi bi-shield-lock-fill fs-2 text-warning me-3"></i>
-                            <div>
-                                <strong>Estate Office View-Only Notice:</strong> This is a <strong>VVIP Presidential Suite</strong> reservation. Estate Office has full visibility of this dossier for housekeeping and protocol readiness, while <strong>sanction authority is exclusively reserved for the Vice-Chancellor Secretariat</strong>.
+                            <div class="alert alert-warning border-warning d-flex align-items-center py-2 px-3 mb-4">
+                                <i class="bi bi-shield-lock-fill fs-2 text-warning me-3 flex-shrink-0"></i>
+                                <div>
+                                    <strong>Estate Office View-Only Notice:</strong> This is a <strong>VVIP Presidential Suite</strong> reservation. Estate Office has full visibility of this dossier for housekeeping and protocol readiness, while <strong>sanction authority is exclusively reserved for the Vice-Chancellor Secretariat</strong>.
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
                         actionButtons = `
-                        <button class="btn btn-secondary disabled" title="Sanction authority reserved for VC Secretariat"><i class="bi bi-lock-fill me-1"></i> Sanction Reserved for VC Secretariat</button>
-                        <span class="badge bg-danger-subtle text-danger border border-danger p-2 ms-2"><i class="bi bi-crown me-1"></i> Hon'ble VC Secretariat Jurisdiction</span>
-                    `;
+                            <button class="btn btn-secondary disabled" title="Sanction authority reserved for VC Secretariat"><i class="bi bi-lock-fill me-1"></i> Sanction Reserved for VC Secretariat</button>
+                            <span class="badge bg-danger-subtle text-danger border border-danger p-2 ms-2"><i class="bi bi-crown me-1"></i> Hon'ble VC Secretariat Jurisdiction</span>
+                        `;
                     } else {
                         actionButtons = `<button class="btn btn-secondary disabled"><i class="bi bi-lock me-1"></i> Sanction Pending (VC Secretariat)</button>`;
                     }
@@ -4375,73 +4647,170 @@
                     // ESTATE OFFICE VIP/ORDINARY CASE
                     if (currentRole === 'estate_admin') {
                         jurisdictionAlert = `
-                        <div class="alert alert-success border-success d-flex align-items-center py-2 px-3 mb-4">
-                            <i class="bi bi-building-check fs-2 text-success me-3"></i>
-                            <div>
-                                <strong>Estate Office Sanction Authority:</strong> This is an Estate Office VIP Suite reservation. You have full administrative authority to review, approve, and allocate this room.
+                            <div class="alert alert-success border-success d-flex align-items-center py-2 px-3 mb-4">
+                                <i class="bi bi-building-check fs-2 text-success me-3 flex-shrink-0"></i>
+                                <div>
+                                    <strong>Estate Office Sanction Authority:</strong> This is an Estate Office VIP Suite reservation. You have full administrative authority to review, approve, and allocate this room.
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
                         actionButtons = `
-                        <button class="btn btn-outline-danger" onclick="rejectWorkflowModal('${dossier.ref}')">
-                            <i class="bi bi-x-circle me-1"></i> Return with Remarks
-                        </button>
-                        <button class="btn btn-success px-4 fw-bold" onclick="approveWorkflowAction('${dossier.ref}')">
-                            <i class="bi bi-check-circle me-1"></i> Grant Estate Sanction &amp; Approve
-                        </button>
-                    `;
+                            <button class="btn btn-outline-danger" onclick="rejectWorkflowModal('${dossier.ref}')">
+                                <i class="bi bi-x-circle me-1"></i> Return with Remarks
+                            </button>
+                            <button class="btn btn-success px-4 fw-bold" onclick="approveWorkflowAction('${dossier.ref}')">
+                                <i class="bi bi-check-circle me-1"></i> Grant Estate Sanction &amp; Allot Room
+                            </button>
+                        `;
                     } else if (currentRole === 'vc_secretariat') {
                         jurisdictionAlert = `
-                        <div class="alert alert-info border-info d-flex align-items-center py-2 px-3 mb-4">
-                            <i class="bi bi-info-circle-fill fs-2 text-info me-3"></i>
-                            <div>
-                                <strong>Estate Office Routine Delegation:</strong> This is an Estate Office VIP Suite reservation. Regular VIP and ordinary accommodation requests are handled directly by the <strong>Estate Office</strong>. VC Secretariat jurisdiction applies to VVIP Presidential Suites only.
+                            <div class="alert alert-info border-info d-flex align-items-center py-2 px-3 mb-4">
+                                <i class="bi bi-info-circle-fill fs-2 text-info me-3 flex-shrink-0"></i>
+                                <div>
+                                    <strong>Estate Office Routine Delegation:</strong> This is an Estate Office VIP Suite reservation. Regular VIP and ordinary accommodation requests are handled directly by the <strong>Estate Office</strong>. VC Secretariat jurisdiction applies to VVIP Presidential Suites only.
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
                         actionButtons = `
-                        <span class="badge bg-primary-subtle text-primary border border-primary p-2"><i class="bi bi-building me-1"></i> Routine Set: Handled Under Estate Office Jurisdiction</span>
-                    `;
+                            <span class="badge bg-primary-subtle text-primary border border-primary p-2"><i class="bi bi-building me-1"></i> Routine Set: Handled Under Estate Office Jurisdiction</span>
+                        `;
                     } else {
                         actionButtons = `<button class="btn btn-secondary disabled"><i class="bi bi-lock me-1"></i> Sanction Pending (Estate Office)</button>`;
                     }
                 }
 
-                container.innerHTML = `
-                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                    <h5 class="fw-bold text-navy mb-0">Requisition Dossier: ${escapeHtml(dossier.ref)}</h5>
-                    <span class="badge ${isVvip ? 'bg-danger' : 'bg-primary'} px-3 py-2">
-                        ${isVvip ? '<i class="bi bi-crown me-1"></i>VVIP Set' : '<i class="bi bi-building me-1"></i>Estate Office Set'}
-                    </span>
-                </div>
-                <div class="card-body p-4">
-                    ${jurisdictionAlert}
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <h6 class="fw-bold text-navy">Applicant Particulars &amp; Classification</h6>
-                            <p class="mb-1"><strong>Applicant:</strong> ${escapeHtml(dossier.guest)}</p>
-                            <p class="mb-1"><strong>Designation:</strong> ${escapeHtml(dossier.designation || 'Visiting Delegate')}</p>
-                            <p class="mb-1"><strong>Institution / Firm:</strong> ${escapeHtml(dossier.institutionAddress || dossier.sponsor || 'On Record')}</p>
-                            ${dossier.homeAddress ? `<p class="mb-1"><strong>Home Address:</strong> ${escapeHtml(dossier.homeAddress)}</p>` : ''}
-                            <p class="mb-1"><strong>Aadhar No. (8-Digit):</strong> ${escapeHtml(dossier.aadharNo || 'On Record')}</p>
-                            <p class="mb-1"><strong>Category:</strong> ${escapeHtml(dossier.category)}</p>
-                            <p class="mb-1"><strong>Suites:</strong> ${dossier.suitesRequired || 1} Suite(s) &bull; <strong>Sharing:</strong> ${escapeHtml(dossier.sharingPreference || 'Independent Suite')}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="fw-bold text-navy">Stay Schedule &amp; Sponsoring Body</h6>
-                            <p class="mb-1"><strong>Dates:</strong> ${escapeHtml(dossier.dates)} (${escapeHtml(dossier.duration)})</p>
-                            <p class="mb-1"><strong>Allocated Set:</strong> <span class="fw-bold ${isVvip ? 'text-danger' : 'text-primary'}">${escapeHtml(dossier.room)}</span></p>
-                            <p class="mb-1"><strong>Sponsoring Authority:</strong> ${escapeHtml(dossier.sponsor || 'Dean, College of Horticulture')}</p>
-                            <p class="mb-1"><strong>Estimated Tariff:</strong> ${dossier.tariff || '₹1,500 / night'}</p>
-                        </div>
-                    </div>
+                // If already approved, check-in button or permit button
+                let permitButtonsHtml = '';
+                if (isApproved) {
+                    permitButtonsHtml = `
+                        <button class="btn btn-dark fw-bold me-2" onclick="showReservationsPermitModal('${dossier.ref}')">
+                            <i class="bi bi-file-earmark-text me-1"></i>Official Permit Letter
+                        </button>
+                        <button class="btn btn-outline-secondary fw-semibold" onclick="showReceiptModal('${dossier.ref}')">
+                            <i class="bi bi-receipt me-1"></i>Cashier Bill
+                        </button>
+                    `;
+                }
 
-                    <div class="d-flex justify-content-end align-items-center gap-2">
-                        ${(dossier.status === 'APPROVED' || dossier.status === 'CHECKED_IN' || dossier.status === 'RESERVED') ? `<button class="btn btn-dark fw-semibold" onclick="showReservationsPermitModal('${dossier.ref}')"><i class="bi bi-file-earmark-text me-1"></i>Official Permit Letter</button>` : ''}
-                        ${actionButtons}
+                const statusBadgeClass = isApproved ? 'bg-success' : (isRejected ? 'bg-secondary' : (isVvip ? 'bg-danger' : 'bg-primary'));
+
+                container.innerHTML = `
+                    <div class="card-header bg-white py-3 px-4 border-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
+                        <div>
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <h5 class="fw-bold text-navy mb-0">Requisition Dossier: ${escapeHtml(dossier.ref)}</h5>
+                                <span class="badge ${isVvip ? 'bg-danger' : 'bg-primary'} px-2 py-1">
+                                    ${isVvip ? '<i class="bi bi-crown me-1"></i>VVIP Set' : '<i class="bi bi-building me-1"></i>Estate Office Set'}
+                                </span>
+                            </div>
+                            <small class="text-muted">Digital Requisition Docket • Notification No. UHF/EO-55/2025/- 1615-40</small>
+                        </div>
+                        <div>
+                            <span class="badge ${statusBadgeClass} px-3 py-2 fw-bold text-uppercase">${escapeHtml(dossier.status || 'PENDING')}</span>
+                        </div>
                     </div>
-                </div>
-            `;
+                    <div class="card-body p-4">
+                        ${jurisdictionAlert}
+                        
+                        <!-- 2 Column Inspection Grid -->
+                        <div class="row g-3 mb-4">
+                            <!-- Guest Identity & Verification Tile -->
+                            <div class="col-md-6">
+                                <div class="wf-docket-tile">
+                                    <h6 class="fw-bold text-navy mb-3 pb-2 border-bottom d-flex align-items-center">
+                                        <i class="bi bi-person-badge-fill me-2 text-primary"></i>Applicant Particulars &amp; Cadre
+                                    </h6>
+                                    <div class="mb-2">
+                                        <div class="wf-detail-label">Applicant / Lead Guest</div>
+                                        <div class="wf-detail-value">${escapeHtml(dossier.guest || 'N/A')}</div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <div class="wf-detail-label">Designation &amp; Cadre</div>
+                                        <div class="wf-detail-value">${escapeHtml(dossier.designation || 'Visiting Delegate')}</div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <div class="wf-detail-label">Sponsoring Body / Firm / Institution</div>
+                                        <div class="wf-detail-value">${escapeHtml(dossier.institutionAddress || dossier.sponsor || 'On Official Record')}</div>
+                                    </div>
+                                    ${dossier.homeAddress ? `
+                                    <div class="mb-2">
+                                        <div class="wf-detail-label">Permanent / Home Address</div>
+                                        <div class="wf-detail-value small">${escapeHtml(dossier.homeAddress)}</div>
+                                    </div>` : ''}
+                                    <div class="row g-2 mt-1">
+                                        <div class="col-6">
+                                            <div class="wf-detail-label">Aadhaar (8-Digit)</div>
+                                            <div class="wf-detail-value font-monospace">${escapeHtml(dossier.aadharNo || 'On Record')}</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="wf-detail-label">Statutory Category</div>
+                                            <div class="wf-detail-value"><span class="badge bg-light text-dark border">${escapeHtml(dossier.category || 'Category I')}</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 pt-2 border-top small text-muted">
+                                        <i class="bi bi-door-closed me-1"></i><strong>Suites:</strong> ${dossier.suitesRequired || 1} Suite(s) &bull; <strong>Sharing:</strong> ${escapeHtml(dossier.sharingPreference || 'Independent Suite')}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Stay Schedule & Room Assignment Tile -->
+                            <div class="col-md-6">
+                                <div class="wf-docket-tile">
+                                    <h6 class="fw-bold text-navy mb-3 pb-2 border-bottom d-flex align-items-center">
+                                        <i class="bi bi-calendar2-check-fill me-2 text-success"></i>Stay Schedule &amp; Allocation
+                                    </h6>
+                                    <div class="mb-2">
+                                        <div class="wf-detail-label">Designated Suite / Room</div>
+                                        <div class="wf-detail-value ${isVvip ? 'text-danger' : 'text-primary'} fs-6">
+                                            <i class="${isVvip ? 'bi bi-crown' : 'bi bi-building'} me-1"></i>${escapeHtml(dossier.room || 'To be allotted')}
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <div class="wf-detail-label">Period of Stay</div>
+                                        <div class="wf-detail-value">${escapeHtml(dossier.dates || 'N/A')}</div>
+                                        <small class="text-muted"><i class="bi bi-clock me-1"></i>Duration: ${escapeHtml(dossier.duration || '1 Night')}</small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <div class="wf-detail-label">Sponsoring Authority</div>
+                                        <div class="wf-detail-value">${escapeHtml(dossier.sponsor || 'Estate Office, UHF')}</div>
+                                    </div>
+                                    <div class="row g-2 mt-2 pt-2 border-top">
+                                        <div class="col-6">
+                                            <div class="wf-detail-label">Statutory Room Tariff</div>
+                                            <div class="wf-detail-value text-success">${escapeHtml(dossier.tariff || '₹1,500 / night')}</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="wf-detail-label">Payment Mode</div>
+                                            <div class="wf-detail-value small text-dark"><i class="bi bi-cash me-1 text-success"></i>Cash Only</div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 pt-2 border-top small text-muted">
+                                        <i class="bi bi-cup-hot me-1"></i><strong>Dining / Mess:</strong> On-demand university catering facility
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Statutory Exemption Compliance Bar -->
+                        <div class="p-3 bg-light rounded border mb-4 d-flex align-items-center gap-3">
+                            <i class="bi bi-shield-check fs-2 text-success flex-shrink-0"></i>
+                            <div class="small text-muted">
+                                <strong class="text-dark d-block mb-1">Official University Guest House Statutory Protocol:</strong>
+                                Accommodation is allotted for academic, state, research, and institutional business under Notification No. UHF/EO-55/2025/- 1615-40. All room booking and allotment charges are settled in <strong>Cash only</strong> through the Estate Office account upon check-in.
+                            </div>
+                        </div>
+
+                        <!-- Executive Decision & Sanction Action Bar -->
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 pt-2 border-top">
+                            <div class="d-flex gap-2">
+                                ${permitButtonsHtml}
+                            </div>
+                            <div class="d-flex flex-wrap align-items-center gap-2 ms-auto">
+                                ${actionButtons}
+                            </div>
+                        </div>
+                    </div>
+                `;
             }
 
             // View VVIP Dossier as Estate Office (Read-Only Modal)
