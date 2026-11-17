@@ -986,8 +986,8 @@
                             <li class="nav-item">
                                 <button class="nav-link fw-semibold" id="tab-dining-rates" data-bs-toggle="tab"
                                     data-bs-target="#panel-dining-rates" type="button">
-                                    <i class="bi bi-cup-hot me-1 text-success"></i> 2. Dining Hall &amp; Lounge Charges
-                                    (Page 2)
+                                    <i class="bi bi-cup-hot me-1 text-success"></i> 2. Catering &amp; Dining Master
+                                    (Notifs 2125 &amp; 2511)
                                 </button>
                             </li>
                             <li class="nav-item">
@@ -1052,30 +1052,71 @@
                                 </div>
                             </div>
 
-                            <!-- TAB 2: Dining Hall Charges -->
+                            <!-- TAB 2: Catering & Dining Charges Master (Notifications 2125-2160 & 2511-56) -->
                             <div class="tab-pane fade" id="panel-dining-rates">
                                 <div class="card border-0 shadow-sm mb-4">
-                                    <div class="card-header bg-white py-3">
-                                        <h6 class="fw-bold mb-0 text-dark"><i
-                                                class="bi bi-cup-straw me-2 text-success"></i>Use of Lounge and Dining
-                                            Hall
-                                            of Guest House (Page 2 of Official Notification)</h6>
+                                    <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                                        <div>
+                                            <h6 class="fw-bold mb-0 text-dark">
+                                                <i class="bi bi-cup-hot-fill me-2 text-success"></i>Official University Catering &amp; Dining Charges Master
+                                            </h6>
+                                            <small class="text-muted">Statutory rates approved under Notification No. <strong>UHF/EO-55/2026/- 2125-2160</strong> &amp; <strong>2511-56</strong>. Full editing authority from Estate Office account.</small>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-success-subtle text-success border border-success px-2 py-1" id="diningPermBadge">
+                                                <i class="bi bi-shield-check me-1"></i>Estate Admin Write Access
+                                            </span>
+                                        </div>
                                     </div>
+
+                                    <!-- Filter Pills & Search for Dining Items -->
+                                    <div class="card-body bg-light border-bottom py-2 px-3">
+                                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                                            <div class="btn-group btn-group-sm flex-wrap" role="group" id="diningCategoryFilterGroup">
+                                                <button type="button" class="btn btn-outline-dark active fw-semibold" onclick="filterDiningCatalogTable('all', this)">All Items</button>
+                                                <button type="button" class="btn btn-outline-success fw-semibold" onclick="filterDiningCatalogTable('breakfast', this)">Breakfast (2125-2160)</button>
+                                                <button type="button" class="btn btn-outline-primary fw-semibold" onclick="filterDiningCatalogTable('lunch_dinner', this)">Meals (2125-2160)</button>
+                                                <button type="button" class="btn btn-outline-warning text-dark fw-semibold" onclick="filterDiningCatalogTable('combos', this)">Combos (2511-56)</button>
+                                                <button type="button" class="btn btn-outline-info text-dark fw-semibold" onclick="filterDiningCatalogTable('main_course', this)">Main Course (2511-56)</button>
+                                                <button type="button" class="btn btn-outline-secondary fw-semibold" onclick="filterDiningCatalogTable('rice_roti_sweets', this)">Rice, Roti &amp; Sweets</button>
+                                                <button type="button" class="btn btn-outline-dark fw-semibold" onclick="filterDiningCatalogTable('hall_booking', this)">Hall Booking</button>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-2 ms-auto" style="min-width: 220px; max-width: 320px;">
+                                                <div class="input-group input-group-sm">
+                                                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                                                    <input type="text" class="form-control border-start-0" id="diningSearchInput" placeholder="Filter items by name..." oninput="handleDiningSearch(this.value)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="card-body p-0">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered align-middle mb-0">
-                                                <thead class="table-light text-center">
+                                        <div class="table-responsive" style="max-height: 580px; overflow-y: auto;">
+                                            <table class="table table-hover table-bordered align-middle mb-0" id="diningMasterTable">
+                                                <thead class="table-light text-center sticky-top" style="top: 0; z-index: 5;">
                                                     <tr>
-                                                        <th style="width: 80px;">Sr. No.</th>
-                                                        <th class="text-start">Description &amp; Purpose</th>
-                                                        <th style="width: 180px;">Rate (INR &#8377;)</th>
-                                                        <th style="width: 140px;">Unit</th>
+                                                        <th style="width: 70px;">Sr. No.</th>
+                                                        <th style="width: 170px;" class="text-start">Category / Order</th>
+                                                        <th class="text-start">Item Title &amp; Statutory Particulars</th>
+                                                        <th style="width: 170px;">Rate (INR &#8377;)</th>
+                                                        <th style="width: 130px;">Unit</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="diningTariffEditorBody">
-                                                    <!-- Dynamically rendered dining rows -->
+                                                    <!-- Dynamically rendered dining rows from EstateTariffManager.getDiningCatalog() -->
                                                 </tbody>
                                             </table>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-light py-2 small d-flex flex-wrap justify-content-between align-items-center gap-2">
+                                        <span class="text-muted"><i class="bi bi-info-circle me-1 text-primary"></i>All rate adjustments are instantly persisted in browser storage and dynamically synchronized with guest resident billing invoices.</span>
+                                        <div class="d-flex gap-2">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="resetDiningTariffsToDefaults()" id="btnResetDining">
+                                                <i class="bi bi-arrow-counterclockwise me-1"></i> Reset to Statutory Defaults
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-success fw-bold px-3" onclick="saveEstateDiningTariffsFromForm()" id="btnSaveDining">
+                                                <i class="bi bi-save me-1"></i> Save Dining Charges Now
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -3011,14 +3052,82 @@
                                     <div class="col-md-5">
                                         <label class="form-label small fw-semibold text-muted mb-1">Preset / Meal Type</label>
                                         <select class="form-select form-select-sm" id="diningPresetSelect" onchange="onDiningPresetChange()">
-                                            <option value="custom">-- Custom Item --</option>
-                                            <option value="full_day" data-desc="Standard University Meals (Breakfast, Lunch, Dinner)" data-rate="300" selected>Full Day Meals (B+L+D) — &#8377;300</option>
-                                            <option value="breakfast" data-desc="Mess Breakfast" data-rate="60">Breakfast Only — &#8377;60</option>
-                                            <option value="lunch" data-desc="Mess Lunch" data-rate="120">Lunch Only — &#8377;120</option>
-                                            <option value="dinner" data-desc="Mess Dinner" data-rate="120">Dinner Only — &#8377;120</option>
-                                            <option value="tea" data-desc="Tea &amp; Snacks" data-rate="30">Tea &amp; Snacks — &#8377;30</option>
-                                            <option value="catering" data-desc="Special Academic / Conference Catering Meal" data-rate="250">Conference / Special Catering — &#8377;250</option>
-                                            <option value="dorm_meals" data-desc="Farmers / Dormitory Subsidized Meals" data-rate="150">Dormitory / Farmers Meals — &#8377;150</option>
+                                            <option value="custom">-- Custom Item / Manual Entry --</option>
+                                            <optgroup label="Fixed Meals &amp; Set Menus (Notif 2125-2160)">
+                                                <option value="full_day" data-desc="Standard University Meals (Breakfast, Lunch, Dinner)" data-rate="320" selected>Full Day Meals (B+L+D) — &#8377;320</option>
+                                                <option value="bf_ord" data-desc="Breakfast (Ordinary: Prantha/Bread+Milk/Omelet+Tea)" data-rate="100">Breakfast (Ordinary) — &#8377;100</option>
+                                                <option value="bf_rich" data-desc="Breakfast (Richer Menu: Bread+Milk+Corn Flakes)" data-rate="100">Breakfast (Richer) — &#8377;100</option>
+                                                <option value="bf_spec" data-desc="Breakfast (Special Menu + Seasonal Fruits)" data-rate="150">Breakfast (Special) — &#8377;150</option>
+                                                <option value="lunch_veg_ord" data-desc="Lunch / Dinner (Veg - Ordinary Menu)" data-rate="110">Lunch/Dinner Veg (Ordinary) — &#8377;110</option>
+                                                <option value="lunch_veg_rich" data-desc="Lunch / Dinner (Veg - Richer Menu)" data-rate="150">Lunch/Dinner Veg (Richer) — &#8377;150</option>
+                                                <option value="lunch_veg_spec" data-desc="Lunch / Dinner (Veg - Special Menu with Sweet/Ice Cream)" data-rate="200">Lunch/Dinner Veg (Special) — &#8377;200</option>
+                                                <option value="lunch_simple" data-desc="Lunch / Dinner (Simple: Rice+Dal or Chapati+Dal)" data-rate="70">Simple Meal — &#8377;70</option>
+                                                <option value="lunch_chicken_ord" data-desc="Lunch / Dinner (Non-Veg - Chicken Ordinary)" data-rate="300">Chicken Meal (Ordinary) — &#8377;300</option>
+                                                <option value="lunch_mutton_ord" data-desc="Lunch / Dinner (Non-Veg - Mutton Ordinary)" data-rate="350">Mutton Meal (Ordinary) — &#8377;350</option>
+                                                <option value="lunch_chicken_spec" data-desc="Lunch / Dinner (Non-Veg - Special Chicken Menu)" data-rate="400">Special Chicken Menu — &#8377;400</option>
+                                                <option value="lunch_mutton_spec" data-desc="Lunch / Dinner (Non-Veg - Special Mutton Menu)" data-rate="500">Special Mutton Menu — &#8377;500</option>
+                                            </optgroup>
+                                            <optgroup label="Veg Combo Packs (Notif 2511-56)">
+                                                <option value="combo_std" data-desc="VEG COMBO (STANDARD) (Dal Makhani/Rajma + Matar Paneer/Kofta + Veg + Rice + Roti + Sweet)" data-rate="350">Veg Combo (Standard) — &#8377;350</option>
+                                                <option value="combo_super" data-desc="VEG COMBO (SUPER) (Shahi Paneer/Malai Kofta + Bhindi/Mushroom + Dal + Halwa + Fruit Custard)" data-rate="450">Veg Combo (Super) — &#8377;450</option>
+                                            </optgroup>
+                                            <optgroup label="Extra Items &amp; Beverages (Notif 2125-2160)">
+                                                <option value="extra_tea" data-desc="Tea (Cup)" data-rate="20">Tea — &#8377;20</option>
+                                                <option value="extra_coffee" data-desc="Coffee (Cup)" data-rate="50">Coffee — &#8377;50</option>
+                                                <option value="extra_milk" data-desc="Milk with Sugar (200 ml)" data-rate="30">Milk (200 ml) — &#8377;30</option>
+                                                <option value="extra_soup" data-desc="Veg. Soup (Cup)" data-rate="40">Veg. Soup — &#8377;40</option>
+                                                <option value="extra_dalia" data-desc="Dalia or Milk + Cornflakes (Bowl)" data-rate="60">Dalia / Cornflakes — &#8377;60</option>
+                                                <option value="extra_dahi" data-desc="Dahi (150 gm)" data-rate="40">Dahi (150 gm) — &#8377;40</option>
+                                                <option value="extra_raita" data-desc="Boondi or Ghia Raita (150 gm)" data-rate="40">Boondi/Ghia Raita — &#8377;40</option>
+                                                <option value="extra_sweets" data-desc="Ice cream / Gulabjamun / Rasgula" data-rate="50">Ice Cream / Sweets — &#8377;50</option>
+                                            </optgroup>
+                                            <optgroup label="A La Carte Main Course (Veg) (Notif 2511-56)">
+                                                <option value="alc_dal_makhani" data-desc="Dal Makhani (Plate)" data-rate="150">Dal Makhani — &#8377;150</option>
+                                                <option value="alc_rajma" data-desc="Rajma Masala (Plate)" data-rate="150">Rajma Masala — &#8377;150</option>
+                                                <option value="alc_dal_fry" data-desc="Dal Fry (Plate)" data-rate="120">Dal Fry — &#8377;120</option>
+                                                <option value="alc_matar_paneer" data-desc="Matar Paneer (Plate)" data-rate="160">Matar Paneer — &#8377;160</option>
+                                                <option value="alc_shahi_paneer" data-desc="Shahi Paneer (Plate)" data-rate="190">Shahi Paneer — &#8377;190</option>
+                                                <option value="alc_mix_veg" data-desc="Mix Veg (Plate)" data-rate="150">Mix Veg — &#8377;150</option>
+                                                <option value="alc_mushroom" data-desc="Mushroom Masala (Plate)" data-rate="150">Mushroom Masala — &#8377;150</option>
+                                                <option value="alc_aloo_gobhi" data-desc="Aloo Gobhi (Plate)" data-rate="100">Aloo Gobhi — &#8377;100</option>
+                                                <option value="alc_aloo_matar" data-desc="Aloo Matar (Plate)" data-rate="100">Aloo Matar — &#8377;100</option>
+                                                <option value="alc_aloo_bean" data-desc="Aloo Bean (Plate)" data-rate="100">Aloo Bean — &#8377;100</option>
+                                                <option value="alc_chana_masala" data-desc="Chana Masala (Plate)" data-rate="150">Chana Masala — &#8377;150</option>
+                                                <option value="alc_malai_kofta" data-desc="Malai Kofta (Plate)" data-rate="200">Malai Kofta — &#8377;200</option>
+                                                <option value="alc_kadi_pakoda" data-desc="Kadi Pakoda (Plate)" data-rate="150">Kadi Pakoda — &#8377;150</option>
+                                                <option value="alc_bhindi_masala" data-desc="Bhindi Masala (Plate)" data-rate="160">Bhindi Masala — &#8377;160</option>
+                                                <option value="alc_veg_kofta" data-desc="Veg Kofta (Plate)" data-rate="150">Veg Kofta — &#8377;150</option>
+                                            </optgroup>
+                                            <optgroup label="A La Carte Main Course (Non-Veg) (Notif 2511-56)">
+                                                <option value="alc_chicken_curry" data-desc="Chicken Curry (Plate)" data-rate="300">Chicken Curry — &#8377;300</option>
+                                                <option value="alc_mutton_chicken" data-desc="Mutton Chicken (Plate)" data-rate="400">Mutton Chicken — &#8377;400</option>
+                                                <option value="alc_egg_curry" data-desc="Egg Curry (Plate)" data-rate="150">Egg Curry — &#8377;150</option>
+                                                <option value="alc_fish_curry" data-desc="Fish Curry (Plate)" data-rate="400">Fish Curry — &#8377;400</option>
+                                                <option value="alc_mutton_curry" data-desc="Mutton Curry (Plate)" data-rate="500">Mutton Curry — &#8377;500</option>
+                                                <option value="alc_rara_chicken" data-desc="Rara Chicken (Plate)" data-rate="150">Rara Chicken — &#8377;150</option>
+                                            </optgroup>
+                                            <optgroup label="Breads, Rice &amp; Accompaniments (Notif 2511-56)">
+                                                <option value="alc_tawa_roti" data-desc="Tawa Roti (Piece)" data-rate="15">Tawa Roti — &#8377;15</option>
+                                                <option value="alc_naan" data-desc="Naan (Piece)" data-rate="40">Naan — &#8377;40</option>
+                                                <option value="alc_plain_rice" data-desc="Plain Rice (Plate)" data-rate="100">Plain Rice — &#8377;100</option>
+                                                <option value="alc_veg_pulao" data-desc="Veg Pullao (Plate)" data-rate="120">Veg Pullao — &#8377;120</option>
+                                                <option value="alc_fried_rice" data-desc="Fried Rice (Plate)" data-rate="130">Fried Rice — &#8377;130</option>
+                                                <option value="alc_veg_biryani" data-desc="Veg Briyani (Plate)" data-rate="250">Veg Briyani — &#8377;250</option>
+                                                <option value="alc_chicken_biryani" data-desc="Chicken Briyani (Plate)" data-rate="350">Chicken Briyani — &#8377;350</option>
+                                                <option value="alc_green_salad" data-desc="Green Salad (Plate)" data-rate="80">Green Salad — &#8377;80</option>
+                                                <option value="alc_cuke_salad" data-desc="Cucumber and Mix Veg Salad (Plate)" data-rate="100">Cucumber &amp; Mix Salad — &#8377;100</option>
+                                                <option value="alc_plain_curd" data-desc="Plain Curd (Plate)" data-rate="50">Plain Curd — &#8377;50</option>
+                                                <option value="alc_boondi_raita" data-desc="Boondi Raita (Plate)" data-rate="80">Boondi Raita — &#8377;80</option>
+                                                <option value="alc_mix_raita" data-desc="Mix Raita (Plate)" data-rate="80">Mix Raita — &#8377;80</option>
+                                            </optgroup>
+                                            <optgroup label="Sweet Dishes (Notif 2511-56)">
+                                                <option value="alc_gulab_jamun" data-desc="Gulab Jamun (2 Nos.)" data-rate="50">Gulab Jamun (2 Nos.) — &#8377;50</option>
+                                                <option value="alc_kheer" data-desc="Kheer (Bowl)" data-rate="50">Kheer — &#8377;50</option>
+                                                <option value="alc_sevian" data-desc="Sevian (Bowl)" data-rate="50">Sevian — &#8377;50</option>
+                                                <option value="alc_ice_cream" data-desc="Ice Cream (Cup)" data-rate="50">Ice Cream — &#8377;50</option>
+                                                <option value="alc_gajar_halwa" data-desc="Gajar Ka Halwa (Plate)" data-rate="80">Gajar Ka Halwa — &#8377;80</option>
+                                                <option value="alc_moong_halwa" data-desc="Moong Dal Halwa (Plate)" data-rate="100">Moong Dal Halwa — &#8377;100</option>
+                                            </optgroup>
                                         </select>
                                     </div>
                                     <div class="col-md-7">
@@ -5604,29 +5713,8 @@
                     tbody.appendChild(tr);
                 });
 
-                // Render Dining Hall
-                const diningRates = EstateTariffManager.getDiningHallRates();
-                const dtbody = document.getElementById('diningTariffEditorBody');
-                if (dtbody) {
-                    dtbody.innerHTML = '';
-                    diningRates.forEach(dr => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                        <td class="text-center fw-bold">${dr.srNo}</td>
-                        <td>
-                            <textarea class="form-control form-control-sm" id="dining-desc-${dr.id}" rows="2" ${disabledAttr}>${dr.description}</textarea>
-                        </td>
-                        <td>
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-text">&#8377;</span>
-                                <input type="number" class="form-control fw-bold text-success" id="dining-rate-${dr.id}" value="${dr.rate}" ${disabledAttr}>
-                            </div>
-                        </td>
-                        <td class="text-center text-muted">${dr.unit}</td>
-                    `;
-                        dtbody.appendChild(tr);
-                    });
-                }
+                // Render Dining Catalog Master (Notifications 2125-2160 & 2511-56)
+                renderDiningTariffEditorRows();
 
                 // Render Metadata
                 const meta = EstateTariffManager.getNotificationMeta();
@@ -5643,6 +5731,93 @@
                 updateSandboxControls();
             }
 
+            let currentDiningFilter = 'all';
+            let currentDiningSearch = '';
+
+            function renderDiningTariffEditorRows() {
+                const dtbody = document.getElementById('diningTariffEditorBody');
+                if (!dtbody) return;
+                const isAdmin = (currentRole === 'estate_admin' || currentRole === 'admin');
+                const disabledAttr = isAdmin ? '' : 'disabled';
+                const catalog = EstateTariffManager.getDiningCatalog();
+
+                dtbody.innerHTML = '';
+                catalog.forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.setAttribute('data-dining-id', item.id);
+                    tr.setAttribute('data-dining-section', item.section);
+
+                    const is2511 = item.notification && item.notification.includes('2511');
+                    const badgeClass = is2511 ? 'bg-primary-subtle text-primary border border-primary-subtle' : 'bg-success-subtle text-success border border-success-subtle';
+
+                    tr.innerHTML = `
+                        <td class="text-center fw-bold text-secondary">${item.srNo}</td>
+                        <td>
+                            <span class="badge ${badgeClass} mb-1">${escapeHtml(item.sectionTitle || item.section)}</span>
+                            <div class="small text-muted font-monospace" style="font-size: 0.72rem;">${escapeHtml(item.notification || 'Statutory')}</div>
+                        </td>
+                        <td>
+                            <div class="fw-bold text-dark mb-1">${escapeHtml(item.title)}</div>
+                            <textarea class="form-control form-control-sm text-secondary" id="dining-desc-${item.id}" rows="1" ${disabledAttr} placeholder="Statutory description">${escapeHtml(item.description || '')}</textarea>
+                        </td>
+                        <td>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">&#8377;</span>
+                                <input type="number" class="form-control form-control-sm fw-bold text-success text-end dining-rate-input" id="dining-rate-${item.id}" data-id="${item.id}" value="${item.rate}" min="0" ${disabledAttr}>
+                            </div>
+                        </td>
+                        <td class="text-center text-muted small">${escapeHtml(item.unit || 'per person')}</td>
+                    `;
+                    dtbody.appendChild(tr);
+                });
+
+                applyDiningFilters();
+            }
+
+            function applyDiningFilters() {
+                const dtbody = document.getElementById('diningTariffEditorBody');
+                if (!dtbody) return;
+                const rows = dtbody.querySelectorAll('tr[data-dining-id]');
+                const q = currentDiningSearch.trim().toLowerCase();
+
+                rows.forEach(row => {
+                    const section = row.getAttribute('data-dining-section') || '';
+                    const text = (row.textContent || '').toLowerCase();
+
+                    let matchesCategory = true;
+                    if (currentDiningFilter === 'breakfast') {
+                        matchesCategory = (section === 'breakfast');
+                    } else if (currentDiningFilter === 'lunch_dinner') {
+                        matchesCategory = (section.startsWith('lunch_dinner') || section === 'extra_items');
+                    } else if (currentDiningFilter === 'combos') {
+                        matchesCategory = (section === 'combos');
+                    } else if (currentDiningFilter === 'main_course') {
+                        matchesCategory = (section === 'main_course_veg' || section === 'main_course_nonveg');
+                    } else if (currentDiningFilter === 'rice_roti_sweets') {
+                        matchesCategory = (['raita_salad', 'rice_pullao', 'roti', 'sweet_dish'].includes(section));
+                    } else if (currentDiningFilter === 'hall_booking') {
+                        matchesCategory = (section === 'hall_booking');
+                    }
+
+                    const matchesQuery = !q || text.includes(q);
+                    row.style.display = (matchesCategory && matchesQuery) ? '' : 'none';
+                });
+            }
+
+            function filterDiningCatalogTable(filter, btn) {
+                currentDiningFilter = filter;
+                if (btn && btn.parentElement) {
+                    btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                }
+                applyDiningFilters();
+            }
+
+            function handleDiningSearch(query) {
+                currentDiningSearch = query || '';
+                applyDiningFilters();
+            }
+
             function updateTariffEditorPermissions() {
                 const isAdmin = (currentRole === 'estate_admin' || currentRole === 'admin');
                 const badge = document.getElementById('estateConsolePermBadge');
@@ -5650,6 +5825,16 @@
                 const btnSave = document.getElementById('btnSaveTariffs');
                 const btnReset = document.getElementById('btnResetTariffs');
                 const btnAdd = document.getElementById('btnAddCategory');
+                const diningBadge = document.getElementById('diningPermBadge');
+                const btnSaveDining = document.getElementById('btnSaveDining');
+                const btnResetDining = document.getElementById('btnResetDining');
+
+                if (diningBadge) {
+                    diningBadge.className = isAdmin ? 'badge bg-success-subtle text-success border border-success px-2 py-1' : 'badge bg-secondary-subtle text-secondary border border-secondary px-2 py-1';
+                    diningBadge.innerHTML = isAdmin ? '<i class="bi bi-shield-check me-1"></i>Estate Admin Write Access' : '<i class="bi bi-shield-lock me-1"></i>Read-Only Mode';
+                }
+                if (btnSaveDining) btnSaveDining.disabled = !isAdmin;
+                if (btnResetDining) btnResetDining.disabled = !isAdmin;
 
                 if (isAdmin) {
                     if (badge) { badge.className = 'badge bg-success'; badge.innerText = 'Admin Write Access'; }
@@ -5682,6 +5867,37 @@
                 }
             }
 
+            function saveEstateDiningTariffsFromForm() {
+                const isAdmin = (currentRole === 'estate_admin' || currentRole === 'admin');
+                if (!isAdmin) {
+                    alert('Permission Denied: Only the Estate Officer account can modify statutory dining charges.');
+                    return;
+                }
+                const catalog = EstateTariffManager.getDiningCatalog();
+                catalog.forEach(item => {
+                    const descEl = document.getElementById(`dining-desc-${item.id}`);
+                    const rateEl = document.getElementById(`dining-rate-${item.id}`);
+                    if (descEl) item.description = descEl.value;
+                    if (rateEl) item.rate = parseInt(rateEl.value) || 0;
+                });
+                EstateTariffManager.saveDiningCatalog(catalog);
+                alert('Success! Official Catering & Dining charges (Notifications 2125-2160 & 2511-56) have been saved.\n\nUpdated rates are now active across resident dining bills and university portals.');
+                renderDiningTariffEditorRows();
+            }
+
+            function resetDiningTariffsToDefaults() {
+                const isAdmin = (currentRole === 'estate_admin' || currentRole === 'admin');
+                if (!isAdmin) {
+                    alert('Permission Denied: Only the Estate Officer account can reset statutory dining charges.');
+                    return;
+                }
+                if (confirm('Are you sure you want to restore all catering and dining charges to official statutory defaults (Notification Nos. 2125-2160 & 2511-56)?')) {
+                    EstateTariffManager.resetDiningCatalog();
+                    renderDiningTariffEditorRows();
+                    alert('Dining tariffs restored to official statutory notification defaults.');
+                }
+            }
+
             function saveEstateTariffsFromForm() {
                 const categories = EstateTariffManager.getEstateCategories();
                 categories.forEach(cat => {
@@ -5702,15 +5918,15 @@
 
                 EstateTariffManager.saveEstateCategories(categories);
 
-                // Save Dining
-                const diningRates = EstateTariffManager.getDiningHallRates();
-                diningRates.forEach(dr => {
+                // Save Dining Catalog
+                const diningCatalog = EstateTariffManager.getDiningCatalog();
+                diningCatalog.forEach(dr => {
                     const descEl = document.getElementById(`dining-desc-${dr.id}`);
                     const rateEl = document.getElementById(`dining-rate-${dr.id}`);
                     if (descEl) dr.description = descEl.value;
                     if (rateEl) dr.rate = parseInt(rateEl.value) || 0;
                 });
-                EstateTariffManager.saveDiningHallRates(diningRates);
+                EstateTariffManager.saveDiningCatalog(diningCatalog);
 
                 // Save Meta
                 const meta = {
@@ -5732,6 +5948,7 @@
             function resetEstateTariffsToSignedDefaults() {
                 if (confirm('Are you sure you want to reset all categories and rates to the original signed Notification No. UHF/EO-55/2025/- 1615-40 defaults?')) {
                     EstateTariffManager.resetToDefaults();
+                    EstateTariffManager.resetDiningCatalog();
                     renderEstateTariffEditor();
                     renderRoomGrid();
                     handleAdminBookingWingChange();
@@ -7696,6 +7913,253 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                     status: "ACTIVE",
                     isPublic: true,
                     createdAt: "2026-09-10T09:15:00.000Z"
+                },
+                {
+                    id: "notif_2125_60",
+                    orderNumber: "UHF/EO-55/2026/- 2125-2160",
+                    title: "Revision of Catering Charges for University Guest House (Breakfast, Lunch, Dinner & Extra Items)",
+                    category: "Catering & Dining Charges",
+                    authority: "estate",
+                    authorityLabel: "Estate Office",
+                    signatory: "Estate Officer",
+                    issueDate: "10/09/2026",
+                    effectiveDate: "10/09/2026",
+                    fileName: "Notification_2125-2160_Catering_Charges.pdf",
+                    fileSize: "1.1 MB",
+                    summary: "Statutory revision of catering charges approved by the Hon'ble Vice-Chancellor for Breakfast (Ordinary Rs. 100, Richer Rs. 100, Special Rs. 150), Lunch/Dinner Veg (Ordinary Rs. 110, Richer Rs. 150, Special Rs. 200), Lunch/Dinner Non-Veg (Mutton Rs. 350, Chicken Rs. 300, Special Rs. 400-500), Simple Meal Rs. 70, and extra beverages/items.",
+                    fullContent: `<p class="fw-bold">The Hon'ble Vice-Chancellor of Dr. Yashwant Singh Parmar University of Horticulture and Forestry, Nauni (Solan) is pleased to revise the catering charges applicable at the University Guest House with immediate effect, as follows: -</p>
+<div class="table-responsive my-3">
+<table class="table table-bordered table-sm align-middle" style="font-size: 0.9rem;">
+    <thead class="table-light">
+        <tr>
+            <th style="width: 8%;">Sr. No.</th>
+            <th style="width: 25%;">Particulars</th>
+            <th>Menu Details</th>
+            <th style="width: 18%;" class="text-end">Rate (₹)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="3" class="fw-bold text-center">1.</td>
+            <td rowspan="3" class="fw-bold">Breakfast</td>
+            <td><strong>Ordinary Menu:</strong><br>Prantha (Stuffed-2 No. + Dahi or Butter + Achar or Sauce)<br><em>OR</em> Bread Slice-4 Pc. + Butter or Jam + Milk one glass<br><em>OR</em> Bread Slice-4 Pc. + Omelet-2 eggs + Tea one cup</td>
+            <td class="text-end fw-bold">Rs. 100.00</td>
+        </tr>
+        <tr>
+            <td><strong>Richer Menu (on order):</strong><br>Bread slice-4 Pc + Butter or Jam + Milk + Corn Flakes</td>
+            <td class="text-end fw-bold">Rs. 100.00</td>
+        </tr>
+        <tr>
+            <td><strong>Special Menu (on order):</strong><br>Special Menu (Ordinary or Richer Menu) + Seasonal fruits</td>
+            <td class="text-end fw-bold">Rs. 150.00</td>
+        </tr>
+        <tr>
+            <td rowspan="3" class="fw-bold text-center">2.</td>
+            <td rowspan="3" class="fw-bold">Lunch / Dinner (Veg.)</td>
+            <td><strong>Ordinary Menu:</strong><br>Any Dal or Rajmash or Channa + Seasonal Veg. or Mix. Veg. + Salad + Chapati + Rice (Basmati)</td>
+            <td class="text-end fw-bold">Rs. 110.00</td>
+        </tr>
+        <tr>
+            <td><strong>Richer Menu:</strong><br>Mutter Paneer or Mutter Mushroom or Dal Makhni or Pakora Kari or Mushroom Masala + any Dal or Rajmash or Channa + Seasonal Veg. or Mix. Veg. + Salad + Chapati + Rice (Basmati)</td>
+            <td class="text-end fw-bold">Rs. 150.00</td>
+        </tr>
+        <tr>
+            <td><strong>Special Menu:</strong><br>Soup + Shahi Paneer or Malai Kofta + Any Dal or Rajmash or Channa + Seasonal Veg. or Mix. Veg. + Raita + Salad + Chapati + Rice (Basmati) + Papad + Sweet Dish (Kheer or Gulab Jamun 1 Pc. or Sevian or Custard) or Ice cream</td>
+            <td class="text-end fw-bold">Rs. 200.00</td>
+        </tr>
+        <tr>
+            <td rowspan="3" class="fw-bold text-center">3.</td>
+            <td rowspan="3" class="fw-bold">Lunch / Dinner (Non-Veg.)</td>
+            <td><strong>Ordinary Menu:</strong><br>(a) Mutton + Dal or Sabji + Salad + Rice (Basmati) + Chapati: <strong>Rs. 350.00</strong><br>(b) Chicken + Dal or Sabji + Salad + Rice (Basmati) + Chapati: <strong>Rs. 300.00</strong></td>
+            <td class="text-end fw-bold">Rs. 300.00 - 350.00</td>
+        </tr>
+        <tr>
+            <td><strong>Special Menu (a):</strong><br>Chicken soup + Mutton + Any Dal or Rajmash or Channa + Seasonal Veg. or Mix. Veg. + Raita + Salad + Chapati + Rice (Basmati) + Papad + Sweet Dish (Kheer or Gulab Jamun 1 Pc or Sevian or Custard)</td>
+            <td class="text-end fw-bold">Rs. 500.00</td>
+        </tr>
+        <tr>
+            <td><strong>Special Menu (b):</strong><br>Chicken soup + Chicken + Any Dal or Rajmash or Channa + Seasonal Veg. or Mix. Veg. + Raita + Salad + Chapati + Rice (Basmati) + Papad + Sweet Dish (Kheer or Gulab Jamun 1 Pc or Sevian or Custard)</td>
+            <td class="text-end fw-bold">Rs. 400.00</td>
+        </tr>
+        <tr>
+            <td class="fw-bold text-center">4.</td>
+            <td class="fw-bold">Lunch / Dinner (Simple)</td>
+            <td>Rice (Basmati) + Dal <em>OR</em> Chapati + Dal</td>
+            <td class="text-end fw-bold">Rs. 70.00</td>
+        </tr>
+        <tr>
+            <td rowspan="8" class="fw-bold text-center">5.</td>
+            <td rowspan="8" class="fw-bold">Extra Items</td>
+            <td>Tea</td>
+            <td class="text-end fw-bold">Rs. 20.00 per cup</td>
+        </tr>
+        <tr>
+            <td>Milk with sugar (200 ml)</td>
+            <td class="text-end fw-bold">Rs. 30.00 per cup (200 ml)</td>
+        </tr>
+        <tr>
+            <td>Veg. soup</td>
+            <td class="text-end fw-bold">Rs. 40.00 per cup</td>
+        </tr>
+        <tr>
+            <td>Coffee</td>
+            <td class="text-end fw-bold">Rs. 50.00 per cup</td>
+        </tr>
+        <tr>
+            <td>Dalia or milk + cornflakes</td>
+            <td class="text-end fw-bold">Rs. 60.00 per bowl</td>
+        </tr>
+        <tr>
+            <td>Dahi</td>
+            <td class="text-end fw-bold">Rs. 40.00 per plate (150 gm)</td>
+        </tr>
+        <tr>
+            <td>Boondi or Ghia Raita</td>
+            <td class="text-end fw-bold">Rs. 40.00 per plate (150 gm)</td>
+        </tr>
+        <tr>
+            <td>Ice cream, Rasgula, Gulabjamun, Rasmalai etc.</td>
+            <td class="text-end fw-bold">Market rate + Rs. 15.00</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<p class="fst-italic text-muted">This is in supersession of all the previous notifications issued on the matter.</p>
+<div class="mt-3 pt-2 border-top small text-muted">
+    <strong>Contact:</strong> Estate Officer &bull; Phone: 01792-252220 &bull; E-mail: eo@uhf.ac.in<br>
+    <strong>Endst No.:</strong> Even/2125-2160, Dated: 10/09/2026
+</div>`,
+                    status: "ACTIVE",
+                    isPublic: true,
+                    createdAt: "2026-09-10T10:00:00.000Z"
+                },
+                {
+                    id: "notif_2511_56",
+                    orderNumber: "UHF/EO-55/2026/- 2511-56",
+                    title: "Approval of Rates for Dining Facilities & A La Carte Catering at University Guest House",
+                    category: "Catering & Dining Charges",
+                    authority: "estate",
+                    authorityLabel: "Estate Office",
+                    signatory: "Estate Officer",
+                    issueDate: "23/10/2026",
+                    effectiveDate: "23/10/2026",
+                    fileName: "Notification_2511-56_Dining_Rates.pdf",
+                    fileSize: "1.3 MB",
+                    summary: "In continuation of Notification 2125-2160, approval of itemized rates for Main Course (Veg & Non-Veg), Raita/Salad, Rice/Pullao, Roti, Sweet Dishes, and Veg Combo Packs (Standard Rs. 350, Super Rs. 450) by the Hon'ble Vice-Chancellor.",
+                    fullContent: `<p class="fw-bold">In continuation of this office notification No. UHF/EO-55/2026/-2125-2160 dated 10.09.2026, the Hon'ble Vice-Chancellor, Dr. Yashwant Singh Parmar University of Horticulture and Forestry, Nauni (Solan), is pleased to approve the following rates for dining facilities at the University Guest House, with immediate effect:</p>
+<div class="row g-3 my-2" style="font-size: 0.88rem;">
+    <div class="col-md-6">
+        <h6 class="fw-bold text-success border-bottom pb-1">MAIN COURSE (VEG)</h6>
+        <table class="table table-bordered table-sm">
+            <thead class="table-light"><tr><th>Item</th><th class="text-end">Rate (₹)</th></tr></thead>
+            <tbody>
+                <tr><td>1. Dal Makhani</td><td class="text-end fw-bold">150/-</td></tr>
+                <tr><td>2. Rajma Masala</td><td class="text-end fw-bold">150/-</td></tr>
+                <tr><td>3. Dal Fry</td><td class="text-end fw-bold">120/-</td></tr>
+                <tr><td>4. Matar Paneer</td><td class="text-end fw-bold">160/-</td></tr>
+                <tr><td>5. Shahi Paneer</td><td class="text-end fw-bold">190/-</td></tr>
+                <tr><td>6. Mix Veg</td><td class="text-end fw-bold">150/-</td></tr>
+                <tr><td>7. Mushroom Masala</td><td class="text-end fw-bold">150/-</td></tr>
+                <tr><td>8. Aloo Gobhi</td><td class="text-end fw-bold">100/-</td></tr>
+                <tr><td>9. Aloo Matar</td><td class="text-end fw-bold">100/-</td></tr>
+                <tr><td>10. Aloo Bean</td><td class="text-end fw-bold">100/-</td></tr>
+                <tr><td>11. Chana Masala</td><td class="text-end fw-bold">150/-</td></tr>
+                <tr><td>12. Malai Kofta</td><td class="text-end fw-bold">200/-</td></tr>
+                <tr><td>13. Kadi Pakoda</td><td class="text-end fw-bold">150/-</td></tr>
+                <tr><td>14. Bhindi Masala</td><td class="text-end fw-bold">160/-</td></tr>
+                <tr><td>15. Veg Kofta</td><td class="text-end fw-bold">150/-</td></tr>
+            </tbody>
+        </table>
+        
+        <h6 class="fw-bold text-danger border-bottom pb-1 mt-3">MAIN COURSE (NON-VEG)</h6>
+        <table class="table table-bordered table-sm">
+            <thead class="table-light"><tr><th>Item</th><th class="text-end">Rate (₹)</th></tr></thead>
+            <tbody>
+                <tr><td>1. Chicken Curry</td><td class="text-end fw-bold">300/-</td></tr>
+                <tr><td>2. Mutton Chicken</td><td class="text-end fw-bold">400/-</td></tr>
+                <tr><td>3. Egg Curry</td><td class="text-end fw-bold">150/-</td></tr>
+                <tr><td>4. Fish Curry</td><td class="text-end fw-bold">400/-</td></tr>
+                <tr><td>5. Mutton Curry</td><td class="text-end fw-bold">500/-</td></tr>
+                <tr><td>6. Rara Chicken</td><td class="text-end fw-bold">150/-</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-6">
+        <h6 class="fw-bold text-primary border-bottom pb-1">RAITA / SALAD</h6>
+        <table class="table table-bordered table-sm">
+            <thead class="table-light"><tr><th>Item</th><th class="text-end">Rate (₹)</th></tr></thead>
+            <tbody>
+                <tr><td>1. Boondi Raita</td><td class="text-end fw-bold">80/-</td></tr>
+                <tr><td>2. Mix Raita</td><td class="text-end fw-bold">80/-</td></tr>
+                <tr><td>3. Cucumber Raita</td><td class="text-end fw-bold">80/-</td></tr>
+                <tr><td>4. Plain Curd</td><td class="text-end fw-bold">50/-</td></tr>
+                <tr><td>5. Green Salad</td><td class="text-end fw-bold">80/-</td></tr>
+                <tr><td>6. Cucumber and Mix Veg Salad</td><td class="text-end fw-bold">100/-</td></tr>
+            </tbody>
+        </table>
+
+        <h6 class="fw-bold text-primary border-bottom pb-1 mt-3">RICE / PULLAO</h6>
+        <table class="table table-bordered table-sm">
+            <thead class="table-light"><tr><th>Item</th><th class="text-end">Rate (₹)</th></tr></thead>
+            <tbody>
+                <tr><td>1. Plain Rice</td><td class="text-end fw-bold">100/-</td></tr>
+                <tr><td>2. Veg Pullao</td><td class="text-end fw-bold">120/-</td></tr>
+                <tr><td>3. Fried Rice</td><td class="text-end fw-bold">130/-</td></tr>
+                <tr><td>4. Veg Briyani</td><td class="text-end fw-bold">250/-</td></tr>
+                <tr><td>5. Chicken Briyani</td><td class="text-end fw-bold">350/-</td></tr>
+                <tr><td>6. Egg Fried Rice</td><td class="text-end fw-bold">180/-</td></tr>
+                <tr><td>7. Chicken Fried Rice</td><td class="text-end fw-bold">200/-</td></tr>
+            </tbody>
+        </table>
+
+        <h6 class="fw-bold text-primary border-bottom pb-1 mt-3">ROTI</h6>
+        <table class="table table-bordered table-sm">
+            <thead class="table-light"><tr><th>Item</th><th class="text-end">Rate (₹)</th></tr></thead>
+            <tbody>
+                <tr><td>1. Tawa Roti</td><td class="text-end fw-bold">15/-</td></tr>
+                <tr><td>2. Naan</td><td class="text-end fw-bold">40/-</td></tr>
+            </tbody>
+        </table>
+
+        <h6 class="fw-bold text-primary border-bottom pb-1 mt-3">SWEET DISH</h6>
+        <table class="table table-bordered table-sm">
+            <thead class="table-light"><tr><th>Item</th><th class="text-end">Rate (₹)</th></tr></thead>
+            <tbody>
+                <tr><td>1. Gulab Jamun (2 Nos.)</td><td class="text-end fw-bold">50/-</td></tr>
+                <tr><td>2. Kheer</td><td class="text-end fw-bold">50/-</td></tr>
+                <tr><td>3. Sevian</td><td class="text-end fw-bold">50/-</td></tr>
+                <tr><td>4. Ice Cream</td><td class="text-end fw-bold">50/-</td></tr>
+                <tr><td>5. Gajar Ka Halwa</td><td class="text-end fw-bold">80/-</td></tr>
+                <tr><td>6. Moong Dal Halwa</td><td class="text-end fw-bold">100/-</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card bg-light border p-3 my-3">
+    <h6 class="fw-bold text-dark border-bottom pb-2">COMBO PACKS</h6>
+    <div class="mb-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <strong>1. VEG COMBO (STANDARD):</strong>
+            <span class="badge bg-success fs-6">350/-</span>
+        </div>
+        <p class="small text-muted mb-0">Dal Makhani/Rajma Masala/Dal Fry + Matar Paneer/Veg Kofta + Aloo Gobhi/Aloo Matar/Aloo Bean + Kadi Pakoda + Plain Rice + Tawa Chapati + Salad + Kheer/Sevian/Gulab Jamun/Ice Cream + Soup + Raita</p>
+    </div>
+    <div>
+        <div class="d-flex justify-content-between align-items-center">
+            <strong>2. VEG COMBO (SUPER):</strong>
+            <span class="badge bg-success fs-6">450/-</span>
+        </div>
+        <p class="small text-muted mb-0">Shahi Paneer/Malai Kofta + Bhindi Masala/Chana Masala/Mushroom Masala/Mix Veg + Rajma Masala/Dal Makhani + Kadi Pakoda + Plain Rice + Tawa Chapati + Salad + Gajar Ka Halwa/Moong Dal Halwa + Soup + Fruit Custard + Fruit Raita</p>
+    </div>
+</div>
+<div class="mt-3 pt-2 border-top small text-muted">
+    <strong>Endst No.:</strong> Even/-2511-56, Dated: 23/10/2026 &bull; Estate Officer, Dr. YS Parmar UHF Nauni
+</div>`,
+                    status: "ACTIVE",
+                    isPublic: true,
+                    createdAt: "2026-10-23T11:00:00.000Z"
                 }
             ];
 
@@ -7707,7 +8171,17 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                     const stored = localStorage.getItem('uhf_official_notifications');
                     if (stored) {
                         const parsed = JSON.parse(stored);
-                        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            let updated = false;
+                            defaultOfficialNotifications.forEach(def => {
+                                if (!parsed.some(p => p.id === def.id)) {
+                                    parsed.push(def);
+                                    updated = true;
+                                }
+                            });
+                            if (updated) saveOfficialNotifications(parsed);
+                            return parsed;
+                        }
                     }
                 } catch (e) {
                     console.error("Error reading notifications", e);
