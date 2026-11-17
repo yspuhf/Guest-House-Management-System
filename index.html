@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -414,12 +414,12 @@
             <!-- Accommodations List -->
 
             <div class="row g-4" id="roomsContainer">
-                <!-- Room 1: VVIP Executive Suite (Estate Office) -->
-                <div class="col-lg-4 col-md-6 room-card-col" data-wing="estate">
+                <!-- Room 1: VVIP Executive Suite - Bedroom (Estate Office) -->
+                <div class="col-lg-6 col-md-6 room-card-col" data-wing="estate">
                     <div class="room-card">
                         <div class="room-img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80"
-                                alt="VVIP Suite" class="room-img">
+                            <img src="vvip_suite_bedroom.jpg"
+                                alt="VVIP Presidential Suite - Bedroom" class="room-img">
                             <span class="room-badge-category">Main Guest House</span>
                             <span class="room-badge-price">VVIP: From ₹2,500 <small class="text-muted">/
                                     day</small></span>
@@ -428,12 +428,11 @@
                             <div class="mb-2">
                                 <span class="wing-indicator-estate"><i class="bi bi-building me-1"></i> Estate Office
                                     Wing</span>
-                                <span class="badge bg-warning text-dark ms-1">VVIP Set</span>
+                                <span class="badge bg-danger text-white ms-1">VVIP Set</span>
                             </div>
-                            <h4 class="font-serif fw-bold mb-2">VVIP Presidential Suite</h4>
+                            <h4 class="font-serif fw-bold mb-2">VVIP Presidential Suite (Bedroom)</h4>
                             <p class="text-muted small mb-3">
-                                Grand master bedroom with executive salon, private conference seating, kitchen pantry,
-                                and scenic Giri valley view.
+                                Grand master bedroom suite with wood-paneled king bed, scenic hill views through custom blinds, and attached executive bath.
                             </p>
                             <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
                                 <small class="text-danger fw-semibold"><i class="bi bi-crown"></i> Sanction:
@@ -445,12 +444,42 @@
                     </div>
                 </div>
 
-                <!-- Room 2: VIP Executive Set (Estate Office) -->
-                <div class="col-lg-4 col-md-6 room-card-col" data-wing="estate">
+                <!-- Room 2: VVIP Executive Suite - Lounge (Estate Office) -->
+                <div class="col-lg-6 col-md-6 room-card-col" data-wing="estate">
                     <div class="room-card">
                         <div class="room-img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80"
-                                alt="VIP Set" class="room-img">
+                            <img src="vvip_suite_lounge.jpg"
+                                alt="VVIP Presidential Suite - Lounge & Foyer" class="room-img">
+                            <span class="room-badge-category">Main Guest House</span>
+                            <span class="room-badge-price">VVIP: From ₹2,500 <small class="text-muted">/
+                                    day</small></span>
+                        </div>
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <div class="mb-2">
+                                <span class="wing-indicator-estate"><i class="bi bi-building me-1"></i> Estate Office
+                                    Wing</span>
+                                <span class="badge bg-danger text-white ms-1">VVIP Set</span>
+                            </div>
+                            <h4 class="font-serif fw-bold mb-2">VVIP Presidential Suite (Lounge &amp; Foyer)</h4>
+                            <p class="text-muted small mb-3">
+                                Polished hardwood salon foyer with sunlit corridor, gold drapery, executive conference seating, and private anteroom entry.
+                            </p>
+                            <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                <small class="text-danger fw-semibold"><i class="bi bi-crown"></i> Sanction:
+                                    Vice-Chancellor Secretariat</small>
+                                <button class="btn btn-sm btn-forest"
+                                    onclick="openBookingModal('estate', 'vvip', 'cat_1_official')">Reserve Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Room 3: VIP Executive Set (Estate Office) -->
+                <div class="col-lg-6 col-md-6 room-card-col" data-wing="estate">
+                    <div class="room-card">
+                        <div class="room-img-wrapper">
+                            <img src="vip_room.jpg"
+                                alt="VIP Executive Suite" class="room-img">
                             <span class="room-badge-category">VIP Suites Annexe</span>
                             <span class="room-badge-price">VIP: From ₹1,500 <small class="text-muted">/
                                     day</small></span>
@@ -463,8 +492,7 @@
                             </div>
                             <h4 class="font-serif fw-bold mb-2">VIP Executive Suite</h4>
                             <p class="text-muted small mb-3">
-                                Well-appointed suite featuring king bed, dedicated workspace, sofa seating, modern
-                                washroom, and tea/coffee amenities.
+                                Well-appointed VIP room featuring king bed with wooden wainscoting, writing desk, crimson carpet runner, and executive armchairs.
                             </p>
                             <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
                                 <small class="text-primary fw-semibold"><i class="bi bi-check2-circle"></i> Estate
@@ -476,12 +504,12 @@
                     </div>
                 </div>
 
-                <!-- Room 3: Ordinary Set (Estate Office) -->
-                <div class="col-lg-4 col-md-6 room-card-col" data-wing="estate">
+                <!-- Room 4: Standard / Ordinary Set (Estate Office) -->
+                <div class="col-lg-6 col-md-6 room-card-col" data-wing="estate">
                     <div class="room-card">
                         <div class="room-img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80"
-                                alt="Ordinary Set" class="room-img">
+                            <img src="standard_room.jpg"
+                                alt="Standard Ordinary Room" class="room-img">
                             <span class="room-badge-category">Main Guest House</span>
                             <span class="room-badge-price">Ordinary: From ₹1,000 <small class="text-muted">/
                                     day</small></span>
@@ -492,47 +520,15 @@
                                     Wing</span>
                                 <span class="badge bg-secondary text-white ms-1">Ordinary Set</span>
                             </div>
-                            <h4 class="font-serif fw-bold mb-2">Ordinary Double Room</h4>
+                            <h4 class="font-serif fw-bold mb-2">Standard Ordinary Room</h4>
                             <p class="text-muted small mb-3">
-                                Comfortable double occupancy room with attached bath, study desk, solar hot water, and
-                                campus greenery view.
+                                Comfortable double occupancy standard room with attached bath, study desk, comfortable bedding, and quiet hillside campus view.
                             </p>
                             <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
                                 <small class="text-secondary fw-semibold">Standard Booking</small>
                                 <button class="btn btn-sm btn-forest"
                                     onclick="openBookingModal('estate', 'ordinary', 'cat_1_official')">Reserve
                                     Now</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Room 4: Forest Rest House (Estate Office) -->
-                <div class="col-lg-4 col-md-6 room-card-col" data-wing="estate">
-                    <div class="room-card">
-                        <div class="room-img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=800&q=80"
-                                alt="Forest Rest House" class="room-img">
-                            <span class="room-badge-category">Forest Rest House</span>
-                            <span class="room-badge-price">From ₹1,000 <small class="text-muted">/ day</small></span>
-                        </div>
-                        <div class="p-4 d-flex flex-column flex-grow-1">
-                            <div class="mb-2">
-                                <span class="wing-indicator-estate"><i class="bi bi-building me-1"></i> Estate Office
-                                    Wing</span>
-                                <span class="badge bg-success-subtle text-success border border-success ms-1">FRH
-                                    Arboretum</span>
-                            </div>
-                            <h4 class="font-serif fw-bold mb-2">Heritage Woodland Suite</h4>
-                            <p class="text-muted small mb-3">
-                                Colonial architecture stone-and-timber cottage situated inside the university forestry
-                                plantation, offering serene quietude.
-                            </p>
-                            <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
-                                <small class="text-success fw-semibold"><i class="bi bi-shield-check"></i> Estate
-                                    Office</small>
-                                <button class="btn btn-sm btn-forest"
-                                    onclick="openBookingModal('estate', 'vip', 'cat_1_official')">Reserve Now</button>
                             </div>
                         </div>
                     </div>
