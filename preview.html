@@ -7783,30 +7783,174 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
             }
 
             function printActiveReport() {
-                const reportAnalytics = document.getElementById('reportAnalyticsContent');
-                const reportLedger = document.getElementById('reportBookingsLedger');
-                const currentPeriod = document.getElementById('reportPeriodSelect') ? document.getElementById('reportPeriodSelect').value : 'Current';
-                const html = `
-                    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 15px;">
-                        <div class="text-center mb-4">
-                            <h3 class="fw-bold mb-1">DR. Y.S. PARMAR UNIVERSITY OF HORTICULTURE &amp; FORESTRY</h3>
-                            <h5 class="text-navy mb-1">Estate Organization &bull; University Guest House Operational Audit &amp; Revenue Report</h5>
-                            <p class="text-muted small">Reporting Filter: <strong>${escapeHtml(currentPeriod.toUpperCase())}</strong> &bull; Generated on: ${new Date().toLocaleDateString('en-GB')} at ${new Date().toLocaleTimeString('en-GB')}</p>
+                // Ensure reports for current active sub-tab are up to date
+                if (activeReportTab === 'daily') renderDailyReport();
+                else if (activeReportTab === 'monthly') renderMonthlyReport();
+                else if (activeReportTab === 'annual') renderAnnualReport();
+
+                const todayStr = new Date().toLocaleDateString('en-GB');
+                const timeStr = new Date().toLocaleTimeString('en-GB');
+                let reportTitle = '';
+                let filterSummary = '';
+                let kpiHtml = '';
+                let tableHtml = '';
+                let extraHtml = '';
+
+                if (activeReportTab === 'daily') {
+                    const pickerVal = document.getElementById('dailyReportDatePicker') ? document.getElementById('dailyReportDatePicker').value : todayStr;
+                    const wingSelect = document.getElementById('dailyReportWingFilter');
+                    const wingName = wingSelect ? wingSelect.options[wingSelect.selectedIndex].text : 'All Wings';
+                    const statusSelect = document.getElementById('dailyReportStatusFilter');
+                    const statusName = statusSelect ? statusSelect.options[statusSelect.selectedIndex].text : 'All Statuses';
+
+                    reportTitle = 'Daily Bookings & Operational Occupancy Audit';
+                    filterSummary = `Date: <strong>${escapeHtml(pickerVal)}</strong> &bull; Wing: <strong>${escapeHtml(wingName)}</strong> &bull; Status: <strong>${escapeHtml(statusName)}</strong>`;
+
+                    const tot = document.getElementById('dailyKpiTotalBookings') ? document.getElementById('dailyKpiTotalBookings').innerText : '0';
+                    const app = document.getElementById('dailyKpiApproved') ? document.getElementById('dailyKpiApproved').innerText : '0';
+                    const pen = document.getElementById('dailyKpiPending') ? document.getElementById('dailyKpiPending').innerText : '0';
+                    const can = document.getElementById('dailyKpiCancelled') ? document.getElementById('dailyKpiCancelled').innerText : '0';
+                    const chk = document.getElementById('dailyKpiCheckedIn') ? document.getElementById('dailyKpiCheckedIn').innerText : '0';
+                    const amt = document.getElementById('dailyKpiTotalAmount') ? document.getElementById('dailyKpiTotalAmount').innerText : '₹0';
+
+                    kpiHtml = `
+                        <div class="row g-2 mb-3 text-center">
+                            <div class="col"><div class="p-2 border bg-light rounded"><small class="text-muted d-block fw-bold">TOTAL BOOKINGS</small><h4 class="mb-0 fw-bold">${tot}</h4></div></div>
+                            <div class="col"><div class="p-2 border bg-light rounded"><small class="text-success d-block fw-bold">APPROVED</small><h4 class="mb-0 fw-bold text-success">${app}</h4></div></div>
+                            <div class="col"><div class="p-2 border bg-light rounded"><small class="text-warning d-block fw-bold">PENDING</small><h4 class="mb-0 fw-bold text-warning">${pen}</h4></div></div>
+                            <div class="col"><div class="p-2 border bg-light rounded"><small class="text-danger d-block fw-bold">CANCELLED</small><h4 class="mb-0 fw-bold text-danger">${can}</h4></div></div>
+                            <div class="col"><div class="p-2 border bg-light rounded"><small class="text-info d-block fw-bold">CHECKED-IN</small><h4 class="mb-0 fw-bold text-info">${chk}</h4></div></div>
+                            <div class="col"><div class="p-2 border bg-light rounded"><small class="text-primary d-block fw-bold">GROSS (NON-GST)</small><h4 class="mb-0 fw-bold text-primary">${amt}</h4></div></div>
                         </div>
-                        ${reportAnalytics ? reportAnalytics.innerHTML : ''}
-                        <div class="mt-4">
-                            <h5 class="fw-bold border-bottom pb-2">Active Booking Ledgers &amp; Non-GST Statutory Billing Audit</h5>
-                            ${reportLedger ? reportLedger.innerHTML : ''}
+                    `;
+
+                    // Clone daily table and strip the Actions column for clean printing
+                    const originalTable = document.getElementById('dailyReportTable');
+                    if (originalTable) {
+                        const clone = originalTable.cloneNode(true);
+                        clone.querySelectorAll('tr').forEach(tr => {
+                            if (tr.lastElementChild) tr.removeChild(tr.lastElementChild);
+                        });
+                        tableHtml = `
+                            <h6 class="fw-bold mb-2">Daily Bookings &amp; Occupancy Ledger</h6>
+                            <div class="table-responsive">${clone.outerHTML}</div>
+                        `;
+                    }
+                } else if (activeReportTab === 'monthly') {
+                    const mSelect = document.getElementById('monthlyReportMonth');
+                    const mName = mSelect ? mSelect.options[mSelect.selectedIndex].text : '';
+                    const ySelect = document.getElementById('monthlyReportYear');
+                    const yName = ySelect ? ySelect.value : '2026';
+
+                    reportTitle = 'Monthly Occupancy & Categorical Non-GST Realization Report';
+                    filterSummary = `Period: <strong>${escapeHtml(mName)} ${escapeHtml(yName)}</strong> &bull; Non-GST Statutory Facility Verification`;
+
+                    const tot = document.getElementById('monthlyKpiTotalBookings') ? document.getElementById('monthlyKpiTotalBookings').innerText : '0';
+                    const nts = document.getElementById('monthlyKpiTotalNights') ? document.getElementById('monthlyKpiTotalNights').innerText : '0';
+                    const occ = document.getElementById('monthlyKpiOccupancy') ? document.getElementById('monthlyKpiOccupancy').innerText : '0%';
+                    const sty = document.getElementById('monthlyKpiStayAmount') ? document.getElementById('monthlyKpiStayAmount').innerText : '₹0.00';
+                    const din = document.getElementById('monthlyKpiDiningAmount') ? document.getElementById('monthlyKpiDiningAmount').innerText : '₹0.00';
+                    const gro = document.getElementById('monthlyKpiTotalAmount') ? document.getElementById('monthlyKpiTotalAmount').innerText : '₹0.00';
+
+                    kpiHtml = `
+                        <div class="row g-2 mb-3 text-center">
+                            <div class="col"><div class="p-2 border bg-light rounded"><small class="text-muted d-block fw-bold">RESERVATIONS</small><h4 class="mb-0 fw-bold">${tot}</h4><small class="text-muted">${nts} Nights</small></div></div>
+                            <div class="col"><div class="p-2 border bg-light rounded"><small class="text-info d-block fw-bold">OCCUPANCY RATE</small><h4 class="mb-0 fw-bold text-info">${occ}</h4><small class="text-muted">23 Key Inventory</small></div></div>
+                            <div class="col"><div class="p-2 border bg-light rounded"><small class="text-success d-block fw-bold">STAY REALIZATION</small><h4 class="mb-0 fw-bold text-success">${sty}</h4><small class="text-muted">Non-GST Stay</small></div></div>
+                            <div class="col"><div class="p-2 border bg-light rounded"><small class="text-dark d-block fw-bold">DINING REALIZATION</small><h4 class="mb-0 fw-bold">${din}</h4><small class="text-muted">Mess Charges</small></div></div>
+                            <div class="col"><div class="p-2 border bg-light rounded"><small class="text-primary d-block fw-bold">TOTAL REALIZATION</small><h4 class="mb-0 fw-bold text-primary">${gro}</h4><small class="text-muted">Exempt Gross</small></div></div>
+                        </div>
+                    `;
+
+                    const mPane = document.getElementById('report-pane-monthly');
+                    const mTable = mPane ? mPane.querySelector('table') : null;
+                    if (mTable) {
+                        tableHtml = `
+                            <h6 class="fw-bold mb-2">Statutory Visitor Category Breakdown (Notification No. UHF/EO-55/2025/- 1615-40)</h6>
+                            <div class="table-responsive">${mTable.outerHTML}</div>
+                        `;
+                    }
+                } else { // annual
+                    const fySelect = document.getElementById('annualReportFY');
+                    const fyName = fySelect ? fySelect.options[fySelect.selectedIndex].text : 'FY 2026-27';
+
+                    reportTitle = 'Annual Financial Audit & Operational Realization Statement';
+                    filterSummary = `Fiscal Year: <strong>${escapeHtml(fyName)}</strong> &bull; Statutory Audit & CAG Comptroller Standard`;
+
+                    const tot = document.getElementById('annualKpiTotalBookings') ? document.getElementById('annualKpiTotalBookings').innerText : '0';
+                    const nts = document.getElementById('annualKpiTotalNights') ? document.getElementById('annualKpiTotalNights').innerText : '0';
+                    const sty = document.getElementById('annualKpiStayAmount') ? document.getElementById('annualKpiStayAmount').innerText : '₹0.00';
+                    const din = document.getElementById('annualKpiDiningAmount') ? document.getElementById('annualKpiDiningAmount').innerText : '₹0.00';
+                    const gro = document.getElementById('annualKpiTotalAmount') ? document.getElementById('annualKpiTotalAmount').innerText : '₹0.00';
+                    const occ = document.getElementById('annualKpiOccupancy') ? document.getElementById('annualKpiOccupancy').innerText : '0%';
+
+                    kpiHtml = `
+                        <div class="row g-2 mb-3 text-center">
+                            <div class="col"><div class="p-2 border bg-light rounded"><small class="text-muted d-block fw-bold">ANNUAL RESERVATIONS</small><h4 class="mb-0 fw-bold">${tot}</h4><small class="text-muted">${nts} Nights</small></div></div>
+                            <div class="col"><div class="p-2 border bg-light rounded"><small class="text-info d-block fw-bold">AVG OCCUPANCY</small><h4 class="mb-0 fw-bold text-info">${occ}</h4><small class="text-muted">23 Key Inventory</small></div></div>
+                            <div class="col"><div class="p-2 border bg-light rounded"><small class="text-success d-block fw-bold">ANNUAL STAY VALUE</small><h4 class="mb-0 fw-bold text-success">${sty}</h4><small class="text-muted">Non-GST Stay</small></div></div>
+                            <div class="col"><div class="p-2 border bg-light rounded"><small class="text-dark d-block fw-bold">ANNUAL DINING VALUE</small><h4 class="mb-0 fw-bold">${din}</h4><small class="text-muted">Mess Charges</small></div></div>
+                            <div class="col"><div class="p-2 border bg-light rounded"><small class="text-primary d-block fw-bold">TOTAL FY REALIZATION</small><h4 class="mb-0 fw-bold text-primary">${gro}</h4><small class="text-muted">Non-GST Audited</small></div></div>
+                        </div>
+                    `;
+
+                    const aPane = document.getElementById('report-pane-annual');
+                    const aTable = aPane ? aPane.querySelector('table') : null;
+                    if (aTable) {
+                        tableHtml = `
+                            <h6 class="fw-bold mb-2">12-Month Financial Year Ledger Breakdown (April to March)</h6>
+                            <div class="table-responsive">${aTable.outerHTML}</div>
+                        `;
+                    }
+
+                    // Include Institutional Financial Audit & Reconciliation Certificate
+                    const certCard = aPane ? aPane.querySelector('.card.border.border-secondary') : null;
+                    if (certCard) {
+                        extraHtml = `
+                            <div class="mt-4 pt-2">
+                                ${certCard.outerHTML}
+                            </div>
+                        `;
+                    }
+                }
+
+                const html = `
+                    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 10px;">
+                        <div class="text-center mb-3 pb-2 border-bottom">
+                            <h4 class="fw-bold mb-1" style="color: #1e3a8a;">DR. Y.S. PARMAR UNIVERSITY OF HORTICULTURE &amp; FORESTRY</h4>
+                            <h5 class="fw-bold text-dark mb-1">Estate Organization &bull; University Guest House Operational Audit &amp; Revenue Report</h5>
+                            <h6 class="text-secondary fw-semibold mb-2">${escapeHtml(reportTitle)}</h6>
+                            <div class="text-muted small">
+                                ${filterSummary} &bull; Generated on: <strong>${todayStr} at ${timeStr}</strong>
+                            </div>
+                        </div>
+
+                        ${kpiHtml}
+
+                        <div class="mt-3">
+                            ${tableHtml}
+                        </div>
+
+                        ${extraHtml}
+
+                        <div class="mt-4 pt-3 border-top text-center text-muted" style="font-size: 0.75rem;">
+                            <p class="mb-1"><strong>Statutory Declaration:</strong> University Guest House stay and dining charges are non-commercial public amenities provided for official institutional business, academic delegations, and educational trainings, and are strictly exempt from Goods &amp; Services Tax (GST).</p>
+                            <p class="mb-0">Estate Office, Dr. Y.S. Parmar UHF, Nauni, Solan (H.P.) 173230 &bull; Phone: 01792-252379 / 252220 &bull; E-mail: eo@uhf.ac.in</p>
                         </div>
                     </div>
                 `;
+
                 printHtmlDocument(html, {
-                    title: 'Guest House Operational Audit Report - Dr YSP UHF Nauni',
+                    title: `${reportTitle} - Dr YSP UHF Nauni`,
                     orientation: 'landscape',
                     css: `
-                        .btn, .btn-group, select { display: none !important; }
-                        table { width: 100% !important; border-collapse: collapse !important; font-size: 0.8rem; }
-                        th, td { border: 1px solid #cbd5e1 !important; padding: 6px !important; }
+                        @page { size: A4 landscape; margin: 10mm; }
+                        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important; background: #fff !important; }
+                        .btn, .btn-group, select, input { display: none !important; }
+                        table { width: 100% !important; border-collapse: collapse !important; font-size: 0.8rem; margin-bottom: 1rem; }
+                        th, td { border: 1px solid #cbd5e1 !important; padding: 6px 8px !important; }
+                        th { background-color: #f1f5f9 !important; font-weight: bold !important; color: #0f172a !important; }
+                        .badge { border: 1px solid #94a3b8 !important; padding: 2px 6px !important; border-radius: 4px; font-size: 0.75rem; }
                     `
                 });
             }
@@ -8986,12 +9130,14 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                         iframe = document.createElement('iframe');
                         iframe.id = 'universalPrintFrame';
                         iframe.style.position = 'fixed';
-                        iframe.style.right = '0';
-                        iframe.style.bottom = '0';
-                        iframe.style.width = '0';
-                        iframe.style.height = '0';
+                        iframe.style.top = '0';
+                        iframe.style.left = '0';
+                        iframe.style.width = '100vw';
+                        iframe.style.height = '100vh';
                         iframe.style.border = '0';
-                        iframe.style.visibility = 'hidden';
+                        iframe.style.opacity = '0';
+                        iframe.style.pointerEvents = 'none';
+                        iframe.style.zIndex = '-9999';
                         document.body.appendChild(iframe);
                     }
                     const doc = iframe.contentWindow.document;
@@ -9001,11 +9147,28 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                         <html>
                         <head>
                             <meta charset="utf-8">
-                            <title>${title}</title>
+                            <title>${escapeHtml(title)}</title>
                             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
                             <style>
                                 @page { size: A4 ${orientation}; margin: 10mm; }
-                                body { font-family: 'Times New Roman', serif; background: #fff !important; margin: 0; padding: 15px; }
+                                body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: #fff !important; margin: 0; padding: 12px; color: #0f172a; }
+                                table { width: 100% !important; border-collapse: collapse !important; margin-bottom: 1rem; }
+                                th, td { border: 1px solid #cbd5e1 !important; padding: 6px 8px !important; }
+                                th { background-color: #f8fafc !important; font-weight: 600 !important; color: #0f172a !important; }
+                                .row { display: flex; flex-wrap: wrap; margin-right: -0.5rem; margin-left: -0.5rem; }
+                                .col { flex: 1 0 0%; padding-right: 0.5rem; padding-left: 0.5rem; }
+                                .border { border: 1px solid #dee2e6 !important; }
+                                .rounded { border-radius: 0.375rem !important; }
+                                .bg-light { background-color: #f8f9fa !important; }
+                                .text-center { text-align: center !important; }
+                                .text-end { text-align: right !important; }
+                                .fw-bold { font-weight: 700 !important; }
+                                .text-success { color: #16a34a !important; }
+                                .text-primary { color: #2563eb !important; }
+                                .text-warning { color: #d97706 !important; }
+                                .text-danger { color: #dc2626 !important; }
+                                .text-info { color: #0284c7 !important; }
+                                .text-muted { color: #64748b !important; }
                                 ${customCss}
                             </style>
                         </head>
@@ -9016,10 +9179,16 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                     `);
                     doc.close();
                     setTimeout(() => {
-                        iframe.contentWindow.focus();
-                        iframe.contentWindow.print();
+                        try {
+                            iframe.contentWindow.focus();
+                            iframe.contentWindow.print();
+                        } catch (e) {
+                            console.warn("Iframe print error, falling back to window.print():", e);
+                            window.print();
+                        }
                     }, 400);
                 } catch (err) {
+                    console.warn("Print execution error, falling back to window.print():", err);
                     window.print();
                 }
             }

@@ -1,4 +1,4 @@
-# =====================================================================
+﻿# =====================================================================
 # Complete End-to-End Automated Testing Harness
 # Dr. Y.S. Parmar UHF Nauni - Central Guest House Management System
 # =====================================================================
@@ -987,10 +987,21 @@ try {
     printInvoice();
     const hasInvoice = fDoc.body.innerText.includes('NON-GST') || fDoc.body.innerText.includes('Stay Charges');
 
-    // 3. Reports Print
+    // 3. Reports Print (Daily, Monthly, Annual)
     showTab('reports');
+    switchReportsTab('daily');
     printActiveReport();
-    const hasReport = fDoc.body.innerText.includes('Audit & Revenue Report');
+    const hasDaily = fDoc.body.innerText.includes('Audit & Revenue Report') && (fDoc.body.innerText.includes('Daily Bookings') || fDoc.body.innerText.includes('TOTAL BOOKINGS'));
+
+    switchReportsTab('monthly');
+    printActiveReport();
+    const hasMonthly = fDoc.body.innerText.includes('Monthly Occupancy') && fDoc.body.innerText.includes('Statutory Visitor Category');
+
+    switchReportsTab('annual');
+    printActiveReport();
+    const hasAnnual = fDoc.body.innerText.includes('Annual Financial Audit') && fDoc.body.innerText.includes('Institutional Financial Audit');
+
+    const hasReport = hasDaily && hasMonthly && hasAnnual;
 
     return {
         success: hasPermit && hasInvoice && hasReport,
