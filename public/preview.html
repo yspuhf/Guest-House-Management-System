@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>University Guest House Management System | Live Interactive Preview</title>
+    <title>UHF-Atithi | Central Guest House Management System | Dr. YSP UHF Nauni</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -255,7 +255,7 @@
                 <h2 class="font-serif fw-bold mb-1 tracking-tight">Dr. Yashwant Singh Parmar University of Horticulture
                     &amp; Forestry</h2>
                 <div class="text-warning fw-semibold fs-6 mb-2">Nauni, Solan, Himachal Pradesh &bull; 173230</div>
-                <div class="badge bg-warning text-dark px-3 py-2 fs-6 fw-bold">Central Guest House Management Portal
+                <div class="badge bg-warning text-dark px-3 py-2 fs-6 fw-bold">UHF-Atithi &bull; Central Guest House Management Portal
                     &bull; Institutional Access Gateway</div>
                 <p class="text-light text-opacity-75 small mt-3 mx-auto" style="max-width: 650px;">
                     Statutory guest house administration operated strictly under <strong>Estate Notification No.
@@ -298,7 +298,7 @@
                                         <span class="input-group-text bg-light"><i
                                                 class="bi bi-envelope text-success"></i></span>
                                         <input type="email" id="estateLoginEmail" class="form-control fw-bold"
-                                            value="estate.officer@yspuniversity.ac.in" autocomplete="username">
+                                            value="eo@uhf.ac.in" autocomplete="username">
                                     </div>
                                 </div>
                                 <div class="mb-3">
@@ -430,11 +430,9 @@
                 <img src="university_logo.jpg" alt="University Emblem" class="me-3 rounded-circle bg-white p-1"
                     style="height: 48px; width: 48px; object-fit: contain;">
                 <div>
-                    <h5 class="mb-0 fw-bold tracking-tight text-white font-serif">Dr. Yashwant Singh Parmar University
-                        of
-                        Horticulture & Forestry</h5>
+                    <h5 class="mb-0 fw-bold tracking-tight text-white font-serif">UHF-Atithi &bull; Dr. Yashwant Singh Parmar University of Horticulture &amp; Forestry</h5>
                     <small class="text-warning fw-semibold" style="font-size: 0.8rem;">
-                        Nauni, Solan (H.P.) &bull; Central Guest House Management Portal
+                        Nauni, Solan (H.P.) &bull; Central Guest House Management Portal &bull; Desk: 01792-252379 / 252220 | eo@uhf.ac.in
                     </small>
                 </div>
             </div>
@@ -448,7 +446,7 @@
                         <div class="fw-semibold text-white small lh-1" id="currentUserName">Estate Office
                         </div>
                         <small class="text-white-50" style="font-size: 0.68rem;"
-                            id="currentUserEmail">estate.officer@yspuniversity.ac.in</small>
+                            id="currentUserEmail">eo@uhf.ac.in</small>
                         <span id="currentRoleLabel" class="d-none">Estate Officer (Admin)</span>
                     </div>
                 </div>
@@ -554,7 +552,7 @@
                             <span class="badge bg-primary text-wrap text-start d-block" style="font-size: 0.65rem;">
                                 UHF/EO-55/2025/- 1615-40<br>Dated: 25/7/2026
                             </span>
-                            <div class="text-muted mt-2" style="font-size: 0.68rem;">Dr. YSP UHF Nauni v2.0</div>
+                            <div class="text-muted mt-2" style="font-size: 0.68rem;">UHF-Atithi v2.0 &bull; Dr. YSP UHF Nauni</div>
                         </div>
                     </div>
                 </nav>
@@ -1493,6 +1491,8 @@
                                                             <li>Reservation is subject to availability and eligibility
                                                                 and can be cancelled without assigning any reason in
                                                                 University interest.</li>
+                                                            <li>Room Booking and Allotment through Estate Office Account: Cash only.</li>
+                                                            <li>Cancellation Charges: Nil (No cancellation charges or penalty apply).</li>
                                                             <li>Reservation would not be made for more than three days
                                                                 at a stretch.</li>
                                                             <li>Reservation made for more than one day and not occupied
@@ -3101,6 +3101,14 @@
                                     placeholder="e.g. Sanctioned under Notification No. 1615-40. Caretaker to prepare room key, linen, and institutional welcome amenities."></textarea>
                             </div>
 
+                            <!-- Estate Office Payment Mode Callout -->
+                            <div class="alert alert-success border-success py-2 px-3 small mb-3 d-flex align-items-center">
+                                <i class="bi bi-cash-stack fs-5 me-2 text-success"></i>
+                                <div>
+                                    <strong>Payment Mode:</strong> Room Booking and Allotment through Estate Office Account: <strong>Cash only</strong>.
+                                </div>
+                            </div>
+
                             <div class="d-flex justify-content-end gap-2">
                                 <button type="button" class="btn btn-secondary px-3"
                                     data-bs-dismiss="modal">Cancel</button>
@@ -3770,7 +3778,7 @@
             function quickLoginEstate() {
                 const emailInput = document.getElementById('estateLoginEmail');
                 const passInput = document.getElementById('estateLoginPass');
-                if (emailInput) emailInput.value = 'estate.officer@yspuniversity.ac.in';
+                if (emailInput) emailInput.value = 'eo@uhf.ac.in';
                 if (passInput) passInput.value = 'password123';
                 handleEstateLogin(null);
             }
@@ -3808,7 +3816,7 @@
                     if (authenticatedRole === 'vc_secretariat') {
                         setRole('vc_secretariat', 'Vice-Chancellor Secretariat', 'vc.secretariat@yspuniversity.ac.in');
                     } else {
-                        setRole('estate_admin', 'Estate Officer (Admin)', 'estate.officer@yspuniversity.ac.in');
+                        setRole('estate_admin', 'Estate Officer (Admin)', 'eo@uhf.ac.in');
                     }
                 }
 
@@ -3865,7 +3873,7 @@
                 const passInput = document.getElementById('estateLoginPass');
                 const feedbackEl = document.getElementById('estateLoginFeedback');
 
-                const email = (emailInput && emailInput.value.trim()) ? emailInput.value.trim().toLowerCase() : 'estate.officer@yspuniversity.ac.in';
+                const email = (emailInput && emailInput.value.trim()) ? emailInput.value.trim().toLowerCase() : 'eo@uhf.ac.in';
 
                 if (feedbackEl) {
                     feedbackEl.style.display = 'block';
@@ -6558,7 +6566,8 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                             <strong>Booking Ref:</strong> ${escapeHtml(dossier.ref)}<br>
                             <strong>Billed To (Checked-In Resident):</strong><br>
                             <span class="fs-6 fw-bold text-navy">${escapeHtml(dossier.guest)}</span><br>
-                            <span class="text-muted">${escapeHtml(dossier.designation || 'Institutional Guest')}</span>
+                            <span class="text-muted">${escapeHtml(dossier.designation || 'Institutional Guest')}</span><br>
+                            <strong>Payment Mode:</strong> <span class="badge bg-success-subtle text-success border border-success fw-bold">Cash only (Estate Office Account)</span>
                         </div>
                         <div class="col-6 text-end">
                             <strong>Date of Issue:</strong> ${escapeHtml(recDate)}<br>
@@ -6859,7 +6868,7 @@ The room has been actively allocated in the Room Layout Grid, Floor Plan Bluepri
                             &#8377;${charges.diningAmount.toLocaleString('en-IN')}.00 <i class="bi bi-pencil-square text-primary small"></i>
                         </td>
                         <td class="text-end fw-bold text-dark">&#8377;${charges.totalAmount.toLocaleString('en-IN')}.00</td>
-                        <td class="text-center"><span class="badge bg-light text-dark border">POS / UPI</span></td>
+                        <td class="text-center"><span class="badge bg-success-subtle text-success border border-success fw-bold"><i class="bi bi-cash me-1"></i>Cash only</span></td>
                         <td class="text-center">
                             <div class="btn-group btn-group-sm" role="group">
                                 <button class="btn btn-outline-primary" onclick="showReceiptModal('${dossier.ref}', 'stay')" title="Generate Stay Charges Invoice (Non-GST)">

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Dashboard') | University Guest House Management System</title>
+    <title>@yield('title', 'Dashboard') | UHF-Atithi - University Guest House Management System</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -18,7 +18,7 @@
             <i class="bi bi-buildings-fill fs-3 text-warning me-2"></i>
             <div>
                 <div class="fw-bold fs-6 lh-1">Dr. Y.S. Parmar University of Horticulture & Forestry</div>
-                <small class="text-white-50" style="font-size: 0.72rem;">Nauni, Solan (H.P.) &bull; Guest House Portal</small>
+                <small class="text-white-50" style="font-size: 0.72rem;">Nauni, Solan (H.P.) &bull; UHF-Atithi Guest House Portal</small>
             </div>
         </a>
 
